@@ -13,11 +13,11 @@
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
-    "module": "esnext",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "module": "esnext",
     "baseUrl": "src",
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "isolatedModules": true
   },
   "include": [
     "next-env.d.ts",
