@@ -10,6 +10,9 @@ export class User {
     name: string
 
     @Column()
+    password: string
+
+    @Column()
     age: number
 
     @Column()
@@ -20,4 +23,7 @@ export class User {
 
     @Column()
     attendType: AttendType
+
+    @Column()
+    token: String
 }

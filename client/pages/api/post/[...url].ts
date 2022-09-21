@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     const result = await fetch(`${SERVER_FULL_PATH}/${req.query.url}`,
         {
             method: 'POST',
-            headers: req.headers,
+            headers: {...POST_HEADER, ...req.headers},
             body: JSON.stringify(req.body)
     })
     res.status(result.status).json(await result.json())

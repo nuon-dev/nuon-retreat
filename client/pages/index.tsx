@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react"
-import { Button, Input, Stack, TextField } from "../node_modules/@mui/material/index"
+import { 
+  Button, 
+  FormControl, 
+  FormLabel, Input, MenuItem, Radio, RadioGroup, Select, Stack, styled, TextField } from "@mui/material"
 
 
 function index(){
-  const [userName, setUserName] = useState('test')
-  const [userAge, setUserAge] = useState<number>(20)
-  const [userPhone, setUserPhone] = useState('010')
-  
+  const [userName, setUserName] = useState('')
+  const [userPassword, setPassword] = useState('')
+  const [userAge, setUserAge] = useState<number>()
+  const [userPhone, setUserPhone] = useState('')
+  const [userSex, setUserSex] = useState('man')
+
+
   const result = async () => {
     const result = await fetch('/api/get/test')
     console.log(await result.json())
@@ -22,6 +28,8 @@ function index(){
         userName,
         userAge,
         userPhone,
+        userPassword,
+        userSex,
       })
     })
 
@@ -29,28 +37,73 @@ function index(){
   }
 
   return (
-    <Stack>
-      {userName}?
-      <Button>
-        수정하기
+    <Stack 
+      textAlign="center"
+      sx={{
+        margin: '20px',
+      }}
+    >
+      새벽이슬 2022 동계 수련회
+      <Button
+        variant="contained"
+        sx={{
+          mt: '16px',
+        }}
+      >
+        접수 내역 수정하기
       </Button>
-      <TextField
-        label="이름"
-        onChange={e => setUserName(e.target.value)}
-      />
-      <TextField
-        label="나이"
-        onChange={e => setUserAge(e.target.value)}
-      />
-      <TextField
-        labe="전화번호"
-        onChange={e => setUserPhone(e.target.value)}
-      />
-      <Button onClick={submit}>
-        저장
-      </Button>
+      <Stack 
+        sx={{
+          mt: '16px',
+        }}
+      >
+        <Field
+          label="이름"
+          onChange={e => setUserName(e.target.value)}
+        />
+        <Field
+          label="비밀번호"
+          type="password"
+          onChange={e => setPassword(e.target.value)}
+        />
+        <Field
+          label="나이"
+          type="number"
+          onChange={e => setUserAge(e.target.value)}
+          />
+          <Select
+            value={userSex}
+            label="성별"
+            onChange={e => setUserSex(e.target.value)}
+            sx={{
+              mt: '12px'
+            }}
+          >
+            <MenuItem value={'man'}>
+              남
+            </MenuItem>
+            <MenuItem value={'woman'}>
+              여
+            </MenuItem>
+          </Select>
+        <Field
+          label="전화번호"
+          onChange={e => setUserPhone(e.target.value)}
+          />
+        <Button 
+          variant="outlined"
+          onClick={submit}
+          sx={{mt: '12px',}}
+        >
+          저장
+        </Button>
+      </Stack>
     </Stack>
   )
 }
 
 export default index
+
+const Field = styled(TextField)({
+  marginTop: '12px'
+})
