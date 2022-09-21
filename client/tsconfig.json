@@ -15,7 +15,7 @@
     "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "moduleResolution": "Node",
     "jsx": "preserve",
     "isolatedModules": true,
@@ -23,9 +23,12 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
     "paths": {
-      "@src/*": [
-        "src/*"
-      ]
+      "@server/*": [
+        "../server/*"
+      ],
+      "@entity/*": [
+        "../server/src/entity/*"
+      ],
     },
     "resolveJsonModule": true
   },
@@ -35,6 +38,6 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
   ]
 }
