@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { 
   Button, 
-  FormControl, 
-  FormLabel, Input, MenuItem, Radio, RadioGroup, Select, Stack, styled, TextField } from "@mui/material"
+  MenuItem, 
+  Select, 
+  Stack, 
+  styled, 
+  TextField } from "@mui/material"
 
 
 function index(){
@@ -11,12 +14,6 @@ function index(){
   const [userAge, setUserAge] = useState<number>()
   const [userPhone, setUserPhone] = useState('')
   const [userSex, setUserSex] = useState('man')
-
-
-  const result = async () => {
-    const result = await fetch('/api/get/test')
-    console.log(await result.json())
-  }
 
   const submit = async () => {
     const header = new Headers();
@@ -32,8 +29,6 @@ function index(){
         userSex,
       })
     })
-
-    console.log(result)
   }
 
   return (

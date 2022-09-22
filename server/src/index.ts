@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { application } from 'express'
 import { DataSource } from "typeorm"
 import { User } from "./entity/user"
 import bodyParser from 'body-parser'
@@ -68,12 +68,30 @@ app.post('/login', async (req, res) => {
         name: data.userName,
         password: hashCode(data.userPassword),
     })
-
+    console.log(data.userPassword)
     if(!foundUser){
         res.send({result: 'fail'})
     }else{
         foundUser.token = hashCode(foundUser.password + new Date().getTime())
         userRepository.save(foundUser)
         res.send({result: 'success', token: foundUser.token})
+    }
+})
+
+app.post('/reset-password', async (req,res) => {
+    const data = req.body
+
+    const userRepository = dataSource.getRepository(User)
+    const foundUser = await userRepository.findOneBy({
+        name: data.userName,
+    })
+
+    if(!foundUser){
+        res.send({result: 'fail'})
+    }else{
+        foundUser.password = hashCode(data.userPassword)
+        console.log(foundUser.password)
+        userRepository.save(foundUser)
+        res.send({result: 'success', userName: foundUser.name})
     }
 })
