@@ -26,4 +26,7 @@ export class User {
 
     @Column()
     token: String
+
+    @Column()
+    expire: Date
 }

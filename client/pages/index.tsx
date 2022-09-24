@@ -6,9 +6,11 @@ import {
   Stack, 
   styled, 
   TextField } from "@mui/material"
+import { useRouter } from "next/router"
 
 
 function index(){
+  const router = useRouter()
   const [userName, setUserName] = useState('')
   const [userPassword, setPassword] = useState('')
   const [userAge, setUserAge] = useState<number>()
@@ -31,6 +33,10 @@ function index(){
     })
   }
 
+  const goToEditPage = () => {
+    router.push('/edit')
+  }
+
   return (
     <Stack 
       textAlign="center"
@@ -44,6 +50,7 @@ function index(){
         sx={{
           mt: '16px',
         }}
+        onClick={goToEditPage}
       >
         접수 내역 수정하기
       </Button>
