@@ -22,7 +22,9 @@ export default function UserInformationForm (props: IProps) {
 
     const submit = () => {
         if(userInformation.id){
-            post('/edit-user', userInformation)
+            post('/auth/edit-user', userInformation)
+        }else{
+            //Todo: 구현해야함
         }
     }
 

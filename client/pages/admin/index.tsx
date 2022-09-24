@@ -42,7 +42,7 @@ function admin () {
     }
 
     const login = async () => {
-        const result = await post('/login', {
+        const result = await post('/auth/login', {
             userName,
             userPassword,
         })

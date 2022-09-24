@@ -19,7 +19,7 @@ export default function Edit () {
     }, [])
 
     const checkToken = (token: string) => {
-        post('/check-token', {
+        post('/auth/check-token', {
             token,
         }).then(respone => {
             if(respone.result === "true"){
@@ -30,7 +30,7 @@ export default function Edit () {
     }
 
     const getUserData = async () => {
-        const respone = await post('/login', {
+        const respone = await post('/auth/login', {
             userName,
             userPassword
         })

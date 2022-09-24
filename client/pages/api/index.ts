@@ -16,7 +16,7 @@ export const POST_HEADER = new Headers({
   "Content-Type": "application/json",
 })
 
-export  async function post (path: string, data: any) {
+export async function post (path: string, data: any) {
   const header = new Headers();
   header.append("Content-Type", "application/json")
 
@@ -26,5 +26,10 @@ export  async function post (path: string, data: any) {
     body: JSON.stringify(data)
   })
 
+  return await respone.json()
+}
+
+export async function get(path: string) {
+  const respone = await fetch(`/api/get${path}`)
   return await respone.json()
 }

@@ -1,7 +1,7 @@
 import { SERVER_FULL_PATH, POST_HEADER } from "../index";
 
 export default async function handler(req, res) {
-    const result = await fetch(`${SERVER_FULL_PATH}/${req.query.url}`,
+    const result = await fetch(`${SERVER_FULL_PATH}/${req.query.url.join('/')}`,
         {
             method: 'POST',
             headers: {...POST_HEADER, ...req.headers},

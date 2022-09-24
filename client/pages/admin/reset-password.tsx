@@ -8,7 +8,7 @@ export default function ResetPassword () {
     const [userPassword, setUserPassword] = useState('')
 
     const reset = async () => {
-        const result = await post('/reset-password', {
+        const result = await post('/auth/reset-password', {
             userName,
             userPassword
         })

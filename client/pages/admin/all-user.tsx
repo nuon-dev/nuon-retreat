@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
 import { Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { User } from '@entity/user'
+import { get } from "pages/api";
 
 function AllUser () {
     const [allUserList, setAllUserList] = useState([] as Array<User>)
 
-
     useEffect(() => {
-        fetch('/api/get/all-user')
-        .then((request) => {
-                request.json()
-                .then(data => setAllUserList(data))
-        })
+        get('/all-user')
+        .then((data) => setAllUserList(data))
     }, [])
 
     return (

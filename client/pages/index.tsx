@@ -7,6 +7,7 @@ import {
   styled, 
   TextField } from "@mui/material"
 import { useRouter } from "next/router"
+import { post } from "./api"
 
 
 function index(){
@@ -18,11 +19,7 @@ function index(){
   const [userSex, setUserSex] = useState('man')
 
   const submit = async () => {
-    const header = new Headers();
-    header.append("Content-Type", "application/json")
-    const result = await fetch('/api/post/regist-user',{
-      method: "POST",
-      headers: header,
+    const result = post('/auth/join',{
       body: JSON.stringify({
         userName,
         userAge,
