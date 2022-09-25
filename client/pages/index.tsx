@@ -14,7 +14,7 @@ function index(){
   const router = useRouter()
   const [userName, setUserName] = useState('')
   const [userPassword, setPassword] = useState('')
-  const [userAge, setUserAge] = useState<number>()
+  const [userAge, setUserAge] = useState('')
   const [userPhone, setUserPhone] = useState('')
   const [userSex, setUserSex] = useState('man')
 
