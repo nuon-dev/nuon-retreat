@@ -8,6 +8,13 @@ import {
   TextField } from "@mui/material"
 import { useRouter } from "next/router"
 import { post } from "./api"
+import InOutFrom from "components/form/InOutForm"
+
+//Todo: server와 합치기
+enum AttendType {
+  full,
+  half,
+}
 
 
 function index(){
@@ -17,6 +24,8 @@ function index(){
   const [userAge, setUserAge] = useState('')
   const [userPhone, setUserPhone] = useState('')
   const [userSex, setUserSex] = useState('man')
+  const [attendType, setAttendType] = useState(AttendType.full)
+  const [attendList, setAttendList] = useState([] as Array<any>)
 
   const submit = async () => {
     const result = post('/auth/join',{
@@ -70,21 +79,40 @@ function index(){
           type="number"
           onChange={e => setUserAge(e.target.value)}
           />
-          <Select
-            value={userSex}
-            label="성별"
-            onChange={e => setUserSex(e.target.value)}
-            sx={{
-              mt: '12px'
-            }}
-          >
-            <MenuItem value={'man'}>
-              남
-            </MenuItem>
-            <MenuItem value={'woman'}>
-              여
-            </MenuItem>
-          </Select>
+        <Select
+          value={userSex}
+          label="성별"
+          onChange={e => setUserSex(e.target.value)}
+          sx={{
+            mt: '12px'
+          }}
+        >
+          <MenuItem value={'man'}>
+            남
+          </MenuItem>
+          <MenuItem value={'woman'}>
+            여
+          </MenuItem>
+        </Select>
+        전참 / 부참
+        <Select
+          value={attendType}
+          label="참석형태"
+          onChange={e => setAttendType(e.target.value as AttendType)}
+        >
+          <MenuItem value={AttendType.full}>
+            전참
+          </MenuItem>
+          <MenuItem value={AttendType.half}>
+            부분 참석
+          </MenuItem>
+        </Select>
+        {attendType === AttendType.half &&
+          <InOutFrom
+            onSetValue={setAttendList}
+            dataList={attendList}
+          />
+        }
         <Field
           label="전화번호"
           onChange={e => setUserPhone(e.target.value)}
