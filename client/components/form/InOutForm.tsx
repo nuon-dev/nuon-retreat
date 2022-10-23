@@ -1,30 +1,62 @@
-import { Button, Input, Stack } from "@mui/material";
+import { Button, Input, Stack, TextField } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
+import { InOutInfo } from '@entity/inOutInfo' 
 
 interface IProps {
-    onSetValue: Dispatch<SetStateAction<never[]>>,
-    dataList: Array<any>,
+    setInOutData: Dispatch<SetStateAction<InOutInfo[]>>,
+    inOutData: Array<InOutInfo>,
 }
 
-export default function InOutFrom (props: IProps) {
+export default function InOutFrom ({
+    inOutData,
+    setInOutData,
+}: IProps) {
     
-    const [inOutData, setInOutData] = useState([{time: '10시', inOutType: 'in'}])
+    
+    function onClickAdd(){
+        setInOutData([...inOutData, {} as InOutInfo])
+    }
 
-    function getRow (data) {
-        return (<Stack>
-            <Input value={data.time}/>
-            <Stack>
-                <Button>
+    function onChangeInformation(type: string, data: string, index: number){
+        const temp = inOutData
+        temp[index] = {
+            ...temp[index],
+            [type]: data
+        }
+        setInOutData(temp)
+        console.log(temp)
+            
+    }
+
+    function getRow (data: InOutInfo, index: number) {
+        return (<Stack direction="row">{data.time}
+            <TextField 
+                value={data.time}
+                onChange={e => onChangeInformation("time", e.target.value, index)}
+            />
+            <Stack direction="row">
+                <Button
+                    onClick={e => onChangeInformation("inOutType", "In", index)}
+                >
                     In
                 </Button>
-                <Button>
+                <Button
+                    onClick={e => onChangeInformation("inOutType", "Out", index)}
+                >
                     Out
                 </Button>
             </Stack>
+            <TextField
+                value={data.position}
+                onChange={e => onChangeInformation("position", e.target.value, index)}
+            />
         </Stack>)
     }
 
     return(<Stack>
-        {inOutData.map(data => getRow(data))}
+        <Button
+            onClick={onClickAdd}
+        >add</Button>
+        {inOutData.map((data, index) => getRow(data, index))}
     </Stack>)
 }

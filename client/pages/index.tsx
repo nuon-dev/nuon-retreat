@@ -9,35 +9,11 @@ import {
 import { useRouter } from "next/router"
 import { post } from "./api"
 import InOutFrom from "components/form/InOutForm"
-
-//Todo: server와 합치기
-enum AttendType {
-  full,
-  half,
-}
+import UserInformationForm from "components/form/UserInformationForm"
 
 
 function index(){
   const router = useRouter()
-  const [userName, setUserName] = useState('')
-  const [userPassword, setPassword] = useState('')
-  const [userAge, setUserAge] = useState('')
-  const [userPhone, setUserPhone] = useState('')
-  const [userSex, setUserSex] = useState('man')
-  const [attendType, setAttendType] = useState(AttendType.full)
-  const [attendList, setAttendList] = useState([] as Array<any>)
-
-  const submit = async () => {
-    const result = post('/auth/join',{
-      body: JSON.stringify({
-        userName,
-        userAge,
-        userPhone,
-        userPassword,
-        userSex,
-      })
-    })
-  }
 
   const goToEditPage = () => {
     router.push('/edit')
@@ -60,77 +36,9 @@ function index(){
       >
         접수 내역 수정하기
       </Button>
-      <Stack 
-        sx={{
-          mt: '16px',
-        }}
-      >
-        <Field
-          label="이름"
-          onChange={e => setUserName(e.target.value)}
-        />
-        <Field
-          label="비밀번호"
-          type="password"
-          onChange={e => setPassword(e.target.value)}
-        />
-        <Field
-          label="나이"
-          type="number"
-          onChange={e => setUserAge(e.target.value)}
-          />
-        <Select
-          value={userSex}
-          label="성별"
-          onChange={e => setUserSex(e.target.value)}
-          sx={{
-            mt: '12px'
-          }}
-        >
-          <MenuItem value={'man'}>
-            남
-          </MenuItem>
-          <MenuItem value={'woman'}>
-            여
-          </MenuItem>
-        </Select>
-        전참 / 부참
-        <Select
-          value={attendType}
-          label="참석형태"
-          onChange={e => setAttendType(e.target.value as AttendType)}
-        >
-          <MenuItem value={AttendType.full}>
-            전참
-          </MenuItem>
-          <MenuItem value={AttendType.half}>
-            부분 참석
-          </MenuItem>
-        </Select>
-        {attendType === AttendType.half &&
-          <InOutFrom
-            onSetValue={setAttendList}
-            dataList={attendList}
-          />
-        }
-        <Field
-          label="전화번호"
-          onChange={e => setUserPhone(e.target.value)}
-          />
-        <Button 
-          variant="outlined"
-          onClick={submit}
-          sx={{mt: '12px',}}
-        >
-          저장
-        </Button>
-      </Stack>
+      <UserInformationForm/>
     </Stack>
   )
 }
 
 export default index
-
-const Field = styled(TextField)({
-  marginTop: '12px'
-})

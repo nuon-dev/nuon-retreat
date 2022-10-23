@@ -19,6 +19,14 @@ function admin () {
         router.push('/admin/reset-password')
     }
 
+    const goToCarpoolingPage = () => {
+        router.push('/admin/carpooling')
+    }
+
+    const goToPermissionManagePage = () => {
+        router.push('/admin/permission-manage')
+    }
+
     useEffect(() => {
         const token = localStorage.getItem('token')
         setIsLogin(!!token)
@@ -31,6 +39,18 @@ function admin () {
                onClick={showAllUser} 
             >
                 접수자 전체 조회
+            </Button>
+            <Button
+                variant="contained"
+               onClick={goToCarpoolingPage} 
+            >
+                카풀 관리
+            </Button>
+            <Button
+                variant="contained"
+               onClick={goToPermissionManagePage} 
+            >
+                권한 관리
             </Button>
             <Button
                 variant="contained"

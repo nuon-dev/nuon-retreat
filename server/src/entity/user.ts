@@ -25,7 +25,7 @@ export class User {
     attendType: AttendType
 
     @Column()
-    token: String
+    token: string
 
     @Column()
     expire: Date

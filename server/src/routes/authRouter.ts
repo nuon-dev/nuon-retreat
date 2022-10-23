@@ -1,5 +1,5 @@
 import express from 'express'
-import { hashCode } from '../util'
+import { hashCode, isTokenExpire } from '../util'
 import {userDatabase} from '../model/dataSource'
 import { User } from '../entity/user'
 import AttendType from '../entity/attendType'
@@ -29,21 +29,21 @@ router.post('/join', async (req, res) => {
     const data = req.body
 
     const user = new User()
-    user.name = data.userName
-    user.age = data.userAge
-    user.phone = data.userPhone
-    user.sex = data.userSex
-    user.password = hashCode(data.userPassword)
+    user.name = data.name
+    user.age = data.age
+    user.phone = data.phone
+    user.sex = data.sex
+    user.password = hashCode(data.password)
     user.attendType = AttendType.full
     user.token = hashCode(user.password)
     user.expire = new Date()
 
     try{
-        await userDatabase.save(user)
+        const savedUser = await userDatabase.save(user)
+        res.send({result: 'success', token: user.token, userId: savedUser.id})
     }catch(e){
         res.send(e)
     }
-    res.send({result: 'success', token: user.token})
 })
 
 
@@ -83,7 +83,7 @@ router.post('/check-token', async (req, res) => {
         return
     }
 
-    if(foundUser.expire.getTime() < new Date().getTime()){
+    if(isTokenExpire(foundUser.expire)){
         res.send({result: 'fasle'})
         return
     }

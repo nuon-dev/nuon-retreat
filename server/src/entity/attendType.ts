@@ -1,6 +1,6 @@
 enum AttendType {
-    full,
-    half,
+    full = 'full',
+    half = 'half',
 }
 
 

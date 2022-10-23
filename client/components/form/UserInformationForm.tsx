@@ -1,30 +1,50 @@
 import styled from "@emotion/styled";
 import { Button, MenuItem, Select, TextField, TextFieldProps } from "@mui/material";
 import { Stack } from "@mui/system";
+import { InOutInfo } from "@server/src/entity/inOutInfo";
 import { User } from "@server/src/entity/user";
 import { post } from "pages/api";
 import { useEffect, useState } from "react";
+import InOutFrom from "./InOutForm";
+
+//Todo: server와 합치기
+enum AttendType {
+  full = 'full',
+  half = 'half',
+}
 
 interface IProps {
-    user: User
+    user?: User
 }
 
 export default function UserInformationForm (props: IProps) {
-    const [userInformation, setUserInformation] = useState({} as User)
+    const [userInformation, setUserInformation] = useState(
+      {
+        name: 'test',
+        password: '1234',
+        attendType: AttendType.half
+      } as User)
+    const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
 
     useEffect(() => {
-        setUserInformation(props.user)
+        setUserInformation(props.user || {} as User)
     },[])
 
     const changeInformation = (type: string, data: string) => {
-        setUserInformation({...userInformation, [type]: data})
+      setUserInformation({...userInformation, [type]: data})
     }
 
-    const submit = () => {
+    const submit = async () => {
         if(userInformation.id){
-            post('/auth/edit-user', userInformation)
+          await post('/auth/edit-user', userInformation)
         }else{
-            //Todo: 구현해야함
+          const saveResult = await post('/auth/join', userInformation)
+          if(userInformation.attendType !== AttendType.full){
+            await post('/info/save-attend-time', {
+              userId: saveResult.userId,
+              inOutData,
+            })
+          }
         }
     }
 
@@ -61,6 +81,27 @@ export default function UserInformationForm (props: IProps) {
               여
             </MenuItem>
           </Select>
+
+          전참 / 부참
+        <Select
+          value={userInformation.attendType}
+          label="참석형태"
+          onChange={e => changeInformation("attendType", e.target.value.toString())}
+        >
+          <MenuItem value={AttendType.full}>
+            전참
+          </MenuItem>
+          <MenuItem value={AttendType.half}>
+            부분 참석
+          </MenuItem>
+        </Select>
+        {userInformation.attendType === AttendType.half &&
+          <InOutFrom
+            setInOutData={setInOutData}
+            inOutData={inOutData}
+          />
+        }
+
         <Field
           label="전화번호"
           value={userInformation.phone}
