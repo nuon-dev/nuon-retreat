@@ -7,6 +7,7 @@ export enum PermissionType{
     userList,
     resetPassword,
     carpooling,
+    permisionManage,
 }
 
 @Entity()
@@ -14,11 +15,11 @@ export class Permission {
     @PrimaryGeneratedColumn()
     id: number
 
-    @ManyToOne(() => User, (user) => user.id)
-    userId
+    @ManyToOne(() => User, (user) => user.permissions)
+    user: User
 
     @Column()
-    permissionTyle: PermissionType
+    permissionType: PermissionType
 
     @Column()
     have: boolean

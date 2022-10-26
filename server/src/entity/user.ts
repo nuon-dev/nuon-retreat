@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
 import AttendType from './attendType'
+import { Permission } from "./permission"
 
 @Entity()
 export class User {
@@ -29,4 +30,7 @@ export class User {
 
     @Column()
     expire: Date
+
+    @OneToMany(() => Permission, (permission) => permission.user)
+    permissions: Permission[]
 }

@@ -7,7 +7,7 @@ function AllUser () {
     const [allUserList, setAllUserList] = useState([] as Array<User>)
 
     useEffect(() => {
-        get('/all-user')
+        get('/admin/get-all-user')
         .then((data) => setAllUserList(data))
     }, [])
 

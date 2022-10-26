@@ -29,7 +29,13 @@ function admin () {
 
     useEffect(() => {
         const token = localStorage.getItem('token')
-        setIsLogin(!!token)
+        post('/auth/check-token', {
+            token,
+        }).then(respone => {
+            if(respone.result === "true"){
+                setIsLogin(true)
+            }
+        })
     }, [])
 
     const menu = () => {
