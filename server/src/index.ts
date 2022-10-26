@@ -20,8 +20,3 @@ app.listen(port, async () => {
 app.get('/', async (req, res) => {
     res.send('running server')
 })
-
-app.get('/all-user', async (req, res) => {
-    const userRepository = dataSource.getRepository(User)
-    res.send(await userRepository.find())
-})
