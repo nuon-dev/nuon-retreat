@@ -34,6 +34,10 @@ export async function hasPermission(token: string, permissionType: PermissionTyp
       return false
   }
   
+  if(foundUser.isSuperUser){
+    return true
+  }
+
   const userListPermission = foundUser.permissions.find(permission => permission.permissionType === permissionType)
     
   if(userListPermission && userListPermission.have){
