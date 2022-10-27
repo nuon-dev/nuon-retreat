@@ -23,10 +23,14 @@ function admin () {
         router.push('/admin/carpooling')
     }
 
+    const goToRoomAssignmentPage = () => {
+        router.push('/admin/room-assignment')
+    }
+    
     const goToPermissionManagePage = () => {
         router.push('/admin/permission-manage')
     }
-
+    
     useEffect(() => {
         const token = localStorage.getItem('token')
         post('/auth/check-token', {
@@ -51,6 +55,12 @@ function admin () {
                onClick={goToCarpoolingPage} 
             >
                 카풀 관리
+            </Button>
+            <Button
+                variant="contained"
+               onClick={goToRoomAssignmentPage} 
+            >
+                방배정 관리
             </Button>
             <Button
                 variant="contained"

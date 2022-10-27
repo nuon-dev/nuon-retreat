@@ -8,12 +8,8 @@ export enum PermissionType{
     resetPassword,
     carpooling,
     permisionManage,
-}
-
-interface PermissionConstructor {
-    user: User,
-    permissionType: PermissionType,
-    have: boolean
+    showRoomAssignment,
+    roomManage,
 }
 
 @Entity()

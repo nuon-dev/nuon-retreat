@@ -1,6 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from "typeorm"
 import AttendType from './attendType'
+import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
+import { RoomAssignment } from "./roomAssignment"
 
 @Entity()
 export class User {
@@ -31,9 +33,16 @@ export class User {
     @Column()
     expire: Date
 
+    @Column()
+    isSuperUser: boolean
+
     @OneToMany(() => Permission, (permission) => permission.user)
     permissions: Permission[]
 
-    @Column()
-    isSuperUser: boolean
+    @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.user)
+    inOutInfos: InOutInfo[]
+
+    @OneToOne(() => RoomAssignment)
+    @JoinColumn()
+    roomAssignment: RoomAssignment
 }

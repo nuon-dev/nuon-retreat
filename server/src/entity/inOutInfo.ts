@@ -12,7 +12,7 @@ export class InOutInfo {
     id: number
 
     @ManyToOne(() => User, (user) => user.id)
-    userId
+    user: User
 
     @Column()
     time: string

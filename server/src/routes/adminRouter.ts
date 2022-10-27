@@ -92,4 +92,25 @@ router.post('/set-user-permission', async (req, res) => {
     res.send({result: 'success'})
 })
 
+router.get('/get-room-assignment', async (req, res) => {
+    const token = req.header('token')
+    if(false ===  await hasPermission(token, PermissionType.showRoomAssignment)){
+        res.sendStatus(401)
+        return
+    }
+
+    const userList = userDatabase.find({
+        select: {
+            id: true,
+            name: true,
+            age: true,
+        },
+        relations: {
+            roomAssignment: true,
+        }
+    })
+
+    res.send(userList)
+})
+
 export default router

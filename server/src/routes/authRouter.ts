@@ -3,6 +3,7 @@ import { hashCode, isTokenExpire } from '../util'
 import {userDatabase} from '../model/dataSource'
 import { User } from '../entity/user'
 import AttendType from '../entity/attendType'
+import { RoomAssignment } from '../entity/roomAssignment'
 
 const router = express.Router()
 
@@ -38,6 +39,7 @@ router.post('/join', async (req, res) => {
     user.token = hashCode(user.password)
     user.expire = new Date()
     user.isSuperUser = false
+    user.roomAssignment = new RoomAssignment()
 
     try{
         const savedUser = await userDatabase.save(user)
