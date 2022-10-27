@@ -83,11 +83,11 @@ router.post('/set-user-permission', async (req, res) => {
         targetPermission.have = data.have
         await permissionDatabase.save(targetPermission)
     }else{
-        await permissionDatabase.save(new Permission({
-            user: user,
-            permissionType: data.permissionType,
-            have: data.have
-        }))
+        const permision = new Permission()
+        permision.have = data.have
+        permision.permissionType = data.permissionType
+        permision.user = user
+        await permissionDatabase.save(permision)
     }
     res.send({result: 'success'})
 })

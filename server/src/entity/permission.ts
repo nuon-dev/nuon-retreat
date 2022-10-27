@@ -10,14 +10,14 @@ export enum PermissionType{
     permisionManage,
 }
 
+interface PermissionConstructor {
+    user: User,
+    permissionType: PermissionType,
+    have: boolean
+}
+
 @Entity()
 export class Permission {
-    constructor({user, permissionType, have}) {
-        this.user = user
-        this.permissionType = permissionType
-        this.have = have
-    }
-
     @PrimaryGeneratedColumn()
     id: number
 
