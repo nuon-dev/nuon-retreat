@@ -37,6 +37,7 @@ router.post('/join', async (req, res) => {
     user.attendType = AttendType.full
     user.token = hashCode(user.password)
     user.expire = new Date()
+    user.isSuperUser = false
 
     try{
         const savedUser = await userDatabase.save(user)

@@ -1,5 +1,7 @@
 import crypto from 'crypto'
 import dotenv from 'dotenv'
+import { PermissionType } from './entity/permission'
+import { userDatabase } from './model/dataSource'
 
 const env = dotenv.config().parsed
 
@@ -14,3 +16,29 @@ export function isTokenExpire(expire: Date){
   return false
 }
   
+export async function hasPermission(token: string, permissionType: PermissionType): Promise<boolean>{
+  const foundUser = await userDatabase.findOne({
+    where:{
+        token,
+    },
+    relations: {
+        permissions: true,
+    }
+  })
+
+  if(!foundUser){
+      return false;
+  }
+
+  if(isTokenExpire(foundUser.expire)){
+      return false
+  }
+  
+  const userListPermission = foundUser.permissions.find(permission => permission.permissionType === permissionType)
+    
+  if(userListPermission && userListPermission.have){
+    return true
+  }
+
+  return false
+}

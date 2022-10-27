@@ -33,4 +33,7 @@ export class User {
 
     @OneToMany(() => Permission, (permission) => permission.user)
     permissions: Permission[]
+
+    @Column()
+    isSuperUser: boolean
 }

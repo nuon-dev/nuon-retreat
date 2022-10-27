@@ -3,7 +3,7 @@ const SERVER_URL = process.env.NODE_ENV === 'development' ? 'http://localhost' :
 export const SERVER_FULL_PATH = `${SERVER_URL}:${PORT}`
 
 const COMMON_HEADER = {
-  "token": '9bb8ecdea49ad4cd753292ae9eba67271d30c19ebe95b5f4a351291f4e38c5c18804992400f37a0ae285d1a532572c0c1078e108820531983989b17f1bd9d03e'
+  "token": '06cc8af1a8a85b5f8cb974aae2fee4c41a3f9ef02d859a69344a441397c3552e3c788dd89ba9449258a96cd022b8d0a3e159d8d403607c8ad3d997bb454440d2'
 }
 
 export const GET_HEADER = {

@@ -1,35 +1,16 @@
 import express from 'express'
-import { isTokenExpire } from '../util'
+import { hasPermission, isTokenExpire } from '../util'
 import { permissionDatabase, userDatabase} from '../model/dataSource'
 import { Permission, PermissionType } from '../entity/permission'
 
 const router = express.Router()
 
 router.get('/get-all-user-name', async (req, res) => {
-    const data = req.body
-
     const token = req.header('token')
-    const foundUser = await userDatabase.findOneBy({token})
-
-    if(!foundUser){
-        res.send({result: 'token error'})
+    if(false === await hasPermission(token, PermissionType.userList)){
+        res.sendStatus(401)
         return
     }
-
-    if(isTokenExpire(foundUser.expire)){
-        res.send({result: 'token expire'})
-        return
-    }
-
-    const userListPermissions = await permissionDatabase.findOneBy({
-        permissionType: PermissionType.userList,
-    })
-
-    /*
-    if(!userListPermissions){
-        res.send({result: `don't have permission (userList)`})
-        return
-    }*/
 
     const userList = await userDatabase.find({
         select: {
@@ -41,103 +22,74 @@ router.get('/get-all-user-name', async (req, res) => {
 
 router.post('/get-user-permision-info',async (req, res) => {
     const data = req.body
-
     const token = req.header('token')
-    const foundUser = await userDatabase.findOneBy({token})
-
-    if(!foundUser){
-        res.send({result: 'token error'})
-        return
+    if(false === await hasPermission(token, PermissionType.permisionManage)){
+        //res.sendStatus(401)
+        console.log('401')
+//        return
     }
-
-    if(isTokenExpire(foundUser.expire)){
-        res.send({result: 'token expire'})
-        return
-    }
-
-    const userListPermissions = await permissionDatabase.findOneBy({
-        permissionType: PermissionType.permisionManage,
-    })
-
-    /*
-    if(!userListPermissions){
-        res.send({result: `don't have permission (permisionManage)`})
-        return
-    }*/
-
-    console.log(data.userId)
-    const permissionList = await permissionDatabase.findBy({})
-    res.send(permissionList)
-})
-
-router.get('/get-all-user',  async (req, res) => {
-
-    const token = req.header('token')
-    const foundUser = await userDatabase.findOne({
+    
+    const user = await userDatabase.findOne({
         where:{
-            token,
+            id: data.userId,
         },
-        relations: {
+        relations:{
             permissions: true,
         }
     })
-
-    if(!foundUser){
-        res.send({result: 'token error'})
-        return
-    }
-
-    if(isTokenExpire(foundUser.expire)){
-        res.send({result: 'token expire'})
-        return
-    }
-
-    const UserListPermission = foundUser.permissions.find(permission => permission.permissionType === PermissionType.userList)
-    if(UserListPermission && UserListPermission.have){
-        return res.send(await userDatabase.find())
+    if(user){
+        res.send(user.permissions)
     }else{
-        return res.send({result: `don't have permission (userList)`})
+        res.send([])
     }
 })
+
+router.get('/get-all-user',  async (req, res) => {
+    const token = req.header('token')
+
+    if(await hasPermission(token, PermissionType.userList) === false){
+        res.sendStatus(401)
+        return
+    }
+    
+    return res.send(await userDatabase.find())
+})
+
 
 router.post('/set-user-permission', async (req, res) => {
     const data = req.body
 
     const token = req.header('token')
-    const foundUser = await userDatabase.findOneBy({token})
-
-    if(!foundUser){
-        res.send({result: 'token error'})
-        return
-    }
-
-    if(isTokenExpire(foundUser.expire)){
-        res.send({result: 'token expire'})
-        return
-    }
-
     const userListPermissions = await permissionDatabase.findOneBy({
         permissionType: PermissionType.permisionManage,
     })
 
-    /*
-    if(!userListPermissions){
-        res.send({result: `don't have permission (permisionManage)`})
-        return
-    }*/
-
-    const selectedUserPermission = await permissionDatabase.findOneBy({
-        permissionType: data.permissionType
+    const user = await userDatabase.findOne({
+        where:{
+            id: data.userId
+        },
+        relations:{
+            permissions: true,
+        }
     })
-    if(selectedUserPermission){
-        selectedUserPermission.have = data.have
-        await permissionDatabase.save(selectedUserPermission)
+
+    if(!user){
+        res.sendStatus(500)
+        return
+    }
+    
+    const targetPermission = user.permissions.find(permision => permision.permissionType === data.permissionType)
+    if(targetPermission){
+        targetPermission.have = data.have
+        await permissionDatabase.save(targetPermission)
         res.send({result: 'success'})
         return
     }
+
     const permision = new Permission()
     permision.have = data.have
     permision.permissionType = data.permissionType
+    permision.user = user
     await permissionDatabase.save(permision)
     res.send({result: 'success'})
 })
