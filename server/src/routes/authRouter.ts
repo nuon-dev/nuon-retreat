@@ -1,6 +1,6 @@
 import express from 'express'
 import { hashCode, isTokenExpire } from '../util'
-import {rommAssignmentDatabase, userDatabase} from '../model/dataSource'
+import {roomAssignmentDatabase, userDatabase} from '../model/dataSource'
 import { User } from '../entity/user'
 import AttendType from '../entity/attendType'
 import { RoomAssignment } from '../entity/roomAssignment'
@@ -30,7 +30,7 @@ router.post('/join', async (req, res) => {
     const data = req.body
 
     const roomAssignment = new RoomAssignment()
-    await rommAssignmentDatabase.save(roomAssignment)
+    await roomAssignmentDatabase.save(roomAssignment)
 
     const user = new User()
     user.name = data.name

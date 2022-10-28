@@ -42,12 +42,12 @@ function RoomAssingment (){
             onMouseDown={() => setSelectedUser(user)}
             onMouseUp={() => setRoom(0)}
             sx={{
-                border: "1px solid black"
+                border: "1px solid black",
+                justifyContent: 'space-between',
+                backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
         >
-            <Box>{user.name}</Box>
-            <Box>{user.age}</Box>
-            <Box>{user.sex}</Box>
+            <Box>{user.name}({user.age})</Box>
             <Box>{user.roomAssignment.roomNumber}</Box>
         </Stack>)
     }
@@ -56,26 +56,30 @@ function RoomAssingment (){
         return (<Stack
             direction="row"
             onMouseDown={() => setSelectedUser(user)}
+            width="200px"
+            sx={{
+                justifyContent: 'space-between',
+                backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
+            }}
          >
-            <Box>{user.name}</Box>
-            <Box>{user.age}</Box>
-            <Box>{user.sex}</Box>
+            <Box>{user.name}({user.age})</Box>
+            <Box>{user.attendType}</Box>
         </Stack>)
     }
 
-    function roomData(userList: Array<User>){
+    function Room(roomNumber: number, userList: Array<User>){
         return (<Stack
             sx={{
                 minHeight: "20px",
                 border: "1px solid black"
             }}
-            onMouseUp={() => setRoom(userList[0].roomAssignment.roomNumber)}
+            onMouseUp={() => setRoom(roomNumber)}
         >
-            <Stack>{userList[0].roomAssignment.roomNumber}번 방</Stack>
+            <Stack>{roomNumber}번 방 ({userList.length})</Stack>
             {userList.map(user => userRoomRow(user))}
         </Stack>)
     }
-
+    
     async function setRoom(roomNumber: number){
         if(!selectedUser){
             return
@@ -91,18 +95,22 @@ function RoomAssingment (){
     return (
         <Stack direction="row">
             <Stack width="200px">
+                <Box>미배정({unassignedUserList.length}명)</Box>
                 {unassignedUserList.map(user => unassignedUserRow(user))}
             </Stack>
             <Stack direction="row">
-                {roomList.map(room => roomData(room))}
-                <Stack 
-                sx={{
-                    minHeight: "20px",
-                    border: "1px solid black"
-                }}
-                    onMouseUp={() => setRoom(maxRoomNumber + 1)}>
-                    {maxRoomNumber + 1}번방
-                </Stack>
+                { new Array(maxRoomNumber).fill(0).map((_, index) => {
+                    const room = roomList[index]
+                    if(!room || room.length === 0){
+                        return Room(index + 1, [])
+                    }else{
+                        return Room(room[0].roomAssignment.roomNumber, room)
+                    }
+                })
+                }
+                {
+                    Room(maxRoomNumber + 1, [])
+                }
             </Stack>
         </Stack>
     )

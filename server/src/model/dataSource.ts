@@ -9,6 +9,6 @@ const dataSource = new DataSource(require('../../ormconfig.json'))
 export const userDatabase = dataSource.getRepository(User)
 export const attendInfoDatabase = dataSource.getRepository(InOutInfo)
 export const permissionDatabase = dataSource.getRepository(Permission)
-export const rommAssignmentDatabase = dataSource.getRepository(RoomAssignment)
+export const roomAssignmentDatabase = dataSource.getRepository(RoomAssignment)
 export default dataSource
 

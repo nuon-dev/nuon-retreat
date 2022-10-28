@@ -10,6 +10,8 @@ export enum PermissionType{
     permisionManage,
     showRoomAssignment,
     roomManage,
+    showGroupAssignment,
+    groupManage,
 }
 
 @Entity()

@@ -1,7 +1,9 @@
 import express from 'express'
 import { hasPermission } from '../util'
-import { permissionDatabase, rommAssignmentDatabase, userDatabase} from '../model/dataSource'
+import { permissionDatabase, roomAssignmentDatabase, userDatabase} from '../model/dataSource'
 import { Permission, PermissionType } from '../entity/permission'
+
+import RoomRouter from './admin/room'
 
 const router = express.Router()
 
@@ -92,41 +94,6 @@ router.post('/set-user-permission', async (req, res) => {
     res.send({result: 'success'})
 })
 
-router.get('/get-room-assignment', async (req, res) => {
-    const token = req.header('token')
-    if(false ===  await hasPermission(token, PermissionType.showRoomAssignment)){
-        res.sendStatus(401)
-        return
-    }
-
-    const userList = await userDatabase.find({
-        select: {
-            id: true,
-            name: true,
-            age: true,
-            sex: true,
-        },
-        relations: {
-            roomAssignment: true,
-        }
-    })
-
-    res.send(userList)
-})
-
-router.post('/set-room', async (req, res) => {
-    const token = req.header('token')
-    if(false ===  await hasPermission(token, PermissionType.roomManage)){
-        res.sendStatus(401)
-        return
-    }
-
-    const data = req.body
-    const roomAssignment = data.roomAssignment
-
-    await rommAssignmentDatabase.save(roomAssignment)
-    res.send({result: "success"})
-    return
-})
+router.use('/', RoomRouter)
 
 export default router
