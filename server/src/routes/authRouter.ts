@@ -1,6 +1,6 @@
 import express from 'express'
 import { hashCode, isTokenExpire } from '../util'
-import {userDatabase} from '../model/dataSource'
+import {rommAssignmentDatabase, userDatabase} from '../model/dataSource'
 import { User } from '../entity/user'
 import AttendType from '../entity/attendType'
 import { RoomAssignment } from '../entity/roomAssignment'
@@ -29,6 +29,9 @@ router.post('/login', async (req, res) => {
 router.post('/join', async (req, res) => {
     const data = req.body
 
+    const roomAssignment = new RoomAssignment()
+    await rommAssignmentDatabase.save(roomAssignment)
+
     const user = new User()
     user.name = data.name
     user.age = data.age
@@ -39,12 +42,13 @@ router.post('/join', async (req, res) => {
     user.token = hashCode(user.password)
     user.expire = new Date()
     user.isSuperUser = false
-    user.roomAssignment = new RoomAssignment()
+    user.roomAssignment = roomAssignment
 
     try{
         const savedUser = await userDatabase.save(user)
         res.send({result: 'success', token: user.token, userId: savedUser.id})
     }catch(e){
+        console.log(e)
         res.send(e)
     }
 })
