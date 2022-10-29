@@ -1,4 +1,5 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import MoveType from "./moveType";
 import { User } from "./user";
 
 export enum InOutType {
@@ -22,4 +23,8 @@ export class InOutInfo {
 
     @Column()
     position: string
+
+    @Column()
+    howToMove: MoveType
+
 }

@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from "typeorm"
 import AttendType from './attendType'
 import { InOutInfo } from "./inOutInfo"
+import MoveType from "./moveType"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
 

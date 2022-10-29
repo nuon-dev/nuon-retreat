@@ -1,11 +1,12 @@
 import express from 'express'
+import AttendType from '../../entity/attendType'
 import { PermissionType } from "../../entity/permission"
 import { roomAssignmentDatabase, userDatabase } from "../../model/dataSource"
 import { hasPermission } from "../../util"
 
 const router = express.Router()
 
-router.get('/get-room-assignment', async (req, res) => {
+router.get('/get-car-info', async (req, res) => {
     const token = req.header('token')
     if(false ===  await hasPermission(token, PermissionType.showRoomAssignment)){
         res.sendStatus(401)
@@ -18,6 +19,9 @@ router.get('/get-room-assignment', async (req, res) => {
             name: true,
             age: true,
             sex: true,
+        },
+        where:{
+            attendType: AttendType.half,
         },
         relations: {
             roomAssignment: true,

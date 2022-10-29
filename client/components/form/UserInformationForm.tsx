@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Button, MenuItem, Select, TextField, TextFieldProps } from "@mui/material";
+import { Button, FormControlLabel, FormLabel, MenuItem, Radio, RadioGroup, Select, TextField, TextFieldProps } from "@mui/material";
 import { Stack } from "@mui/system";
 import { InOutInfo } from "@server/src/entity/inOutInfo";
 import { User } from "@server/src/entity/user";
@@ -11,6 +11,13 @@ import InOutFrom from "./InOutForm";
 enum AttendType {
   full = 'full',
   half = 'half',
+}
+
+const enum MoveType {
+  Together,
+  driveCar,
+  rideCar,
+  goAlone,
 }
 
 interface IProps {
@@ -101,7 +108,18 @@ export default function UserInformationForm (props: IProps) {
             inOutData={inOutData}
           />
         }
-
+            <RadioGroup
+              onChange={e => changeInformation("howToMove", e.target.value.toString())}
+            >
+              <FormLabel>이동 방법</FormLabel>
+              <FormControlLabel value={MoveType.Together} control={<Radio/>} label="같이 이동" />
+              <FormControlLabel value={MoveType.driveCar} control={<Radio/>} label="자차 이동" />
+              {userInformation.attendType !== AttendType.full 
+                && <FormControlLabel value={MoveType.rideCar} control={<Radio/>} label="카풀 이동" />}
+              {userInformation.attendType !== AttendType.full 
+                && <FormControlLabel value={MoveType.goAlone} control={<Radio/>} label="대중교통" />}
+              
+          </RadioGroup>
         <Field
           label="전화번호"
           value={userInformation.phone}
