@@ -14,6 +14,7 @@ app.use('/',apiRouter)
 
 app.listen(port, async () => {
     await Promise.all([dataSource.initialize()]);
+    //dataSource.dropDatabase()
     console.log('start server')
 })
 

@@ -1,4 +1,5 @@
 import { post } from "pages/api"
+import path from "path"
 import { useEffect, useState } from "react"
 import { Button, Stack, TextField } from "../../node_modules/@mui/material/index"
 import { useRouter } from "../../node_modules/next/router"
@@ -29,6 +30,10 @@ function admin () {
     
     const goToPermissionManagePage = () => {
         router.push('/admin/permission-manage')
+    }
+
+    const goToPage =(path: string) => {
+        router.push(path)
     }
     
     useEffect(() => {
@@ -61,6 +66,12 @@ function admin () {
                onClick={goToRoomAssignmentPage} 
             >
                 방배정 관리
+            </Button>
+            <Button
+                variant="contained"
+               onClick={() => goToPage('/admin/group-formation')} 
+            >
+                조배정 관리
             </Button>
             <Button
                 variant="contained"

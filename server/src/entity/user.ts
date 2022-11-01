@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from "typeorm"
 import AttendType from './attendType'
+import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import MoveType from "./moveType"
 import { Permission } from "./permission"
@@ -46,4 +47,8 @@ export class User {
     @OneToOne(() => RoomAssignment)
     @JoinColumn()
     roomAssignment: RoomAssignment
+
+    @OneToOne(() => GroupAssignment)
+    @JoinColumn()
+    groupAssignment: GroupAssignment
 }

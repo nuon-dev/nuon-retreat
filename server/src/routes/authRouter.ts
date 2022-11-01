@@ -1,9 +1,10 @@
 import express from 'express'
 import { hashCode, isTokenExpire } from '../util'
-import {roomAssignmentDatabase, userDatabase} from '../model/dataSource'
+import {groupAssignmentDatabase, roomAssignmentDatabase, userDatabase} from '../model/dataSource'
 import { User } from '../entity/user'
 import AttendType from '../entity/attendType'
 import { RoomAssignment } from '../entity/roomAssignment'
+import { GroupAssignment } from '../entity/groupAssignment'
 
 const router = express.Router()
 
@@ -32,6 +33,9 @@ router.post('/join', async (req, res) => {
     const roomAssignment = new RoomAssignment()
     await roomAssignmentDatabase.save(roomAssignment)
 
+    const groupAssignment = new GroupAssignment()
+    await groupAssignmentDatabase.save(groupAssignment)
+
     const user = new User()
     user.name = data.name
     user.age = data.age
@@ -43,6 +47,7 @@ router.post('/join', async (req, res) => {
     user.expire = new Date()
     user.isSuperUser = false
     user.roomAssignment = roomAssignment
+    user.groupAssignment = groupAssignment
 
     try{
         const savedUser = await userDatabase.save(user)

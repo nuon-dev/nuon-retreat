@@ -8,5 +8,5 @@ export class GroupAssignment {
     @Column({
         default: 0
     })
-    roomNumber: number
+    groupNumber: number
 }

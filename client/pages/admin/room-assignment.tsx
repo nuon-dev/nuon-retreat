@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { User } from "@entity/user";
 import { useEffect, useState } from "react";
 import { get, post } from "pages/api";
@@ -9,6 +9,7 @@ function RoomAssingment (){
     const [roomList, setRoomList] = useState([] as Array<Array<User>>)
     const [selectedUser, setSelectedUser] = useState<User>()
     const [maxRoomNumber, setMaxRoomNumber] = useState(0)
+    const [sex, setSex] = useState('man')
 
     useEffect(() => {
         fetchData()
@@ -75,8 +76,8 @@ function RoomAssingment (){
             }}
             onMouseUp={() => setRoom(roomNumber)}
         >
-            <Stack>{roomNumber}번 방 ({userList.length})</Stack>
-            {userList.map(user => userRoomRow(user))}
+            <Stack>{roomNumber}번 방 ({userList.filter(user => user.sex === sex).length})</Stack>
+            {userList.filter(user => user.sex === sex).map(user => userRoomRow(user))}
         </Stack>)
     }
     
@@ -93,24 +94,30 @@ function RoomAssingment (){
     }
 
     return (
-        <Stack direction="row">
-            <Stack width="200px">
-                <Box>미배정({unassignedUserList.length}명)</Box>
-                {unassignedUserList.map(user => unassignedUserRow(user))}
+        <Stack>
+            <Stack>
+                {sex === 'man' ? "남자" : "여자"} 방배정 
+                <Button onClick={() => setSex(sex === 'man' ?  "woman" : "man")}>성별 변경</Button>
             </Stack>
             <Stack direction="row">
-                { new Array(maxRoomNumber).fill(0).map((_, index) => {
-                    const room = roomList[index]
-                    if(!room || room.length === 0){
-                        return Room(index + 1, [])
-                    }else{
-                        return Room(room[0].roomAssignment.roomNumber, room)
+                <Stack width="200px">
+                    <Box>미배정({unassignedUserList.filter(user => user.sex === sex).length}명)</Box>
+                    {unassignedUserList.filter(user => user.sex === sex).map(user => unassignedUserRow(user))}
+                </Stack>
+                <Stack direction="row">
+                    { new Array(maxRoomNumber).fill(0).map((_, index) => {
+                        const room = roomList[index]
+                        if(!room || room.length === 0){
+                            return Room(index + 1, [])
+                        }else{
+                            return Room(room[0].roomAssignment.roomNumber, room)
+                        }
+                    })
                     }
-                })
-                }
-                {
-                    Room(maxRoomNumber + 1, [])
-                }
+                    {
+                        Room(maxRoomNumber + 1, [])
+                    }
+                </Stack>
             </Stack>
         </Stack>
     )
