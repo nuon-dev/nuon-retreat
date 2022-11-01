@@ -14,7 +14,7 @@ export default async function handler(req:NextApiRequest, res: NextApiResponse) 
     }else if(result.status === 401){
         res.status(result.status).json({error: 'permission error'})
     }else{
-        res.status(result.status).json({error: result})
+        res.status(result.status).json({error: await result.text()})
     }
 }
   
