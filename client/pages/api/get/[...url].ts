@@ -8,6 +8,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             method: 'GET',
             headers: GET_HEADER
     })
-    res.status(result.status).json(await result.json())
+    if(result.status === 200){
+        res.status(result.status).json(await result.json())
+    }else if(result.status === 401){
+        res.status(result.status).json({error: 'permission error'})
+    }else{
+        res.status(result.status).json({error: result})
+    }
 }
   
