@@ -1,8 +1,8 @@
 import { post } from "pages/api"
 import path from "path"
 import { useEffect, useState } from "react"
-import { Button, Stack, TextField } from "../../node_modules/@mui/material/index"
-import { useRouter } from "../../node_modules/next/router"
+import { Button, Stack, TextField } from "@node_modules/@mui/material/index"
+import { useRouter } from "@node_modules/next/router"
 
 function admin () {
     const router = useRouter()
@@ -12,28 +12,8 @@ function admin () {
     const [userName, setUserName] = useState('')
     const [userPassword, setUserPassword] = useState('')
 
-    const showAllUser = () => {
-        router.push('/admin/all-user')
-    }
-
-    const goToResetPasswordPage = () => {
-        router.push('/admin/reset-password')
-    }
-
-    const goToCarpoolingPage = () => {
-        router.push('/admin/carpooling')
-    }
-
-    const goToRoomAssignmentPage = () => {
-        router.push('/admin/room-assignment')
-    }
-    
-    const goToPermissionManagePage = () => {
-        router.push('/admin/permission-manage')
-    }
-
     const goToPage =(path: string) => {
-        router.push(path)
+        router.push(`/admin/${path}`)
     }
     
     useEffect(() => {
@@ -51,37 +31,37 @@ function admin () {
         return (<>
             <Button
                 variant="contained"
-               onClick={showAllUser} 
+               onClick={() => goToPage('/all-user')} 
             >
                 접수자 전체 조회
             </Button>
             <Button
                 variant="contained"
-               onClick={goToCarpoolingPage} 
+               onClick={() => goToPage('/carpooling')} 
             >
                 카풀 관리
             </Button>
             <Button
                 variant="contained"
-               onClick={goToRoomAssignmentPage} 
+               onClick={() => goToPage('/room-assignment')} 
             >
                 방배정 관리
             </Button>
             <Button
                 variant="contained"
-               onClick={() => goToPage('/admin/group-formation')} 
+               onClick={() => goToPage('/group-formation')} 
             >
                 조배정 관리
             </Button>
             <Button
                 variant="contained"
-               onClick={goToPermissionManagePage} 
+               onClick={() => goToPage('/permission-manage')} 
             >
                 권한 관리
             </Button>
             <Button
                 variant="contained"
-                onClick={goToResetPasswordPage}
+                onClick={() => goToPage('/reset-password')}
             >
                 비밀번호 초기화
             </Button>

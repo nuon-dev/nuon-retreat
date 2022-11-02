@@ -1,10 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from "typeorm"
-import AttendType from './attendType'
 import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
-import MoveType from "./moveType"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
+import { AttendType } from "./types"
 
 @Entity()
 export class User {
@@ -27,7 +26,10 @@ export class User {
     phone: string
 
     @Column()
-    attendType: AttendType
+    attendType: typeof AttendType.full
+
+    @Column()
+    etc: string
 
     @Column()
     token: string

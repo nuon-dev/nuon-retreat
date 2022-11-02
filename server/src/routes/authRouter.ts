@@ -2,9 +2,9 @@ import express from 'express'
 import { hashCode, isTokenExpire } from '../util'
 import {groupAssignmentDatabase, roomAssignmentDatabase, userDatabase} from '../model/dataSource'
 import { User } from '../entity/user'
-import AttendType from '../entity/attendType'
 import { RoomAssignment } from '../entity/roomAssignment'
 import { GroupAssignment } from '../entity/groupAssignment'
+import { AttendType } from '../entity/types'
 
 const router = express.Router()
 
@@ -48,6 +48,7 @@ router.post('/join', async (req, res) => {
     user.isSuperUser = false
     user.roomAssignment = roomAssignment
     user.groupAssignment = groupAssignment
+    user.etc = data.etc
 
     try{
         const savedUser = await userDatabase.save(user)

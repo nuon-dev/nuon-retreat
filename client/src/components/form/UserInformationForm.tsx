@@ -1,24 +1,19 @@
 import styled from "@emotion/styled";
-import { Button, FormControlLabel, FormLabel, MenuItem, Radio, RadioGroup, Select, TextField, TextFieldProps } from "@mui/material";
+import { Button, 
+  FormControlLabel, 
+  FormLabel,
+  MenuItem, 
+  Radio,
+  RadioGroup, 
+  Select, 
+  TextField, } from "@mui/material";
 import { Stack } from "@mui/system";
 import { InOutInfo } from "@server/src/entity/inOutInfo";
 import { User } from "@server/src/entity/user";
 import { post } from "pages/api";
 import { useEffect, useState } from "react";
+import { AttendType, MoveType } from "types";
 import InOutFrom from "./InOutForm";
-
-//Todo: server와 합치기
-enum AttendType {
-  full = 'full',
-  half = 'half',
-}
-
-const enum MoveType {
-  Together,
-  driveCar,
-  rideCar,
-  goAlone,
-}
 
 interface IProps {
     user?: User
@@ -27,8 +22,8 @@ interface IProps {
 export default function UserInformationForm (props: IProps) {
     const [userInformation, setUserInformation] = useState(
       {
-        name: 'test',
-        password: '1234',
+        name: '',
+        password: '',
         attendType: AttendType.half
       } as User)
     const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
@@ -124,6 +119,12 @@ export default function UserInformationForm (props: IProps) {
           label="전화번호"
           value={userInformation.phone}
           onChange={e => changeInformation("phone", e.target.value)}
+          />
+
+        <Field
+          label="기타사항"
+          value={userInformation.etc}
+          onChange={e => changeInformation("etc", e.target.value)}
           />
 
           <Button

@@ -1,18 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { PermissionType } from "./types";
 import { User } from "./user";
 
-export enum PermissionType{
-    superUser,
-    admin,
-    userList,
-    resetPassword,
-    carpooling,
-    permisionManage,
-    showRoomAssignment,
-    roomManage,
-    showGroupAssignment,
-    groupManage,
-}
 
 @Entity()
 export class Permission {
