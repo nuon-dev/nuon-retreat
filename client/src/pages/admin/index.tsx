@@ -1,8 +1,8 @@
 import { post } from "pages/api"
 import path from "path"
 import { useEffect, useState } from "react"
-import { Button, Stack, TextField } from "@node_modules/@mui/material/index"
-import { useRouter } from "@node_modules/next/router"
+import { Button, Stack, TextField } from "@mui/material/index"
+import { useRouter } from "next/router"
 
 function admin () {
     const router = useRouter()

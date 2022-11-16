@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import dotenv from 'dotenv'
-import { PermissionType } from './entity/permission'
+import { PermissionType } from './entity/types'
 import { userDatabase } from './model/dataSource'
 
 const env = dotenv.config().parsed

@@ -1,6 +1,5 @@
 import express from 'express'
-import AttendType from '../../entity/attendType'
-import { PermissionType } from "../../entity/permission"
+import { PermissionType, AttendType } from "../../entity/types"
 import { roomAssignmentDatabase, userDatabase } from "../../model/dataSource"
 import { hasPermission } from "../../util"
 

@@ -1,6 +1,6 @@
-export const AttendType = {
-    full: 'full',
-    half: 'half',
+export const enum AttendType{
+    full = 'full',
+    half = 'half',
 }
 
 export const enum MoveType {

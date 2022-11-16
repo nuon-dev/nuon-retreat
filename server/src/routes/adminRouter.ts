@@ -1,7 +1,8 @@
 import express from 'express'
 import { hasPermission } from '../util'
 import { permissionDatabase, userDatabase} from '../model/dataSource'
-import { Permission, PermissionType } from '../entity/permission'
+import { PermissionType } from '../entity/types'
+import { Permission } from '../entity/permission'
 
 import RoomRouter from './admin/room'
 import GroupRouter from './admin/group'

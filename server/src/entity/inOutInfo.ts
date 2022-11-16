@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import MoveType from "./moveType";
+import { MoveType } from "./types";
 import { User } from "./user";
 
 export enum InOutType {

@@ -1,5 +1,5 @@
 import express from 'express'
-import { PermissionType } from "../../entity/permission"
+import { PermissionType } from "../../entity/types"
 import { groupAssignmentDatabase, roomAssignmentDatabase, userDatabase } from "../../model/dataSource"
 import { hasPermission } from "../../util"
 

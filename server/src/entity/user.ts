@@ -26,7 +26,7 @@ export class User {
     phone: string
 
     @Column()
-    attendType: typeof AttendType.full
+    attendType: AttendType
 
     @Column()
     etc: string
