@@ -4,8 +4,9 @@ export const enum AttendType{
 }
 
 export const enum MoveType {
-    Together,
-    driveCar,
+    together,
+    driveCarAlone,
+    driveCarWithPerson,
     rideCar,
     goAlone,
 }
@@ -21,4 +22,15 @@ export enum PermissionType{
     roomManage,
     showGroupAssignment,
     groupManage,
+}
+
+export enum Days {
+    firstDay,
+    secondDay,
+    thirdDay,
+}
+
+export enum InOutType {
+    IN = 'in',
+    OUT = 'out',
 }

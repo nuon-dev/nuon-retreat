@@ -1,5 +1,4 @@
 import { post } from "pages/api"
-import path from "path"
 import { useEffect, useState } from "react"
 import { Button, Stack, TextField } from "@mui/material/index"
 import { useRouter } from "next/router"

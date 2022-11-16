@@ -1,11 +1,7 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { MoveType } from "./types";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, TreeChildren, TreeParent } from "typeorm";
+import { Days, InOutType, MoveType } from "./types";
 import { User } from "./user";
 
-export enum InOutType {
-    IN = 'in',
-    OUT = 'out',
-}
 
 @Entity()
 export class InOutInfo {
@@ -14,6 +10,9 @@ export class InOutInfo {
 
     @ManyToOne(() => User, (user) => user.id)
     user: User
+
+    @Column()
+    day: Days
 
     @Column()
     time: string
@@ -27,4 +26,9 @@ export class InOutInfo {
     @Column()
     howToMove: MoveType
 
+    @ManyToOne(() => InOutInfo, inOutInfo => inOutInfo.userInTheCar)
+    rideCarInfo: InOutInfo
+
+    @OneToMany(() => InOutInfo, inOutInfo => inOutInfo.rideCarInfo)
+    userInTheCar: InOutInfo[]
 }

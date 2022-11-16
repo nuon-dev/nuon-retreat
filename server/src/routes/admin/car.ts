@@ -1,6 +1,6 @@
 import express from 'express'
 import { PermissionType, AttendType } from "../../entity/types"
-import { roomAssignmentDatabase, userDatabase } from "../../model/dataSource"
+import { attendInfoDatabase, userDatabase } from "../../model/dataSource"
 import { hasPermission } from "../../util"
 
 const router = express.Router()
@@ -12,35 +12,38 @@ router.get('/get-car-info', async (req, res) => {
         return
     }
 
-    const userList = await userDatabase.find({
-        select: {
+    const infoList = await attendInfoDatabase.find({
+        select:{
+            inOutType: true,
             id: true,
-            name: true,
-            age: true,
-            sex: true,
+            time: true,
+            howToMove: true,
+            userInTheCar: true,
+            day: true,
+            position: true,
         },
-        where:{
-            attendType: AttendType.half,
-        },
-        relations: {
-            roomAssignment: true,
+        relations:{
+            user: true,
+            rideCarInfo: true,
+            userInTheCar: {
+                user: true
+            },
         }
     })
-
-    res.send(userList)
+    res.send(infoList)
 })
 
-router.post('/set-room', async (req, res) => {
+router.post('/set-car', async (req, res) => {
     const token = req.header('token')
-    if(false ===  await hasPermission(token, PermissionType.roomManage)){
+    if(false ===  await hasPermission(token, PermissionType.carpooling)){
         res.sendStatus(401)
         return
     }
 
     const data = req.body
-    const roomAssignment = data.roomAssignment
+    const inOutInfo = data.inOutInfo
 
-    await roomAssignmentDatabase.save(roomAssignment)
+    await attendInfoDatabase.save(inOutInfo)
     res.send({result: "success"})
     return
 })

@@ -19,8 +19,10 @@ router.post('/save-attend-time', async (req, res) => {
             const inOutInfo = new InOutInfo()
             inOutInfo.user = foundUser
             inOutInfo.inOutType = data.inOutType
-            inOutInfo.position = data.position
+            inOutInfo.day = data.day
             inOutInfo.time = data.time
+            inOutInfo.position = data.position
+            inOutInfo.howToMove = data.howToMove
 
             await attendInfoDatabase.save(inOutInfo)
         }

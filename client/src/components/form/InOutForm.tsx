@@ -1,6 +1,7 @@
-import { Button, Input, Stack, TextField } from "@mui/material";
+import { Button, FormControlLabel, FormLabel, Input, MenuItem, Radio, RadioGroup, Select, Stack, TextField } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { InOutInfo } from '@entity/inOutInfo' 
+import { AttendType, Days, InOutType, MoveType } from "types";
 
 interface IProps {
     setInOutData: Dispatch<SetStateAction<InOutInfo[]>>,
@@ -12,44 +13,76 @@ export default function InOutFrom ({
     setInOutData,
 }: IProps) {
     
-    
     function onClickAdd(){
-        setInOutData([...inOutData, {} as InOutInfo])
+        setInOutData([...inOutData, {
+            day: Days.firstDay,
+            inOutType: InOutType.IN,
+            howToMove: MoveType.rideCar,
+        } as InOutInfo])
     }
 
     function onChangeInformation(type: string, data: string, index: number){
-        const temp = inOutData
-        temp[index] = {
-            ...temp[index],
+        inOutData[index] = {
+            ...inOutData[index],
             [type]: data
         }
-        setInOutData(temp)
-        console.log(temp)
-            
+        setInOutData([...inOutData])
     }
 
     function getRow (data: InOutInfo, index: number) {
-        return (<Stack direction="row">{data.time}
-            <TextField 
-                value={data.time}
-                onChange={e => onChangeInformation("time", e.target.value, index)}
-            />
-            <Stack direction="row">
-                <Button
-                    onClick={e => onChangeInformation("inOutType", "In", index)}
-                >
-                    In
-                </Button>
-                <Button
-                    onClick={e => onChangeInformation("inOutType", "Out", index)}
-                >
-                    Out
-                </Button>
-            </Stack>
-            <TextField
-                value={data.position}
-                onChange={e => onChangeInformation("position", e.target.value, index)}
-            />
+        return (
+        <Stack direction="row">
+            <Select
+            value={data.day}
+            onChange={e => onChangeInformation("day", e.target.value.toString(), index)}
+            >
+            <MenuItem value={Days.firstDay}>
+                첫째날
+            </MenuItem>
+            <MenuItem value={Days.secondDay}>
+                둘째날
+            </MenuItem>
+            <MenuItem value={Days.thirdDay}>
+                셋째날
+            </MenuItem>
+            </Select>
+            <Select
+                value={data.inOutType}
+                onChange={e => onChangeInformation("inOutType", e.target.value.toString(), index)}
+            >
+                <MenuItem value={InOutType.IN}>
+                    들어가기
+                </MenuItem>
+                <MenuItem value={InOutType.OUT}>
+                    나오기
+                </MenuItem>
+            </Select>
+        <TextField 
+            value={data.time}
+            onChange={e => onChangeInformation("time", e.target.value, index)}
+        />에
+        <TextField
+            value={data.position}
+            onChange={e => onChangeInformation("position", e.target.value, index)}
+        />에서
+
+        <Select
+            value={data.howToMove}
+            onChange={e => onChangeInformation("howToMove", e.target.value.toString(), index)}
+        >
+            <MenuItem value={MoveType.driveCarWithPerson}>
+                자차 이동(카풀 가능)
+            </MenuItem>
+            <MenuItem value={MoveType.driveCarAlone}>
+                자차 이동(카풀 불가)
+            </MenuItem>
+            <MenuItem value={MoveType.rideCar}>
+                카풀 이동
+            </MenuItem>
+            <MenuItem value={MoveType.goAlone}>
+                대중교통
+            </MenuItem>
+          </Select>
         </Stack>)
     }
 

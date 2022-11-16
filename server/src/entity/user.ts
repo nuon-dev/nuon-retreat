@@ -29,7 +29,7 @@ export class User {
     attendType: AttendType
 
     @Column()
-    etc: string
+    etc?: string
 
     @Column()
     token: string
