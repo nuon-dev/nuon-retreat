@@ -1,4 +1,4 @@
-import { InOutInfo } from "@server/src/entity/inOutInfo";
+import { InOutInfo } from "@entity/inOutInfo";
 import { Days, MoveType , InOutType} from "../../types";
 import { get, post } from "pages/api";
 import { useEffect, useState } from "react";
@@ -7,7 +7,6 @@ import { MenuItem, Select } from "@mui/material";
 
 
 function Carpooling() {
-    const [carpoolingInfo, setCarpoolingInfo] = useState([] )
     const [carList, setCarList] = useState([] as InOutInfo[])
     const [rideUserList, setRideUserList] = useState([] as InOutInfo[])
     const [selectedInfo, setSelectedInfo] = useState({} as InOutInfo)
@@ -28,14 +27,12 @@ function Carpooling() {
     }
 
     function fetchData(){
-        get('/admin//get-car-info')
+        get('/admin/get-car-info')
         .then((data: InOutInfo[]) => {
             const cars = data.filter(info => info.howToMove === MoveType.driveCarWithPerson)
             setCarList(cars)
             const rideUsers = data.filter(info => info.howToMove === MoveType.rideCar && !info.rideCarInfo)
             setRideUserList(rideUsers)
-            const carpooing = data.filter(info => info.rideCarInfo)
-            carpooing.forEach(each => carpoolingInfo[each.rideCarInfo.id])
         });
     }
 

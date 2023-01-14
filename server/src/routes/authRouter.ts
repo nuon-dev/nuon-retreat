@@ -49,6 +49,7 @@ router.post('/join', async (req, res) => {
     user.roomAssignment = roomAssignment
     user.groupAssignment = groupAssignment
     user.etc = data.etc
+    user.createAt = new Date()
 
     try{
         const savedUser = await userDatabase.save(user)

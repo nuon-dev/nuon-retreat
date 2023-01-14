@@ -1,14 +1,7 @@
-import { useState } from "react"
 import { 
   Button, 
-  MenuItem, 
-  Select, 
-  Stack, 
-  styled, 
-  TextField } from "@mui/material"
+  Stack } from "@mui/material"
 import { useRouter } from "next/router"
-import { post } from "./api"
-import InOutFrom from "components/form/InOutForm"
 import UserInformationForm from "components/form/UserInformationForm"
 
 
@@ -26,7 +19,7 @@ function index(){
         margin: '20px',
       }}
     >
-      새벽이슬 2022 동계 수련회
+      새벽이슬 2023 동계 수련회
       <Button
         variant="contained"
         sx={{

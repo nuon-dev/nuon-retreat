@@ -89,7 +89,7 @@ export default function InOutFrom ({
     return(<Stack>
         <Button
             onClick={onClickAdd}
-        >add</Button>
+        >이동 방법 추가하기</Button>
         {inOutData.map((data, index) => getRow(data, index))}
     </Stack>)
 }

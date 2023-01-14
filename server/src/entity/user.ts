@@ -28,7 +28,9 @@ export class User {
     @Column()
     attendType: AttendType
 
-    @Column()
+    @Column({
+        nullable: true,
+    })
     etc?: string
 
     @Column()
@@ -39,6 +41,9 @@ export class User {
 
     @Column()
     isSuperUser: boolean
+
+    @Column()
+    createAt: Date
 
     @OneToMany(() => Permission, (permission) => permission.user)
     permissions: Permission[]
