@@ -7,6 +7,7 @@ import { Permission } from '../entity/permission'
 import RoomRouter from './admin/room'
 import GroupRouter from './admin/group'
 import CarRouter from './admin/car'
+import DashBoard from './admin/dashBoard'
 
 const router = express.Router()
 
@@ -100,5 +101,6 @@ router.post('/set-user-permission', async (req, res) => {
 router.use('/', RoomRouter)
 router.use('/', GroupRouter)
 router.use('/', CarRouter)
+router.use('/', DashBoard)
 
 export default router

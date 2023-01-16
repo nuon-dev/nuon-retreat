@@ -22,6 +22,7 @@ export enum PermissionType{
     roomManage,
     showGroupAssignment,
     groupManage,
+    dashBoard,
 }
 
 export enum Days {

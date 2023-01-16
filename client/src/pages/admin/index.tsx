@@ -64,6 +64,12 @@ function admin () {
             >
                 비밀번호 초기화
             </Button>
+            <Button
+                variant="contained"
+                onClick={() => goToPage('/dash-board')}
+            >
+                대시보드
+            </Button>
         </>)
     }
 
