@@ -18,7 +18,7 @@ import { AttendType, MoveType } from "types";
 import InOutFrom from "./InOutForm";
 interface IProps {
     user?: User
-    inOutData?: InOutInfo
+    inOutData: Array<InOutInfo>
 }
 
 export default function UserInformationForm (props: IProps) {
@@ -55,8 +55,8 @@ export default function UserInformationForm (props: IProps) {
         }else if(!userInformation.sex){
           alert('성별을 선택해주세요.')
           return
-        }else if(!userInformation.phone && userInformation.attendType === AttendType.half){
-          alert('부분 참석자는 전화번호가 필수입니다.')
+        }else if(!userInformation.phone){
+          alert('전화번호를 입력해주세요.')
           return
         }
 
@@ -177,6 +177,9 @@ export default function UserInformationForm (props: IProps) {
           KB국민은행 63290201441173 (윤대영)
           <br/> 전참 5만 / 부참 3만 / 선착 4만
           <br/> 접수 후 3시간 이내로 입금해주세요!
+          <br/>
+          <br/> 서비스 이용중 문제 발생시 
+          <br/>010-8768-3842로 연락 부탁드립니다.
         </Stack>
     </Stack>)
 }

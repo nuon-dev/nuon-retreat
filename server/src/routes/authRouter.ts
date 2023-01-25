@@ -19,7 +19,7 @@ router.post('/login', async (req, res) => {
     }else{
         foundUser.token = hashCode(foundUser.password + new Date().getTime())
         const expireDay = new Date()
-        expireDay.setDate(expireDay.getDate() + 7)
+        expireDay.setDate(expireDay.getDate() + 21)
         foundUser.expire = expireDay
         userDatabase.save(foundUser)
         res.send({result: 'success', token: foundUser.token})
@@ -53,7 +53,7 @@ router.post('/join', async (req, res) => {
     user.groupAssignment = groupAssignment
     user.etc = data.etc
     user.createAt = now
-    user.firstCome = userCount < 10
+    user.firstCome = userCount < 5
     user.deposit = false
 
     try{

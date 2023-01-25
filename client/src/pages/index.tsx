@@ -54,7 +54,9 @@ function index(){
       >
         접수 내역 수정하기
       </Button>
-      <UserInformationForm/>
+      <UserInformationForm
+        inOutData={[]}
+      />
     </Stack>
   )
 }
