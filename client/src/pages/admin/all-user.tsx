@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { User } from '@entity/user'
-import { get } from "pages/api";
-import { InOutInfo } from "@server/src/entity/inOutInfo";
+import { get } from "../../pages/api";
+import { InOutInfo } from "@entity/inOutInfo";
 import { AttendType } from "../../types";
 
 function AllUser () {
@@ -94,7 +94,9 @@ function AllUser () {
                             <TableCell>
                                 {user.phone}
                             </TableCell>
-                            <TableCell>
+                            <TableCell
+                            /*
+                            // @ts-ignore */>
                                 {user.attendType === AttendType.full ? "전참" : "부참"}
                             </TableCell>
                             <TableCell>

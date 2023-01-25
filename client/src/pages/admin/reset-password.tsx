@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
-import { post } from "pages/api";
+import { post } from "../../pages/api";
 import { useState } from "react";
 
 export default function ResetPassword () {

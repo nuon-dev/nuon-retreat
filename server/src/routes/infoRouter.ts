@@ -14,6 +14,11 @@ router.post('/save-attend-time', async (req, res) => {
         id: userId
     })
 
+    if(!foundUser){
+        res.send('error')
+        return
+    }
+
     try{
         for(const data of inOutDataList){
             const inOutInfo = new InOutInfo()

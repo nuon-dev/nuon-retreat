@@ -1,6 +1,6 @@
 import { InOutInfo } from "@entity/inOutInfo";
 import { Days, MoveType , InOutType} from "../../types";
-import { get, post } from "pages/api";
+import { get, post } from "../../pages/api";
 import { useEffect, useState } from "react";
 import { Stack } from "@mui/system";
 import { MenuItem, Select } from "@mui/material";
@@ -11,8 +11,8 @@ function Carpooling() {
     const [rideUserList, setRideUserList] = useState([] as InOutInfo[])
     const [selectedInfo, setSelectedInfo] = useState({} as InOutInfo)
 
-    const [selectedDay, setSelectedDay] = useState(Days.firstDay)
-    const [selectedInOut, setSelectedInOut] = useState(InOutType.IN)
+    const [selectedDay, setSelectedDay] = useState<Number>(Days.firstDay)
+    const [selectedInOut, setSelectedInOut] = useState<string>(InOutType.IN)
 
     useEffect(() => {
         fetchData()
@@ -29,8 +29,10 @@ function Carpooling() {
     function fetchData(){
         get('/admin/get-car-info')
         .then((data: InOutInfo[]) => {
+            // @ts-ignore
             const cars = data.filter(info => info.howToMove === MoveType.driveCarWithPerson)
             setCarList(cars)
+            // @ts-ignore
             const rideUsers = data.filter(info => info.howToMove === MoveType.rideCar && !info.rideCarInfo)
             setRideUserList(rideUsers)
         });
@@ -48,7 +50,7 @@ function Carpooling() {
         <Stack>
             <Select 
             value={selectedDay}
-            onChange={e => setSelectedDay(e.target.value)}
+            onChange={e => setSelectedDay(e.target.value as number)}
             >
                 <MenuItem value={Days.firstDay}>
                     첫째날
@@ -62,7 +64,7 @@ function Carpooling() {
             </Select>
             <Select 
             value={selectedInOut}
-            onChange={e => setSelectedInOut(e.target.value)}
+            onChange={e => setSelectedInOut(e.target.value as string)}
             >
                 <MenuItem value={InOutType.IN}>
                     들어가는 차

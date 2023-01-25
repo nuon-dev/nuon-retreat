@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { post } from "./api";
 import { User } from "@entity/user"
 import { Button, TextField } from "@mui/material";
-import UserInformationForm from "components/form/UserInformationForm";
-import { InOutInfo } from "@server/src/entity/inOutInfo";
+import UserInformationForm from "../components/form/UserInformationForm";
+import { InOutInfo } from "@entity/inOutInfo";
 
 export default function Edit () {
     const [isLogin, setIsLogin] = useState(false) 

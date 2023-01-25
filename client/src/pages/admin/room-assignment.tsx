@@ -1,7 +1,7 @@
 import { Box, Button, Stack } from "@mui/material";
 import { User } from "@entity/user";
 import { useEffect, useState } from "react";
-import { get, post } from "pages/api";
+import { get, post } from "../../pages/api";
 
 
 function RoomAssingment (){

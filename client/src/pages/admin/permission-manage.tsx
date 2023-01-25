@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react"
-import { get, post } from "pages/api";
+import { get, post } from "../../pages/api";
 import { User } from '@entity/user'
 import { FormControlLabel, FormLabel, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Stack } from "@mui/material";
 

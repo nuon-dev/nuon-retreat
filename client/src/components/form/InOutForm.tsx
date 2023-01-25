@@ -1,7 +1,7 @@
 import { Button, FormControlLabel, FormLabel, Input, MenuItem, Radio, RadioGroup, Select, Stack, TextField } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { InOutInfo } from '@entity/inOutInfo' 
-import { AttendType, Days, InOutType, MoveType } from "types";
+import { Days, InOutType, MoveType } from "../../types";
 
 interface IProps {
     setInOutData: Dispatch<SetStateAction<InOutInfo[]>>,
@@ -14,11 +14,11 @@ export default function InOutFrom ({
 }: IProps) {
     
     function onClickAdd(){
-        setInOutData([...inOutData, {
-            day: Days.firstDay,
-            inOutType: InOutType.IN,
-            howToMove: MoveType.rideCar,
-        } as InOutInfo])
+        const emptyInfo = new InOutInfo() 
+        emptyInfo.day = Days.firstDay
+        emptyInfo.inOutType = InOutType.IN
+        //emptyInfo.howToMove = MoveType.rideCar
+        setInOutData([...inOutData, emptyInfo])
     }
 
     function onClickRemove(){

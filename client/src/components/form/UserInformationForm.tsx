@@ -12,9 +12,9 @@ import { Button,
 import { Stack } from "@mui/system";
 import { InOutInfo } from "@entity/inOutInfo";
 import { User } from "@entity/user";
-import { post } from "pages/api";
+import { post } from "../../pages/api";
 import { useEffect, useState } from "react";
-import { AttendType, MoveType } from "types";
+import { AttendType, MoveType } from "../../types";
 import InOutFrom from "./InOutForm";
 interface IProps {
     user?: User
@@ -22,12 +22,7 @@ interface IProps {
 }
 
 export default function UserInformationForm (props: IProps) {
-    const [userInformation, setUserInformation] = useState(
-      {
-        name: '',
-        password: '',
-        attendType: AttendType.full,
-      } as User)
+    const [userInformation, setUserInformation] = useState(new User())
     const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
 
     useEffect(() => {
@@ -64,6 +59,7 @@ export default function UserInformationForm (props: IProps) {
           await post('/auth/edit-user', userInformation)
         }else{
           const saveResult = await post('/auth/join', userInformation)
+          // @ts-ignore 
           if(userInformation.attendType !== AttendType.full){
             await post('/info/save-attend-time', {
               userId: saveResult.userId,
@@ -86,27 +82,29 @@ export default function UserInformationForm (props: IProps) {
     }
 
     return (<Stack>
-        <Field
+        <TextField
             label="이름"
             value={userInformation.name}
             error={validation.name}
             helperText={validation.name && "이름을 입력하세요"}
             onChange={e => changeInformation("name", e.target.value)}
         />
-    
-        <Field
+        <Stack margin="6px"/>
+        <TextField
           label="비밀번호"
           type="password"
           error={validation.password}
           helperText={validation.password && "비밀번호를 입력하세요"}
           onChange={e => changeInformation("password", e.target.value)}
         />
-        <Field
+        <Stack margin="6px"/>
+        <TextField
           label="나이"
           type="number"
           value={userInformation.age}
           onChange={e => changeInformation("age", e.target.value)}
           />
+          <Stack margin="6px"/>
         <FormControl>
           <InputLabel id="demo-simple-select-helper-label">성별</InputLabel>
           <Select
@@ -126,14 +124,14 @@ export default function UserInformationForm (props: IProps) {
             </MenuItem>
           </Select>
         </FormControl>
-
+        <Stack margin="6px"/>
         <Stack>
           <Stack direction="row" marginTop="10px">
             <Stack minWidth="100px" justifyContent="center" margin="5px">
               전참 / 부참
             </Stack>
           <Select
-            fullWidth="true"
+            fullWidth={true}
             value={userInformation.attendType}
             label="참석형태"
             onChange={e => changeInformation("attendType", e.target.value.toString())}
@@ -146,20 +144,22 @@ export default function UserInformationForm (props: IProps) {
             </MenuItem>
           </Select>
         </Stack>
-        {userInformation.attendType === AttendType.half &&
+        {// @ts-ignore 
+          userInformation.attendType === AttendType.half &&
           <InOutFrom
             setInOutData={setInOutData}
             inOutData={inOutData}
           />
         }
         </Stack>
-        <Field
+        <Stack margin="6px"/>
+        <TextField
           label="전화번호"
           value={userInformation.phone}
           onChange={e => changeInformation("phone", e.target.value)}
           />
-
-        <Field
+        <Stack margin="6px"/>
+        <TextField
           label="기타사항"
           value={userInformation.etc}
           onChange={e => changeInformation("etc", e.target.value)}
@@ -183,8 +183,3 @@ export default function UserInformationForm (props: IProps) {
         </Stack>
     </Stack>)
 }
-
-
-const Field = styled(TextField)({
-    marginTop: '12px'
-  })

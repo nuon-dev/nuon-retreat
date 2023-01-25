@@ -1,7 +1,7 @@
 import { Button, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material"
 import { AttendType } from "../../types"
-import { User } from "@server/src/entity/user"
-import { get, post } from "pages/api"
+import { User } from "@entity/user"
+import { get, post } from "../../pages/api"
 import { useEffect, useState } from "react"
 
 function DepositCheck (){
@@ -65,7 +65,9 @@ function DepositCheck (){
                             <TableCell>
                                 {user.sex}
                             </TableCell>
-                            <TableCell>
+                            <TableCell
+                            /*
+                            // @ts-ignore */>
                                 {user.attendType === AttendType.full ? '전참' : '부참'}
                             </TableCell>
                             <TableCell>

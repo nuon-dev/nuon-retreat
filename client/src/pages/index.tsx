@@ -2,7 +2,7 @@ import {
   Button, 
   Stack } from "@mui/material"
 import { useRouter } from "next/router"
-import UserInformationForm from "components/form/UserInformationForm"
+import UserInformationForm from "../components/form/UserInformationForm"
 import { useEffect } from "react"
 import { post } from "./api"
 

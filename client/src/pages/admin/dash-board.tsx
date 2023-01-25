@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material"
-import { get } from "pages/api"
+import { get } from "../../pages/api"
 import { useEffect, useState } from "react"
 
 function DashBoard() {

@@ -107,10 +107,6 @@ router.post('/check-token', async (req, res) => {
         return
     }
 
-    delete foundUser.password
-    delete foundUser.expire
-    delete foundUser.token
-
     const inoutInfoList = await attendInfoDatabase.findBy({
         user: foundUser
     })

@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import { PermissionType } from './entity/types'
 import { userDatabase } from './model/dataSource'
 
-const env = dotenv.config().parsed
+const env = dotenv.config().parsed || {}
 
 export const hashCode = function(content: string) {
   return crypto.createHash('sha512').update(content + env.HASH_KEY).digest('hex')
@@ -16,7 +16,7 @@ export function isTokenExpire(expire: Date){
   return false
 }
   
-export async function hasPermission(token: string, permissionType: PermissionType): Promise<boolean>{
+export async function hasPermission(token: string | undefined, permissionType: PermissionType): Promise<boolean>{
   const foundUser = await userDatabase.findOne({
     where:{
         token,
