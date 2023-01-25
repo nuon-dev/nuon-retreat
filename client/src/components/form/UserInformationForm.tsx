@@ -16,9 +16,9 @@ import { post } from "pages/api";
 import { useEffect, useState } from "react";
 import { AttendType, MoveType } from "types";
 import InOutFrom from "./InOutForm";
-
 interface IProps {
     user?: User
+    inOutData?: InOutInfo
 }
 
 export default function UserInformationForm (props: IProps) {
@@ -26,11 +26,13 @@ export default function UserInformationForm (props: IProps) {
       {
         name: '',
         password: '',
+        attendType: AttendType.full,
       } as User)
     const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
 
     useEffect(() => {
-        setUserInformation(props.user || {} as User)
+      setUserInformation(props.user || {} as User)
+      setInOutData(props.inOutData || {} as Array<InOutInfo>)
     },[])
 
     const changeInformation = (type: string, data: string) => {
@@ -69,10 +71,12 @@ export default function UserInformationForm (props: IProps) {
             })
           }
           if(saveResult.result === "success"){
-            alert('접수에 성공하였습니다. 페이지를 닫으셔도 됩니다.')
+            alert(`접수에 성공하였습니다!.\n선착순에 ${saveResult.firstCome ? "성공" : "실패"}하셨습니다!\n페이지를 닫으셔도 됩니다.`)
           }else{
             alert('접수중 오류가 발생하였습니다.')
           }
+
+          localStorage.setItem('token', saveResult.token)
         }
     }
 
@@ -124,9 +128,12 @@ export default function UserInformationForm (props: IProps) {
         </FormControl>
 
         <Stack>
-          <Stack direction="row">
-          전참 / 부참
+          <Stack direction="row" marginTop="10px">
+            <Stack minWidth="100px" justifyContent="center" margin="5px">
+              전참 / 부참
+            </Stack>
           <Select
+            fullWidth="true"
             value={userInformation.attendType}
             label="참석형태"
             onChange={e => changeInformation("attendType", e.target.value.toString())}
@@ -158,11 +165,19 @@ export default function UserInformationForm (props: IProps) {
           onChange={e => changeInformation("etc", e.target.value)}
           />
 
+        <Stack marginTop="10px">
           <Button
-            onClick={submit}
-          >
-              저장
-          </Button>
+              variant="contained"
+              onClick={submit}
+            >
+                저장
+            </Button> 
+        </Stack>
+        <Stack marginTop="10px">
+          KB국민은행 63290201441173 (윤대영)
+          <br/> 전참 5만 / 부참 3만 / 선착 4만
+          <br/> 접수 후 3시간 이내로 입금해주세요!
+        </Stack>
     </Stack>)
 }
 
