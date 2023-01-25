@@ -3,6 +3,7 @@ import { Button, Stack, Table, TableBody, TableCell, TableHead, TableRow } from 
 import { User } from '@entity/user'
 import { get } from "pages/api";
 import { InOutInfo } from "@server/src/entity/inOutInfo";
+import { AttendType } from "../../types";
 
 function AllUser () {
     const [allUserList, setAllUserList] = useState([] as Array<User>)
@@ -70,6 +71,12 @@ function AllUser () {
                         <TableCell>
                             전화번호
                         </TableCell>
+                        <TableCell>
+                            참석 유형
+                        </TableCell>
+                        <TableCell>
+                            선착순
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -86,6 +93,12 @@ function AllUser () {
                             </TableCell>
                             <TableCell>
                                 {user.phone}
+                            </TableCell>
+                            <TableCell>
+                                {user.attendType === AttendType.full ? "전참" : "부참"}
+                            </TableCell>
+                            <TableCell>
+                                {user.firstCome ? 'Y' : 'N'}
                             </TableCell>
                         </TableRow>
                     ))}

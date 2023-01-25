@@ -34,6 +34,12 @@ export class User {
     etc?: string
 
     @Column()
+    firstCome: boolean
+
+    @Column()
+    deposit: boolean
+
+    @Column()
     token: string
 
     @Column()

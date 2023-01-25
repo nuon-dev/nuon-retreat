@@ -23,6 +23,7 @@ export enum PermissionType{
     showGroupAssignment,
     groupManage,
     dashBoard,
+    deposit,
 }
 
 export enum Days {

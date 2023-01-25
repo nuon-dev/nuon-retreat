@@ -1,10 +1,9 @@
 import express from 'express'
 import { hashCode, isTokenExpire } from '../util'
-import {groupAssignmentDatabase, roomAssignmentDatabase, userDatabase} from '../model/dataSource'
+import {attendInfoDatabase, groupAssignmentDatabase, roomAssignmentDatabase, userDatabase} from '../model/dataSource'
 import { User } from '../entity/user'
 import { RoomAssignment } from '../entity/roomAssignment'
 import { GroupAssignment } from '../entity/groupAssignment'
-import { AttendType } from '../entity/types'
 
 const router = express.Router()
 
@@ -20,7 +19,7 @@ router.post('/login', async (req, res) => {
     }else{
         foundUser.token = hashCode(foundUser.password + new Date().getTime())
         const expireDay = new Date()
-        expireDay.setDate(expireDay.getDate() + 1)
+        expireDay.setDate(expireDay.getDate() + 7)
         foundUser.expire = expireDay
         userDatabase.save(foundUser)
         res.send({result: 'success', token: foundUser.token})
@@ -36,6 +35,10 @@ router.post('/join', async (req, res) => {
     const groupAssignment = new GroupAssignment()
     await groupAssignmentDatabase.save(groupAssignment)
 
+    const userCount = await userDatabase.count()
+
+    const now = new Date()
+
     const user = new User()
     user.name = data.name
     user.age = data.age
@@ -43,17 +46,19 @@ router.post('/join', async (req, res) => {
     user.sex = data.sex
     user.password = hashCode(data.password)
     user.attendType = data.attendType
-    user.token = hashCode(user.password)
-    user.expire = new Date()
+    user.expire = new Date(now.setDate(now.getDate() + 7))
+    user.token = hashCode(user.password + user.expire)
     user.isSuperUser = false
     user.roomAssignment = roomAssignment
     user.groupAssignment = groupAssignment
     user.etc = data.etc
-    user.createAt = new Date()
+    user.createAt = now
+    user.firstCome = userCount < 10
+    user.deposit = false
 
     try{
         const savedUser = await userDatabase.save(user)
-        res.send({result: 'success', token: user.token, userId: savedUser.id})
+        res.send({result: 'success', token: user.token, userId: savedUser.id, firstCome: user.firstCome})
     }catch(e){
         console.log(e)
         res.send(e)
@@ -89,7 +94,7 @@ router.post('/check-token', async (req, res) => {
     const data = req.body
     
     const foundUser = await userDatabase.findOneBy({
-        token: data.token
+        token: data.token,
     })
 
     if(!foundUser){
@@ -106,9 +111,15 @@ router.post('/check-token', async (req, res) => {
     delete foundUser.expire
     delete foundUser.token
 
+    const inoutInfoList = await attendInfoDatabase.findBy({
+        user: foundUser
+    })
+
+
     res.send({
         result: 'true',
         userData: foundUser,
+        inoutInfoList,
     })
 })
 

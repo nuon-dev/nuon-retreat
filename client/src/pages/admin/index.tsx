@@ -66,6 +66,12 @@ function admin () {
             </Button>
             <Button
                 variant="contained"
+                onClick={() => goToPage('/deposit-check')}
+            >
+                입금 확인 처리
+            </Button>
+            <Button
+                variant="contained"
                 onClick={() => goToPage('/dash-board')}
             >
                 대시보드

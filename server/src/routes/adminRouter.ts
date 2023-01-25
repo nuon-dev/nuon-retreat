@@ -8,6 +8,7 @@ import RoomRouter from './admin/room'
 import GroupRouter from './admin/group'
 import CarRouter from './admin/car'
 import DashBoard from './admin/dashBoard'
+import Deposit from './admin/deposit'
 
 const router = express.Router()
 
@@ -102,5 +103,6 @@ router.use('/', RoomRouter)
 router.use('/', GroupRouter)
 router.use('/', CarRouter)
 router.use('/', DashBoard)
+router.use('/', Deposit)
 
 export default router
