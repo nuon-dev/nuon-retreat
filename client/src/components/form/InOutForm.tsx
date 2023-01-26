@@ -2,6 +2,7 @@ import { Button, FormControlLabel, FormLabel, Input, MenuItem, Radio, RadioGroup
 import { Dispatch, SetStateAction, useState } from "react";
 import { InOutInfo } from '@entity/inOutInfo' 
 import { Days, InOutType, MoveType } from "../../types";
+import { post } from "pages/api";
 
 interface IProps {
     setInOutData: Dispatch<SetStateAction<InOutInfo[]>>,
@@ -22,7 +23,12 @@ export default function InOutFrom ({
     }
 
     function onClickRemove(){
-        inOutData.pop()
+        const deleteInfo = inOutData.pop()
+        if(deleteInfo && deleteInfo.id){
+            post('/info/delete-attend-time', {
+                inOutInfo: deleteInfo
+            })
+        }
         setInOutData([...inOutData])
     }
 

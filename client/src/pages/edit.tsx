@@ -51,7 +51,7 @@ export default function Edit () {
     }
 
     return (
-    <Stack>
+    <Stack margin="4px">
         {isLogin && 
         <Stack>
             <Stack 

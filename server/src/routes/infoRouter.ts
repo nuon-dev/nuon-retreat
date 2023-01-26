@@ -23,6 +23,7 @@ router.post('/save-attend-time', async (req, res) => {
         for(const data of inOutDataList){
             const inOutInfo = new InOutInfo()
             inOutInfo.user = foundUser
+            inOutInfo.id = data.id
             inOutInfo.inOutType = data.inOutType
             inOutInfo.day = data.day
             inOutInfo.time = data.time
@@ -36,6 +37,20 @@ router.post('/save-attend-time', async (req, res) => {
     }catch(e){
         res.send(e)
     }
+})
+
+router.post('/delete-attend-time', async (req, res) => {
+    const data = req.body
+    const inOutInfo: InOutInfo = data.inOutInfo
+
+    try{
+        await attendInfoDatabase.delete(inOutInfo)
+        res.send({result: 'success'})
+    }catch(e){
+        res.send(e)
+    }
+
+
 })
 
 export default router
