@@ -61,7 +61,7 @@ function index(){
           <p/>
           <h3>{`${targetDate.getFullYear()}년${targetDate.getMonth() + 1}월${targetDate.getDate()}일 ${targetDate.getHours()}시에 신청 할 수 있습니다.`}</h3>
           <br/>
-          <h3>남은 시간 / {d}일{h}시{m}분{s}초</h3>
+          <h3>남은 시간 / {d}일 {h}시 {m}분 {s}초</h3>
           시간이 완료되면 자동으로 접수창이 생깁니다!.
           <br/>새로고침 하지 마세요! (하면 더 느려져요!!)
         </Stack>}
