@@ -23,4 +23,6 @@ export class User {
     inOutInfos: InOutInfo[]
     roomAssignment: RoomAssignment
     groupAssignment: GroupAssignment
+    isCancell: boolean
+    howToGo: string
 }

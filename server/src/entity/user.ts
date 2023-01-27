@@ -46,6 +46,14 @@ export class User {
     expire: Date
 
     @Column()
+    isCancell: boolean
+
+    @Column({
+        nullable: true
+    })
+    howToGo: string
+
+    @Column()
     isSuperUser: boolean
 
     @Column()

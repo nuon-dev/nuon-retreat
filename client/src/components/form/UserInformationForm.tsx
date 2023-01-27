@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { Button, 
   FormControlLabel, 
   FormLabel,
@@ -14,7 +13,7 @@ import { InOutInfo } from "@entity/inOutInfo";
 import { User } from "@entity/user";
 import { post } from "../../pages/api";
 import { useEffect, useState } from "react";
-import { AttendType, MoveType } from "../../types";
+import { AttendType } from "@entity/types";
 import InOutFrom from "./InOutForm";
 interface IProps {
     user?: User
@@ -24,10 +23,12 @@ interface IProps {
 export default function UserInformationForm (props: IProps) {
     const [userInformation, setUserInformation] = useState(new User())
     const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
+    const [showItems, setShowItems] = useState(false)
 
     useEffect(() => {
       setUserInformation(props.user || {} as User)
       setInOutData(props.inOutData || {} as Array<InOutInfo>)
+      setShowItems(true)
     },[])
 
     const changeInformation = (type: string, data: string) => {
@@ -52,6 +53,9 @@ export default function UserInformationForm (props: IProps) {
           return
         }else if(!userInformation.phone){
           alert('전화번호를 입력해주세요.')
+          return
+        }else if(userInformation.attendType === AttendType.full && !userInformation.howToGo){
+          alert('이동 방법을 선택해주세요.')
           return
         }
 
@@ -116,24 +120,29 @@ export default function UserInformationForm (props: IProps) {
         <Stack margin="6px"/>
         <FormControl>
           <InputLabel id="demo-simple-select-helper-label">성별</InputLabel>
-          <Select
-            value={userInformation.sex}
-            label="성별"
-            onChange={e => changeInformation("sex", e.target.value)}
-            sx={{
-              mt: '12px'
-            }}
-            >
-            <MenuItem value={'man'}>
-              남
-            </MenuItem>
-            <MenuItem value={'woman'}>
-              여
-            </MenuItem>
-          </Select>
+          {// @ts-ignore 
+            showItems &&
+            <Select
+              value={userInformation.sex}
+              defaultValue={userInformation.sex}
+              label="성별"
+              onChange={e => changeInformation("sex", e.target.value)}
+              sx={{
+                mt: '12px'
+              }}
+              >
+              <MenuItem value={'man'}>
+                남
+              </MenuItem>
+              <MenuItem value={'woman'}>
+                여
+              </MenuItem>
+            </Select>}
         </FormControl>
         <Stack margin="6px"/>
         <Stack>
+          {// @ts-ignore 
+            showItems &&
           <Stack direction="row" marginTop="10px">
             <Stack minWidth="100px" justifyContent="center" margin="5px">
               전참 / 부참
@@ -152,7 +161,30 @@ export default function UserInformationForm (props: IProps) {
                 부분 참석
               </MenuItem>
             </Select>
-          </Stack>
+          </Stack>}
+        <Stack margin="6px"/>
+          {// @ts-ignore 
+            userInformation.attendType === AttendType.full &&
+            <Stack direction="row">
+              <Stack minWidth="100px" justifyContent="center" margin="5px">
+                이동 방법
+              </Stack>
+              <Select 
+                fullWidth={true}
+                defaultValue={userInformation.howToGo}
+                value={userInformation.howToGo}
+                label="이동 방법"
+                onChange={e => changeInformation("howToGo", e.target.value.toString())}
+              >  
+                <MenuItem value="together">
+                  다 같이 이동
+                </MenuItem>
+                <MenuItem value="car">
+                  자차 이동
+                </MenuItem>
+              </Select>
+            </Stack>
+          }
           {// @ts-ignore 
             userInformation.attendType === AttendType.half &&
             <InOutFrom

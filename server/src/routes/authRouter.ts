@@ -55,6 +55,8 @@ router.post('/join', async (req, res) => {
     user.createAt = now
     user.firstCome = userCount < 5
     user.deposit = false
+    user.isCancell = false
+    user.howToGo = data.howToGo
 
     try{
         const savedUser = await userDatabase.save(user)

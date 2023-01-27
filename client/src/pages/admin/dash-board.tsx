@@ -28,6 +28,7 @@ function DashBoard() {
                 <Stack>전체 참석자 : {getAttendeeStatus.all}</Stack>
                 <Stack>남/여 : {getAttendeeStatus.man} / {getAttendeeStatus.woman}</Stack>
                 <Stack>전참/부참 {getAttendeeStatus.fullAttend} / {getAttendeeStatus.halfAttend}</Stack>
+                <Stack>다같이 이동/자차 {getAttendeeStatus.goTogether} / {getAttendeeStatus.goCar}</Stack>
             </Stack>
         )
     }
