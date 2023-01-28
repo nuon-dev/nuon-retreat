@@ -219,8 +219,11 @@ export default function UserInformationForm (props: IProps) {
           <br/>전참 5만 / 부참 3만 / 선착 4만
           <br/>접수 후 3시간 이내로 입금해주세요!
           <br/>
-          <br/>서비스 이용중 문제 발생시
-          <br/>순장에게 문의하세요
+          <br/>선착순 80명 4만원
+          <br/>(신청하시면 선착순 성공 여부가 뜹니다.
+          <br/>못 보셨을 경우 정보 수정으로 들어가주세요.)
+          <br/>
+          <br/>궁금한 점은 순장에게 문의하세요
         </Stack>
     </Stack>)
 }
