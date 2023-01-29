@@ -75,6 +75,7 @@ export default function UserInformationForm (props: IProps) {
               return
             }else{
               alert(`접수에 성공하였습니다!.\n선착순에 ${saveResult.firstCome ? "성공" : "실패"}하셨습니다!\n페이지를 닫으셔도 됩니다.`)
+              location.reload()
               return
             }
           }else{
