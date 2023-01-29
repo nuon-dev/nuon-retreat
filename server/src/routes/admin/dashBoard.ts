@@ -6,11 +6,6 @@ import { userDatabase } from "../../model/dataSource";
 const router = express.Router()
 
 router.get('/get-attendee-status', async (req, res) => {
-    const token = req.header('token')
-    if(false === await hasPermission(token, PermissionType.dashBoard)){
-        res.sendStatus(401)
-        return
-    }
 
     const countOfAllUser = await userDatabase.count()
     const countOfMan = await userDatabase.count({where: {sex: 'man'}})
@@ -32,11 +27,6 @@ router.get('/get-attendee-status', async (req, res) => {
 })
 
 router.get('/get-attendance-time', async (req, res) => {
-    const token = req.header('token')
-    if(false === await hasPermission(token, PermissionType.dashBoard)){
-        res.sendStatus(401)
-        return
-    }
 
     const allUser = await userDatabase.find({
         select:{
