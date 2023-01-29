@@ -10,6 +10,12 @@ enum PermissionType{
     resetPassword,
     carpooling,
     permisionManage,
+    showRoomAssignment,
+    roomManage,
+    showGroupAssignment,
+    groupManage,
+    dashBoard,
+    deposit,
 }
 
 
@@ -43,7 +49,12 @@ function PermissionManage () {
         [PermissionType.carpooling]: '카풀',
         [PermissionType.permisionManage]: '권환 관리',
         [PermissionType.resetPassword]: '비밀번호 초기화',
-        [PermissionType.userList]: '사용자 목록'
+        [PermissionType.userList]: '사용자 목록',
+        [PermissionType.showRoomAssignment]: '방배정 조회',
+        [PermissionType.showGroupAssignment]: '조편성 조회',
+        [PermissionType.roomManage]: '방배정',
+        [PermissionType.groupManage]: '조편성',
+        [PermissionType.deposit]: '입금 처리',
     }
 
     function loadUserPermission(){
