@@ -94,6 +94,11 @@ router.post('/reset-password', async (req,res) => {
 
 router.post('/check-token', async (req, res) => {
     const data = req.body
+
+    if(!data.token){
+        res.send({result: 'false'})
+        return
+    }
     
     const foundUser = await userDatabase.findOneBy({
         token: data.token,

@@ -8,8 +8,8 @@ import { post } from "./api"
 
 
 function index(){
-  const [currentTime, setCurrentTime] = useState<Date>(new Date(2023, 0, 29, 13))
-  const targetDate = new Date(2023, 0, 29, 13)
+  const targetDate = new Date(2023, 0, 29, 17)
+  const [currentTime, setCurrentTime] = useState<Date>(targetDate)
   const router = useRouter()
 
   const goToEditPage = () => {
