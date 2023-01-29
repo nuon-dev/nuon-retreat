@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const result = await fetch(`${SERVER_FULL_PATH}/${url}`,
         {
             method: 'GET',
-            headers: GET_HEADER
+            headers: {...GET_HEADER, ...req.headers},
     })
     if(result.status === 200){
         res.status(result.status).json(await result.json())

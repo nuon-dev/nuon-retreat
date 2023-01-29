@@ -6,9 +6,9 @@ const COMMON_HEADER = {
   
 }
 
-export const GET_HEADER = {
+export const GET_HEADER = new Headers({
     ...COMMON_HEADER,
-}
+})
 
 export const POST_HEADER = new Headers({
   ...COMMON_HEADER,

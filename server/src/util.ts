@@ -26,28 +26,27 @@ export async function hasPermission(token: string | undefined, permissionType: P
     }
   })
 
+  if(!token){
+    return false;
+  }
+
   if(!foundUser){
-    console.log('사용자를 찾을 수 없음')
       return false;
   }
 
   if(isTokenExpire(foundUser.expire)){
-      console.log('토큰이 만료됨')
       return false
   }
   
   if(foundUser.isSuperUser){
-    console.log('최고 사용자 접근')
     return true
   }
 
   const userListPermission = foundUser.permissions.find(permission => permission.permissionType === permissionType)
     
   if(userListPermission && userListPermission.have){
-    console.log('권한 있는 사용자')
     return true
   }
 
-  console.log('권한 없는 사용자')
   return false
 }
