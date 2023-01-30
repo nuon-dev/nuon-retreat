@@ -88,8 +88,8 @@ async function deleteUser(user){
     await permissionDatabase.delete({
         user: user
     })
-    await userDatabase.delete(user)
-    console.log('user 삭제', user)
+    await userDatabase.remove(user)
+    console.log(user.id)
     return
 }
 
