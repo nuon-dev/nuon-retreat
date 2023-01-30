@@ -40,7 +40,7 @@ function DepositCheck (){
                             이름
                         </TableCell>
                         <TableCell>
-                            전화번호
+                            성별
                         </TableCell>
                         <TableCell>
                             참석 유형

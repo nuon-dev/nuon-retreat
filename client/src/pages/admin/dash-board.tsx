@@ -13,6 +13,7 @@ function DashBoard() {
             height: window.innerHeight,
         })
         fetchData()
+        setInterval(fetchData, 1000 * 60 * 30)
     }, [])
 
     async function fetchData(){
@@ -29,6 +30,7 @@ function DashBoard() {
                 <Stack>남/여 : {getAttendeeStatus.man} / {getAttendeeStatus.woman}</Stack>
                 <Stack>전참/부참 {getAttendeeStatus.fullAttend} / {getAttendeeStatus.halfAttend}</Stack>
                 <Stack>다같이 이동/자차 {getAttendeeStatus.goTogether} / {getAttendeeStatus.goCar}</Stack>
+                <Stack>입금 처리/미완 {getAttendeeStatus.completDeposit} / {getAttendeeStatus.all - getAttendeeStatus.completDeposit}</Stack>
             </Stack>
         )
     }
@@ -57,7 +59,7 @@ function DashBoard() {
             }
         })
 
-        const WEIGHT = 5
+        const WEIGHT = 1
         const STEP = 5
 
         return (<Stack>
@@ -66,7 +68,7 @@ function DashBoard() {
                 <rect fillOpacity="0" width={elementSize.width} height={elementSize.height} stroke="black" strokeWidth="1"/>
                 {xAxis.map((xValue, index) => <text x={elementSize.width / xAxis.length * index + STEP} y={elementSize.height - STEP}>{xValue}</text>)}
                 {xAxis.map((xValue, index) => <rect x={elementSize.width / xAxis.length * index + STEP} y={elementSize.height - timeData[xValue] * WEIGHT - 20} width="20" height={timeData[xValue] * WEIGHT} />)}
-                {xAxis.map((xValue, index) => <text x={elementSize.width / xAxis.length * index + 10} y={elementSize.height - timeData[xValue] * WEIGHT - 25}>{timeData[xValue]}</text>)}
+                {xAxis.map((xValue, index) => <text x={elementSize.width / xAxis.length * index + 5} y={elementSize.height - timeData[xValue] * WEIGHT - 25}>{timeData[xValue]}</text>)}
             </svg>
         </Stack>)
     }

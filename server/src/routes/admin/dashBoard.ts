@@ -14,6 +14,7 @@ router.get('/get-attendee-status', async (req, res) => {
     const countOfHalfAttend = await userDatabase.count({where: {attendType: AttendType.half}})
     const countOfGoTogether = await userDatabase.count({where: { howToGo: 'together' }})
     const countOfGoCar = await userDatabase.count({where: { howToGo: 'car' }})
+    const countOfCompletDeposit = await userDatabase.count({where: { deposit: true }})
 
     res.send({
         all: countOfAllUser,
@@ -23,6 +24,7 @@ router.get('/get-attendee-status', async (req, res) => {
         halfAttend: countOfHalfAttend,
         goTogether: countOfGoTogether,
         goCar: countOfGoCar,
+        completDeposit: countOfCompletDeposit
     })
 })
 

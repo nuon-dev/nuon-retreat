@@ -22,7 +22,7 @@ router.get('/get-all-user-name', async (req, res) => {
     const userList = await userDatabase.find({
         select: {
             name: true,
-             id: true
+            id: true
         }})
     res.send(userList)
 })

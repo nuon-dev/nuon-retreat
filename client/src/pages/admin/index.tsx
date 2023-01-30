@@ -93,15 +93,19 @@ function admin () {
     }
 
     const loginForm = () => {
-        return (<Stack>
+        return (<Stack padding="6px">
+            <Stack margin="6px"/>
             <TextField 
                 label="이름"
                 onChange={e => setUserName(e.target.value)}
             />
+            <Stack margin="6px"/>
             <TextField 
                 label="비밀번호"
+                type="password"
                 onChange={e => setUserPassword(e.target.value)}
             />
+            <Stack margin="6px"/>
             <Button
                 variant="contained"
                 onClick={login}

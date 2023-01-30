@@ -10,6 +10,7 @@ const router = express.Router()
 router.post('/login', async (req, res) => {
     const data = req.body
 
+    console.log(hashCode(data.userPassword))
     const foundUser = await userDatabase.findOneBy({
         name: data.userName,
         password: hashCode(data.userPassword),
@@ -52,7 +53,7 @@ router.post('/join', async (req, res) => {
     user.roomAssignment = roomAssignment
     user.groupAssignment = groupAssignment
     user.etc = data.etc
-    user.createAt = now
+    user.createAt = new Date()
     user.firstCome = userCount < 80
     user.deposit = false
     user.isCancell = false
