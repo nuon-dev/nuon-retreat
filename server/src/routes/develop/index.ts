@@ -89,7 +89,6 @@ async function deleteUser(user){
         user: user
     })
     await userDatabase.remove(user)
-    console.log(user.id)
     return
 }
 
