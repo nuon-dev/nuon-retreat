@@ -3,7 +3,7 @@ import express, { Router } from "express";
 
 import { User } from "../../entity/user";
 import { AttendType } from "../../entity/types";
-import { attendInfoDatabase, groupAssignmentDatabase, permissionDatabase, roomAssignmentDatabase, userDatabase } from "../../model/dataSource";
+import { attendInfoDatabase, permissionDatabase, userDatabase } from "../../model/dataSource";
 import { InOutInfo } from "../../entity/inOutInfo";
 
 const router: Router = express.Router();
@@ -63,12 +63,6 @@ router.get('/remove-duplicated-user-data', async (req, res) => {
             const dubplList = await userDatabase.findBy(cloneUser)
             await deleteUser(dubplList[1])
         }
-
-        result = await userDatabase.countBy(cloneUser)
-        if(result > 1){
-            const dubplList = await userDatabase.findBy(cloneUser)
-            await deleteUser(dubplList[1])
-        }
     })
 
     const count = await userDatabase.query('SELECT phone, COUNT(phone) FROM user GROUP BY phone HAVING COUNT(phone) > 1;')
@@ -88,17 +82,7 @@ router.get('/fix-createAt', async (req, res) => {
 })
 
 async function deleteUser(user){
-    try{
-        await attendInfoDatabase.delete({
-            user: user
-        })
-        await permissionDatabase.delete({
-            user: user
-        })
-        await userDatabase.delete(user)
-    }catch (e){
-        console.log(e)
-    }
+    await userDatabase.delete(user)
     return
 }
 
