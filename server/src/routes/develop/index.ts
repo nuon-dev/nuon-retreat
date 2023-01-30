@@ -82,7 +82,14 @@ router.get('/fix-createAt', async (req, res) => {
 })
 
 async function deleteUser(user){
+    await attendInfoDatabase.delete({
+        user: user
+    })
+    await permissionDatabase.delete({
+        user: user
+    })
     await userDatabase.delete(user)
+    console.log('user 삭제', user)
     return
 }
 
