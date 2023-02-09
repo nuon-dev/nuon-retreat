@@ -3,8 +3,10 @@ import express, { Router } from "express";
 
 import { User } from "../../entity/user";
 import { AttendType } from "../../entity/types";
-import { attendInfoDatabase, permissionDatabase, userDatabase } from "../../model/dataSource";
+import { attendInfoDatabase, groupAssignmentDatabase, permissionDatabase, roomAssignmentDatabase, userDatabase } from "../../model/dataSource";
 import { InOutInfo } from "../../entity/inOutInfo";
+import { RoomAssignment } from "../../entity/roomAssignment";
+import { GroupAssignment } from "../../entity/groupAssignment";
 
 const router: Router = express.Router();
 
@@ -18,6 +20,13 @@ router.post('/insert-data', async (req, res) => {
     if(tableName === 'user'){
         const rows = data.split('\n')
         for(let index = 0; index < rows.length - 1; index++){
+            const roomAssignment = new RoomAssignment()
+            await roomAssignmentDatabase.save(roomAssignment)
+
+            const groupAssignment = new GroupAssignment()
+            await groupAssignmentDatabase.save(groupAssignment)
+
+
             const row = rows[index].split(',')
             const user = new User()
             user.id = Number.parseInt(row[0])
@@ -36,6 +45,8 @@ router.post('/insert-data', async (req, res) => {
             user.howToGo = row[13]
             user.isSuperUser = row[14] === 'true'
             user.createAt = new Date(row[15])
+            user.roomAssignment = roomAssignment
+            user.groupAssignment = groupAssignment
 
             await userDatabase.save(user)
         }

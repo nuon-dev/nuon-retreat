@@ -12,7 +12,7 @@ router.get('/get-attendee-status', async (req, res) => {
     const countOfWoman = await userDatabase.count({where: {sex: 'woman'}})
     const countOfFullAttend = await userDatabase.count({where: {attendType: AttendType.full}})
     const countOfHalfAttend = await userDatabase.count({where: {attendType: AttendType.half}})
-    const countOfGoTogether = await userDatabase.count({where: { howToGo: 'together' }})
+    const countOfGoTogether = await userDatabase.count({where: { howToGo: 'together', attendType: AttendType.full }})
     const countOfGoCar = await userDatabase.count({where: { howToGo: 'car' }})
     const countOfCompletDeposit = await userDatabase.count({where: { deposit: true }})
 
@@ -23,7 +23,7 @@ router.get('/get-attendee-status', async (req, res) => {
         fullAttend: countOfFullAttend,
         halfAttend: countOfHalfAttend,
         goTogether: countOfGoTogether,
-        goCar: countOfGoCar,
+        goCar: countOfGoCar + countOfHalfAttend,
         completDeposit: countOfCompletDeposit
     })
 })

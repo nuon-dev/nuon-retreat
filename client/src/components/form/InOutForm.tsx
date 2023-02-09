@@ -1,4 +1,4 @@
-import { Button, FormControlLabel, FormLabel, Input, MenuItem, Radio, RadioGroup, Select, Stack, TextField } from "@mui/material";
+import { Button, FormControl, FormControlLabel, FormLabel, Input, InputLabel, MenuItem, Radio, RadioGroup, Select, Stack, TextField } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { InOutInfo } from '@entity/inOutInfo' 
 import { Days, InOutType, MoveType } from "../../types";
@@ -42,7 +42,13 @@ export default function InOutFrom ({
 
     function getRow (data: InOutInfo, index: number) {
         return (
-        <Stack  marginTop="10px">
+        <Stack  
+            marginTop="10px"
+            style={{
+                border: '1px solid black',
+                borderRadius: '12px',
+            }}
+        >
             <Stack direction="row">
                 <Select
                     value={data.day}
@@ -82,23 +88,27 @@ export default function InOutFrom ({
 
         </Stack>
           <Stack>
-            <Select
-                value={data.howToMove}
-                onChange={e => onChangeInformation("howToMove", e.target.value.toString(), index)}
-            >
-            <MenuItem value={MoveType.driveCarWithPerson}>
-                    자차 이동(카풀 가능)
-                </MenuItem>
-                <MenuItem value={MoveType.driveCarAlone}>
-                    자차 이동(카풀 불가)
-                </MenuItem>
-                <MenuItem value={MoveType.rideCar}>
-                    카풀 이동
-                </MenuItem>
-                <MenuItem value={MoveType.goAlone}>
-                    대중교통
-                </MenuItem>
-            </Select>
+            <FormControl>
+                <InputLabel id="demo-simple-select-helper-label">이동방법</InputLabel>
+                <Select
+                    fullWidth={true}
+                    value={data.howToMove}
+                    onChange={e => onChangeInformation("howToMove", e.target.value.toString(), index)}
+                >
+                <MenuItem value={MoveType.driveCarWithPerson}>
+                        자차 이동(카풀 가능)
+                    </MenuItem>
+                    <MenuItem value={MoveType.driveCarAlone}>
+                        자차 이동(카풀 불가)
+                    </MenuItem>
+                    <MenuItem value={MoveType.rideCar}>
+                        카풀 이동
+                    </MenuItem>
+                    <MenuItem value={MoveType.goAlone}>
+                        대중교통
+                    </MenuItem>
+                </Select>
+            </FormControl>
           </Stack>
         </Stack>)
     }

@@ -71,7 +71,7 @@ export default function Edit () {
                 borderRadius="5px"
                 marginTop="10px"
             >
-                 입금 처리가 {userData.deposit ? '완료 되었습' : '진행중 입'}니다!.
+                 입금 처리가 {userData.deposit ? '완료 되었습' : '진행 중입'}니다.
             </Stack>
             <UserInformationForm
                 user={userData}
@@ -84,7 +84,9 @@ export default function Edit () {
             </Stack>
         </Stack>}
         {!isLogin && 
-            <Stack>
+            <Stack
+                margin="10px"
+            >
                 <TextField
                     label="이름"
                     onChange={e => setUserName(e.target.value)}
@@ -94,6 +96,7 @@ export default function Edit () {
                 />
                 <TextField 
                     label="비밀번호"
+                    type="password"
                     onChange={e => setUserPassword(e.target.value)}
                 />
                 <Stack 

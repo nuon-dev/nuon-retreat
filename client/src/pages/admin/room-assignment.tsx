@@ -2,6 +2,8 @@ import { Box, Button, Stack } from "@mui/material";
 import { User } from "@entity/user";
 import { useEffect, useState } from "react";
 import { get, post } from "../../pages/api";
+import { InOutInfo } from "@entity/inOutInfo";
+import { margin, style } from "@mui/system";
 
 
 function RoomAssingment (){
@@ -9,20 +11,34 @@ function RoomAssingment (){
     const [roomList, setRoomList] = useState([] as Array<Array<User>>)
     const [selectedUser, setSelectedUser] = useState<User>()
     const [maxRoomNumber, setMaxRoomNumber] = useState(0)
+    const [isShowUserInfo, setIsShowUserInfo] = useState(false)
+    const [showUserInfo, setShowUserInfo] = useState({} as User)
+    const [userAttendInfo, setUserAttendInfo] = useState([] as Array<InOutInfo>)
+    const [userAttendInfoCache, setUserAttendInfoCache] = useState([] as Array<Array<InOutInfo>>)
+    const [mousePoint, setMousePoint] = useState([0,0])
     const [sex, setSex] = useState('man')
+
+    function onMouseMove(event: MouseEvent) {
+        setMousePoint([event.pageX, event.pageY])
+    }
 
     useEffect(() => {
         fetchData()
+        addEventListener('mousemove', onMouseMove);
+
+        return () => {
+            removeEventListener('mousemove', onMouseMove)
+        }
     }, [])
 
     function fetchData(){
         get('/admin/get-room-assignment')
         .then((response: Array<User>) => {
-            const unassignedUserList = response.filter(user => user.roomAssignment.isUpdated || user.roomAssignment.roomNumber === 0)
+            const unassignedUserList = response.filter(user => !user.roomAssignment || user.roomAssignment.isUpdated || user.roomAssignment.roomNumber === 0)
             setUnassignedUserList(unassignedUserList)
 
             const room = [] as Array<Array<User>>
-            const assignedUserList = response.filter(user => !user.roomAssignment.isUpdated)
+            const assignedUserList = response.filter(user => user.roomAssignment && !user.roomAssignment.isUpdated)
             assignedUserList.map(user => {
                 const roomNumber = user.roomAssignment.roomNumber - 1
                 if(!room[roomNumber]){
@@ -32,7 +48,7 @@ function RoomAssingment (){
                 }
                 setRoomList(room)
             })
-            const maxNumer = Math.max(...response.map(user => user.roomAssignment.roomNumber))
+            const maxNumer = Math.max(...response.map(user => user.roomAssignment && user.roomAssignment.roomNumber))
             setMaxRoomNumber(maxNumer)
         })
     }
@@ -42,22 +58,74 @@ function RoomAssingment (){
             direction="row"
             onMouseDown={() => setSelectedUser(user)}
             onMouseUp={() => setRoom(0)}
+            onMouseEnter={() => {
+                setModal(user)
+            }}
+            onMouseLeave={() => {
+                setIsShowUserInfo(false)
+            }}
             sx={{
                 border: "1px solid black",
                 justifyContent: 'space-between',
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
         >
-            <Box>{user.name}({user.age})</Box>
-            <Box>{user.roomAssignment.roomNumber}</Box>
+            <Box>{user.name}({user.age}) {user.attendType}</Box>
+            <Box>{user.roomAssignment?.roomNumber}</Box>
         </Stack>)
+    }
+
+    function modal(){
+        if(!isShowUserInfo){
+            return <Stack/>
+        }
+        return(
+        <Stack
+            style={{
+                position: 'absolute',
+                top: mousePoint[1] + 10,
+                left: mousePoint[0] + 10,
+                border: '1px solid black',
+                borderRadius: '12px',
+                padding: '4px',
+                backgroundColor: 'white',
+            }}
+        >
+            기타 : {showUserInfo.etc} <br/>
+            {userAttendInfo.length > 0 && "카풀" } {userAttendInfo.map(info => (<Stack>{["첫", "둘", "셋"][info.day]}째 날 / {info.time} / {info.inOutType}</Stack>))}
+        </Stack>)
+    }
+
+    function setModal(user: User){
+        setIsShowUserInfo(true)
+        setShowUserInfo(user)
+        
+        if(userAttendInfoCache[user.id]){
+            setUserAttendInfo(userAttendInfoCache[user.id])
+            return
+        }
+
+        post('/admin/get-user-info', {
+            userId: showUserInfo.id
+        }).then((data) => {
+            setUserAttendInfo(data.attendInfo)
+            userAttendInfoCache[user.id] = data.attendInfo
+            setUserAttendInfoCache(userAttendInfoCache)
+        })
+
     }
 
     function userRoomRow(user: User){
         return (<Stack
             direction="row"
             onMouseDown={() => setSelectedUser(user)}
-            width="200px"
+            onMouseEnter={() => {
+                setModal(user)
+            }}
+            onMouseLeave={() => {
+                setIsShowUserInfo(false)
+            }}
+            width="130px"
             sx={{
                 justifyContent: 'space-between',
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
@@ -94,13 +162,29 @@ function RoomAssingment (){
     }
 
     return (
-        <Stack>
-            <Stack>
-                {sex === 'man' ? "남자" : "여자"} 방배정 
-                <Button onClick={() => setSex(sex === 'man' ?  "woman" : "man")}>성별 변경</Button>
+        <Stack
+            ml="12px"
+        >
+            <Stack
+                direction="row"
+                mb="12px"
+            >
+                <Stack 
+                    justifyContent="center"
+                >
+                    {sex === 'man' ? "남자" : "여자"} 방배정 
+                </Stack>
+                <Button 
+                    variant="contained"
+                    onClick={() => setSex(sex === 'man' ?  "woman" : "man")}
+                    style={{
+                        margin: "6px"
+                    }}
+                >성별 변경</Button>
             </Stack>
-            <Stack direction="row">
-                <Stack width="200px">
+            {modal()}
+            <Stack mb="40px" direction="row">
+                <Stack width="130px">
                     <Box>미배정({unassignedUserList.filter(user => user.sex === sex).length}명)</Box>
                     {unassignedUserList.filter(user => user.sex === sex).map(user => unassignedUserRow(user))}
                 </Stack>

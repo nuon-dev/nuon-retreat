@@ -1,5 +1,4 @@
 import express from 'express'
-import { User } from "./entity/user"
 import bodyParser from 'body-parser'
 import apiRouter from './routes'
 import dataSource from './model/dataSource'

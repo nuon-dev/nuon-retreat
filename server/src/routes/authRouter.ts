@@ -73,7 +73,7 @@ router.post('/edit-user', async (req, res) => {
     const data = req.body
 
     userDatabase.save(data as User)
-    res.send({result: 'success'})
+    res.send({result: 'success', userId: data.id})
 })
 
 

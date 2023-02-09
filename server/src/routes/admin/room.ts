@@ -1,6 +1,6 @@
 import express from 'express'
 import { PermissionType } from "../../entity/types"
-import { roomAssignmentDatabase, userDatabase } from "../../model/dataSource"
+import { attendInfoDatabase, roomAssignmentDatabase, userDatabase } from "../../model/dataSource"
 import { hasPermission } from "../../util"
 
 const router = express.Router()
@@ -18,6 +18,7 @@ router.get('/get-room-assignment', async (req, res) => {
             name: true,
             age: true,
             sex: true,
+            etc: true,
         },
         relations: {
             roomAssignment: true,
@@ -25,6 +26,27 @@ router.get('/get-room-assignment', async (req, res) => {
     })
 
     res.send(userList)
+})
+
+router.post('/get-user-info', async (req, res) => {
+    const data = req.body
+    const userId = data.userId
+
+    const foundUser = await userDatabase.findOneBy({
+        id: userId,
+    })
+
+    const attendInfo = await attendInfoDatabase.find({
+        where:{
+            user: foundUser
+        }
+    })
+
+    res.send({
+        user: foundUser,
+        attendInfo,
+    })
+    return
 })
 
 router.post('/set-room', async (req, res) => {

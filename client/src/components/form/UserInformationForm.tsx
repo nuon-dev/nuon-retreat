@@ -1,9 +1,5 @@
 import { Button, 
-  FormControlLabel, 
-  FormLabel,
   MenuItem, 
-  Radio,
-  RadioGroup, 
   InputLabel,
   Select, 
   FormControl,
@@ -63,7 +59,7 @@ export default function UserInformationForm (props: IProps) {
 
         const saveResult = await post(url, userInformation)
           // @ts-ignore 
-          if(userInformation.attendType !== AttendType.full){
+          if(inOutData.length > 0){
             await post('/info/save-attend-time', {
               userId: saveResult.userId,
               inOutData,
@@ -178,23 +174,23 @@ export default function UserInformationForm (props: IProps) {
                 onChange={e => changeInformation("howToGo", e.target.value.toString())}
               >  
                 <MenuItem value="together">
-                  다 같이 이동
+                  교회 버스로만 이동
                 </MenuItem>
                 <MenuItem value="car">
-                  자차 이동
+                  기타 (카풀 이용 또는 제공)
                 </MenuItem>
               </Select>
             </Stack>
           }
           {// @ts-ignore 
-            userInformation.attendType === AttendType.half &&
+            (userInformation.howToGo === "car" || userInformation.attendType === AttendType.half )&&
             <InOutFrom
               setInOutData={setInOutData}
               inOutData={inOutData}
             />
           }
         </Stack>
-        <Stack margin="6px"/>
+        <Stack margin="12px"/>
         <TextField
           label="전화번호"
           value={userInformation.phone}
