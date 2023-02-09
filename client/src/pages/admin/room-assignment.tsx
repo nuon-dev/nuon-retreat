@@ -106,7 +106,7 @@ function RoomAssingment (){
         }
 
         post('/admin/get-user-info', {
-            userId: showUserInfo.id
+            userId: user.id
         }).then((data) => {
             setUserAttendInfo(data.attendInfo)
             userAttendInfoCache[user.id] = data.attendInfo
