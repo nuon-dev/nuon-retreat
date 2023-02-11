@@ -35,6 +35,7 @@ function RoomAssingment (){
         get('/admin/get-room-assignment')
         .then((response: Array<User>) => {
             const unassignedUserList = response.filter(user => !user.roomAssignment || user.roomAssignment.isUpdated || user.roomAssignment.roomNumber === 0)
+            .sort((a, b) => a.age - b.age)
             setUnassignedUserList(unassignedUserList)
 
             const room = [] as Array<Array<User>>
@@ -45,6 +46,7 @@ function RoomAssingment (){
                     room[roomNumber] = [user]
                 }else{
                     room[roomNumber].push(user)
+                    room[roomNumber].sort((a,b) => a.age - b.age)
                 }
                 setRoomList(room)
             })
@@ -125,7 +127,7 @@ function RoomAssingment (){
             onMouseLeave={() => {
                 setIsShowUserInfo(false)
             }}
-            width="130px"
+            width="160px"
             sx={{
                 justifyContent: 'space-between',
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
@@ -183,12 +185,23 @@ function RoomAssingment (){
                 >성별 변경</Button>
             </Stack>
             {modal()}
-            <Stack mb="40px" direction="row">
-                <Stack width="130px">
+            <Stack
+                mb="40px" 
+                direction="row">
+                <Stack width="160px">
                     <Box>미배정({unassignedUserList.filter(user => user.sex === sex).length}명)</Box>
                     {unassignedUserList.filter(user => user.sex === sex).map(user => unassignedUserRow(user))}
                 </Stack>
-                <Stack direction="row">
+                <Stack
+                    style={{
+                        overflow: 'auto',
+                        paddingRight: '80vw',
+                        border: '1px solid black',
+                        margin: '4px',
+                        width: 'calc(100% - 200px)'
+                    }} 
+                    direction="row"
+                >
                     { new Array(maxRoomNumber).fill(0).map((_, index) => {
                         const room = roomList[index]
                         if(!room || room.length === 0){
