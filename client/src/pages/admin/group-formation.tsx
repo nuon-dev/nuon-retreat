@@ -3,6 +3,7 @@ import { User } from "@entity/user";
 import { useEffect, useState } from "react";
 import { get, post } from "../../pages/api";
 import { InOutInfo } from "@entity/inOutInfo";
+import { AttendType } from "@entity/types";
 
 
 function GroupFormation (){
@@ -68,7 +69,7 @@ function GroupFormation (){
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
         >
-            <Box>{user.name}({user.age})</Box>
+            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'})</Box>
             <Box>{user.groupAssignment.groupNumber}</Box>
         </Stack>)
     }
@@ -89,8 +90,7 @@ function GroupFormation (){
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
          >
-            <Box>{user.name}({user.age})</Box>
-            <Box>{user.attendType}</Box>
+            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'})</Box>
         </Stack>)
     }
 

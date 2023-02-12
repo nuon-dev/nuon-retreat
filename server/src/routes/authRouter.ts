@@ -70,10 +70,10 @@ router.post('/join', async (req, res) => {
 
 
 router.post('/edit-user', async (req, res) => {
-    const data = req.body
+    const user = req.body
 
-    userDatabase.save(data as User)
-    res.send({result: 'success', userId: data.id})
+    await userDatabase.save(user as User)
+    res.send({result: 'success', userId: user.id, token: user.token})
 })
 
 
@@ -88,7 +88,7 @@ router.post('/reset-password', async (req,res) => {
         res.send({result: 'fail'})
     }else{
         foundUser.password = hashCode(data.userPassword)
-        userDatabase.save(foundUser)
+        await userDatabase.save(foundUser)
         res.send({result: 'success', userName: foundUser.name})
     }
 })

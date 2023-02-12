@@ -10,6 +10,6 @@ export class InOutInfo {
     inOutType: InOutType
     position: string
     howToMove: MoveType
-    rideCarInfo: InOutInfo
+    rideCarInfo: InOutInfo | null
     userInTheCar: InOutInfo[]
 }

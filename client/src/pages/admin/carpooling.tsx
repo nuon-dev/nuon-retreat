@@ -19,7 +19,16 @@ function Carpooling() {
     }, [])
 
     async function setCar(car: InOutInfo){
+        console.log(car)
         selectedInfo.rideCarInfo = car
+        await post('/admin/set-car', {
+            inOutInfo: selectedInfo
+        })
+        fetchData();
+    }
+
+    async function setEmptyCar(){
+        selectedInfo.rideCarInfo = null
         await post('/admin/set-car', {
             inOutInfo: selectedInfo
         })
@@ -74,16 +83,33 @@ function Carpooling() {
                 </MenuItem>
             </Select>
         </Stack>
-        <Stack>
+        <Stack
+            style={{
+                border: '1px solid black',
+                borderRadius: '10px',
+                minWidth: '240px'
+            }}
+            onMouseUp={setEmptyCar}
+        >
             <Stack>탐승 예정자</Stack>
             {rideUserList.filter(info => info.day === selectedDay && info.inOutType === selectedInOut).map(info => getRowOfInfo(info))}
         </Stack>
-        <Stack direction="row">
+        <Stack 
+            style={{
+                overflow: 'auto',
+                paddingRight: '70vw',
+                border: '1px solid black',
+                margin: '4px',
+                width: 'calc(100% - 200px)'
+            }} 
+            direction="row"
+        >
             {carList.filter(info => info.day === selectedDay && info.inOutType === selectedInOut).map(car => 
             <Stack
             sx={{
                 border: '1px solid black',
-                borderRadius: '10px'
+                borderRadius: '10px',
+                minWidth: '240px'
             }}
             onMouseUp={() => setCar(car)}
             >

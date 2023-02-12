@@ -27,7 +27,7 @@ export class InOutInfo {
     howToMove: MoveType
 
     @ManyToOne(() => InOutInfo, inOutInfo => inOutInfo.userInTheCar)
-    rideCarInfo: InOutInfo
+    rideCarInfo: InOutInfo | null
 
     @OneToMany(() => InOutInfo, inOutInfo => inOutInfo.rideCarInfo)
     userInTheCar: InOutInfo[]

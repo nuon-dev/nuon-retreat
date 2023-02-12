@@ -58,27 +58,33 @@ export default function UserInformationForm (props: IProps) {
         const url = userInformation.id ? '/auth/edit-user' : '/auth/join'
 
         const saveResult = await post(url, userInformation)
+        let attendTimeResult;
           // @ts-ignore 
           if(inOutData.length > 0){
-            await post('/info/save-attend-time', {
+            attendTimeResult = await post('/info/save-attend-time', {
               userId: saveResult.userId,
               inOutData,
             })
           }
+
           if(saveResult.result === "success"){
-            if(userInformation.id){
-              alert(`수정 완료되었습니다.`)
-              return
-            }else{
-              alert(`접수에 성공하였습니다!.\n선착순에 ${saveResult.firstCome ? "성공" : "실패"}하셨습니다!\n페이지를 닫으셔도 됩니다.`)
-              location.reload()
-              return
-            }
+            localStorage.setItem('token', saveResult.token)
           }else{
-            alert('접수중 오류가 발생하였습니다.')
+            alert('접수중 오류가 발생하였습니다.\n다시 시도해주세요.')
+            return
           }
 
-          localStorage.setItem('token', saveResult.token)
+          if(attendTimeResult && attendTimeResult.result !== "success"){
+            alert('참가 일정 내역 저장중에 문제가 발생하였습니다.\n시간, 장소. 이동방법을 모두 입력해주세요.')
+            return
+          }
+
+          if(userInformation.id){
+            alert(`수정 완료되었습니다.`)
+          }else{
+            alert(`접수에 성공하였습니다!.\n선착순에 ${saveResult.firstCome ? "성공" : "실패"}하셨습니다!\n페이지를 닫으셔도 됩니다.`)
+          }
+          location.reload()
     }
 
     const validation = {
@@ -88,54 +94,97 @@ export default function UserInformationForm (props: IProps) {
 
     return (<Stack>
         <Stack marginTop="12px"/>
-        <TextField
-            label="이름"
-            value={userInformation.name}
-            error={validation.name}
-            helperText={validation.name && "이름을 입력하세요"}
-            onChange={e => changeInformation("name", e.target.value)}
-        />
-        {!userInformation.id && (
-          <Stack>
-            <Stack margin="6px"/>
-            <TextField
-              label="비밀번호"
-              type="password"
-              error={validation.password}
-              helperText={validation.password && "비밀번호를 입력하세요"}
-              onChange={e => changeInformation("password", e.target.value)}
-            />
+        <Stack direction="row">
+          <Stack 
+            width="80px"
+            justifyContent="center"
+            style={{
+              marginLeft: "12px"
+            }}
+          >
+            이름
           </Stack>
+          <TextField
+              fullWidth={true}
+              value={userInformation.name}
+              error={validation.name}
+              helperText={validation.name && "이름을 입력하세요"}
+              onChange={e => changeInformation("name", e.target.value)}
+            />
+        </Stack>
+          <Stack margin="6px"/>
+        {!userInformation.id && (
+        <Stack direction="row">
+          <Stack 
+            width="80px"
+            justifyContent="center"
+            style={{
+              marginLeft: "12px"
+            }}
+          >
+            비밀번호
+          </Stack>
+          <TextField
+            fullWidth={true}
+            type="password"
+            error={validation.password}
+            helperText={validation.password && "비밀번호를 입력하세요"}
+            onChange={e => changeInformation("password", e.target.value)}
+          />
+        </Stack>
         )}
         <Stack margin="6px"/>
-        <TextField
-          label="나이"
-          type="number"
-          value={userInformation.age}
-          onChange={e => changeInformation("age", e.target.value)}
+
+        <Stack direction="row">
+          <Stack 
+            width="80px"
+            justifyContent="center"
+            style={{
+              marginLeft: "12px"
+            }}
+          >
+            나이
+          </Stack>
+          <TextField
+            type="number"
+            fullWidth={true}
+            value={userInformation.age}
+            onChange={e => changeInformation("age", e.target.value)}
           />
+          </Stack>
         <Stack margin="6px"/>
-        <FormControl>
-          <InputLabel id="demo-simple-select-helper-label">성별</InputLabel>
-          {// @ts-ignore 
-            showItems &&
-            <Select
-              value={userInformation.sex}
-              defaultValue={userInformation.sex}
-              label="성별"
-              onChange={e => changeInformation("sex", e.target.value)}
-              sx={{
-                mt: '12px'
-              }}
-              >
-              <MenuItem value={'man'}>
-                남
-              </MenuItem>
-              <MenuItem value={'woman'}>
-                여
-              </MenuItem>
-            </Select>}
-        </FormControl>
+        <Stack direction="row">
+          <Stack 
+            width="80px"
+            justifyContent="center"
+            style={{
+              marginLeft: "12px"
+            }}
+          >
+            성별
+          </Stack>
+          <FormControl
+            fullWidth={true}>
+            {// @ts-ignore 
+              showItems &&
+              <Select
+                value={userInformation.sex}
+                defaultValue={userInformation.sex}
+                label="성별"
+                onChange={e => changeInformation("sex", e.target.value)}
+                sx={{
+                  mt: '12px'
+                }}
+                >
+                <MenuItem value={'man'}>
+                  남
+                </MenuItem>
+                <MenuItem value={'woman'}>
+                  여
+                </MenuItem>
+              </Select>}
+          </FormControl>
+        </Stack>
         <Stack margin="6px"/>
         <Stack>
           {// @ts-ignore 
@@ -191,17 +240,40 @@ export default function UserInformationForm (props: IProps) {
           }
         </Stack>
         <Stack margin="12px"/>
-        <TextField
-          label="전화번호"
-          value={userInformation.phone}
-          onChange={e => changeInformation("phone", e.target.value)}
-          />
+
+        <Stack direction="row">
+          <Stack 
+            width="80px"
+            justifyContent="center"
+            style={{
+              marginLeft: "12px"
+            }}
+          >
+            전화번호
+          </Stack>
+          <TextField
+            fullWidth={true}
+            value={userInformation.phone}
+            onChange={e => changeInformation("phone", e.target.value)}
+            />
+        </Stack>
         <Stack margin="6px"/>
-        <TextField
-          label="기타사항"
-          value={userInformation.etc}
-          onChange={e => changeInformation("etc", e.target.value)}
+        <Stack direction="row">
+          <Stack 
+            width="80px"
+            justifyContent="center"
+            style={{
+              marginLeft: "12px"
+            }}
+          >
+            기타사항
+          </Stack>
+          <TextField
+            fullWidth={true}
+            value={userInformation.etc}
+            onChange={e => changeInformation("etc", e.target.value)}
           />
+        </Stack>
 
         <Stack marginTop="10px">
           <Button

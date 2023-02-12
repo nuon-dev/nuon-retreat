@@ -10,12 +10,13 @@ router.post('/save-attend-time', async (req, res) => {
     const userId: number = data.userId
     const inOutDataList: Array<InOutInfo> = data.inOutData
 
-    const foundUser = await userDatabase.findOneBy({
-        id: userId
-    })
-
-    if(!foundUser){
-        res.send('error')
+    let foundUser
+    try{
+        foundUser = await userDatabase.findOneByOrFail({
+            id: userId
+        })
+    }catch{
+        res.send({result: 'error'})
         return
     }
 

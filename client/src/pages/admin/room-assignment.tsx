@@ -3,7 +3,7 @@ import { User } from "@entity/user";
 import { useEffect, useState } from "react";
 import { get, post } from "../../pages/api";
 import { InOutInfo } from "@entity/inOutInfo";
-import { margin, style } from "@mui/system";
+import { AttendType } from "@entity/types";
 
 
 function RoomAssingment (){
@@ -72,7 +72,7 @@ function RoomAssingment (){
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
         >
-            <Box>{user.name}({user.age}) {user.attendType}</Box>
+            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'})</Box>
             <Box>{user.roomAssignment?.roomNumber}</Box>
         </Stack>)
     }
@@ -132,8 +132,8 @@ function RoomAssingment (){
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
          >
-            <Box>{user.name}({user.age})</Box>
-            <Box>{user.attendType}</Box>
+             <Box>{user.name}({user.age})</Box>
+            <Box>({user.attendType === AttendType.full ? '전' : '부'})</Box>
         </Stack>)
     }
 
