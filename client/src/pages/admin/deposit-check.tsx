@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 function DepositCheck (){
 
     const [allUserList, setAllUserList] = useState([] as Array<User>)
+    const [isShowUnpaid, setIsShowUnpaid] = useState(false)
 
     useEffect(() => {
         fetchData()
@@ -31,8 +32,29 @@ function DepositCheck (){
         .then((data) => setAllUserList(data))
     }
 
+    function clickFilter() {
+        if(isShowUnpaid){
+           fetchData()
+        }else{
+            setAllUserList(allUserList.filter(user => user.deposit))
+        }
+        setIsShowUnpaid(!isShowUnpaid)
+    }
+
     return(
         <Stack>
+            <Stack
+                style={{
+                    margin: '12px'
+                }}
+            >
+                <Button
+                    onClick={clickFilter}
+                    variant="contained"
+                >
+                    {isShowUnpaid ? '전체보기' : '미납금자만 보기'}
+                </Button>
+            </Stack>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -40,13 +62,16 @@ function DepositCheck (){
                             이름
                         </TableCell>
                         <TableCell>
-                            성별
-                        </TableCell>
-                        <TableCell>
                             참석 유형
                         </TableCell>
                         <TableCell>
                             선착 유무
+                        </TableCell>
+                        <TableCell>
+                            접수 일자
+                        </TableCell>
+                        <TableCell>
+                            전화번호
                         </TableCell>
                         <TableCell>
                             입금 유무
@@ -57,13 +82,12 @@ function DepositCheck (){
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {allUserList.map(user => (
+                    {allUserList.map(user => {
+                        const createDate = new Date(user.createAt.toString())
+                        return (
                         <TableRow>
                             <TableCell>
                                 {user.name}
-                            </TableCell>
-                            <TableCell>
-                                {user.sex}
                             </TableCell>
                             <TableCell
                             /*
@@ -72,6 +96,12 @@ function DepositCheck (){
                             </TableCell>
                             <TableCell>
                                 {user.firstCome ? 'Y' : 'N'}
+                            </TableCell>
+                            <TableCell>
+                                {`${createDate.getFullYear()}-${createDate.getMonth()+1}-${createDate.getDate()} ${createDate.getHours()}:${createDate.getMinutes()}:${createDate.getSeconds()}`}
+                            </TableCell>
+                            <TableCell>
+                                {user.phone}
                             </TableCell>
                             <TableCell>
                                 {user.deposit ? 'Y' : 'N'}
@@ -86,7 +116,8 @@ function DepositCheck (){
                                 </Button>
                             </TableCell>
                         </TableRow>
-                    ))}
+                    )}
+                    )}
                 </TableBody>
             </Table>
         </Stack>
