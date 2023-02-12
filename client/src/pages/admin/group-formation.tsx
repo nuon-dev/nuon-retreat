@@ -2,16 +2,31 @@ import { Box, Stack } from "@mui/material";
 import { User } from "@entity/user";
 import { useEffect, useState } from "react";
 import { get, post } from "../../pages/api";
+import { InOutInfo } from "@entity/inOutInfo";
 
 
 function GroupFormation (){
     const [unassignedUserList, setUnassignedUserList] = useState([] as Array<User>)
     const [groupList, setGroupList] = useState([] as Array<Array<User>>)
     const [selectedUser, setSelectedUser] = useState<User>()
+    const [mousePoint, setMousePoint] = useState([0,0])
     const [maxGroupNumber, setmaxGroupNumber] = useState(0)
+    const [isShowUserInfo, setIsShowUserInfo] = useState(false)
+    const [showUserInfo, setShowUserInfo] = useState({} as User)
+    const [userAttendInfoCache, setUserAttendInfoCache] = useState([] as Array<Array<InOutInfo>>)
+    const [userAttendInfo, setUserAttendInfo] = useState([] as Array<InOutInfo>)
+
+    function onMouseMove(event: MouseEvent) {
+        setMousePoint([event.pageX, event.pageY])
+    }
 
     useEffect(() => {
         fetchData()
+        addEventListener('mousemove', onMouseMove);
+
+        return () => {
+            removeEventListener('mousemove', onMouseMove)
+        }
     }, [])
 
     function fetchData(){
@@ -41,6 +56,12 @@ function GroupFormation (){
             direction="row"
             onMouseDown={() => setSelectedUser(user)}
             onMouseUp={() => setGroup(0)}
+            onMouseEnter={() => {
+                setModal(user)
+            }}
+            onMouseLeave={() => {
+                setIsShowUserInfo(false)
+            }}
             sx={{
                 border: "1px solid black",
                 justifyContent: 'space-between',
@@ -57,6 +78,12 @@ function GroupFormation (){
             direction="row"
             onMouseDown={() => setSelectedUser(user)}
             width="200px"
+            onMouseEnter={() => {
+                setModal(user)
+            }}
+            onMouseLeave={() => {
+                setIsShowUserInfo(false)
+            }}
             sx={{
                 justifyContent: 'space-between',
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
@@ -67,6 +94,24 @@ function GroupFormation (){
         </Stack>)
     }
 
+    function setModal(user: User){
+        setIsShowUserInfo(true)
+        setShowUserInfo(user)
+        
+        if(userAttendInfoCache[user.id]){
+            setUserAttendInfo(userAttendInfoCache[user.id])
+            return
+        }
+
+        post('/admin/get-user-info', {
+            userId: user.id
+        }).then((data) => {
+            setUserAttendInfo(data.attendInfo)
+            userAttendInfoCache[user.id] = data.attendInfo
+            setUserAttendInfoCache(userAttendInfoCache)
+        })
+    }
+
     function Group(groupNumber: number, userList: Array<User>){
         return (<Stack
             sx={{
@@ -75,7 +120,7 @@ function GroupFormation (){
             }}
             onMouseUp={() => setGroup(groupNumber)}
         >
-            <Stack>{groupNumber}조 ({userList.length})</Stack>
+            <Stack width="160px">{groupNumber}조 ({userList.length})</Stack>
             {userList.map(user => userGroupRow(user))}
         </Stack>)
     }
@@ -91,13 +136,44 @@ function GroupFormation (){
         fetchData()
     }
 
+    function modal(){
+        if(!isShowUserInfo){
+            return <Stack/>
+        }
+        return(
+        <Stack
+            style={{
+                position: 'absolute',
+                top: mousePoint[1] + 10,
+                left: mousePoint[0] + 10,
+                border: '1px solid black',
+                borderRadius: '12px',
+                padding: '4px',
+                backgroundColor: 'white',
+            }}
+        >
+            기타 : {showUserInfo.etc} <br/>
+            {userAttendInfo.length > 0 && "카풀" } {userAttendInfo.map(info => (<Stack>{["첫", "둘", "셋"][info.day]}째 날 / {info.time} / {info.inOutType}</Stack>))}
+        </Stack>)
+    }
+
     return (
         <Stack direction="row">
+            {modal()}
             <Stack width="200px">
                 <Box>미배정({unassignedUserList.length}명)</Box>
                 {unassignedUserList.map(user => unassignedUserRow(user))}
             </Stack>
-            <Stack direction="row">
+            <Stack 
+                style={{
+                    overflow: 'auto',
+                    paddingRight: '80vw',
+                    border: '1px solid black',
+                    margin: '4px',
+                    width: 'calc(100% - 200px)'
+                }} 
+                direction="row"
+            >
                 { new Array(maxGroupNumber).fill(0).map((_, index) => {
                     const group = groupList[index]
                     if(!group || group.length === 0){

@@ -2,6 +2,7 @@ import { post } from "../../pages/api"
 import { useEffect, useState } from "react"
 import { Button, Stack, TextField } from "@mui/material/index"
 import { useRouter } from "next/router"
+import { ST } from "next/dist/shared/lib/utils"
 
 function admin () {
     const router = useRouter()
@@ -26,68 +27,87 @@ function admin () {
         })
     }, [])
 
+    function logout(){
+        localStorage.clear()
+        router.reload()
+    }
+
     const menu = () => {
-        return (<Stack
-            margin="12px"
-            justifyContent="center"
-            alignItems="center"
-            direction="row"
-        >
-            <Button
-                variant="contained"
-               onClick={() => goToPage('/all-user')} 
+        return (
+        <Stack>
+            <Stack
+                margin="12px"
+                justifyContent="center"
+                alignItems="center"
+                direction="row"
             >
-                접수자 전체 조회
-            </Button>
-            <Stack margin="4px"/>
-            <Button
-                variant="contained"
-               onClick={() => goToPage('/carpooling')} 
+                <Button
+                    variant="contained"
+                onClick={() => goToPage('/all-user')} 
+                >
+                    접수자 전체 조회
+                </Button>
+                <Stack margin="4px"/>
+                <Button
+                    variant="contained"
+                onClick={() => goToPage('/carpooling')} 
+                >
+                    카풀 관리
+                </Button>
+                <Stack margin="4px"/>
+                <Button
+                    variant="contained"
+                onClick={() => goToPage('/room-assignment')} 
+                >
+                    방배정 관리
+                </Button>
+                <Stack margin="4px"/>
+                <Button
+                    variant="contained"
+                onClick={() => goToPage('/group-formation')} 
+                >
+                    조배정 관리
+                </Button>
+                <Stack margin="4px"/>
+                <Button
+                    variant="contained"
+                onClick={() => goToPage('/permission-manage')} 
+                >
+                    권한 관리
+                </Button>
+                <Stack margin="4px"/>
+                <Button
+                    variant="contained"
+                    onClick={() => goToPage('/reset-password')}
+                >
+                    비밀번호 초기화
+                </Button>
+                <Stack margin="4px"/>
+                <Button
+                    variant="contained"
+                    onClick={() => goToPage('/deposit-check')}
+                >
+                    입금 확인 처리
+                </Button>
+                <Stack margin="4px"/>
+                <Button
+                    variant="contained"
+                    onClick={() => goToPage('/dash-board')}
+                >
+                    대시보드
+                </Button>
+            </Stack>
+            <Stack 
+                alignContent="center"
+                padding="40px"
             >
-                카풀 관리
-            </Button>
-            <Stack margin="4px"/>
-            <Button
-                variant="contained"
-               onClick={() => goToPage('/room-assignment')} 
-            >
-                방배정 관리
-            </Button>
-            <Stack margin="4px"/>
-            <Button
-                variant="contained"
-               onClick={() => goToPage('/group-formation')} 
-            >
-                조배정 관리
-            </Button>
-            <Stack margin="4px"/>
-            <Button
-                variant="contained"
-               onClick={() => goToPage('/permission-manage')} 
-            >
-                권한 관리
-            </Button>
-            <Stack margin="4px"/>
-            <Button
-                variant="contained"
-                onClick={() => goToPage('/reset-password')}
-            >
-                비밀번호 초기화
-            </Button>
-            <Stack margin="4px"/>
-            <Button
-                variant="contained"
-                onClick={() => goToPage('/deposit-check')}
-            >
-                입금 확인 처리
-            </Button>
-            <Stack margin="4px"/>
-            <Button
-                variant="contained"
-                onClick={() => goToPage('/dash-board')}
-            >
-                대시보드
-            </Button>
+                <Button
+                    onClick={logout}
+                    variant="contained"
+                >
+                    로그아웃
+                </Button>
+            </Stack>
         </Stack>)
     }
 

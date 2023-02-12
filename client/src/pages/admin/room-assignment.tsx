@@ -114,7 +114,6 @@ function RoomAssingment (){
             userAttendInfoCache[user.id] = data.attendInfo
             setUserAttendInfoCache(userAttendInfoCache)
         })
-
     }
 
     function userRoomRow(user: User){
@@ -142,11 +141,11 @@ function RoomAssingment (){
         return (<Stack
             sx={{
                 minHeight: "20px",
-                border: "1px solid black"
+                border: "1px solid black",
             }}
             onMouseUp={() => setRoom(roomNumber)}
         >
-            <Stack>{roomNumber}번 방 ({userList.filter(user => user.sex === sex).length})</Stack>
+            <Stack width="160px">{roomNumber}번 방 ({userList.filter(user => user.sex === sex).length})</Stack>
             {userList.filter(user => user.sex === sex).map(user => userRoomRow(user))}
         </Stack>)
     }
