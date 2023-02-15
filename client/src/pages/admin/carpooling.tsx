@@ -4,6 +4,7 @@ import { get, post } from "../../pages/api";
 import { useEffect, useState } from "react";
 import { Stack } from "@mui/system";
 import { MenuItem, Select } from "@mui/material";
+import { User } from "@entity/user";
 
 
 function Carpooling() {
@@ -13,10 +14,45 @@ function Carpooling() {
 
     const [selectedDay, setSelectedDay] = useState<Number>(Days.firstDay)
     const [selectedInOut, setSelectedInOut] = useState<string>(InOutType.IN)
+    const [mousePoint, setMousePoint] = useState([0,0])
+    const [isShowUserInfo, setIsShowUserInfo] = useState(false)
+    const [showUserInfo, setShowUserInfo] = useState({} as User)
+
+    function onMouseMove(event: MouseEvent) {
+        setMousePoint([event.pageX, event.pageY])
+    }
+
 
     useEffect(() => {
         fetchData()
+        addEventListener('mousemove', onMouseMove);
+
+        return () => {
+            removeEventListener('mousemove', onMouseMove)
+        }
     }, [])
+
+    function modal(){
+        if(!isShowUserInfo){
+            return <Stack/>
+        }
+        return(
+        <Stack
+            style={{
+                position: 'absolute',
+                top: mousePoint[1] + 10,
+                left: mousePoint[0] + 10,
+                border: '1px solid black',
+                borderRadius: '12px',
+                padding: '4px',
+                backgroundColor: 'white',
+            }}
+        >
+            {showUserInfo.name}의 정보<br/>
+            기타 : {showUserInfo.etc} <br/>
+            ({showUserInfo.phone})
+        </Stack>)
+    }
 
     async function setCar(car: InOutInfo){
         console.log(car)
@@ -47,9 +83,21 @@ function Carpooling() {
         });
     }
 
+    function setModal(user: User){
+        setIsShowUserInfo(true)
+        setShowUserInfo(user)
+    }
+
     function getRowOfInfo(info: InOutInfo){
         return (<Stack
-            onMouseDown={() => setSelectedInfo(info)}
+                onMouseEnter={() => {
+                    setModal(info.user)
+                }}
+                onMouseLeave={() => {
+                    setIsShowUserInfo(false)
+                }}
+                onMouseDown={() => setSelectedInfo(info)
+            }
         >
             {info.user?.name} ({info.time}시 {info.position})
         </Stack>)
@@ -83,6 +131,7 @@ function Carpooling() {
                 </MenuItem>
             </Select>
         </Stack>
+        {modal()}
         <Stack
             style={{
                 border: '1px solid black',
@@ -113,7 +162,16 @@ function Carpooling() {
             }}
             onMouseUp={() => setCar(car)}
             >
-                {car.user.name}의 차 ({car.time}시 / {car.position}))
+                <Stack
+                    onMouseEnter={() => {
+                        setModal(car.user)
+                    }}
+                    onMouseLeave={() => {
+                        setIsShowUserInfo(false)
+                    }}
+                >
+                    {car.user.name}의 차 ({car.time}시 / {car.position}))
+                </Stack>
                 {car.userInTheCar.map(info => getRowOfInfo(info))}
             </Stack>)}
         </Stack>

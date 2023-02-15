@@ -69,7 +69,7 @@ router.get('/remove-duplicated-user-data', async (req, res) => {
         delete cloneUser.createAt
         delete cloneUser.expire
         delete cloneUser.firstCome
-        let result = await userDatabase.countBy(cloneUser)
+        const result = await userDatabase.countBy(cloneUser)
         if(result > 1){
             const dubplList = await userDatabase.findBy(cloneUser)
             await deleteUser(dubplList[1])
@@ -77,6 +77,31 @@ router.get('/remove-duplicated-user-data', async (req, res) => {
     })
 
     const count = await userDatabase.query('SELECT phone, COUNT(phone) FROM user GROUP BY phone HAVING COUNT(phone) > 1;')
+
+    /*
+    const allInfo = await attendInfoDatabase.find({
+        select: {
+            user: {
+                id: true
+            }
+        }
+    })
+    allInfo.forEach(async info => {
+        const cloneInfo = JSON.parse(JSON.stringify(info))
+        delete cloneInfo.id
+        delete cloneInfo.userInTheCar
+        delete cloneInfo.rideCarInfo
+
+        console.log(cloneInfo)
+        
+        const result = await attendInfoDatabase.countBy(info)
+        if(result > 1){
+            const dubplList = await attendInfoDatabase.findBy(cloneInfo)
+            await attendInfoDatabase.delete(dubplList[1])
+        }
+    })
+    */
+   
     res.send(count)
 })
 

@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.get('/get-car-info', async (req, res) => {
     const token = req.header('token')
-    if(false ===  await hasPermission(token, PermissionType.showRoomAssignment)){
+    if(false ===  await hasPermission(token, PermissionType.carpooling)){
         res.sendStatus(401)
         return
     }
