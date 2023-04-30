@@ -4,70 +4,9 @@ import {attendInfoDatabase, groupAssignmentDatabase, roomAssignmentDatabase, use
 import { User } from '../entity/user'
 import { RoomAssignment } from '../entity/roomAssignment'
 import { GroupAssignment } from '../entity/groupAssignment'
+import { getHashes } from 'crypto'
 
 const router = express.Router()
-
-router.post('/login', async (req, res) => {
-    const data = req.body
-
-    console.log(hashCode(data.userPassword))
-    const foundUser = await userDatabase.findOneBy({
-        name: data.userName,
-        password: hashCode(data.userPassword),
-    })
-    if(!foundUser){
-        res.send({result: 'fail'})
-    }else{
-        foundUser.token = hashCode(foundUser.password + new Date().getTime())
-        const expireDay = new Date()
-        expireDay.setDate(expireDay.getDate() + 21)
-        foundUser.expire = expireDay
-        userDatabase.save(foundUser)
-        res.send({result: 'success', token: foundUser.token})
-    }
-})
-
-router.post('/join', async (req, res) => {
-    const data = req.body
-
-    const roomAssignment = new RoomAssignment()
-    await roomAssignmentDatabase.save(roomAssignment)
-
-    const groupAssignment = new GroupAssignment()
-    await groupAssignmentDatabase.save(groupAssignment)
-
-    const userCount = await userDatabase.count()
-
-    const now = new Date()
-
-    const user = new User()
-    user.name = data.name
-    user.age = data.age
-    user.phone = data.phone
-    user.sex = data.sex
-    user.password = hashCode(data.password)
-    user.attendType = data.attendType
-    user.expire = new Date(now.setDate(now.getDate() + 7))
-    user.token = hashCode(user.password + user.expire)
-    user.isSuperUser = false
-    user.roomAssignment = roomAssignment
-    user.groupAssignment = groupAssignment
-    user.etc = data.etc
-    user.createAt = new Date()
-    user.firstCome = userCount < 80
-    user.deposit = false
-    user.isCancell = false
-    user.howToGo = data.howToGo
-
-    try{
-        const savedUser = await userDatabase.save(user)
-        res.send({result: 'success', token: user.token, userId: savedUser.id, firstCome: user.firstCome})
-    }catch(e){
-        console.log(e)
-        res.send(e)
-    }
-})
-
 
 router.post('/edit-user', async (req, res) => {
     const user = req.body
@@ -76,22 +15,6 @@ router.post('/edit-user', async (req, res) => {
     res.send({result: 'success', userId: user.id, token: user.token})
 })
 
-
-router.post('/reset-password', async (req,res) => {
-    const data = req.body
-
-    const foundUser = await userDatabase.findOneBy({
-        name: data.userName,
-    })
-
-    if(!foundUser){
-        res.send({result: 'fail'})
-    }else{
-        foundUser.password = hashCode(data.userPassword)
-        await userDatabase.save(foundUser)
-        res.send({result: 'success', userName: foundUser.name})
-    }
-})
 
 router.post('/check-token', async (req, res) => {
     const data = req.body
@@ -125,6 +48,28 @@ router.post('/check-token', async (req, res) => {
         userData: foundUser,
         inoutInfoList,
     })
+})
+
+router.post("/receipt-record", async (req, res) => {
+    const body = req.body
+
+    const kakaoId = body.kakaoId
+    const foundUser = await userDatabase.findOneBy({
+        kakaoId: kakaoId
+    })
+
+    if(foundUser) {
+        res.send({token: foundUser.token})
+    }else{
+        const now = new Date()
+        const createUser = new User()
+        createUser.kakaoId = kakaoId
+        createUser.createAt = now
+        createUser.token = hashCode(kakaoId + now.getTime().toString())
+        createUser.expire = new Date(now.setDate(now.getDate() + 7))
+        await userDatabase.save(createUser)
+        res.send({token: createUser.token})
+    }
 })
 
 

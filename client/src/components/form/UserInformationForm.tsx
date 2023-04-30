@@ -35,9 +35,6 @@ export default function UserInformationForm (props: IProps) {
         if(!userInformation.name){
           alert('이름을 입력해주세요.')
           return
-        }else if(!userInformation.password){
-          alert('비밀번호를 입력해주세요.')
-          return
         }else if(!userInformation.age){
           alert('나이를 입력해주세요.')
           return

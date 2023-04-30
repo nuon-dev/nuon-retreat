@@ -11,21 +11,21 @@ export class User {
     id: number
 
     @Column()
+    kakaoId: string
+
+    @Column({nullable: true})
     name: string
 
-    @Column()
-    password: string
-
-    @Column()
+    @Column({nullable: true})
     age: number
 
-    @Column()
+    @Column({nullable: true})
     sex: string
 
-    @Column()
+    @Column({nullable: true})
     phone: string
 
-    @Column()
+    @Column({nullable: true})
     attendType: AttendType
 
     @Column({
@@ -33,19 +33,19 @@ export class User {
     })
     etc?: string
 
-    @Column()
+    @Column({nullable: true})
     firstCome: boolean
 
-    @Column()
+    @Column({nullable: true})
     deposit: boolean
 
-    @Column()
+    @Column({nullable: true})
     token: string
 
-    @Column()
+    @Column({nullable: true})
     expire: Date
 
-    @Column()
+    @Column({nullable: true})
     isCancell: boolean
 
     @Column({
@@ -53,7 +53,7 @@ export class User {
     })
     howToGo: string
 
-    @Column()
+    @Column({nullable: true})
     isSuperUser: boolean
 
     @Column()

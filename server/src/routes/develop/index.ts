@@ -31,7 +31,6 @@ router.post('/insert-data', async (req, res) => {
             const user = new User()
             user.id = Number.parseInt(row[0])
             user.name = row[1]
-            user.password = row[2]
             user.age = Number.parseInt(row[3])
             user.sex = row[4]
             user.phone = row[5]
@@ -64,7 +63,6 @@ router.get('/remove-duplicated-user-data', async (req, res) => {
     allUser.forEach(async user => {
         const cloneUser = JSON.parse(JSON.stringify(user))
         delete cloneUser.id
-        delete cloneUser.password
         delete cloneUser.token
         delete cloneUser.createAt
         delete cloneUser.expire

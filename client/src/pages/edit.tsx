@@ -83,32 +83,5 @@ export default function Edit () {
                 </Button>
             </Stack>
         </Stack>}
-        {!isLogin && 
-            <Stack
-                margin="10px"
-            >
-                <TextField
-                    label="이름"
-                    onChange={e => setUserName(e.target.value)}
-                />
-                <Stack 
-                    margin={"5px"}
-                />
-                <TextField 
-                    label="비밀번호"
-                    type="password"
-                    onChange={e => setUserPassword(e.target.value)}
-                />
-                <Stack 
-                    margin={"5px"}
-                />
-                <Button 
-                    variant="contained"
-                    onClick={getUserData}
-                >
-                    정보 불러오기
-                </Button>
-            </Stack>
-        }
     </Stack>)
 }

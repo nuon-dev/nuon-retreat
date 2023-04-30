@@ -3,14 +3,13 @@ import { useEffect, useState } from "react"
 import { Button, Stack, TextField } from "@mui/material/index"
 import { useRouter } from "next/router"
 import { ST } from "next/dist/shared/lib/utils"
+import useKakaoHook from "kakao"
 
 function admin () {
     const router = useRouter()
+    const kakao = useKakaoHook()
 
     const [isLogin, setIsLogin] = useState(false)
-
-    const [userName, setUserName] = useState('')
-    const [userPassword, setUserPassword] = useState('')
 
     const goToPage =(path: string) => {
         router.push(`/admin/${path}`)
@@ -111,39 +110,32 @@ function admin () {
         </Stack>)
     }
 
-    const login = async () => {
-        const result = await post('/auth/login', {
-            userName,
-            userPassword,
+    async function kakaoLogin(){
+        const kakaoToken = await kakao.getKakaoToken()
+        const {token} = await post('/auth/receipt-record', {
+            kakaoId: kakaoToken
         })
-        if(result.result === "success"){
-            localStorage.setItem('token', result.token)
-            setIsLogin(true)
-        }else{
-            alert('로그인 실패!')
-        }
+        localStorage.setItem("token", token)
+        setIsLogin(true)
     }
 
     const loginForm = () => {
         return (<Stack padding="6px">
-            <Stack margin="6px"/>
-            <TextField 
-                label="이름"
-                onChange={e => setUserName(e.target.value)}
-            />
-            <Stack margin="6px"/>
-            <TextField 
-                label="비밀번호"
-                type="password"
-                onChange={e => setUserPassword(e.target.value)}
-            />
-            <Stack margin="6px"/>
-            <Button
-                variant="contained"
-                onClick={login}
-            >
-                로그인
-            </Button>
+            관리자 화면
+        <Button
+            style={{
+                backgroundColor: "#FEE500",
+                color: "#191919",
+                height: "60px",
+                width: "240px",
+                borderRadius: "12px",
+                fontSize: "24px",
+                fontWeight: "bold"
+            }}
+            onClick={kakaoLogin}
+        >
+            카카오 로그인
+        </Button>
         </Stack>)
     }
 

@@ -1,20 +1,11 @@
 import { Button, Stack } from "@mui/material";
 import { useRouter } from "next/router";
-import { post } from "./api";
+import { get, post } from "./api";
+import useKakaoHook from "kakao";
 
 function index(){
     const router = useRouter()
-
-    function onClickGoToEdit() {
-        router.push('/edit')
-    }
-
-    function onClickGoToInsert(){
-        checkToken()
-        
-        router.push('/insert')
-    }
-
+    const kakao = useKakaoHook()
     function checkToken(){
         const token = localStorage.getItem('token')
         
@@ -34,6 +25,16 @@ function index(){
         })
       }
 
+      async function kakaoLogin(){
+        const kakaoToken = await kakao.getKakaoToken()
+        const {token} = await post('/auth/receipt-record', {
+            kakaoId: kakaoToken
+        })
+        console.log(token)
+        localStorage.setItem("token", token)
+        router.push('/edit')
+      }
+
     return (
     <Stack
         style={{
@@ -45,24 +46,19 @@ function index(){
         justifyContent="center"
     >
         <Button
-            variant="contained"
             style={{
-                height: '100px',
+                backgroundColor: "#FEE500",
+                color: "#191919",
+                height: "60px",
+                width: "240px",
+                borderRadius: "12px",
+                fontSize: "24px",
+                fontWeight: "bold"
             }}
-            onClick={onClickGoToEdit}
-        >접수 내용 수정하기</Button>
-        <div 
-            style={{
-                margin: '10px',
-            }}
-        />        
-        <Button
-            onClick={onClickGoToInsert}
-            style={{
-                height: '100px'
-            }}
-            variant="contained"
-        >새로 접수하기</Button>
+            onClick={kakaoLogin}
+        >
+            카카오 로그인
+        </Button>
     </Stack>
     )
 }
