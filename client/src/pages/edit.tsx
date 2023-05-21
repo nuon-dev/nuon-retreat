@@ -10,8 +10,6 @@ export default function Edit () {
     const [isLogin, setIsLogin] = useState(false) 
     const [userData, setUserData] = useState({} as User)
     const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
-    const [userName, setUserName] = useState('')
-    const [userPassword, setUserPassword] = useState('')
     
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -30,20 +28,6 @@ export default function Edit () {
                 setInOutData(respone.inoutInfoList)
             }
         })
-    }
-
-    const getUserData = async () => {
-        const respone = await post('/auth/login', {
-            userName,
-            userPassword
-        })
-        if(respone.result !== 'success'){
-            alert('아이디 및 비밀번호가 틀렸습니다.')
-            return
-        }
-
-        localStorage.setItem('token', respone.token)
-        checkToken(respone.token)
     }
     
     function logout(){

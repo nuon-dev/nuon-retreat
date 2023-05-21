@@ -59,6 +59,11 @@ router.post("/receipt-record", async (req, res) => {
     })
 
     if(foundUser) {
+        foundUser.token = hashCode(foundUser.kakaoId + new Date().getTime())
+        const expireDay = new Date()
+        expireDay.setDate(expireDay.getDate() + 21)
+        foundUser.expire = expireDay
+        userDatabase.save(foundUser)
         res.send({token: foundUser.token})
     }else{
         const now = new Date()

@@ -77,7 +77,7 @@ export default function UserInformationForm (props: IProps) {
           }
 
           if(userInformation.id){
-            alert(`수정 완료되었습니다.`)
+            alert(`저장이 되었습니다.`)
           }else{
             alert(`접수에 성공하였습니다!.\n선착순에 ${saveResult.firstCome ? "성공" : "실패"}하셨습니다!\n페이지를 닫으셔도 됩니다.`)
           }
@@ -89,15 +89,14 @@ export default function UserInformationForm (props: IProps) {
       password: userInformation?.password?.length === 0,
     }
 
-    return (<Stack>
-        <Stack marginTop="12px"/>
-        <Stack direction="row">
+    return (<Stack
+        padding="6px"
+      >
+        <Stack mt="12px">
           <Stack 
             width="80px"
             justifyContent="center"
-            style={{
-              marginLeft: "12px"
-            }}
+            my="2px"
           >
             이름
           </Stack>
@@ -109,36 +108,10 @@ export default function UserInformationForm (props: IProps) {
               onChange={e => changeInformation("name", e.target.value)}
             />
         </Stack>
-          <Stack margin="6px"/>
-        {!userInformation.id && (
-        <Stack direction="row">
+        <Stack mt="6px">
           <Stack 
             width="80px"
             justifyContent="center"
-            style={{
-              marginLeft: "12px"
-            }}
-          >
-            비밀번호
-          </Stack>
-          <TextField
-            fullWidth={true}
-            type="password"
-            error={validation.password}
-            helperText={validation.password && "비밀번호를 입력하세요"}
-            onChange={e => changeInformation("password", e.target.value)}
-          />
-        </Stack>
-        )}
-        <Stack margin="6px"/>
-
-        <Stack direction="row">
-          <Stack 
-            width="80px"
-            justifyContent="center"
-            style={{
-              marginLeft: "12px"
-            }}
           >
             나이
           </Stack>
@@ -167,7 +140,6 @@ export default function UserInformationForm (props: IProps) {
               <Select
                 value={userInformation.sex}
                 defaultValue={userInformation.sex}
-                label="성별"
                 onChange={e => changeInformation("sex", e.target.value)}
                 sx={{
                   mt: '12px'
@@ -194,7 +166,6 @@ export default function UserInformationForm (props: IProps) {
               fullWidth={true}
               defaultValue={userInformation.attendType}
               value={userInformation.attendType}
-              label="참석형태"
               onChange={e => changeInformation("attendType", e.target.value.toString())}
             >
               <MenuItem value={AttendType.full}>
