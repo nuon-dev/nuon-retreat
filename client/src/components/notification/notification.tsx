@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import styles from './notification.module.css'
 import { useRecoilState } from 'recoil'
-import { ShowNotification } from 'state/notification'
+import { NotificationMessage, ShowNotification } from 'state/notification'
 
 export default function Notification(){
-    const [show, setShow] = useState(true)
+    const [show, setShow] = useState(false)
     const [showNotification, setShowNotification] = useRecoilState(ShowNotification)
+    const [notificationMessage, setNotificationMessage] = useRecoilState(NotificationMessage)
 
     useEffect(() => {
         if(showNotification){
@@ -17,10 +18,18 @@ export default function Notification(){
         }, 3000);
     }, [showNotification])
 
-    return (<div
-        className={`${styles.notification} ${!show && styles['notification-off']}`}
->
-        내용입니다. {show.toString()}
+    useEffect(() => {
+        setShowNotification(true)
+    }, [notificationMessage])
+
+    return (<div>
+        {notificationMessage &&
+            <div 
+                className={`${styles.notification} ${!show && styles['notification-off']}`}
+            >
+            {notificationMessage}
+        </div>
+        }
     </div>)
 }
 

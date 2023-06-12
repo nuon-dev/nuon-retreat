@@ -5,14 +5,14 @@
     z-index: 10;
     height: 70px;
     width: 400px;
-    position: absolute;
+    position: fixed;
     background-color: white;
     border-radius: 12px;
     border: 1px gainsboro solid;
-    transition: 2.25s all;
+    transition: 0.5s all;
 }
 
 .notification-off {
-    right: -1080px;
-    transition: 2.25s all;
+    right: -410px;
+    transition: 0.5s all;
 }

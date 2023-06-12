@@ -4,13 +4,27 @@ import { User } from '@entity/user'
 import { get } from "../../pages/api";
 import { InOutInfo } from "@entity/inOutInfo";
 import { AttendType } from "../../types";
+import { useSetRecoilState } from "recoil";
+import { NotificationMessage, ShowNotification } from "state/notification";
+import Router, { useRouter } from "next/router";
 
 function AllUser () {
-    const [allUserList, setAllUserList] = useState([] as Array<User>)
+    const router = useRouter()
+    const [allUserList, setAllUserList] = useState<Array<User>>([])
+    const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
     useEffect(() => {
-        get('/admin/get-all-user')
-        .then((data) => setAllUserList(data))
+        (async () => {
+            const list = await get('/admin/get-all-user')
+            if(list.error){
+                router.push('/admin')
+                setNotificationMessage("권한이 없습니다.")
+                return
+            }
+            if(list){
+                setAllUserList(list)
+            }
+        })()
     }, [])
 
     function downloadFile(){
