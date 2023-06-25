@@ -67,7 +67,6 @@ function RoomAssingment (){
                 setIsShowUserInfo(false)
             }}
             sx={{
-                border: "1px solid black",
                 justifyContent: 'space-between',
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
@@ -81,19 +80,22 @@ function RoomAssingment (){
         if(!isShowUserInfo){
             return <Stack/>
         }
+        if(!showUserInfo.etc){
+            return <Stack />
+        }
         return(
         <Stack
             style={{
-                padding: '4px',
+                padding: '6px',
                 position: 'absolute',
-                borderRadius: '12px',
+                borderRadius: '4px',
                 top: mousePoint[1] + 10,
                 left: mousePoint[0] + 10,
-                backgroundColor: 'white',
-                border: '1px solid black',
+                backgroundColor: '#FEFEFE',
+                border: '1px solid #ACACAC',
             }}
         >
-            기타 : {showUserInfo.etc} <br/>
+            {showUserInfo.etc} <br/>
             {userAttendInfo.length > 0 && "카풀" } {userAttendInfo.map(info => (<Stack>{["첫", "둘", "셋"][info.day]}째 날 / {info.time} / {info.inOutType}</Stack>))}
         </Stack>)
     }
@@ -191,32 +193,42 @@ function RoomAssingment (){
             <Stack
                 mb="40px" 
                 direction="row">
-                <Stack width="160px">
-                    <Box>미배정({unassignedUserList.filter(user => user.sex === sex).length}명)</Box>
+                <Stack 
+                    style={{
+                        margin: '6px',
+                        minHeight: "20px",
+                        borderRadius: '8px',
+                        boxShadow: '2px 2px 5px 3px #ACACAC;',
+                        border: "1px solid #ACACAC",
+                    }}
+                    onMouseUp={() => setRoom(0)}
+                width="160px">
+                    <Box textAlign="center">미배정({unassignedUserList.filter(user => user.sex === sex).length}명)</Box>
                     {unassignedUserList.filter(user => user.sex === sex).map(user => unassignedUserRow(user))}
                 </Stack>
                 <Stack
                     style={{
                         padding: '4px',
                         overflow: 'auto',
-                        paddingRight: '80vw',
                         margin: '4px',
                         width: 'calc(100% - 200px)',
+                        overflowWrap: 'inherit',
+                        display: 'flex',
+                        flexDirection: "row",
                     }} 
-                    direction="row"
                 >
-                    { new Array(maxRoomNumber).fill(0).map((_, index) => {
-                        const room = roomList[index]
-                        if(!room || room.length === 0){
-                            return Room(index + 1, [])
-                        }else{
-                            return Room(room[0].roomAssignment.roomNumber, room)
-                        }
-                    })
+                { new Array(maxRoomNumber).fill(0).map((_, index) => {
+                    const room = roomList[index]
+                    if(!room || room.length === 0){
+                        return Room(index + 1, [])
+                    }else{
+                        return Room(room[0].roomAssignment.roomNumber, room)
                     }
-                    {
-                        Room(maxRoomNumber + 1, [])
-                    }
+                })
+                }
+                {
+                    Room(maxRoomNumber + 1, [])
+                }
                 </Stack>
             </Stack>
         </Stack>
