@@ -84,13 +84,13 @@ function RoomAssingment (){
         return(
         <Stack
             style={{
+                padding: '4px',
                 position: 'absolute',
+                borderRadius: '12px',
                 top: mousePoint[1] + 10,
                 left: mousePoint[0] + 10,
-                border: '1px solid black',
-                borderRadius: '12px',
-                padding: '4px',
                 backgroundColor: 'white',
+                border: '1px solid black',
             }}
         >
             기타 : {showUserInfo.etc} <br/>
@@ -119,6 +119,7 @@ function RoomAssingment (){
     function userRoomRow(user: User){
         return (<Stack
             direction="row"
+            p="2px"
             onMouseDown={() => setSelectedUser(user)}
             onMouseEnter={() => {
                 setModal(user)
@@ -140,12 +141,15 @@ function RoomAssingment (){
     function Room(roomNumber: number, userList: Array<User>){
         return (<Stack
             sx={{
+                margin: '6px',
                 minHeight: "20px",
-                border: "1px solid black",
+                borderRadius: '8px',
+                boxShadow: '2px 2px 5px 3px #ACACAC;',
+                border: "1px solid #ACACAC",
             }}
             onMouseUp={() => setRoom(roomNumber)}
         >
-            <Stack width="160px">{roomNumber}번 방 ({userList.filter(user => user.sex === sex).length})</Stack>
+            <Stack width="160px" textAlign="center" mb="4px">{roomNumber}번 방 ({userList.filter(user => user.sex === sex).length})</Stack>
             {userList.filter(user => user.sex === sex).map(user => userRoomRow(user))}
         </Stack>)
     }
@@ -193,11 +197,11 @@ function RoomAssingment (){
                 </Stack>
                 <Stack
                     style={{
+                        padding: '4px',
                         overflow: 'auto',
                         paddingRight: '80vw',
-                        border: '1px solid black',
                         margin: '4px',
-                        width: 'calc(100% - 200px)'
+                        width: 'calc(100% - 200px)',
                     }} 
                     direction="row"
                 >
