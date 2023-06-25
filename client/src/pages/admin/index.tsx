@@ -77,13 +77,6 @@ function admin () {
                 <Stack margin="4px"/>
                 <Button
                     variant="contained"
-                    onClick={() => goToPage('/reset-password')}
-                >
-                    비밀번호 초기화
-                </Button>
-                <Stack margin="4px"/>
-                <Button
-                    variant="contained"
                     onClick={() => goToPage('/deposit-check')}
                 >
                     입금 확인 처리

@@ -36,7 +36,7 @@ function DepositCheck (){
         if(isShowUnpaid){
            fetchData()
         }else{
-            setAllUserList(allUserList.filter(user => user.deposit))
+            setAllUserList(allUserList.filter(user => !user.deposit))
         }
         setIsShowUnpaid(!isShowUnpaid)
     }

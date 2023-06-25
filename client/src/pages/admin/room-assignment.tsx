@@ -70,6 +70,7 @@ function RoomAssingment (){
                 justifyContent: 'space-between',
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
+            px="4px"
         >
             <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'})</Box>
             <Box>{user.roomAssignment?.roomNumber}</Box>
@@ -80,7 +81,7 @@ function RoomAssingment (){
         if(!isShowUserInfo){
             return <Stack/>
         }
-        if(!showUserInfo.etc){
+        if(!showUserInfo.etc && userAttendInfo.length === 0){
             return <Stack />
         }
         return(
@@ -95,8 +96,9 @@ function RoomAssingment (){
                 border: '1px solid #ACACAC',
             }}
         >
-            {showUserInfo.etc} <br/>
-            {userAttendInfo.length > 0 && "카풀" } {userAttendInfo.map(info => (<Stack>{["첫", "둘", "셋"][info.day]}째 날 / {info.time} / {info.inOutType}</Stack>))}
+            {showUserInfo.etc}
+            {showUserInfo.etc && userAttendInfo.length > 0 && <Box width="100%" height="1px" bgcolor="#ACACAC" my="4px"/>}
+            {userAttendInfo.map(info => (<Stack>{["첫", "둘", "셋"][info.day]}째 날 / {info.time} / {info.inOutType === 'in' ? '들어옴' : '나감'}</Stack>))}
         </Stack>)
     }
 
@@ -135,7 +137,7 @@ function RoomAssingment (){
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
          >
-             <Box>{user.name}({user.age})</Box>
+            <Box>{user.name}({user.age})</Box>
             <Box>({user.attendType === AttendType.full ? '전' : '부'})</Box>
         </Stack>)
     }
@@ -143,7 +145,7 @@ function RoomAssingment (){
     function Room(roomNumber: number, userList: Array<User>){
         return (<Stack
             sx={{
-                margin: '6px',
+                margin: '8px',
                 minHeight: "20px",
                 borderRadius: '8px',
                 boxShadow: '2px 2px 5px 3px #ACACAC;',
@@ -151,7 +153,7 @@ function RoomAssingment (){
             }}
             onMouseUp={() => setRoom(roomNumber)}
         >
-            <Stack width="160px" textAlign="center" mb="4px">{roomNumber}번 방 ({userList.filter(user => user.sex === sex).length})</Stack>
+            <Stack width="160px" textAlign="center" py="4px">{roomNumber}번 방 ({userList.filter(user => user.sex === sex).length})</Stack>
             {userList.filter(user => user.sex === sex).map(user => userRoomRow(user))}
         </Stack>)
     }
@@ -175,19 +177,40 @@ function RoomAssingment (){
             <Stack
                 direction="row"
                 mb="12px"
+                justifyContent="space-between"
+                alignContent="center"
             >
-                <Stack 
-                    justifyContent="center"
-                >
-                    {sex === 'man' ? "남자" : "여자"} 방배정 
+                <Stack/>
+                <Stack direction="row">
+                    <Stack
+                        fontWeight="600"
+                        fontSize="24px"
+                        justifyContent="center"
+                    >
+                        {sex === 'man' ? "남자" : "여자"} 방배정 
+                    </Stack>
+                    <Button 
+                        variant="outlined"
+                        onClick={() => setSex(sex === 'man' ?  "woman" : "man")}
+                        style={{
+                            margin: "16px"
+                        }}
+                        >성별 변경 하기</Button>
                 </Stack>
-                <Button 
-                    variant="contained"
-                    onClick={() => setSex(sex === 'man' ?  "woman" : "man")}
+                <Stack
                     style={{
-                        margin: "6px"
+                        backgroundColor: "#FAFAFA"
                     }}
-                >성별 변경</Button>
+                    margin="8px"
+                    padding="8px"
+                    borderRadius="8px"
+                    justifyContent="center"
+                    border="1px solid #ACACAC"
+                    
+                >
+                    사람의 이름을 눌러 드래그 드롭으로 또는 사람 클릭 수 방을 클릭하여 넣으면 됩니다.<br/>
+                    마우스 오버시 사용자의 정보가 나옵니다.<br/>
+                </Stack>
             </Stack>
             {modal()}
             <Stack
@@ -200,16 +223,18 @@ function RoomAssingment (){
                         borderRadius: '8px',
                         boxShadow: '2px 2px 5px 3px #ACACAC;',
                         border: "1px solid #ACACAC",
+                        paddingBottom: '20px'
                     }}
                     onMouseUp={() => setRoom(0)}
-                width="160px">
-                    <Box textAlign="center">미배정({unassignedUserList.filter(user => user.sex === sex).length}명)</Box>
+                    width="160px"
+                >
+                    <Box textAlign="center" py="4px">미배정({unassignedUserList.filter(user => user.sex === sex).length}명)</Box>
                     {unassignedUserList.filter(user => user.sex === sex).map(user => unassignedUserRow(user))}
                 </Stack>
                 <Stack
                     style={{
                         padding: '4px',
-                        overflow: 'auto',
+                        flexWrap: 'wrap',
                         margin: '4px',
                         width: 'calc(100% - 200px)',
                         overflowWrap: 'inherit',

@@ -100,7 +100,7 @@ function AllUser () {
                                 {user.name}
                             </TableCell>
                             <TableCell>
-                                {user.sex}
+                                {user.sex === 'man' ? '남' : '여'}
                             </TableCell>
                             <TableCell>
                                 {user.age}

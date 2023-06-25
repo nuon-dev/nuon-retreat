@@ -64,10 +64,10 @@ function GroupFormation (){
                 setIsShowUserInfo(false)
             }}
             sx={{
-                border: "1px solid black",
                 justifyContent: 'space-between',
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
+            px="4px"
         >
             <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'})</Box>
             <Box>{user.groupAssignment.groupNumber}</Box>
@@ -77,8 +77,9 @@ function GroupFormation (){
     function userGroupRow(user: User){
         return (<Stack
             direction="row"
+            p="2px"
             onMouseDown={() => setSelectedUser(user)}
-            width="200px"
+            width="160px"
             onMouseEnter={() => {
                 setModal(user)
             }}
@@ -115,12 +116,15 @@ function GroupFormation (){
     function Group(groupNumber: number, userList: Array<User>){
         return (<Stack
             sx={{
+                margin: '8px',
                 minHeight: "20px",
-                border: "1px solid black"
+                borderRadius: '8px',
+                boxShadow: '2px 2px 5px 3px #ACACAC;',
+                border: "1px solid #ACACAC",
             }}
             onMouseUp={() => setGroup(groupNumber)}
         >
-            <Stack width="160px">{groupNumber}조 ({userList.length})</Stack>
+            <Stack width="160px" textAlign="center" py="4px">{groupNumber}조 ({userList.length})</Stack>
             {userList.map(user => userGroupRow(user))}
         </Stack>)
     }
@@ -140,39 +144,55 @@ function GroupFormation (){
         if(!isShowUserInfo){
             return <Stack/>
         }
+
+        if(!showUserInfo.etc && userAttendInfo.length === 0){
+            return <Stack />
+        }
+
         return(
         <Stack
             style={{
+                padding: '6px',
+                borderRadius: '12px',
                 position: 'absolute',
                 top: mousePoint[1] + 10,
                 left: mousePoint[0] + 10,
-                border: '1px solid black',
-                borderRadius: '12px',
-                padding: '4px',
-                backgroundColor: 'white',
+                backgroundColor: '#FEFEFE',
+                border: '1px solid #ACACAC',
             }}
         >
-            기타 : {showUserInfo.etc} <br/>
-            {userAttendInfo.length > 0 && "카풀" } {userAttendInfo.map(info => (<Stack>{["첫", "둘", "셋"][info.day]}째 날 / {info.time} / {info.inOutType}</Stack>))}
+            {showUserInfo.etc}
+            {showUserInfo.etc && userAttendInfo.length > 0 && <Box width="100%" height="1px" bgcolor="#ACACAC" my="4px"/>}
+            {userAttendInfo.map(info => (<Stack>{["첫", "둘", "셋"][info.day]}째 날 / {info.time} / {info.inOutType === 'in' ? '들어옴' : '나감'}</Stack>))}
         </Stack>)
     }
 
     return (
         <Stack direction="row">
             {modal()}
-            <Stack width="200px">
-                <Box>미배정({unassignedUserList.length}명)</Box>
+            <Stack 
+                style={{
+                    margin: '6px',
+                    minHeight: "20px",
+                    borderRadius: '8px',
+                    boxShadow: '2px 2px 5px 3px #ACACAC;',
+                    border: "1px solid #ACACAC",
+                    paddingBottom: '20px'
+                }}
+                onMouseUp={() => setGroup(0)}
+                width="160px"
+            >
+                <Box textAlign="center" py="4px">미배정({unassignedUserList.length}명)</Box>
                 {unassignedUserList.map(user => unassignedUserRow(user))}
             </Stack>
             <Stack 
                 style={{
-                    overflow: 'auto',
-                    paddingRight: '80vw',
-                    border: '1px solid black',
+                    flexWrap: 'wrap',
                     margin: '4px',
-                    width: 'calc(100% - 200px)'
+                    width: 'calc(100% - 200px)',
+                    display: 'flex',
+                    flexDirection: "row",
                 }} 
-                direction="row"
             >
                 { new Array(maxGroupNumber).fill(0).map((_, index) => {
                     const group = groupList[index]

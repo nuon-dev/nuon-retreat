@@ -48,7 +48,6 @@ function PermissionManage () {
         [PermissionType.admin]: '준비팀',
         [PermissionType.carpooling]: '카풀',
         [PermissionType.permisionManage]: '권환 관리',
-        [PermissionType.resetPassword]: '비밀번호 초기화',
         [PermissionType.userList]: '사용자 목록',
         [PermissionType.showRoomAssignment]: '방배정 조회',
         [PermissionType.showGroupAssignment]: '조편성 조회',
