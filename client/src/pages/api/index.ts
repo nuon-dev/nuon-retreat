@@ -1,5 +1,5 @@
 const PORT = 8000
-const SERVER_URL = process.env.NODE_ENV === 'development' ? 'http://localhost' : process.env.SERVER_URL
+const SERVER_URL = process.env.NODE_ENV === 'development' ? 'http://localhost' : 'http://112.145.135.65'
 export const SERVER_FULL_PATH = `${SERVER_URL}:${PORT}`
 
 const COMMON_HEADER = {

@@ -69,7 +69,7 @@ function GroupFormation (){
             }}
             px="4px"
         >
-            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'})</Box>
+            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'}){user.etc || user.inOutInfos.length > 0 ? "*" : ''}</Box>
             <Box>{user.groupAssignment.groupNumber}</Box>
         </Stack>)
     }
@@ -91,7 +91,7 @@ function GroupFormation (){
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
          >
-            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'})</Box>
+            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'}){user.etc || user.inOutInfos.length > 0 ? "*" : ''}</Box>
         </Stack>)
     }
 
@@ -119,8 +119,8 @@ function GroupFormation (){
                 margin: '8px',
                 minHeight: "20px",
                 borderRadius: '8px',
-                boxShadow: '2px 2px 5px 3px #ACACAC;',
                 border: "1px solid #ACACAC",
+                boxShadow: '2px 2px 5px 3px #ACACAC;',
             }}
             onMouseUp={() => setGroup(groupNumber)}
         >
@@ -175,9 +175,9 @@ function GroupFormation (){
                     margin: '6px',
                     minHeight: "20px",
                     borderRadius: '8px',
+                    paddingBottom: '20px',
                     boxShadow: '2px 2px 5px 3px #ACACAC;',
                     border: "1px solid #ACACAC",
-                    paddingBottom: '20px'
                 }}
                 onMouseUp={() => setGroup(0)}
                 width="160px"

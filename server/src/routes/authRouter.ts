@@ -66,10 +66,18 @@ router.post("/receipt-record", async (req, res) => {
         userDatabase.save(foundUser)
         res.send({token: foundUser.token})
     }else{
+        const roomAssignment = new RoomAssignment()
+        await roomAssignmentDatabase.save(roomAssignment)
+
+        const groupAssignment = new GroupAssignment()
+        await groupAssignmentDatabase.save(groupAssignment)
+
         const now = new Date()
         const createUser = new User()
         createUser.kakaoId = kakaoId
         createUser.createAt = now
+        createUser.roomAssignment = roomAssignment
+        createUser.groupAssignment = groupAssignment
         createUser.token = hashCode(kakaoId + now.getTime().toString())
         createUser.expire = new Date(now.setDate(now.getDate() + 7))
         await userDatabase.save(createUser)

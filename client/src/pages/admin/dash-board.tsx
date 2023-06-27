@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material"
+import { Box, Stack } from "@mui/material"
 import { get } from "../../pages/api"
 import { useEffect, useState } from "react"
 
@@ -23,11 +23,76 @@ function DashBoard() {
 
 
     function attendeeStatus() {
+        const targetCount = 250
         return(
             <Stack>
-                <Stack>참석자 현황</Stack>
-                <Stack>전체 참석자 : {getAttendeeStatus.all}</Stack>
-                <Stack>남/여 : {getAttendeeStatus.man} / {getAttendeeStatus.woman}</Stack>
+                <Box style={{
+                    display: 'flex',
+                }}>
+                    <Stack
+                        fontSize="24px"
+                        style={{
+                            margin: '8px',
+                            padding: "20px",
+                            borderRadius: '8px',
+                            border: "1px solid #ACACAC",
+                            boxShadow: '2px 2px 5px 3px #ACACAC;',
+                        }}
+                    >참석자 현황</Stack>
+                    <Stack
+                        margin="8px"
+                        fontSize="24px"
+                        style={{
+                            padding: "20px",
+                            borderRadius: '8px',
+                            border: "1px solid #ACACAC",
+                            boxShadow: '2px 2px 5px 3px #ACACAC;',
+                        }}
+                        display="flex"
+                        direction="row"
+                        justifyContent="center"
+                        alignContent="end"
+                    ><Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">참가자수</Box> <Box fontSize="28px" alignSelf="end">{getAttendeeStatus.all}</Box> <Box pb="2px" pl="6px" alignSelf="end" fontSize="20px"> / {targetCount}</Box>
+                    </Stack>
+                    <Stack
+                        margin="8px"
+                        fontSize="24px"
+                        style={{
+                            padding: "20px",
+                            borderRadius: '8px',
+                            border: "1px solid #ACACAC",
+                            boxShadow: '2px 2px 5px 3px #ACACAC;',
+                        }}
+                        direction="row"
+                        ><Box fontSize="28px" alignSelf="end">{(getAttendeeStatus.all / targetCount * 100).toFixed(1)}</Box> <Box pb="2px" pl="3px" alignSelf="end" fontSize="20px"> % {}</Box>
+                    </Stack>
+                    <Stack
+                        margin="8px"
+                        fontSize="24px"
+                        style={{
+                            padding: "20px",
+                            borderRadius: '8px',
+                            border: "1px solid #ACACAC",
+                            boxShadow: '2px 2px 5px 3px #ACACAC;',
+                        }}
+                        direction="row"
+                        >
+                            <Box color="lightblue">{getAttendeeStatus.man}</Box> <Box px="8px">/</Box> <Box color="pink">{getAttendeeStatus.woman}</Box>
+                        </Stack>
+                    <Stack
+                        margin="8px"
+                        fontSize="24px"
+                        style={{
+                            padding: "20px",
+                            borderRadius: '8px',
+                            border: "1px solid #ACACAC",
+                            boxShadow: '2px 2px 5px 3px #ACACAC;',
+                        }}
+                        direction="row"
+                        >
+                            <Box color="lightblue">{(getAttendeeStatus.man / getAttendeeStatus.all * 100).toFixed(1)}</Box>% <Box px="8px">/</Box> <Box color="pink">{(getAttendeeStatus.woman / getAttendeeStatus.all * 100).toFixed(1)}</Box>%
+                    </Stack>
+                </Box>
                 <Stack>전참/부참 : {getAttendeeStatus.fullAttend} / {getAttendeeStatus.halfAttend}</Stack>
                 <Stack>버스로 이동/카풀 및 부참 : {getAttendeeStatus.goTogether} / {getAttendeeStatus.goCar}</Stack>
                 <Stack>입금 처리/미완 : {getAttendeeStatus.completDeposit} / {getAttendeeStatus.all - getAttendeeStatus.completDeposit}</Stack>

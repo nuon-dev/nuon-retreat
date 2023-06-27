@@ -1,9 +1,8 @@
-import { post } from "pages/api";
-import { resolve } from "path";
 import { useEffect } from "react";
 
 export default function useKakaoHook(){
-    var Kakao: any
+    const globalValue: any = global
+    var Kakao: any = globalValue.Kakao
     useEffect(() => {
         if(!Kakao.isInitialized()){
             Kakao.init('24c68e47fc07af3735433d60a3c4f4b3'); //발급받은 키 중 javascript키를 사용해준다.

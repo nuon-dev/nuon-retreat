@@ -3,7 +3,7 @@ import { Days, MoveType , InOutType} from "../../types";
 import { get, post } from "../../pages/api";
 import { useEffect, useState } from "react";
 import { Stack } from "@mui/system";
-import { MenuItem, Select } from "@mui/material";
+import { Box, MenuItem, Select } from "@mui/material";
 import { User } from "@entity/user";
 
 
@@ -90,6 +90,8 @@ function Carpooling() {
 
     function getRowOfInfo(info: InOutInfo){
         return (<Stack
+                direction="row"
+                justifyContent="space-evenly"
                 onMouseEnter={() => {
                     setModal(info.user)
                 }}
@@ -99,15 +101,21 @@ function Carpooling() {
                 onMouseDown={() => setSelectedInfo(info)
             }
         >
-            {info.user?.name} ({info.time}시 {info.position})
+            <Box>{info.user?.name}</Box>  <Box>{info.time}</Box> <Box>{info.position}</Box>
         </Stack>)
     }
 
     return(<Stack direction="row">
-        <Stack>
-            <Select 
-            value={selectedDay}
-            onChange={e => setSelectedDay(e.target.value as number)}
+        <Stack
+            style={{
+                margin: '12px'
+            }}>
+            <Select
+                style={{
+                    marginBottom: '8px'
+                }}
+                value={selectedDay}
+                onChange={e => setSelectedDay(e.target.value as number)}
             >
                 <MenuItem value={Days.firstDay}>
                     첫째날
@@ -134,44 +142,57 @@ function Carpooling() {
         {modal()}
         <Stack
             style={{
-                border: '1px solid black',
-                borderRadius: '10px',
-                minWidth: '240px'
+                margin: '8px',
+                padding: '4px',
+                minWidth: '240px',
+                borderRadius: '8px',
+                paddingBottom: '20px',
+                border: "1px solid #ACACAC",
+                boxShadow: '2px 2px 5px 3px #ACACAC;',
             }}
             onMouseUp={setEmptyCar}
         >
-            <Stack>탐승 예정자</Stack>
+            <Stack textAlign="center">탑승 예정자</Stack>
             {rideUserList.filter(info => info.day === selectedDay && info.inOutType === selectedInOut).map(info => getRowOfInfo(info))}
         </Stack>
         <Stack 
             style={{
-                overflow: 'auto',
-                paddingRight: '70vw',
-                border: '1px solid black',
                 margin: '4px',
+                display: 'flex',
+                flexWrap: 'wrap',
+                flexDirection: "row",
                 width: 'calc(100% - 200px)'
             }} 
             direction="row"
         >
-            {carList.filter(info => info.day === selectedDay && info.inOutType === selectedInOut).map(car => 
+        {carList.filter(info => info.day === selectedDay && info.inOutType === selectedInOut).map(car => 
             <Stack
             sx={{
-                border: '1px solid black',
-                borderRadius: '10px',
-                minWidth: '240px'
+                margin: '8px',
+                padding: '4px',
+                minWidth: '240px',
+                borderRadius: '8px',
+                border: "1px solid #ACACAC",
+                boxShadow: '2px 2px 5px 3px #ACACAC;',
             }}
             onMouseUp={() => setCar(car)}
             >
                 <Stack
+                justifyContent="space-evenly"
+                    textAlign="center"
                     onMouseEnter={() => {
                         setModal(car.user)
                     }}
                     onMouseLeave={() => {
                         setIsShowUserInfo(false)
                     }}
+                    direction="row"
                 >
-                    {car.user.name}의 차 ({car.time}시 / {car.position}))
+                    {car.user.name}의 차 
+                    <Box>{car.time}</Box>
+                    <Box>{car.position}</Box>
                 </Stack>
+                <Box height="1px" bgcolor="#DDD" my="4px"/>
                 {car.userInTheCar.map(info => getRowOfInfo(info))}
             </Stack>)}
         </Stack>
