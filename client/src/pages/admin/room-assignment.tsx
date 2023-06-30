@@ -72,7 +72,7 @@ function RoomAssingment (){
             }}
             px="4px"
         >
-            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'}){user.etc || user.inOutInfos.length > 0 ? "*" : ''}</Box>
+            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'}){user.etc || (user.inOutInfos && user.inOutInfos.length) > 0 ? "*" : ''}</Box>
             <Box>{user.roomAssignment?.roomNumber}</Box>
         </Stack>)
     }
@@ -137,7 +137,7 @@ function RoomAssingment (){
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
          >
-            <Box>{user.name}({user.age}){user.etc || user.inOutInfos.length > 0 ? "*" : ''}</Box>
+            <Box>{user.name}({user.age}){user.etc || (user.inOutInfos && user.inOutInfos.length) > 0 ? "*" : ''}</Box>
             <Box>({user.attendType === AttendType.full ? '전' : '부'})</Box>
         </Stack>)
     }

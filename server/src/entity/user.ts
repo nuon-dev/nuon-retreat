@@ -33,10 +33,10 @@ export class User {
     })
     etc?: string
 
-    @Column({nullable: true})
+    @Column({nullable: true, default: 0})
     firstCome: boolean
 
-    @Column({nullable: true})
+    @Column({nullable: true, default: 0})
     deposit: boolean
 
     @Column({nullable: true})
@@ -45,7 +45,7 @@ export class User {
     @Column({nullable: true})
     expire: Date
 
-    @Column({nullable: true})
+    @Column({nullable: true, default: 0})
     isCancell: boolean
 
     @Column({
@@ -53,7 +53,7 @@ export class User {
     })
     howToGo: string
 
-    @Column({nullable: true})
+    @Column({nullable: true, default: 0})
     isSuperUser: boolean
 
     @Column()

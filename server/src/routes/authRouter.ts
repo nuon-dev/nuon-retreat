@@ -4,7 +4,6 @@ import {attendInfoDatabase, groupAssignmentDatabase, roomAssignmentDatabase, use
 import { User } from '../entity/user'
 import { RoomAssignment } from '../entity/roomAssignment'
 import { GroupAssignment } from '../entity/groupAssignment'
-import { getHashes } from 'crypto'
 
 const router = express.Router()
 

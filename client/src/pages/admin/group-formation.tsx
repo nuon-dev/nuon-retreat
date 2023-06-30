@@ -69,7 +69,7 @@ function GroupFormation (){
             }}
             px="4px"
         >
-            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'}){user.etc || user.inOutInfos.length > 0 ? "*" : ''}</Box>
+            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'}){user.etc || (user.inOutInfos && user.inOutInfos.length) > 0 ? "*" : ''}</Box>
             <Box>{user.groupAssignment.groupNumber}</Box>
         </Stack>)
     }
@@ -91,7 +91,7 @@ function GroupFormation (){
                 backgroundColor: user.sex === 'man' ? "lightblue" : "pink",
             }}
          >
-            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'}){user.etc || user.inOutInfos.length > 0 ? "*" : ''}</Box>
+            <Box>{user.name}({user.age}) ({user.attendType === AttendType.full ? '전' : '부'}){user.etc || (user.inOutInfos && user.inOutInfos.length) > 0 ? "*" : ''}</Box>
         </Stack>)
     }
 
