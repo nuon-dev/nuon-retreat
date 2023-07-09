@@ -191,7 +191,6 @@ export default function UserInformationForm (props: IProps) {
                 fullWidth={true}
                 defaultValue={userInformation.howToGo}
                 value={userInformation.howToGo}
-                label="이동 방법"
                 onChange={e => changeInformation("howToGo", e.target.value.toString())}
               >  
                 <MenuItem value="together">

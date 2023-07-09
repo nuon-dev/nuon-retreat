@@ -27,10 +27,10 @@ router.get('/get-all-user-name', async (req, res) => {
     res.send(userList)
 })
 
-router.post('/get-user-permision-info',async (req, res) => {
+router.post('/get-user-permission-info',async (req, res) => {
     const data = req.body
     const token = req.header('token')
-    if(false === await hasPermission(token, PermissionType.permisionManage)){
+    if(false === await hasPermission(token, PermissionType.permissionManage)){
         res.sendStatus(401)
         return
     }
@@ -66,7 +66,7 @@ router.post('/set-user-permission', async (req, res) => {
     const data = req.body
 
     const token = req.header('token')
-    if(false === await hasPermission(token, PermissionType.permisionManage)){
+    if(false === await hasPermission(token, PermissionType.permissionManage)){
         res.sendStatus(401)
         return
     }
@@ -85,16 +85,16 @@ router.post('/set-user-permission', async (req, res) => {
         return
     }
     
-    const targetPermission = user.permissions.find(permision => permision.permissionType === data.permissionType)
+    const targetPermission = user.permissions.find(permission => permission.permissionType === data.permissionType)
     if(targetPermission){
         targetPermission.have = data.have
         await permissionDatabase.save(targetPermission)
     }else{
-        const permision = new Permission()
-        permision.have = data.have
-        permision.permissionType = data.permissionType
-        permision.user = user
-        await permissionDatabase.save(permision)
+        const permission = new Permission()
+        permission.have = data.have
+        permission.permissionType = data.permissionType
+        permission.user = user
+        await permissionDatabase.save(permission)
     }
     res.send({result: 'success'})
 })

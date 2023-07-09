@@ -9,7 +9,7 @@ enum PermissionType{
     userList,
     resetPassword,
     carpooling,
-    permisionManage,
+    permissionManage,
     showRoomAssignment,
     roomManage,
     showGroupAssignment,
@@ -26,10 +26,10 @@ function PermissionManage () {
 
     useEffect(() => {
         get('/admin/get-all-user-name')
-        .then(respone => {
-            setUserList(respone)
-            if(respone.length > 0){
-                setSelectedUserId(respone[0].id)
+        .then(response => {
+            setUserList(response)
+            if(response.length > 0){
+                setSelectedUserId(response[0].id)
             }
         })
     }, [])
@@ -47,7 +47,7 @@ function PermissionManage () {
     const permissionKrString = {
         [PermissionType.admin]: '준비팀',
         [PermissionType.carpooling]: '카풀',
-        [PermissionType.permisionManage]: '권한 관리',
+        [PermissionType.permissionManage]: '권한 관리',
         [PermissionType.userList]: '사용자 목록',
         [PermissionType.showRoomAssignment]: '방배정 조회',
         [PermissionType.showGroupAssignment]: '조편성 조회',
@@ -57,10 +57,10 @@ function PermissionManage () {
     }
 
     function loadUserPermission(){
-        post('/admin/get-user-permision-info', {userId: selectedUserId})
-        .then(respone => {
+        post('/admin/get-user-permission-info', {userId: selectedUserId})
+        .then(response => {
             const data:{[key: number]: boolean}  = {}
-            respone.map((permission: {
+            response.map((permission: {
                 permissionType: number
                 have: boolean
             }) => data[permission.permissionType] = permission.have)
@@ -73,8 +73,7 @@ function PermissionManage () {
             userId: selectedUserId,
             have: event.target.value === "true",
             permissionType: key,
-        }).then(respone => {
-            console.log(respone)
+        }).then(() => {
             loadUserPermission()
         })
     }

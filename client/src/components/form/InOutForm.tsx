@@ -89,7 +89,6 @@ export default function InOutFrom ({
         </Stack>
           <Stack>
             <FormControl>
-                <InputLabel id="demo-simple-select-helper-label">이동방법</InputLabel>
                 <Select
                     fullWidth={true}
                     value={data.howToMove}

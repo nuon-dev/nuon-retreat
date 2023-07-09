@@ -16,7 +16,7 @@ export enum PermissionType{
     admin,
     userList,
     carpooling,
-    permisionManage,
+    permissionManage,
     showRoomAssignment,
     roomManage,
     showGroupAssignment,
