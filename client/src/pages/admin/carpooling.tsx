@@ -42,15 +42,15 @@ function Carpooling() {
                 position: 'absolute',
                 top: mousePoint[1] + 10,
                 left: mousePoint[0] + 10,
-                border: '1px solid black',
+                border: '1px solid #CCC',
                 borderRadius: '12px',
                 padding: '4px',
                 backgroundColor: 'white',
             }}
         >
-            {showUserInfo.name}의 정보<br/>
-            기타 : {showUserInfo.etc} <br/>
-            ({showUserInfo.phone})
+            {showUserInfo.etc}
+            <Stack height="1px" bgcolor="#DDD" my="4px"/>
+            {showUserInfo.phone}
         </Stack>)
     }
 

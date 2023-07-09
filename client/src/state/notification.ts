@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
 export const ShowNotification = atom({
-    key: "show-notifycation",
+    key: "show-notification",
     default: false
 })
 

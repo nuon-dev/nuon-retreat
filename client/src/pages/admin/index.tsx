@@ -1,8 +1,7 @@
 import { post } from "../../pages/api"
 import { useEffect, useState } from "react"
-import { Button, Stack, TextField } from "@mui/material/index"
+import { Button, Stack } from "@mui/material/index"
 import { useRouter } from "next/router"
-import { ST } from "next/dist/shared/lib/utils"
 import useKakaoHook from "kakao"
 
 function admin () {
@@ -26,19 +25,17 @@ function admin () {
         })
     }, [])
 
-    function logout(){
-        localStorage.clear()
-        router.reload()
-    }
-
     const menu = () => {
         return (
         <Stack>
             <Stack
                 margin="12px"
-                justifyContent="center"
-                alignItems="center"
+                display="flex"
                 direction="row"
+                flexWrap="wrap"
+                alignItems="center"
+                justifyContent="center"
+                gap="8px"
             >
                 <Button
                     variant="contained"
@@ -89,17 +86,6 @@ function admin () {
                     대시보드
                 </Button>
             </Stack>
-            <Stack 
-                alignContent="center"
-                padding="40px"
-            >
-                <Button
-                    onClick={logout}
-                    variant="contained"
-                >
-                    로그아웃
-                </Button>
-            </Stack>
         </Stack>)
     }
 
@@ -113,10 +99,16 @@ function admin () {
     }
 
     const loginForm = () => {
-        return (<Stack padding="6px">
-            관리자 화면
+        return (<Stack 
+            alignItems="center"
+            justifyContent="center"
+            padding="6px"
+            margin="20px"
+        >
+            준비팀 화면
         <Button
             style={{
+                marginTop: '40px',
                 backgroundColor: "#FEE500",
                 color: "#191919",
                 height: "60px",

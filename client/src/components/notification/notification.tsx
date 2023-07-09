@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import styles from './notification.module.css'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { NotificationMessage, ShowNotification } from 'state/notification'
 
 export default function Notification(){
     const [show, setShow] = useState(false)
     const [showNotification, setShowNotification] = useRecoilState(ShowNotification)
-    const [notificationMessage, setNotificationMessage] = useRecoilState(NotificationMessage)
+    const notificationMessage = useRecoilValue(NotificationMessage)
 
     useEffect(() => {
         if(showNotification){

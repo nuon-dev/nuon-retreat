@@ -47,7 +47,7 @@ function PermissionManage () {
     const permissionKrString = {
         [PermissionType.admin]: '준비팀',
         [PermissionType.carpooling]: '카풀',
-        [PermissionType.permisionManage]: '권환 관리',
+        [PermissionType.permisionManage]: '권한 관리',
         [PermissionType.userList]: '사용자 목록',
         [PermissionType.showRoomAssignment]: '방배정 조회',
         [PermissionType.showGroupAssignment]: '조편성 조회',
@@ -81,24 +81,44 @@ function PermissionManage () {
 
     return (
         <Stack>
-            관리 할 사람 선택
-            <Select 
-                value={selectedUserId}
-                onChange={onClickUser}
-            >
-                {userList.map(user => <MenuItem key={user.id} value={user.id}>{user.name}</MenuItem>)}
-            </Select>        
+            <Stack margin="8px">
+                관리 할 사람 선택
+                <Stack m="4px" />
+                <Select 
+                    value={selectedUserId}
+                    onChange={onClickUser}
+                    >
+                    {userList.map(user => <MenuItem key={user.id} value={user.id}>{user.name}</MenuItem>)}
+                </Select>        
+            </Stack>
 
-            {Object.entries(permissionKrString).map(([key, krName]) => (
-                <RadioGroup
-                    value={!!userPermission[Number(key)]}
-                    onChange={e => onChangePermission(e, Number(key))}
-                >
-                     <FormLabel>{krName}</FormLabel>
-                    <FormControlLabel value={true} control={<Radio/>} label="있음"/>
-                    <FormControlLabel value={false} control={<Radio/>} label="없음"/>
-                </RadioGroup>
-            ))}
+            <Stack 
+                display="flex"
+                flexWrap="wrap"
+                direction="row"
+            >
+                {Object.entries(permissionKrString).map(([key, krName]) => (
+                    <Stack
+                        key={key}
+                        margin="8px"
+                        style={{
+                            padding: "20px",
+                            borderRadius: '8px',
+                            border: "1px solid #ACACAC",
+                            boxShadow: '2px 2px 5px 3px #ACACAC;',
+                        }}
+                    >
+                        <RadioGroup
+                        value={!!userPermission[Number(key)]}
+                        onChange={e => onChangePermission(e, Number(key))}
+                        >
+                                <FormLabel>{krName}</FormLabel>
+                            <FormControlLabel value={true} control={<Radio/>} label="있음"/>
+                            <FormControlLabel value={false} control={<Radio/>} label="없음"/>
+                        </RadioGroup>
+                    </Stack>
+                ))}
+            </Stack>
         </Stack>
     )
 }

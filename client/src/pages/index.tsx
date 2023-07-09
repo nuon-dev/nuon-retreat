@@ -21,12 +21,9 @@ function index(){
     
         post('/auth/check-token', {
           token,
-        }).then(respone => {
-            if(respone.result === "true"){
-              const userAnswer = confirm('로그인 이력이 있습니다.\n이동하시겠습니까?')
-              if(userAnswer){
-                router.push('/edit')
-              }
+        }).then(response => {
+            if(response.result === "true"){
+              router.push('/edit')
             }
         })
       }
@@ -40,6 +37,15 @@ function index(){
         router.push('/edit')
       }
 
+     async function normalLogin() {
+      const randomId = Math.floor(Math.random() * 10000000);
+            const {token} = await post('/auth/receipt-record', {
+        kakaoId: 'normal'+randomId
+      })
+      localStorage.setItem("token", token)
+      router.push('/edit')
+     }
+
     return (
     <Stack
         style={{
@@ -51,21 +57,39 @@ function index(){
         justifyContent="center"
     >
       <Stack fontSize="24px" color="#3F3F3F">2023 새벽이슬 하계 수련회</Stack>
-      <Button
-          style={{
-            marginTop: "60vh",
-            backgroundColor: "#FEE500",
-            color: "#191919",
-            height: "50px",
-            width: "240px",
-            borderRadius: "12px",
-            fontSize: "18px",
-            fontWeight: "bold"
-          }}
-          onClick={kakaoLogin}
-      >
-          카카오로 접수하기
-      </Button>
+      <Stack style={{
+        marginTop: "60vh",
+      }}>
+        <Button
+            style={{
+              backgroundColor: "#FEE500",
+              color: "#191919",
+              height: "50px",
+              width: "240px",
+              borderRadius: "12px",
+              fontSize: "18px",
+              fontWeight: "bold"
+            }}
+            onClick={kakaoLogin}
+        >
+            카카오로 접수하기
+        </Button>
+        <Button
+            style={{
+              backgroundColor: "#DDD",
+              color: "#191919",
+              height: "50px",
+              width: "240px",
+              borderRadius: "12px",
+              fontSize: "18px",
+              fontWeight: "bold",
+              marginTop: '20px',
+            }}
+            onClick={normalLogin}
+        >
+            일반 접수하기
+        </Button>
+      </Stack>
     </Stack>
     )
 }

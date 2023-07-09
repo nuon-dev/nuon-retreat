@@ -12,6 +12,12 @@
     transition: 0.5s all;
 }
 
+@media (max-width: 600px) {
+    .notification{
+        width: 200px;
+    }
+}
+
 .notification-off {
     right: -410px;
     transition: 0.5s all;

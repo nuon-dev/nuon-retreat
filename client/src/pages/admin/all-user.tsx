@@ -5,7 +5,7 @@ import { get } from "../../pages/api";
 import { InOutInfo } from "@entity/inOutInfo";
 import { AttendType } from "../../types";
 import { useSetRecoilState } from "recoil";
-import { NotificationMessage, ShowNotification } from "state/notification";
+import { NotificationMessage } from "state/notification";
 import Router, { useRouter } from "next/router";
 
 function AllUser () {
@@ -29,7 +29,7 @@ function AllUser () {
 
     function downloadFile(){
         if(allUserList.length === 0){
-            alert('접수자가 없습니다!.')
+            setNotificationMessage('접수자가 없습니다!.')
             return
         }
 
@@ -54,19 +54,24 @@ function AllUser () {
     }
 
     return (
-        <Stack>
+        <Stack m="8px">
             <Stack 
                 direction="row" 
                 alignItems="center"
                 justifyContent="space-between"
             >
-                <span>새벽이슬 동계 수련회</span>
-                전체 사용자 목록 
+                <Stack/>
+                <Stack
+                    fontSize="20px"
+                    fontWeight="bold"
+                >
+                    전체 사용자 목록 
+                </Stack>
                 <Button 
-                    variant="outlined"
                     style={{
-                        marginLeft: '10px',
+                        margin: '8px'
                     }}
+                    variant="outlined"
                     onClick={downloadFile}
                 >엑셀로 다운로드</Button>
             </Stack>
@@ -83,13 +88,7 @@ function AllUser () {
                             나이
                         </TableCell>
                         <TableCell>
-                            전화번호
-                        </TableCell>
-                        <TableCell>
                             참석 유형
-                        </TableCell>
-                        <TableCell>
-                            선착순
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -105,16 +104,10 @@ function AllUser () {
                             <TableCell>
                                 {user.age}
                             </TableCell>
-                            <TableCell>
-                                {user.phone}
-                            </TableCell>
                             <TableCell
                             /*
                             // @ts-ignore */>
                                 {user.attendType === AttendType.full ? "전참" : "부참"}
-                            </TableCell>
-                            <TableCell>
-                                {user.firstCome ? 'Y' : 'N'}
                             </TableCell>
                         </TableRow>
                     ))}

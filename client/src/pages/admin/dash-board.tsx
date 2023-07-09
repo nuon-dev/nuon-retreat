@@ -28,6 +28,7 @@ function DashBoard() {
             <Stack>
                 <Box style={{
                     display: 'flex',
+                    flexWrap: 'wrap',
                 }}>
                     <Stack
                         fontSize="24px"
@@ -64,7 +65,7 @@ function DashBoard() {
                             boxShadow: '2px 2px 5px 3px #ACACAC;',
                         }}
                         direction="row"
-                        ><Box fontSize="28px" alignSelf="end">{(getAttendeeStatus.all / targetCount * 100).toFixed(1)}</Box> <Box pb="2px" pl="3px" alignSelf="end" fontSize="20px"> % {}</Box>
+                        ><Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">참석율</Box><Box fontSize="28px" alignSelf="end">{(getAttendeeStatus.all / targetCount * 100).toFixed(1)}</Box> <Box pb="2px" pl="3px" alignSelf="end" fontSize="20px"> % {}</Box>
                     </Stack>
                     <Stack
                         margin="8px"
@@ -77,7 +78,7 @@ function DashBoard() {
                         }}
                         direction="row"
                         >
-                            <Box color="lightblue">{getAttendeeStatus.man}</Box> <Box px="8px">/</Box> <Box color="pink">{getAttendeeStatus.woman}</Box>
+                           <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">남/여</Box> <Box color="lightblue">{getAttendeeStatus.man}</Box> <Box px="8px">/</Box> <Box color="pink">{getAttendeeStatus.woman}</Box>
                         </Stack>
                     <Stack
                         margin="8px"
@@ -90,12 +91,42 @@ function DashBoard() {
                         }}
                         direction="row"
                         >
-                            <Box color="lightblue">{(getAttendeeStatus.man / getAttendeeStatus.all * 100).toFixed(1)}</Box>% <Box px="8px">/</Box> <Box color="pink">{(getAttendeeStatus.woman / getAttendeeStatus.all * 100).toFixed(1)}</Box>%
+                            <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">성비</Box><Box color="lightblue">{(getAttendeeStatus.man / getAttendeeStatus.all * 100).toFixed(1)}</Box>% <Box px="8px">/</Box> <Box color="pink">{(getAttendeeStatus.woman / getAttendeeStatus.all * 100).toFixed(1)}</Box>%
                     </Stack>
+                    <Stack
+                        margin="8px"
+                        fontSize="24px"
+                        direction="row"
+                        style={{
+                            padding: "20px",
+                            borderRadius: '8px',
+                            border: "1px solid #ACACAC",
+                            boxShadow: '2px 2px 5px 3px #ACACAC;',
+                        }}
+                    ><Box fontSize="12px" mr="4px">전참/부참</Box>  {getAttendeeStatus.fullAttend} : {getAttendeeStatus.halfAttend}</Stack>
+                    <Stack 
+                        margin="8px"
+                        fontSize="24px"
+                        direction="row"
+                        style={{
+                            padding: "20px",
+                            borderRadius: '8px',
+                            border: "1px solid #ACACAC",
+                            boxShadow: '2px 2px 5px 3px #ACACAC;',
+                        }}
+                        ><Box fontSize="12px" mr="4px">버스 이동/카풀</Box> {getAttendeeStatus.goTogether} / {getAttendeeStatus.goCar}</Stack>
+                    <Stack
+                        margin="8px"
+                        fontSize="24px"
+                        direction="row"
+                        style={{
+                            padding: "20px",
+                            borderRadius: '8px',
+                            border: "1px solid #ACACAC",
+                            boxShadow: '2px 2px 5px 3px #ACACAC;',
+                        }}
+                        ><Box fontSize="12px" mr="4px">입금 처리 </Box> {(getAttendeeStatus.completeDeposit / getAttendeeStatus.all * 100).toFixed(1)}%</Stack>
                 </Box>
-                <Stack>전참/부참 : {getAttendeeStatus.fullAttend} / {getAttendeeStatus.halfAttend}</Stack>
-                <Stack>버스로 이동/카풀 및 부참 : {getAttendeeStatus.goTogether} / {getAttendeeStatus.goCar}</Stack>
-                <Stack>입금 처리/미완 : {getAttendeeStatus.completDeposit} / {getAttendeeStatus.all - getAttendeeStatus.completDeposit}</Stack>
             </Stack>
         )
     }
@@ -108,7 +139,7 @@ function DashBoard() {
             height: windowSize.height / 2 - 20
         }
 
-        const GRAPH_SIZE = 14
+        const GRAPH_SIZE = 10
         const toDay = new Date()
         const last30Days = new Array(GRAPH_SIZE).fill(0).map(_ => new Date())
         last30Days.forEach((day, index) => day.setDate(toDay.getDate() + (index - GRAPH_SIZE + 1)) )
@@ -124,15 +155,15 @@ function DashBoard() {
             }
         })
 
-        const WEIGHT = 1
+        const WEIGHT = 5
         const STEP = 5
 
         return (<Stack>
             <Stack>일별 등록자 수</Stack>
             <svg height={elementSize.height}>
                 <rect fillOpacity="0" width={elementSize.width} height={elementSize.height} stroke="black" strokeWidth="1"/>
-                {xAxis.map((xValue, index) => <text x={elementSize.width / xAxis.length * index + STEP} y={elementSize.height - STEP} fontSize="12px">{xValue}</text>)}
-                {xAxis.map((xValue, index) => <rect x={elementSize.width / xAxis.length * index + STEP + 5} y={elementSize.height - timeData[xValue] * WEIGHT - 20} width="10" height={timeData[xValue] * WEIGHT} />)}
+                {xAxis.map((xValue, index) => <text x={elementSize.width / xAxis.length * index} y={elementSize.height - STEP} fontSize="12px">{xValue}</text>)}
+                {xAxis.map((xValue, index) => <rect x={elementSize.width / xAxis.length * index + 3} y={elementSize.height - timeData[xValue] * WEIGHT - 20} width="10" height={timeData[xValue] * WEIGHT} />)}
                 {xAxis.map((xValue, index) => <text x={elementSize.width / xAxis.length * index + 5} y={elementSize.height - timeData[xValue] * WEIGHT - 25} fontSize="12px">{timeData[xValue]}</text>)}
             </svg>
         </Stack>)
@@ -158,5 +189,7 @@ function DashBoard() {
         </Stack>
     )
 }
+
+
 
 export default DashBoard

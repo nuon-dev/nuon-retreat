@@ -11,8 +11,10 @@ import { post } from "../../pages/api";
 import { useEffect, useState } from "react";
 import { AttendType } from "@entity/types";
 import InOutFrom from "./InOutForm";
+import { NotificationMessage } from "state/notification";
+import { useSetRecoilState } from "recoil";
 interface IProps {
-    user?: User
+    user: User
     inOutData: Array<InOutInfo>
 }
 
@@ -20,12 +22,15 @@ export default function UserInformationForm (props: IProps) {
     const [userInformation, setUserInformation] = useState(new User())
     const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
     const [showItems, setShowItems] = useState(false)
+    const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
     useEffect(() => {
       setUserInformation(props.user || {} as User)
       setInOutData(props.inOutData || {} as Array<InOutInfo>)
-      setShowItems(true)
-    },[])
+      if(props.user && props.user.id){
+        setShowItems(true)
+      }
+    },[props.user])
 
     const changeInformation = (type: string, data: string) => {
       setUserInformation({...userInformation, [type]: data})
@@ -33,26 +38,26 @@ export default function UserInformationForm (props: IProps) {
 
     const submit = async () => {
         if(!userInformation.name){
-          alert('이름을 입력해주세요.')
+          setNotificationMessage('이름을 입력해주세요.')
           return
         }else if(!userInformation.age){
-          alert('나이를 입력해주세요.')
+          setNotificationMessage('나이를 입력해주세요.')
           return
         }else if(!userInformation.attendType){
-          alert('전참 여부를 선택해주세요.')
+          setNotificationMessage('전참 여부를 선택해주세요.')
           return
         }else if(!userInformation.sex){
-          alert('성별을 선택해주세요.')
+          setNotificationMessage('성별을 선택해주세요.')
           return
         }else if(!userInformation.phone){
-          alert('전화번호를 입력해주세요.')
+          setNotificationMessage('전화번호를 입력해주세요.')
           return
         }else if(userInformation.attendType === AttendType.full && !userInformation.howToGo){
-          alert('이동 방법을 선택해주세요.')
+          setNotificationMessage('이동 방법을 선택해주세요.')
           return
         }
 
-        const url = userInformation.id ? '/auth/edit-user' : '/auth/join'
+        const url = '/auth/edit-user'
 
         const saveResult = await post(url, userInformation)
         let attendTimeResult;
@@ -67,72 +72,70 @@ export default function UserInformationForm (props: IProps) {
           if(saveResult.result === "success"){
             localStorage.setItem('token', saveResult.token)
           }else{
-            alert('접수중 오류가 발생하였습니다.\n다시 시도해주세요.')
+            setNotificationMessage('접수중 오류가 발생하였습니다.\n다시 시도해주세요.')
             return
           }
 
           if(attendTimeResult && attendTimeResult.result !== "success"){
-            alert('참가 일정 내역 저장중에 문제가 발생하였습니다.\n시간, 장소. 이동방법을 모두 입력해주세요.')
+            setNotificationMessage('참가 일정 내역 저장중에 문제가 발생하였습니다.\n시간, 장소. 이동방법을 모두 입력해주세요.')
             return
           }
 
-          if(userInformation.id){
-            alert(`저장이 되었습니다.`)
-          }else{
-            alert(`접수에 성공하였습니다!.\n선착순에 ${saveResult.firstCome ? "성공" : "실패"}하셨습니다!\n페이지를 닫으셔도 됩니다.`)
-          }
+          setNotificationMessage(`저장이 되었습니다.`)
           location.reload()
     }
 
-    const validation = {
-      name: userInformation?.name?.length === 0,
-      password: userInformation?.password?.length === 0,
+    function getInputGap(){
+      return <Stack margin="6px" />
+    }
+
+    function getLabelGap(){
+      return <Stack margin="2px" />
     }
 
     return (<Stack
         padding="6px"
+        minWidth="360px"
       >
-        <Stack mt="12px">
-          <Stack 
-            width="80px"
-            justifyContent="center"
-            my="2px"
-          >
+        <Stack>
+          {getInputGap()}
+          <Stack>
             이름
           </Stack>
+          {getLabelGap()}
           <TextField
               fullWidth={true}
               value={userInformation.name}
-              error={validation.name}
-              helperText={validation.name && "이름을 입력하세요"}
+              placeholder="이름을 입력하세요."
               onChange={e => changeInformation("name", e.target.value)}
             />
         </Stack>
-        <Stack mt="6px">
+        {getInputGap()}
+        <Stack>
           <Stack 
             width="80px"
             justifyContent="center"
           >
             나이
           </Stack>
+          {getLabelGap()}
           <TextField
             type="number"
             fullWidth={true}
+            placeholder="나이를 입력하세요."
             value={userInformation.age}
             onChange={e => changeInformation("age", e.target.value)}
           />
           </Stack>
-        <Stack margin="6px"/>
-        <Stack direction="row">
+          {getInputGap()}
+          <Stack>
           <Stack 
             width="80px"
             justifyContent="center"
-            style={{
-              marginLeft: "12px"
-            }}
           >
             성별
           </Stack>
+          {getLabelGap()}
           <FormControl
             fullWidth={true}>
             {// @ts-ignore 
@@ -140,10 +143,8 @@ export default function UserInformationForm (props: IProps) {
               <Select
                 value={userInformation.sex}
                 defaultValue={userInformation.sex}
+                placeholder="성별을 선택하세요."
                 onChange={e => changeInformation("sex", e.target.value)}
-                sx={{
-                  mt: '12px'
-                }}
                 >
                 <MenuItem value={'man'}>
                   남
@@ -154,18 +155,20 @@ export default function UserInformationForm (props: IProps) {
               </Select>}
           </FormControl>
         </Stack>
-        <Stack margin="6px"/>
+        {getInputGap()}
         <Stack>
           {// @ts-ignore 
             showItems &&
-          <Stack direction="row" marginTop="10px">
-            <Stack minWidth="100px" justifyContent="center" margin="5px">
+          <Stack >
+            <Stack minWidth="100px" justifyContent="center">
               전참 / 부참
             </Stack>
+            {getLabelGap()}
             <Select
               fullWidth={true}
-              defaultValue={userInformation.attendType}
               value={userInformation.attendType}
+              defaultValue={userInformation.attendType}
+              placeholder="참여 시간을 선택하세요."
               onChange={e => changeInformation("attendType", e.target.value.toString())}
             >
               <MenuItem value={AttendType.full}>
@@ -176,13 +179,14 @@ export default function UserInformationForm (props: IProps) {
               </MenuItem>
             </Select>
           </Stack>}
-        <Stack margin="6px"/>
           {// @ts-ignore 
             userInformation.attendType === AttendType.full &&
-            <Stack direction="row">
-              <Stack minWidth="100px" justifyContent="center" margin="5px">
+            <Stack ml="10px">
+              {getInputGap()}
+              <Stack minWidth="100px" justifyContent="center" >
                 이동 방법
               </Stack>
+              {getLabelGap()}
               <Select 
                 fullWidth={true}
                 defaultValue={userInformation.howToGo}
@@ -201,48 +205,48 @@ export default function UserInformationForm (props: IProps) {
           }
           {// @ts-ignore 
             (userInformation.howToGo === "car" || userInformation.attendType === AttendType.half )&&
-            <InOutFrom
-              setInOutData={setInOutData}
-              inOutData={inOutData}
-            />
+            <Stack ml="10px">
+              <InOutFrom
+                setInOutData={setInOutData}
+                inOutData={inOutData}
+              />
+            </Stack>
           }
         </Stack>
-        <Stack margin="12px"/>
-
-        <Stack direction="row">
+        {getInputGap()}
+        <Stack>
           <Stack 
             width="80px"
             justifyContent="center"
-            style={{
-              marginLeft: "12px"
-            }}
           >
             전화번호
           </Stack>
+          {getLabelGap()}
           <TextField
             fullWidth={true}
             value={userInformation.phone}
+            placeholder="전화번호를 입력하세요."
             onChange={e => changeInformation("phone", e.target.value)}
             />
         </Stack>
-        <Stack margin="6px"/>
-        <Stack direction="row">
+        {getInputGap()}
+        <Stack >
           <Stack 
             width="80px"
             justifyContent="center"
-            style={{
-              marginLeft: "12px"
-            }}
           >
             기타사항
           </Stack>
+          {getLabelGap()}
           <TextField
             fullWidth={true}
             value={userInformation.etc}
+            placeholder="기타사항이 있을 경우 입력하세요."
             onChange={e => changeInformation("etc", e.target.value)}
           />
         </Stack>
-
+        {getInputGap()}
+          
         <Stack marginTop="10px">
           <Button
               variant="contained"
@@ -250,17 +254,6 @@ export default function UserInformationForm (props: IProps) {
             >
                 저장
             </Button> 
-        </Stack>
-        <Stack alignItems="center" textAlign="center" marginTop="10px">
-          KB국민은행 63290201441173 (윤대영)
-          <br/>전참 5만 / 부참 3만 / 선착 4만
-          <br/>접수 후 3시간 이내로 입금해주세요!
-          <br/>
-          <br/>선착순 80명 4만원
-          <br/>(신청하시면 선착순 성공 여부가 뜹니다.
-          <br/>못 보셨을 경우 정보 수정으로 들어가주세요.)
-          <br/>
-          <br/>궁금한 점은 순장에게 문의하세요
         </Stack>
     </Stack>)
 }

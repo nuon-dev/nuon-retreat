@@ -2,12 +2,10 @@ import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import { post } from "./api";
 import { User } from "@entity/user"
-import { Button, TextField } from "@mui/material";
 import UserInformationForm from "../components/form/UserInformationForm";
 import { InOutInfo } from "@entity/inOutInfo";
 
 export default function Edit () {
-    const [isLogin, setIsLogin] = useState(false) 
     const [userData, setUserData] = useState({} as User)
     const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
     
@@ -21,51 +19,42 @@ export default function Edit () {
     const checkToken = (token: string) => {
         post('/auth/check-token', {
             token,
-        }).then(respone => {
-            if(respone.result === "true"){
-                setIsLogin(true)
-                setUserData(respone.userData)
-                setInOutData(respone.inoutInfoList)
+        }).then(response => {
+            if(response.result === "true"){
+                setUserData(response.userData)
+                setInOutData(response.inoutInfoList)
             }
         })
     }
     
-    function logout(){
-        setIsLogin(false)
-    }
-
     return (
-    <Stack margin="4px">
-        {isLogin && 
-        <Stack>
-            <Stack 
-                justifyContent="center"
-                alignItems="center"
+    <Stack margin="8px">
+        <Stack
+            alignItems="center"
+            justifyContent="center"
+        >
+            {userData.deposit ? <Stack>
+                입금 처리가 {userData.deposit ? '완료 되었습' : '진행 중입'}니다.
+                </Stack>:
+                <Stack
+                maxWidth="400px"
                 padding="5px"
-                border="1px solid black"
-                borderRadius="5px"
-            >
-                선착순에 {userData.firstCome ? '성공' : '실패'}하셨습니다!.
-            </Stack>
-            <Stack 
-                justifyContent="center"
-                alignItems="center"
-                padding="5px"
-                border="1px solid black"
-                borderRadius="5px"
                 marginTop="10px"
-            >
-                 입금 처리가 {userData.deposit ? '완료 되었습' : '진행 중입'}니다.
-            </Stack>
+                bgcolor="#03C0A4"
+                borderRadius="5px"
+                textAlign="center"
+                alignItems="center"
+                justifyContent="center"
+                border="1px solid 008000"
+                >
+                    <Stack fontSize="20px" fontWeight="bold" color="whitesmoke">수련회비 안내</Stack>
+                    <Stack color="white" mt="6px"> 3333276342153 카카오뱅크
+                    <br/>전참 5만 / 금요일 저녁 이후 참석 3만</Stack>
+                </Stack>}
             <UserInformationForm
                 user={userData}
                 inOutData={inOutData}
              />
-            <Stack>
-                <Button onClick={logout}>
-                    다른 정보 수정하기
-                </Button>
-            </Stack>
-        </Stack>}
+        </Stack>
     </Stack>)
 }
