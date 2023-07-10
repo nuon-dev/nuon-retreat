@@ -23,7 +23,7 @@ function DashBoard() {
 
 
     function attendeeStatus() {
-        const targetCount = 250
+        const targetCount = 300
         return(
             <Stack>
                 <Box style={{

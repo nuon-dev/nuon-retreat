@@ -45,49 +45,81 @@ export default function InOutFrom ({
         <Stack  
             marginTop="10px"
             style={{
-                border: '1px solid black',
-                borderRadius: '12px',
+                border: '1px solid #AAA',
+                borderRadius: '4px',
+                padding: "4px"
             }}
         >
-            <Stack direction="row">
+            <Stack>
+                <Stack fontSize="12px" p="6px">
+                    날짜 선택
+                </Stack>
                 <Select
                     value={data.day}
                     onChange={e => onChangeInformation("day", e.target.value.toString(), index)}
-                >
+                    >
                     <MenuItem value={Days.firstDay}>
-                        17(금)
+                        18(금)
                     </MenuItem>
                     <MenuItem value={Days.secondDay}>
-                        18(토)
+                        19(토)
                     </MenuItem>
                     <MenuItem value={Days.thirdDay}>
-                        19(일)
+                        20(일)
                     </MenuItem>
                 </Select>
+                <Stack fontSize="12px" p="6px">
+                    출입
+                </Stack>
                 <Select
                     value={data.inOutType}
                     onChange={e => onChangeInformation("inOutType", e.target.value.toString(), index)}
                 >
                     <MenuItem value={InOutType.IN}>
-                        In
+                        수련회장 들어가기
                     </MenuItem>
                     <MenuItem value={InOutType.OUT}>
-                        Out
+                        수련회장에서 나오기
                     </MenuItem>
                 </Select>
+                <Stack fontSize="12px" p="6px">
+                    시간
+                </Stack>
                 <TextField 
-                    label="시간"
                     value={data.time}
                     onChange={e => onChangeInformation("time", e.target.value, index)}
                 />
-                <TextField
-                    label="장소"
+                <Stack fontSize="12px" p="6px">
+                    장소
+                </Stack>
+                <Select
                     value={data.position}
-                    onChange={e => onChangeInformation("position", e.target.value, index)}
-                />
-
+                    onChange={e => onChangeInformation("position", e.target.value.toString(), index)}
+                >
+                    <MenuItem value={"교회"}>
+                        교회
+                    </MenuItem>
+                    <MenuItem value={"아주대"}>
+                        아주대
+                    </MenuItem>
+                    <MenuItem value={"수원역"}>
+                        수원역
+                    </MenuItem>
+                    <MenuItem value={"광교"}>
+                        광교
+                    </MenuItem>
+                    <MenuItem value={"여주역"}>
+                        여주역(수련회장)
+                    </MenuItem>
+                    <MenuItem value={"기타지역"}>
+                        기타지역
+                    </MenuItem>
+                </Select>
         </Stack>
           <Stack>
+            <Stack fontSize="12px" p="6px">
+                이동방법
+            </Stack>
             <FormControl>
                 <Select
                     fullWidth={true}
@@ -101,10 +133,10 @@ export default function InOutFrom ({
                         자차 이동(카풀 불가)
                     </MenuItem>
                     <MenuItem value={MoveType.rideCar}>
-                        카풀 이동
+                        카풀 요청
                     </MenuItem>
                     <MenuItem value={MoveType.goAlone}>
-                        대중교통
+                        대중교통 (여주역)
                     </MenuItem>
                 </Select>
             </FormControl>

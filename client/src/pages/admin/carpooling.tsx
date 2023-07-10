@@ -55,7 +55,6 @@ function Carpooling() {
     }
 
     async function setCar(car: InOutInfo){
-        console.log(car)
         selectedInfo.rideCarInfo = car
         await post('/admin/set-car', {
             inOutInfo: selectedInfo

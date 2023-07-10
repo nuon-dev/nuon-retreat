@@ -2,6 +2,7 @@ import express from 'express'
 import { PermissionType, AttendType } from "../../entity/types"
 import { attendInfoDatabase, userDatabase } from "../../model/dataSource"
 import { hasPermission } from "../../util"
+import { InOutInfo } from '../../entity/inOutInfo'
 
 const router = express.Router()
 
@@ -41,7 +42,12 @@ router.post('/set-car', async (req, res) => {
     }
 
     const data = req.body
-    const inOutInfo = data.inOutInfo
+    const inOutInfo = data.inOutInfo as InOutInfo
+
+    if(inOutInfo.day === undefined || inOutInfo.day === null){
+        res.send({})
+        return
+    }
 
     await attendInfoDatabase.save(inOutInfo)
     res.send({result: "success"})

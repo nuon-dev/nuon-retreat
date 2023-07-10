@@ -20,9 +20,11 @@ router.get('/get-room-assignment', async (req, res) => {
             sex: true,
             etc: true,
             attendType: true,
+            inOutInfos: true
         },
         relations: {
             roomAssignment: true,
+            inOutInfos: true
         }
     })
 

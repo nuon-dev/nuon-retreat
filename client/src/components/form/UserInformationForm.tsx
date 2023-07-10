@@ -13,6 +13,7 @@ import { AttendType } from "@entity/types";
 import InOutFrom from "./InOutForm";
 import { NotificationMessage } from "state/notification";
 import { useSetRecoilState } from "recoil";
+import { HowToGo, MoveType } from "types";
 interface IProps {
     user: User
     inOutData: Array<InOutInfo>
@@ -62,7 +63,7 @@ export default function UserInformationForm (props: IProps) {
         const saveResult = await post(url, userInformation)
         let attendTimeResult;
           // @ts-ignore 
-          if(inOutData.length > 0){
+          if(inOutData.length > 0 && userInformation.howToGo !== HowToGo.together){
             attendTimeResult = await post('/info/save-attend-time', {
               userId: saveResult.userId,
               inOutData,
@@ -193,17 +194,17 @@ export default function UserInformationForm (props: IProps) {
                 value={userInformation.howToGo}
                 onChange={e => changeInformation("howToGo", e.target.value.toString())}
               >  
-                <MenuItem value="together">
+                <MenuItem value={HowToGo.together.toString()}>
                   교회 버스로만 이동
                 </MenuItem>
-                <MenuItem value="car">
+                <MenuItem value={HowToGo.car.toString()}>
                   기타 (카풀 이용 또는 제공)
                 </MenuItem>
               </Select>
             </Stack>
           }
           {// @ts-ignore 
-            (userInformation.howToGo === "car" || userInformation.attendType === AttendType.half )&&
+            (userInformation.howToGo === HowToGo.car.toString() || userInformation.attendType === AttendType.half )&&
             <Stack ml="10px">
               <InOutFrom
                 setInOutData={setInOutData}

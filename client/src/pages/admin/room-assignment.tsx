@@ -105,19 +105,7 @@ function RoomAssingment (){
     function setModal(user: User){
         setIsShowUserInfo(true)
         setShowUserInfo(user)
-        
-        if(userAttendInfoCache[user.id]){
-            setUserAttendInfo(userAttendInfoCache[user.id])
-            return
-        }
-
-        post('/admin/get-user-info', {
-            userId: user.id
-        }).then((data) => {
-            setUserAttendInfo(data.attendInfo)
-            userAttendInfoCache[user.id] = data.attendInfo
-            setUserAttendInfoCache(userAttendInfoCache)
-        })
+        setUserAttendInfo(user.inOutInfos)
     }
 
     function userRoomRow(user: User){

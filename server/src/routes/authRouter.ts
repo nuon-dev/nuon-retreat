@@ -4,13 +4,41 @@ import {attendInfoDatabase, groupAssignmentDatabase, roomAssignmentDatabase, use
 import { User } from '../entity/user'
 import { RoomAssignment } from '../entity/roomAssignment'
 import { GroupAssignment } from '../entity/groupAssignment'
+import { HowToGo } from '../entity/types'
 
 const router = express.Router()
 
 router.post('/edit-user', async (req, res) => {
-    const user = req.body
+    const user = req.body as User
 
-    await userDatabase.save(user as User)
+    const foundUser = await userDatabase.save(user)
+
+    if(user.howToGo === HowToGo.together){ 
+        const infoList = await attendInfoDatabase.find(
+            {
+                relations: {
+                    rideCarInfo: true,
+                    user: true,
+                },
+                where: {
+                    rideCarInfo: {
+                        user: {
+                            id: foundUser.id
+                        }
+                    }
+                }
+            }
+        )
+        const outPromise = infoList.map(info => {
+            info.rideCarInfo = null
+            return attendInfoDatabase.save(info)
+        })
+        await Promise.all(outPromise)
+        await attendInfoDatabase.delete({
+            user: foundUser
+        })
+    }
+
     res.send({result: 'success', userId: user.id, token: user.token})
 })
 

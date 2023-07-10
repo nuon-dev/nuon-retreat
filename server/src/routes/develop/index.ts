@@ -2,7 +2,7 @@
 import express, { Router } from "express";
 
 import { User } from "../../entity/user";
-import { AttendType } from "../../entity/types";
+import { AttendType, HowToGo } from "../../entity/types";
 import { attendInfoDatabase, groupAssignmentDatabase, permissionDatabase, roomAssignmentDatabase, userDatabase } from "../../model/dataSource";
 import { InOutInfo } from "../../entity/inOutInfo";
 import { RoomAssignment } from "../../entity/roomAssignment";
@@ -41,7 +41,7 @@ router.post('/insert-data', async (req, res) => {
             user.token = row[10]
             user.expire = new Date(row[11])
             user.isCancell = row[12] === 'true'
-            user.howToGo = row[13]
+            user.howToGo = row[13].toString() as HowToGo
             user.isSuperUser = row[14] === 'true'
             user.createAt = new Date(row[15])
             user.roomAssignment = roomAssignment

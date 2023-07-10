@@ -20,9 +20,11 @@ router.get('/get-group-formation', async (req, res) => {
             sex: true,
             etc: true,
             attendType: true,
+            inOutInfos: true,
         },
         relations: {
             groupAssignment: true,
+            inOutInfos: true,
         }
     })
 

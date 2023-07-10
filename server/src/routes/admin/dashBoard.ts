@@ -1,6 +1,5 @@
 import express from "express";
-import { hasPermission } from "../../util";
-import { AttendType, PermissionType } from "../../entity/types";
+import { AttendType, HowToGo } from "../../entity/types";
 import { userDatabase } from "../../model/dataSource";
 import { IsNull, Not } from "typeorm";
 
@@ -13,8 +12,8 @@ router.get('/get-attendee-status', async (req, res) => {
     const countOfWoman = await userDatabase.count({where: {sex: 'woman'}})
     const countOfFullAttend = await userDatabase.count({where: {attendType: AttendType.full}})
     const countOfHalfAttend = await userDatabase.count({where: {attendType: AttendType.half}})
-    const countOfGoTogether = await userDatabase.count({where: { howToGo: 'together', attendType: AttendType.full }})
-    const countOfGoCar = await userDatabase.count({where: { howToGo: 'car' }})
+    const countOfGoTogether = await userDatabase.count({where: { howToGo: HowToGo.together, attendType: AttendType.full }})
+    const countOfGoCar = await userDatabase.count({where: { howToGo: HowToGo.car }})
     const countOfCompleteDeposit = await userDatabase.count({where: { deposit: true }})
 
     res.send({

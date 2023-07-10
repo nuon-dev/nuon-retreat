@@ -3,6 +3,11 @@ export const enum AttendType{
     half = 'half',
 }
 
+export const enum HowToGo {
+    together = '0',
+    car = '1',
+}
+
 export const enum MoveType {
     together,
     driveCarAlone,

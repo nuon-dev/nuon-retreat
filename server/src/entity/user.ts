@@ -3,7 +3,7 @@ import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
-import { AttendType } from "./types"
+import { AttendType, HowToGo } from "./types"
 
 @Entity()
 export class User {
@@ -51,7 +51,7 @@ export class User {
     @Column({
         nullable: true
     })
-    howToGo: string
+    howToGo: HowToGo
 
     @Column({nullable: true, default: 0})
     isSuperUser: boolean
