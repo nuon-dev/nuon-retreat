@@ -28,7 +28,7 @@ router.get('/get-group-formation', async (req, res) => {
         }
     })
 
-    res.send(userList)
+    res.send(userList.filter(user => user.name && user.name.length > 0))
 })
 
 router.post('/set-group', async (req, res) => {

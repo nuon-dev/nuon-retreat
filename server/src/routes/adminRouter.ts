@@ -58,7 +58,7 @@ router.get('/get-all-user',  async (req, res) => {
         return
     }
     
-    return res.send(await userDatabase.find())
+    return res.send((await userDatabase.find()).filter(user => user.name && user.name.length > 0))
 })
 
 

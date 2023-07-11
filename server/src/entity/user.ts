@@ -32,10 +32,7 @@ export class User {
         nullable: true,
     })
     etc?: string
-
-    @Column({nullable: true, default: 0})
-    firstCome: boolean
-
+    
     @Column({nullable: true, default: 0})
     deposit: boolean
 

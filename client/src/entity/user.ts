@@ -13,7 +13,6 @@ export class User {
     phone: string
     attendType: AttendType
     etc?: string
-    firstCome: boolean
     deposit: boolean
     token: string
     expire: Date

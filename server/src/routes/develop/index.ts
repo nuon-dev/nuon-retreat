@@ -36,14 +36,13 @@ router.post('/insert-data', async (req, res) => {
             user.phone = row[5]
             user.attendType = row[6] as AttendType
             user.etc = row[7]
-            user.firstCome = row[8] === 'true'
-            user.deposit = row[9] === 'true'
-            user.token = row[10]
-            user.expire = new Date(row[11])
-            user.isCancell = row[12] === 'true'
-            user.howToGo = row[13].toString() as HowToGo
-            user.isSuperUser = row[14] === 'true'
-            user.createAt = new Date(row[15])
+            user.deposit = row[8] === 'true'
+            user.token = row[9]
+            user.expire = new Date(row[10])
+            user.isCancell = row[11] === 'true'
+            user.howToGo = row[12].toString() as HowToGo
+            user.isSuperUser = row[13] === 'true'
+            user.createAt = new Date(row[14])
             user.roomAssignment = roomAssignment
             user.groupAssignment = groupAssignment
 
@@ -66,7 +65,6 @@ router.get('/remove-duplicated-user-data', async (req, res) => {
         delete cloneUser.token
         delete cloneUser.createAt
         delete cloneUser.expire
-        delete cloneUser.firstCome
         const result = await userDatabase.countBy(cloneUser)
         if(result > 1){
             const dubplList = await userDatabase.findBy(cloneUser)

@@ -5,9 +5,14 @@ import { useEffect, useState } from "react";
 import { Stack } from "@mui/system";
 import { Box, MenuItem, Select } from "@mui/material";
 import { User } from "@entity/user";
+import { useRouter } from "next/router";
+import { useSetRecoilState } from "recoil";
+import { NotificationMessage } from "state/notification";
 
 
 function Carpooling() {
+    const router = useRouter()
+    const setNotificationMessage = useSetRecoilState(NotificationMessage)
     const [carList, setCarList] = useState([] as InOutInfo[])
     const [rideUserList, setRideUserList] = useState([] as InOutInfo[])
     const [selectedInfo, setSelectedInfo] = useState({} as InOutInfo)
@@ -74,12 +79,22 @@ function Carpooling() {
         get('/admin/get-car-info')
         .then((data: InOutInfo[]) => {
             // @ts-ignore
+            if(data.error){
+                router.push('/admin')
+                setNotificationMessage("권한이 없습니다.")
+                return
+            }
+
+            // @ts-ignore
             const cars = data.filter(info => info.howToMove === MoveType.driveCarWithPerson)
             setCarList(cars)
             // @ts-ignore
             const rideUsers = data.filter(info => info.howToMove === MoveType.rideCar && !info.rideCarInfo)
             setRideUserList(rideUsers)
-        });
+        })
+        .catch(response => {
+            console.log(response)
+        })
     }
 
     function setModal(user: User){
