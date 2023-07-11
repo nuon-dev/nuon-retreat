@@ -65,9 +65,6 @@ function DepositCheck (){
                             참석 유형
                         </TableCell>
                         <TableCell>
-                            선착 유무
-                        </TableCell>
-                        <TableCell>
                             접수 일자
                         </TableCell>
                         <TableCell>
@@ -93,9 +90,6 @@ function DepositCheck (){
                             /*
                             // @ts-ignore */>
                                 {user.attendType === AttendType.full ? '전참' : '부참'}
-                            </TableCell>
-                            <TableCell>
-                                {user.firstCome ? 'Y' : 'N'}
                             </TableCell>
                             <TableCell>
                                 {`${createDate.getFullYear()}-${createDate.getMonth()+1}-${createDate.getDate()} ${createDate.getHours()}:${createDate.getMinutes()}:${createDate.getSeconds()}`}

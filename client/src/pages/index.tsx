@@ -51,7 +51,7 @@ function index(){
         style={{
             height: '100vh',
             backgroundImage: 'url(/main_bg.png)',
-            backgroundSize: '100%',
+            backgroundSize: 'cover',
         }}
         alignItems="center"
         justifyContent="center"
