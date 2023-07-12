@@ -2,22 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react"
 import { get, post } from "../../pages/api";
 import { User } from '@entity/user'
 import { FormControlLabel, FormLabel, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Stack } from "@mui/material";
-
-enum PermissionType{
-    superUser,
-    admin,
-    userList,
-    resetPassword,
-    carpooling,
-    permissionManage,
-    showRoomAssignment,
-    roomManage,
-    showGroupAssignment,
-    groupManage,
-    dashBoard,
-    deposit,
-}
-
+import { PermissionType } from "types";
 
 function PermissionManage () {
     const [userList, setUserList] = useState([] as Array<User>)

@@ -20,13 +20,14 @@ export enum PermissionType{
     superUser,
     admin,
     userList,
-    resetPassword,
     carpooling,
     permissionManage,
     showRoomAssignment,
     roomManage,
     showGroupAssignment,
     groupManage,
+    dashBoard,
+    deposit,
 }
 
 export enum Days {
