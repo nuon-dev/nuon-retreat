@@ -5,13 +5,14 @@ import { get } from "../../pages/api";
 import { InOutInfo } from "@entity/inOutInfo";
 import { AttendType } from "../../types";
 import { useSetRecoilState } from "recoil";
-import { NotificationMessage } from "state/notification";
+import { NotificationMessage, ShowNotification } from "state/notification";
 import Router, { useRouter } from "next/router";
 
 function AllUser () {
     const router = useRouter()
     const [allUserList, setAllUserList] = useState<Array<User>>([])
     const setNotificationMessage = useSetRecoilState(NotificationMessage)
+    const setShowNotification = useSetRecoilState(ShowNotification)
 
     useEffect(() => {
         (async () => {
@@ -19,6 +20,7 @@ function AllUser () {
             if(list.error){
                 router.push('/admin')
                 setNotificationMessage("권한이 없습니다.")
+                setShowNotification(true)
                 return
             }
             if(list){
@@ -30,6 +32,7 @@ function AllUser () {
     function downloadFile(){
         if(allUserList.length === 0){
             setNotificationMessage('접수자가 없습니다!.')
+            setShowNotification(true)
             return
         }
 
