@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styles from './notification.module.css'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { NotificationMessage, ShowNotification } from 'state/notification'
+import { useRecoilState } from 'recoil'
+import { NotificationMessage } from 'state/notification'
 
 export default function Notification(){
     const [lastMessageNumber, setLastMessageNumber] = useState(0)

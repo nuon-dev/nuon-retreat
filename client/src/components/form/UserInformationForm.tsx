@@ -11,7 +11,7 @@ import { post } from "../../pages/api";
 import { useEffect, useState } from "react";
 import { AttendType } from "@entity/types";
 import InOutFrom from "./InOutForm";
-import { NotificationMessage, ShowNotification } from "state/notification";
+import { NotificationMessage } from "state/notification";
 import { useSetRecoilState } from "recoil";
 import { HowToGo, MoveType } from "types";
 interface IProps {
@@ -24,7 +24,6 @@ export default function UserInformationForm (props: IProps) {
     const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
     const [showItems, setShowItems] = useState(false)
     const setNotificationMessage = useSetRecoilState(NotificationMessage)
-    const setShowNotification = useSetRecoilState(ShowNotification)
 
     useEffect(() => {
       setUserInformation(props.user || {} as User)
@@ -41,27 +40,21 @@ export default function UserInformationForm (props: IProps) {
     const submit = async () => {
         if(!userInformation.name){
           setNotificationMessage('이름을 입력해주세요.')
-          setShowNotification(true)
           return
         }else if(!userInformation.age){
           setNotificationMessage('나이를 입력해주세요.')
-          setShowNotification(true)
           return
         }else if(!userInformation.attendType){
           setNotificationMessage('전참 여부를 선택해주세요.')
-          setShowNotification(true)
           return
         }else if(!userInformation.sex){
           setNotificationMessage('성별을 선택해주세요.')
-          setShowNotification(true)
           return
         }else if(!userInformation.phone){
           setNotificationMessage('전화번호를 입력해주세요.')
-          setShowNotification(true)
           return
         }else if(userInformation.attendType === AttendType.full && !userInformation.howToGo){
           setNotificationMessage('이동 방법을 선택해주세요.')
-          setShowNotification(true)
           return
         }
 
@@ -81,17 +74,14 @@ export default function UserInformationForm (props: IProps) {
             localStorage.setItem('token', saveResult.token)
           }else{
             setNotificationMessage('접수중 오류가 발생하였습니다.\n다시 시도해주세요.')
-            setShowNotification(true)
             return
           }
 
           if(attendTimeResult && attendTimeResult.result !== "success"){
             setNotificationMessage('참가 일정 내역 저장중에 문제가 발생하였습니다.\n시간, 장소. 이동방법을 모두 입력해주세요.')
-            setShowNotification(true)
             return
           }
           setNotificationMessage(`신청 내역이 저장이 되었습니다.`)
-          setShowNotification(true)
     }
 
     function getInputGap(){

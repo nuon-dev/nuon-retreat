@@ -4,7 +4,7 @@ import {attendInfoDatabase, groupAssignmentDatabase, roomAssignmentDatabase, use
 import { User } from '../entity/user'
 import { RoomAssignment } from '../entity/roomAssignment'
 import { GroupAssignment } from '../entity/groupAssignment'
-import { HowToGo } from '../entity/types'
+import { AttendType, HowToGo } from '../entity/types'
 
 const router = express.Router()
 
@@ -105,6 +105,8 @@ router.post("/receipt-record", async (req, res) => {
         createUser.createAt = new Date()
         createUser.roomAssignment = roomAssignment
         createUser.groupAssignment = groupAssignment
+        createUser.sex = 'man'
+        createUser.attendType = AttendType.full
         createUser.token = hashCode(kakaoId + now.getTime().toString())
         createUser.expire = new Date(now.setDate(now.getDate() + 7))
         await userDatabase.save(createUser)

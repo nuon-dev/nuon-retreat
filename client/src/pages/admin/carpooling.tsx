@@ -7,13 +7,12 @@ import { Box, MenuItem, Select } from "@mui/material";
 import { User } from "@entity/user";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
-import { NotificationMessage, ShowNotification } from "state/notification";
+import { NotificationMessage } from "state/notification";
 
 
 function Carpooling() {
     const router = useRouter()
     const setNotificationMessage = useSetRecoilState(NotificationMessage)
-    const setShowNotification = useSetRecoilState(ShowNotification)
     const [carList, setCarList] = useState([] as InOutInfo[])
     const [rideUserList, setRideUserList] = useState([] as InOutInfo[])
     const [selectedInfo, setSelectedInfo] = useState({} as InOutInfo)
@@ -83,7 +82,6 @@ function Carpooling() {
             if(data.error){
                 router.push('/admin')
                 setNotificationMessage("권한이 없습니다.")
-                setShowNotification(true)
                 return
             }
 
