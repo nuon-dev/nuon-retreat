@@ -1,8 +1,8 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
-import { InOutInfo } from '@entity/inOutInfo' 
-import { Days, InOutType, MoveType } from "../../types";
 import { post } from "pages/api";
+import { InOutInfo } from "@entity/inOutInfo";
+import { Days, InOutType, MoveType } from "@entity/types";
 
 interface IProps {
     setInOutData: Dispatch<SetStateAction<InOutInfo[]>>,
@@ -18,17 +18,19 @@ export default function InOutFrom ({
         const emptyInfo = new InOutInfo() 
         emptyInfo.day = Days.firstDay
         emptyInfo.inOutType = InOutType.IN
-        //emptyInfo.howToMove = MoveType.rideCar
+        emptyInfo.position = '교회'
+        emptyInfo.howToMove = MoveType.driveCarWithPerson
         setInOutData([...inOutData, emptyInfo])
     }
 
-    function onClickRemove(){
-        const deleteInfo = inOutData.pop()
+    function onClickRemove(targetInfoIndex: number){
+        const deleteInfo = inOutData[targetInfoIndex]
         if(deleteInfo && deleteInfo.id){
             post('/info/delete-attend-time', {
                 inOutInfo: deleteInfo
             })
         }
+        inOutData.splice(targetInfoIndex, 1)
         setInOutData([...inOutData])
     }
 
@@ -69,7 +71,7 @@ export default function InOutFrom ({
                     </MenuItem>
                 </Select>
                 <Stack fontSize="12px" p="6px">
-                    출입
+                    이동방향
                 </Stack>
                 <Select
                     value={data.inOutType}
@@ -116,31 +118,37 @@ export default function InOutFrom ({
                     </MenuItem>
                 </Select>
         </Stack>
-          <Stack>
-            <Stack fontSize="12px" p="6px">
-                이동방법
-            </Stack>
-            <FormControl>
-                <Select
-                    fullWidth={true}
-                    value={data.howToMove}
-                    onChange={e => onChangeInformation("howToMove", e.target.value.toString(), index)}
-                >
-                <MenuItem value={MoveType.driveCarWithPerson}>
-                        자차 이동(카풀 가능)
-                    </MenuItem>
-                    <MenuItem value={MoveType.driveCarAlone}>
-                        자차 이동(카풀 불가)
-                    </MenuItem>
-                    <MenuItem value={MoveType.rideCar}>
-                        카풀 요청
-                    </MenuItem>
-                    <MenuItem value={MoveType.goAlone}>
-                        대중교통 (여주역)
-                    </MenuItem>
-                </Select>
-            </FormControl>
-          </Stack>
+        <Stack>
+        <Stack fontSize="12px" p="6px">
+            이동방법
+        </Stack>
+        <FormControl>
+            <Select
+                fullWidth={true}
+                value={data.howToMove}
+                onChange={e => onChangeInformation("howToMove", e.target.value.toString(), index)}
+            >
+            <MenuItem value={MoveType.driveCarWithPerson}>
+                    자차 이동(카풀 가능)
+                </MenuItem>
+                <MenuItem value={MoveType.driveCarAlone}>
+                    자차 이동(카풀 불가)
+                </MenuItem>
+                <MenuItem value={MoveType.rideCar}>
+                    카풀 요청
+                </MenuItem>
+                <MenuItem value={MoveType.goAlone}>
+                    대중교통 (여주역)
+                </MenuItem>
+            </Select>
+        </FormControl>
+        </Stack>
+        <Stack marginTop="10px">
+            <Button
+                variant="outlined"
+                onClick={() => onClickRemove(index)}
+            >참가 일정 삭제</Button>
+        </Stack>
         </Stack>)
     }
 
@@ -151,12 +159,6 @@ export default function InOutFrom ({
             variant="outlined"
             onClick={onClickAdd}
         >참가 일정 추가</Button>
-        <Stack marginTop="10px">
-            <Button
-                variant="outlined"
-                onClick={onClickRemove}
-            >참가 일정 삭제</Button>
-        </Stack>
         {inOutData.map((data, index) => getRow(data, index))}
     </Stack>)
 }

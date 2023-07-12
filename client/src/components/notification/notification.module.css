@@ -1,24 +1,36 @@
-.notification {
-    top: 12px;
-    right: 12px;
-    padding: 12px;
+.notification-stack {
+    width: 100vw;
+    right: calc(-100vw + 325px);
     z-index: 10;
-    height: 70px;
-    width: 400px;
     position: fixed;
-    background-color: white;
+}
+
+
+.notification {
+    margin: 5px;
+    padding: 12px;
+    z-index: 20;
+    height: 70px;
+    width: 300px;
+    font-weight: 600;
     border-radius: 12px;
+    background-color: white;
+    text-align: center;
     border: 1px gainsboro solid;
+    word-break: keep-all;
     transition: 0.5s all;
 }
 
 @media (max-width: 600px) {
+    .notification-stack {
+        right: calc(-100vw + 225px);
+    }
     .notification{
         width: 200px;
     }
 }
 
 .notification-off {
-    right: -410px;
+    margin-left: 1000px;
     transition: 0.5s all;
 }

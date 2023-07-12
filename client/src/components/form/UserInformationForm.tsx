@@ -90,7 +90,7 @@ export default function UserInformationForm (props: IProps) {
             setShowNotification(true)
             return
           }
-          setNotificationMessage(`저장이 되었습니다.`)
+          setNotificationMessage(`신청 내역이 저장이 되었습니다.`)
           setShowNotification(true)
     }
 

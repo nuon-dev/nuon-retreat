@@ -49,7 +49,7 @@ export default function Edit () {
                 >
                     <Stack fontSize="20px" fontWeight="bold" color="whitesmoke">수련회비 안내</Stack>
                     <Stack color="white" mt="6px"> 3333276342153 카카오뱅크
-                    <br/>전참 5만 / 금요일 저녁 이후 참석 3만</Stack>
+                    <br/>전참 5만 / 금요일 저녁 이후 참석 4만</Stack>
                 </Stack>}
             <UserInformationForm
                 user={userData}

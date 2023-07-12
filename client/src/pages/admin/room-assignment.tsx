@@ -196,7 +196,7 @@ function RoomAssingment (){
                     border="1px solid #ACACAC"
                     
                 >
-                    사람의 이름을 눌러 드래그 드롭으로 또는 사람 클릭 수 방을 클릭하여 넣으면 됩니다.<br/>
+                    사람의 이름을 눌러 드래그 드롭으로 또는 사람 후 방을 클릭하여 넣으면 됩니다.<br/>
                     마우스 오버시 사용자의 정보가 나옵니다.<br/>
                 </Stack>
             </Stack>
