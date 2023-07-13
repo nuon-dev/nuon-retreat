@@ -28,12 +28,21 @@ export default function Edit () {
     }
     
     return (
-    <Stack margin="8px">
+    <Stack padding="12px">
         <Stack
             alignItems="center"
             justifyContent="center"
         >
-            {userData.deposit ? <Stack>
+            {userData.deposit ? <Stack
+                px="24px"
+                py="12px"
+                fontWeight="500"
+                color="#099"
+                style={{
+                    borderRadius: '12px',
+                    border: 'solid #AAA 2px',
+                }}
+            >
                 입금 처리가 {userData.deposit ? '완료 되었습' : '진행 중입'}니다.
                 </Stack>:
                 <Stack
