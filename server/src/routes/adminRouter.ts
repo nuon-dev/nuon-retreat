@@ -9,6 +9,7 @@ import GroupRouter from './admin/group'
 import CarRouter from './admin/car'
 import DashBoard from './admin/dashBoard'
 import Deposit from './admin/deposit'
+import { IsNull, Not } from 'typeorm'
 
 const router = express.Router()
 
@@ -23,7 +24,11 @@ router.get('/get-all-user-name', async (req, res) => {
         select: {
             name: true,
             id: true
-        }})
+        },
+        where: {
+            name: Not(IsNull())
+        }
+    })
     res.send(userList)
 })
 

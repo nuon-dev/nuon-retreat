@@ -49,46 +49,53 @@ function index(){
     return (
     <Stack
         style={{
-            height: '100vh',
-            backgroundImage: 'url(/main_bg.png)',
-            backgroundSize: 'cover',
+          width: '100vw',
+          height: '100vh',
         }}
-        alignItems="center"
-        justifyContent="center"
     >
-      <Stack fontSize="24px" color="#3F3F3F">2023 새벽이슬 하계 수련회</Stack>
-      <Stack style={{
-        marginTop: "60vh",
-      }}>
-        <Button
-            style={{
-              backgroundColor: "#FEE500",
-              color: "#191919",
-              height: "50px",
-              width: "240px",
-              borderRadius: "12px",
-              fontSize: "18px",
-              fontWeight: "bold"
-            }}
-            onClick={kakaoLogin}
-        >
-            카카오로 접수하기
-        </Button>
-        <Button
-            style={{
-              backgroundColor: "#DDD",
-              color: "#191919",
-              height: "50px",
-              width: "240px",
-              borderRadius: "12px",
-              fontSize: "18px",
-              fontWeight: "bold",
-              marginTop: '20px',
-            }}
-            onClick={normalLogin}
-        >
-            일반 접수하기
-        </Button>
+      <Stack
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundImage: 'url(/main_bg.jpeg)',
+          backgroundSize: 'cover',
+          alignItems: "center",
+          backgroundRepeat : "round",
+        }}
+      >
+        <Stack style={{
+          marginTop: "35vh",
+        }}>
+          <Button
+              style={{
+                backgroundColor: "#FEE500",
+                color: "#191919",
+                height: "13vw",
+                width: "40vw",
+                borderRadius: "12px",
+                fontSize: "4vw",
+                fontWeight: "bold"
+              }}
+              onClick={kakaoLogin}
+          >
+              카카오로 접수하기
+          </Button>
+          <Button
+              style={{
+                backgroundColor: "#DDD",
+                color: "#191919",
+                height: "13vw",
+                width: "40vw",
+                borderRadius: "12px",
+                fontSize: "4vw",
+                fontWeight: "bold",
+                marginTop: '20px',
+              }}
+              onClick={normalLogin}
+          >
+              일반 접수하기
+          </Button>
+        </Stack>
       </Stack>
     </Stack>
     )

@@ -2,6 +2,7 @@ import express from 'express'
 import { PermissionType } from "../../entity/types"
 import { attendInfoDatabase, roomAssignmentDatabase, userDatabase } from "../../model/dataSource"
 import { hasPermission } from "../../util"
+import { IsNull, Not } from 'typeorm'
 
 const router = express.Router()
 
@@ -25,6 +26,9 @@ router.get('/get-room-assignment', async (req, res) => {
         relations: {
             roomAssignment: true,
             inOutInfos: true
+        },
+        where: {
+            name: Not(IsNull())
         }
     })
 

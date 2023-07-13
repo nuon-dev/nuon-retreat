@@ -2,6 +2,7 @@ import express from 'express'
 import { PermissionType } from "../../entity/types"
 import { groupAssignmentDatabase, roomAssignmentDatabase, userDatabase } from "../../model/dataSource"
 import { hasPermission } from "../../util"
+import { IsNull, Not } from 'typeorm'
 
 const router = express.Router()
 
@@ -25,6 +26,10 @@ router.get('/get-group-formation', async (req, res) => {
         relations: {
             groupAssignment: true,
             inOutInfos: true,
+            
+        },
+        where: {
+            name: Not(IsNull())
         }
     })
 

@@ -3,6 +3,7 @@ import { PermissionType, AttendType } from "../../entity/types"
 import { attendInfoDatabase, userDatabase } from "../../model/dataSource"
 import { hasPermission } from "../../util"
 import { InOutInfo } from '../../entity/inOutInfo'
+import { IsNull, Not } from 'typeorm'
 
 const router = express.Router()
 
@@ -29,6 +30,11 @@ router.get('/get-car-info', async (req, res) => {
             userInTheCar: {
                 user: true
             },
+        },
+        where: {
+            user: {
+                name: Not(IsNull())
+            }
         }
     })
     res.send(infoList)
