@@ -64,7 +64,7 @@ export default function Edit () {
                             userSelect: 'text'
                         }}
                     > 3333276342153 카카오뱅크 (조영래)
-                    <br/>전참 5만 / 금요일 저녁 이후 참석 4만</Stack>
+                    <br/>전체 5만</Stack>
                 </Stack>}
             <UserInformationForm
                 user={userData}

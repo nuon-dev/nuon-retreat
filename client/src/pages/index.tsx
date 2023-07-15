@@ -63,9 +63,12 @@ function index(){
           backgroundRepeat : "round",
         }}
       >
-        <Stack style={{
-          marginTop: "35vh",
-        }}>
+        <Stack 
+          direction="row"
+          style={{
+            marginTop: "85vh",
+          }}
+        >
           <Button
               style={{
                 backgroundColor: "#FEE500",
@@ -82,6 +85,7 @@ function index(){
           </Button>
           <Button
               style={{
+                marginLeft: '20px',
                 backgroundColor: "#DDD",
                 color: "#191919",
                 height: "13vw",
@@ -89,7 +93,6 @@ function index(){
                 borderRadius: "12px",
                 fontSize: "4vw",
                 fontWeight: "bold",
-                marginTop: '20px',
               }}
               onClick={normalLogin}
           >
