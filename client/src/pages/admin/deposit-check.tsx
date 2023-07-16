@@ -6,8 +6,10 @@ import { useEffect, useState } from "react"
 
 function DepositCheck (){
 
-    const [allUserList, setAllUserList] = useState([] as Array<User>)
+    const [allUserCount, setAllUserCount] = useState(0)
     const [isShowUnpaid, setIsShowUnpaid] = useState(false)
+    const [depositUserCount, setDepositUserCount] = useState(0)
+    const [allUserList, setAllUserList] = useState([] as Array<User>)
 
     useEffect(() => {
         fetchData()
@@ -29,31 +31,55 @@ function DepositCheck (){
 
     function fetchData(){
         get('/admin/get-all-user')
-        .then((data) => setAllUserList(data))
+        .then((data:User[]) => {
+            setAllUserCount(data.length)
+            setDepositUserCount(data.filter(user => user.deposit).length)
+            if(isShowUnpaid){
+                setAllUserList(data)
+                return
+            }
+            setAllUserList(data.filter(user => !user.deposit))
+        })
     }
 
     function clickFilter() {
-        if(isShowUnpaid){
-           fetchData()
-        }else{
-            setAllUserList(allUserList.filter(user => !user.deposit))
-        }
         setIsShowUnpaid(!isShowUnpaid)
     }
+
+    useEffect(() => {
+        fetchData()
+    }, [isShowUnpaid])
 
     return(
         <Stack>
             <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
                 style={{
-                    margin: '12px'
+                    margin: '24px'
                 }}
             >
                 <Button
                     onClick={clickFilter}
                     variant="contained"
+                    style={{
+                        width: '150px'
+                    }}
                 >
-                    {isShowUnpaid ? '전체보기' : '미납금자만 보기'}
+                    {isShowUnpaid ? '전체보기' : '미납부자만 보기'}
                 </Button>
+                <Stack
+                    fontWeight="600"
+                    fontSize="20px"
+                >
+                    전체 / 납부자 ({allUserCount} / {depositUserCount})
+                </Stack>
+                <Stack
+                    fontWeight="500"
+                    fontSize="18px">
+                    예상 납부 금액 - {(depositUserCount * 50000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원 ({depositUserCount * 5}만원)
+                </Stack>
             </Stack>
             <Table>
                 <TableHead>
