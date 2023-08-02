@@ -1,5 +1,4 @@
 import { InOutInfo } from "@entity/inOutInfo"
-import { Days, MoveType, InOutType } from "../../types"
 import { get, post } from "../../pages/api"
 import { useEffect, useState } from "react"
 import { Stack } from "@mui/system"
@@ -8,6 +7,7 @@ import { User } from "@entity/user"
 import { useRouter } from "next/router"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
+import { Days, InOutType, MoveType } from "@entity/types"
 
 function Carpooling() {
   const router = useRouter()

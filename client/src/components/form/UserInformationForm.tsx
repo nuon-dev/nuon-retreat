@@ -1,11 +1,4 @@
-import {
-  Button,
-  MenuItem,
-  InputLabel,
-  Select,
-  FormControl,
-  TextField,
-} from "@mui/material"
+import { Button, MenuItem, Select, FormControl, TextField } from "@mui/material"
 import { Stack } from "@mui/system"
 import { InOutInfo } from "@entity/inOutInfo"
 import { User } from "@entity/user"
@@ -15,7 +8,7 @@ import { AttendType } from "@entity/types"
 import InOutFrom from "./InOutForm"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
-import { HowToGo, MoveType } from "types"
+import { HowToGo } from "types"
 interface IProps {
   user: User
   inOutData: Array<InOutInfo>
