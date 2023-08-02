@@ -221,11 +221,14 @@ function GroupFormation() {
         }}
       >
         {new Array(maxGroupNumber).fill(0).map((_, index) => {
-          const group = groupList[index].sort((a, b) => a.age - b.age)
+          const group = groupList[index]
           if (!group || group.length === 0) {
             return Group(index + 1, [])
           } else {
-            return Group(group[0].groupAssignment.groupNumber, group)
+            return Group(
+              group[0].groupAssignment.groupNumber,
+              group.sort((a, b) => a.age - b.age)
+            )
           }
         })}
         {Group(maxGroupNumber + 1, [])}
