@@ -13,8 +13,8 @@ export default function EditUserData() {
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
 
   useEffect(() => {
-    get("/admin/get-all-user").then((response) => {
-      setUserList(response)
+    get("/admin/get-all-user").then((response: Array<User>) => {
+      setUserList(response.sort((a, b) => (a.name > b.name ? 1 : -1)))
       if (response.length > 0) {
         setSelectedUserId(response[0].id)
       }
@@ -46,7 +46,7 @@ export default function EditUserData() {
         <Select value={selectedUserId} onChange={onClickUser}>
           {userList.map((user) => (
             <MenuItem key={user.id} value={user.id}>
-              {user.name}
+              {user.name} ({user.age})
             </MenuItem>
           ))}
         </Select>

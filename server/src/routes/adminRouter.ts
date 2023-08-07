@@ -25,6 +25,7 @@ router.get("/get-all-user-name", async (req, res) => {
     select: {
       name: true,
       id: true,
+      age: true,
     },
     where: {
       name: Not(IsNull()),
