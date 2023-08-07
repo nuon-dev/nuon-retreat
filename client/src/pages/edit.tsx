@@ -76,7 +76,7 @@ export default function Edit() {
         <UserInformationForm
           user={userData}
           inOutData={inOutData}
-          checkToken={checkToken}
+          reloadFunction={checkToken}
         />
       </Stack>
     </Stack>

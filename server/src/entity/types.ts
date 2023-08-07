@@ -1,41 +1,42 @@
-export const enum AttendType{
-    full = 'full',
-    half = 'half',
+export const enum AttendType {
+  full = "full",
+  half = "half",
 }
 export const enum HowToGo {
-    together = '0',
-    car = '1',
+  together = "0",
+  car = "1",
 }
 
 export const enum MoveType {
-    together,
-    driveCarAlone,
-    driveCarWithPerson,
-    rideCar,
-    goAlone,
+  together,
+  driveCarAlone,
+  driveCarWithPerson,
+  rideCar,
+  goAlone,
 }
 
-export enum PermissionType{
-    superUser,
-    admin,
-    userList,
-    carpooling,
-    permissionManage,
-    showRoomAssignment,
-    roomManage,
-    showGroupAssignment,
-    groupManage,
-    dashBoard,
-    deposit,
+export enum PermissionType {
+  superUser,
+  admin,
+  userList,
+  carpooling,
+  permissionManage,
+  showRoomAssignment,
+  roomManage,
+  showGroupAssignment,
+  groupManage,
+  dashBoard,
+  deposit,
+  editUserData,
 }
 
 export enum Days {
-    firstDay,
-    secondDay,
-    thirdDay,
+  firstDay,
+  secondDay,
+  thirdDay,
 }
 
 export enum InOutType {
-    IN = 'in',
-    OUT = 'out',
+  IN = "in",
+  OUT = "out",
 }

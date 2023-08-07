@@ -9,13 +9,15 @@ import InOutFrom from "./InOutForm"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
 import { HowToGo } from "types"
+import { useRouter } from "next/router"
 interface IProps {
   user: User
   inOutData: Array<InOutInfo>
-  checkToken: () => void
+  reloadFunction: () => void
 }
 
 export default function UserInformationForm(props: IProps) {
+  const router = useRouter()
   const [userInformation, setUserInformation] = useState(new User())
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
   const [showItems, setShowItems] = useState(false)
@@ -70,13 +72,15 @@ export default function UserInformationForm(props: IProps) {
       })
     }
 
-    if (saveResult.result === "success") {
-      localStorage.setItem("token", saveResult.token)
-    } else {
+    if (saveResult.result !== "success") {
       setNotificationMessage(
         "접수중 오류가 발생하였습니다.\n다시 시도해주세요."
       )
       return
+    }
+
+    if (router.pathname !== "/admin/edit-user-data") {
+      localStorage.setItem("token", saveResult.token)
     }
 
     if (attendTimeResult && attendTimeResult.result !== "success") {
@@ -86,7 +90,7 @@ export default function UserInformationForm(props: IProps) {
       return
     }
     setNotificationMessage(`신청 내역이 저장이 되었습니다.`)
-    props.checkToken()
+    props.reloadFunction()
   }
 
   function getInputGap() {

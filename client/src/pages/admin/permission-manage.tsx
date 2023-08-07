@@ -47,6 +47,7 @@ function PermissionManage() {
     [PermissionType.roomManage]: "방배정",
     [PermissionType.groupManage]: "조편성",
     [PermissionType.deposit]: "입금 처리",
+    [PermissionType.editUserData]: "정보 수정",
   }
 
   function loadUserPermission() {
