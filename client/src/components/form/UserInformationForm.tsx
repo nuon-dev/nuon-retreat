@@ -4,11 +4,11 @@ import { InOutInfo } from "@entity/inOutInfo"
 import { User } from "@entity/user"
 import { post } from "../../pages/api"
 import { useEffect, useState } from "react"
-import { AttendType } from "@entity/types"
+import { AttendType, Days, MoveType } from "@entity/types"
 import InOutFrom from "./InOutForm"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
-import { HowToGo } from "types"
+import { HowToGo, InOutType } from "types"
 import { useRouter } from "next/router"
 interface IProps {
   user: User
