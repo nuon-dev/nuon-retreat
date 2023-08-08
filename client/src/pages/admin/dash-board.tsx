@@ -7,7 +7,7 @@ function DashBoard() {
     {} as Record<string, number>
   )
   const [getAttendanceTimeList, setAttendaceTimeList] = useState([])
-  const [getAgeInfoList, setAgeInfoList] = useState<Record<string, number>>([])
+  const [getAgeInfoList, setAgeInfoList] = useState<Record<string, number>>({})
   const [windowSize, setWindowSize] = useState({} as Record<string, number>)
 
   useEffect(() => {
