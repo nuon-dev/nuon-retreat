@@ -1,17 +1,51 @@
 import { Stack } from "@mui/system"
 import { useEffect, useState } from "react"
-import { post } from "./api"
+import { get, post } from "./api"
 import { User } from "@entity/user"
 import UserInformationForm from "../components/form/UserInformationForm"
 import { InOutInfo } from "@entity/inOutInfo"
 
 export default function Edit() {
+  const COUNT_TINE = 10
+  let count = COUNT_TINE
   const [userData, setUserData] = useState({} as User)
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
+  const [roomMateList, setRoomMateList] = useState<Array<User>>([])
+  const [groupMateList, setGroupMateList] = useState<Array<User>>([])
+  const [showMate, setShowMate] = useState(false)
+  const [countdown, setCountdown] = useState(count)
 
+  const targetDate = new Date("2023-08-18 09:00:00")
+
+  let startTimer = false
   useEffect(() => {
     checkToken()
+    fetchRoomAndGroupData()
+    startCountdown()
+    if (startTimer === false) {
+      startTimer = true
+      setTimeout(() => {
+        count = COUNT_TINE
+        setShowMate(true)
+      }, targetDate.getTime() - new Date().getTime())
+    }
   }, [])
+
+  function startCountdown() {
+    if (count !== COUNT_TINE) {
+      return
+    }
+    count--
+    setInterval(() => {
+      setCountdown(count--)
+    }, 1000)
+  }
+
+  async function fetchRoomAndGroupData() {
+    const { roomMate, groupMate } = await get("/info/my-mate")
+    setRoomMateList(roomMate)
+    setGroupMateList(groupMate)
+  }
 
   const checkToken = () => {
     const token = localStorage.getItem("token")
@@ -71,6 +105,80 @@ export default function Edit() {
               <br />
               전체 5만
             </Stack>
+          </Stack>
+        )}
+        {showMate && (
+          <Stack
+            mt="12px"
+            padding="8px"
+            borderRadius="16px"
+            alignItems="center"
+          >
+            <Stack fontSize="20px" fontWeight="500">
+              방 & 조 배정 공개!!
+            </Stack>
+            {countdown > 0 ? (
+              <Stack mt="12px" fontSize="20px" fontWeight="bold" color="red">
+                {countdown}초 후에 공개됩니다!.
+              </Stack>
+            ) : (
+              <Stack direction="row" pt="12px">
+                <Stack
+                  ml="20px"
+                  width="120px"
+                  sx={{
+                    margin: "16px",
+                    minHeight: "20px",
+                    borderRadius: "8px",
+                    boxShadow: "2px 2px 5px 3px #ACACAC;",
+                    border: "1px solid #ACACAC",
+                  }}
+                >
+                  <Stack textAlign="center">
+                    {userData.groupAssignment?.groupNumber}조
+                  </Stack>
+                  {groupMateList.map((groupMate) => (
+                    <Stack
+                      p="2px"
+                      sx={{
+                        backgroundColor:
+                          groupMate.sex === "man" ? "lightblue" : "pink",
+                      }}
+                    >
+                      {groupMate.name} ({groupMate.age})
+                    </Stack>
+                  ))}
+                </Stack>
+
+                <Stack
+                  width="120px"
+                  sx={{
+                    margin: "16px",
+                    minHeight: "20px",
+                    borderRadius: "8px",
+                    boxShadow: "2px 2px 5px 3px #ACACAC;",
+                    border: "1px solid #ACACAC",
+                  }}
+                >
+                  <Stack textAlign="center">
+                    {userData.roomAssignment?.roomNumber}호
+                  </Stack>
+                  {roomMateList
+                    .filter((user: User) => user.sex === userData.sex)
+                    .map((roomMate) => (
+                      <Stack
+                        p="2px"
+                        sx={{
+                          backgroundColor:
+                            roomMate.sex === "man" ? "lightblue" : "pink",
+                        }}
+                      >
+                        {roomMate.name} ({roomMate.age})
+                      </Stack>
+                    ))}
+                </Stack>
+              </Stack>
+            )}
           </Stack>
         )}
         <UserInformationForm

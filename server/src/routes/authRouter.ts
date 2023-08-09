@@ -53,8 +53,14 @@ router.post("/check-token", async (req, res) => {
     return
   }
 
-  const foundUser = await userDatabase.findOneBy({
-    token: data.token,
+  const foundUser = await userDatabase.findOne({
+    where: {
+      token: data.token,
+    },
+    relations: {
+      roomAssignment: true,
+      groupAssignment: true,
+    },
   })
 
   if (!foundUser) {
@@ -63,8 +69,8 @@ router.post("/check-token", async (req, res) => {
   }
 
   if (isTokenExpire(foundUser.expire)) {
-    res.send({ result: "false" })
-    return
+    //res.send({ result: "false" })
+    //return
   }
 
   const inoutInfoList = await attendInfoDatabase.findBy({
