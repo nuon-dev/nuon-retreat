@@ -91,7 +91,9 @@ function Carpooling() {
         setCarList(cars)
         // @ts-ignore
         const rideUsers = data.filter(
-          (info) => info.howToMove === MoveType.rideCar && !info.rideCarInfo
+          (info) =>
+            (info.howToMove === MoveType.rideCar && !info.rideCarInfo) ||
+            info.howToMove === MoveType.goAlone
         )
         setRideUserList(rideUsers)
       })
