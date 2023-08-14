@@ -48,8 +48,6 @@ router.post("/delete-user", async (req, res) => {
     },
   })
 
-  console.log(userId)
-
   if (!foundUser) {
     res.send({ result: "false" })
     return
