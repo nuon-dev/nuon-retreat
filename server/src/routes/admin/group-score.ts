@@ -31,7 +31,6 @@ router.post("/edit-group-score", async (req, res) => {
     )
     if (groupScoreData) {
       groupScoreData.score = score[index]
-      console.log(groupScoreData)
       await groupScoreDataDatabase.save(groupScoreData)
     } else {
       const groupScoreData = new GroupScoreData()
