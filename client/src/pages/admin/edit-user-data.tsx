@@ -67,7 +67,8 @@ export default function EditUserData() {
         <Select value={selectedUserId} onChange={onClickUser}>
           {userList.map((user) => (
             <MenuItem key={user.id} value={user.id}>
-              {user.name} ({user.age})
+              {user.name} ({user.age}) (
+              {user.kakaoId.startsWith("no") ? "일" : "카"})
             </MenuItem>
           ))}
         </Select>

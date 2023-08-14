@@ -77,7 +77,7 @@ export default function EditGroupScore() {
           게임 선택{" "}
           <Select
             value={selectedGame}
-            onChange={(e) => setSelectedGame(e.target.value)}
+            onChange={(e: any) => setSelectedGame(e.target.value)}
           >
             <MenuItem value={1}>게임 1번</MenuItem>
             <MenuItem value={2}>게임 2번</MenuItem>
