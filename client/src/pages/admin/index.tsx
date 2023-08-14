@@ -80,6 +80,13 @@ function admin() {
             정보수정
           </Button>
           <Stack margin="4px" />
+          <Button
+            variant="contained"
+            onClick={() => goToPage("/edit-group-score")}
+          >
+            그룹 점수 관리
+          </Button>
+          <Stack margin="4px" />
           <Button variant="contained" onClick={() => goToPage("/dash-board")}>
             대시보드
           </Button>

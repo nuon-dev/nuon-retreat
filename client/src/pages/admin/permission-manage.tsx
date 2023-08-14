@@ -48,6 +48,8 @@ function PermissionManage() {
     [PermissionType.groupManage]: "조편성",
     [PermissionType.deposit]: "입금 처리",
     [PermissionType.editUserData]: "정보 수정",
+    [PermissionType.editGroupScore]: "조 점수 수정",
+    [PermissionType.deleteUser]: "접수 삭제",
   }
 
   function loadUserPermission() {

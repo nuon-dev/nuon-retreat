@@ -2,15 +2,18 @@ import { Stack } from "@mui/system"
 import { get, post } from "../api"
 import { useEffect, useState } from "react"
 import { User } from "@entity/user"
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material"
+import { Box, Button, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import UserInformationForm from "components/form/UserInformationForm"
 import { InOutInfo } from "@entity/inOutInfo"
+import { useSetRecoilState } from "recoil"
+import { NotificationMessage } from "state/notification"
 
 export default function EditUserData() {
   const [userList, setUserList] = useState([] as Array<User>)
   const [selectedUserId, setSelectedUserId] = useState(0)
   const [userData, setUserData] = useState({} as User)
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
     get("/admin/get-all-user").then((response: Array<User>) => {
@@ -38,8 +41,26 @@ export default function EditUserData() {
     })
   }
 
+  async function deleteUser() {
+    const c = confirm(
+      `${
+        userList.find((user) => user.id === selectedUserId)?.name
+      }의 정보를 삭제하시겠습니까?`
+    )
+    if (!c) {
+      return
+    }
+    const { result } = await post("/admin/delete-user", {
+      userId: selectedUserId,
+    })
+
+    if (result === "success") {
+      setNotificationMessage("삭제되었습니다.")
+    }
+  }
+
   return (
-    <Stack>
+    <Stack justifyContent="center">
       <Stack margin="8px">
         수정 할 사람 선택
         <Stack m="4px" />
@@ -57,6 +78,12 @@ export default function EditUserData() {
           inOutData={inOutData}
           reloadFunction={loadData}
         />
+      </Stack>
+      <Box height="50px" />
+      <Stack width="100px" ml="100px">
+        <Button variant="contained" color="error" onClick={deleteUser}>
+          접수 삭제
+        </Button>
       </Stack>
     </Stack>
   )

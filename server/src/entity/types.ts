@@ -28,6 +28,8 @@ export enum PermissionType {
   dashBoard,
   deposit,
   editUserData,
+  editGroupScore,
+  deleteUser,
 }
 
 export enum Days {

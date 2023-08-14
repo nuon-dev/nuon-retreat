@@ -15,7 +15,7 @@ export default function Edit() {
   const [showMate, setShowMate] = useState(false)
   const [countdown, setCountdown] = useState(count)
 
-  const targetDate = new Date("2023-08-18 09:00:00")
+  const targetDate = new Date("2023-08-18 13:45:00")
 
   let startTimer = false
   useEffect(() => {

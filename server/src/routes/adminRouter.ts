@@ -9,6 +9,7 @@ import GroupRouter from "./admin/group"
 import CarRouter from "./admin/car"
 import DashBoard from "./admin/dashBoard"
 import Deposit from "./admin/deposit"
+import GroupScore from "./admin/group-score"
 import EditUserData from "./admin/edit-user-data"
 import { IsNull, Not } from "typeorm"
 
@@ -117,5 +118,6 @@ router.use("/", CarRouter)
 router.use("/", DashBoard)
 router.use("/", Deposit)
 router.use("/", EditUserData)
+router.use("/", GroupScore)
 
 export default router
