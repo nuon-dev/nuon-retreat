@@ -38,7 +38,15 @@ function GroupFormation() {
       const unassignedUserList = response
         .filter((user) => user.groupAssignment.groupNumber === 0)
         .sort((a, b) => a.age - b.age)
-        .sort((a, b) => (a.attendType === AttendType.half ? 1 : -1))
+        .sort((a, b) => {
+          if (a.attendType === b.attendType) {
+            return 0
+          }
+          if (a.attendType === AttendType.full) {
+            return -1
+          }
+          return 1
+        })
       setUnassignedUserList(unassignedUserList)
 
       const group = [] as Array<Array<User>>
@@ -230,7 +238,15 @@ function GroupFormation() {
               group[0].groupAssignment.groupNumber,
               group
                 .sort((a, b) => a.age - b.age)
-                .sort((a, b) => (a.attendType === AttendType.half ? 1 : -1))
+                .sort((a, b) => {
+                  if (a.attendType === b.attendType) {
+                    return 0
+                  }
+                  if (a.attendType === AttendType.full) {
+                    return -1
+                  }
+                  return 1
+                })
             )
           }
         })}
