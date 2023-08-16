@@ -54,10 +54,10 @@ function GroupFormation() {
         }
         setGroupList(group)
       })
-      const maxNumer = Math.max(
+      const maxNumber = Math.max(
         ...response.map((user) => user.groupAssignment.groupNumber)
       )
-      setMaxGroupNumber(maxNumer)
+      setMaxGroupNumber(maxNumber)
     })
   }
 
@@ -228,7 +228,9 @@ function GroupFormation() {
           } else {
             return Group(
               group[0].groupAssignment.groupNumber,
-              group.sort((a, b) => a.age - b.age)
+              group
+                .sort((a, b) => a.age - b.age)
+                .sort((a, b) => (a.attendType === AttendType.half ? 1 : -1))
             )
           }
         })}
