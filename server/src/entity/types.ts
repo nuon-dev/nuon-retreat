@@ -28,7 +28,7 @@ export enum PermissionType {
   dashBoard,
   deposit,
   editUserData,
-  editGroupScore,
+  editTeamScore,
   deleteUser,
 }
 

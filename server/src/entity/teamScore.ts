@@ -7,19 +7,19 @@ import {
 } from "typeorm"
 
 @Entity()
-export class Group {
+export class Team {
   @PrimaryGeneratedColumn()
   id: number
 
   @Column()
-  groupName: string
+  teamName: string
 
-  @OneToMany(() => GroupScoreData, (scoreData) => scoreData.groupScore)
-  groupScore: GroupScoreData[]
+  @OneToMany(() => TeamScoreData, (scoreData) => scoreData.teamScore)
+  teamScore: TeamScoreData[]
 }
 
 @Entity()
-export class GroupScoreData {
+export class TeamScoreData {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -29,6 +29,6 @@ export class GroupScoreData {
   @Column()
   score: number
 
-  @ManyToOne(() => Group, (groupScore) => groupScore.groupScore)
-  groupScore: Group
+  @ManyToOne(() => Team, (teamScore) => teamScore.teamScore)
+  teamScore: Team
 }

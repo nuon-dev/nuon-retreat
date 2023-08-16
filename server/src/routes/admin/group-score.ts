@@ -2,16 +2,16 @@ import express from "express"
 import { hasPermission } from "../../util"
 import { PermissionType } from "../../entity/types"
 import {
-  groupScoreDataDatabase,
-  groupScoreDatabase,
+  teamScoreDataDatabase,
+  teamScoreDatabase,
 } from "../../model/dataSource"
-import { Group, GroupScoreData } from "../../entity/groupScore"
+import { Team, TeamScoreData } from "../../entity/teamScore"
 
 const router = express.Router()
 
-router.post("/edit-group-score", async (req, res) => {
+router.post("/edit-team-score", async (req, res) => {
   const token = req.header("token")
-  if (false === (await hasPermission(token, PermissionType.editGroupScore))) {
+  if (false === (await hasPermission(token, PermissionType.editTeamScore))) {
     res.sendStatus(401)
     return
   }
@@ -20,55 +20,55 @@ router.post("/edit-group-score", async (req, res) => {
   const gameNumber = body.gameNumber
   const score = body.gameScore
 
-  const groupList = await groupScoreDatabase.find({
+  const teamList = await teamScoreDatabase.find({
     relations: {
-      groupScore: true,
+      teamScore: true,
     },
   })
-  groupList.forEach(async (group, index) => {
-    const groupScoreData = group.groupScore.find(
+  teamList.forEach(async (team, index) => {
+    const teamScoreData = team.teamScore.find(
       (scoreData) => scoreData.gameNumber === gameNumber
     )
-    if (groupScoreData) {
-      groupScoreData.score = score[index]
-      await groupScoreDataDatabase.save(groupScoreData)
+    if (teamScoreData) {
+      teamScoreData.score = score[index]
+      await teamScoreDataDatabase.save(teamScoreData)
     } else {
-      const groupScoreData = new GroupScoreData()
-      groupScoreData.score = score[index]
-      groupScoreData.gameNumber = gameNumber
-      await groupScoreDataDatabase.save(groupScoreData)
-      group.groupScore[gameNumber] = groupScoreData
+      const teamScoreData = new TeamScoreData()
+      teamScoreData.score = score[index]
+      teamScoreData.gameNumber = gameNumber
+      await teamScoreDataDatabase.save(teamScoreData)
+      team.teamScore[gameNumber] = teamScoreData
     }
-    await groupScoreDatabase.save(group)
+    await teamScoreDatabase.save(team)
   })
 
   res.send({ result: "success" })
 })
 
-router.post("/inert-group-name", async (req, res) => {
+router.post("/inert-team-name", async (req, res) => {
   const token = req.header("token")
-  if (false === (await hasPermission(token, PermissionType.editGroupScore))) {
+  if (false === (await hasPermission(token, PermissionType.editTeamScore))) {
     res.sendStatus(401)
     return
   }
 
   const body = req.body
-  const groupName = body.groupName
+  const teamName = body.teamName
 
-  const group = new Group()
-  group.groupName = groupName
-  group.groupScore = []
-  await groupScoreDatabase.save(group)
+  const team = new Team()
+  team.teamName = teamName
+  team.teamScore = []
+  await teamScoreDatabase.save(team)
   res.send({ result: "success" })
 })
 
-router.get("/group-list", async (req, res) => {
+router.get("/team-list", async (req, res) => {
   const body = req.body
   const gameNumber = body.gameNumber
 
-  const scoreData = await groupScoreDatabase.find({
+  const scoreData = await teamScoreDatabase.find({
     relations: {
-      groupScore: true,
+      teamScore: true,
     },
   })
 

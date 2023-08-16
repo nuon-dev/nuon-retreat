@@ -38,6 +38,7 @@ function GroupFormation() {
       const unassignedUserList = response
         .filter((user) => user.groupAssignment.groupNumber === 0)
         .sort((a, b) => a.age - b.age)
+        .sort((a, b) => (a.attendType === AttendType.half ? 1 : -1))
       setUnassignedUserList(unassignedUserList)
 
       const group = [] as Array<Array<User>>
