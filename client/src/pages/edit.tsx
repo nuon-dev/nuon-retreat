@@ -15,7 +15,7 @@ export default function Edit() {
   const [showMate, setShowMate] = useState(false)
   const [countdown, setCountdown] = useState(count)
 
-  const targetDate = new Date("2023-08-18 13:45:00")
+  const targetDate = new Date("2023-08-18 13:30:00")
 
   let startTimer = false
   useEffect(() => {
@@ -121,6 +121,8 @@ export default function Edit() {
     },
   }
 
+  const roomList: any = roomMatch[userData.sex]
+
   return (
     <Stack padding="12px">
       <Stack alignItems="center" justifyContent="center">
@@ -221,11 +223,9 @@ export default function Edit() {
                 >
                   <Stack textAlign="center">
                     {userData.roomAssignment?.roomNumber}번방{" "}
-                    {
-                      roomMatch[userData.sex][
-                        userData.roomAssignment?.roomNumber
-                      ]
-                    }
+                    {roomList[userData.roomAssignment?.roomNumber]
+                      ? roomList[userData.roomAssignment?.roomNumber]
+                      : ""}
                     호
                   </Stack>
                   {roomMateList

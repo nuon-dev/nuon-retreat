@@ -10,7 +10,7 @@ export class User {
   name: string
   password: string
   age: number
-  sex: string
+  sex: "man" | "woman"
   phone: string
   attendType: AttendType
   etc?: string
