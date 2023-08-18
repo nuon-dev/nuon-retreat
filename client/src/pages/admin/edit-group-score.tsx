@@ -90,6 +90,7 @@ export default function EditTeamScore() {
             <MenuItem value={6}>2Round</MenuItem>
             <MenuItem value={7}>3Round</MenuItem>
             <MenuItem value={8}>4Round</MenuItem>
+            <MenuItem value={9}>보너스 점수</MenuItem>
           </Select>
         </Stack>
         <Stack gap="8px">

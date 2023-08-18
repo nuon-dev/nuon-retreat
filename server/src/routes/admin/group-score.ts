@@ -30,11 +30,11 @@ router.post("/edit-team-score", async (req, res) => {
       (scoreData) => scoreData.gameNumber === gameNumber
     )
     if (teamScoreData) {
-      teamScoreData.score = score[index]
+      teamScoreData.score = Number.parseInt(score[index]) || 0
       await teamScoreDataDatabase.save(teamScoreData)
     } else {
       const teamScoreData = new TeamScoreData()
-      teamScoreData.score = score[index]
+      teamScoreData.score = Number.parseInt(score[index]) || 0
       teamScoreData.gameNumber = gameNumber
       await teamScoreDataDatabase.save(teamScoreData)
       team.teamScore[gameNumber] = teamScoreData
