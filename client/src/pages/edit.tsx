@@ -62,6 +62,65 @@ export default function Edit() {
     })
   }
 
+  const roomMatch = {
+    man: {
+      1: "311",
+      2: "312",
+      3: "313",
+      4: "314",
+      5: "315",
+      6: "316",
+      7: "317",
+      8: "318",
+      9: "319",
+      10: "320",
+      11: "401",
+      12: "402",
+      13: "403",
+      14: "404",
+      15: "405",
+      16: "406",
+      17: "407",
+      18: "408",
+      19: "409",
+      20: "410",
+      21: "411",
+      22: "412",
+      23: "413",
+      24: "414",
+      25: "415",
+      31: "준비팀",
+      32: "준비팀",
+      33: "준비팀",
+    },
+    woman: {
+      1: "201",
+      2: "202",
+      3: "203",
+      4: "204",
+      5: "205",
+      6: "206",
+      7: "207",
+      8: "208",
+      9: "209",
+      10: "210",
+      11: "211",
+      12: "212",
+      13: "213",
+      14: "214",
+      15: "215",
+      16: "216",
+      17: "217",
+      18: "218",
+      19: "219",
+      20: "220",
+      21: "221",
+      22: "222",
+      23: "306",
+      24: "307",
+    },
+  }
+
   return (
     <Stack padding="12px">
       <Stack alignItems="center" justifyContent="center">
@@ -161,7 +220,13 @@ export default function Edit() {
                   }}
                 >
                   <Stack textAlign="center">
-                    {userData.roomAssignment?.roomNumber}호
+                    {userData.roomAssignment?.roomNumber}번방{" "}
+                    {
+                      roomMatch[userData.sex][
+                        userData.roomAssignment?.roomNumber
+                      ]
+                    }
+                    호
                   </Stack>
                   {roomMateList
                     .filter((user: User) => user.sex === userData.sex)
