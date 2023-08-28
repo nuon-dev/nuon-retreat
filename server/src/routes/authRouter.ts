@@ -69,8 +69,8 @@ router.post("/check-token", async (req, res) => {
   }
 
   if (isTokenExpire(foundUser.expire)) {
-    //res.send({ result: "false" })
-    //return
+    res.send({ result: "false" })
+    return
   }
 
   const inoutInfoList = await attendInfoDatabase.findBy({

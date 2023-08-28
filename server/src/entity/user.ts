@@ -1,4 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from "typeorm"
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+  ViewEntity,
+  DataSource,
+  ViewColumn,
+} from "typeorm"
 import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
@@ -7,66 +17,131 @@ import { AttendType, HowToGo } from "./types"
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @Column()
-    kakaoId: string
+  @Column()
+  kakaoId: string
 
-    @Column({nullable: true})
-    name: string
+  @Column({ nullable: true })
+  name: string
 
-    @Column({nullable: true})
-    age: number
+  @Column({ nullable: true })
+  age: number
 
-    @Column({nullable: true})
-    sex: string
+  @Column({ nullable: true })
+  sex: string
 
-    @Column({nullable: true})
-    phone: string
+  @Column({ nullable: true })
+  phone: string
 
-    @Column({nullable: true})
-    attendType: AttendType
+  @Column({ nullable: true })
+  attendType: AttendType
 
-    @Column({
-        nullable: true,
-    })
-    etc?: string
-    
-    @Column({nullable: true, default: 0})
-    deposit: boolean
+  @Column({
+    nullable: true,
+  })
+  etc?: string
 
-    @Column({nullable: true})
-    token: string
+  @Column({ nullable: true, default: 0 })
+  deposit: boolean
 
-    @Column({nullable: true})
-    expire: Date
+  @Column({ nullable: true })
+  token: string
 
-    @Column({nullable: true, default: 0})
-    isCancell: boolean
+  @Column({ nullable: true })
+  expire: Date
 
-    @Column({
-        nullable: true
-    })
-    howToGo: HowToGo
+  @Column({ nullable: true, default: 0 })
+  isCancel: boolean
 
-    @Column({nullable: true, default: 0})
-    isSuperUser: boolean
+  @Column({
+    nullable: true,
+  })
+  howToGo: HowToGo
 
-    @Column()
-    createAt: Date
+  @Column({ nullable: true, default: 0 })
+  isSuperUser: boolean
 
-    @OneToMany(() => Permission, (permission) => permission.user)
-    permissions: Permission[]
+  @Column()
+  createAt: Date
 
-    @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.user)
-    inOutInfos: InOutInfo[]
+  @OneToMany(() => Permission, (permission) => permission.user)
+  permissions: Permission[]
 
-    @OneToOne(() => RoomAssignment)
-    @JoinColumn()
-    roomAssignment: RoomAssignment
+  @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.user)
+  inOutInfos: InOutInfo[]
 
-    @OneToOne(() => GroupAssignment)
-    @JoinColumn()
-    groupAssignment: GroupAssignment
+  @OneToOne(() => RoomAssignment)
+  @JoinColumn()
+  roomAssignment: RoomAssignment
+
+  @OneToOne(() => GroupAssignment)
+  @JoinColumn()
+  groupAssignment: GroupAssignment
+}
+
+@ViewEntity({
+  expression: (dataSource: DataSource) =>
+    dataSource
+      .createQueryBuilder()
+      .select("*")
+      .from(User, "user")
+      .where("user.isCancel = false"),
+  // .leftJoin(Category, "category", "category.id = post.categoryId"),
+})
+export class Participant {
+  @ViewColumn()
+  id: number
+
+  @ViewColumn()
+  kakaoId: string
+
+  @ViewColumn()
+  name: string
+
+  @ViewColumn()
+  age: number
+
+  @ViewColumn()
+  sex: string
+
+  @ViewColumn()
+  phone: string
+
+  @ViewColumn()
+  attendType: AttendType
+
+  @ViewColumn()
+  etc?: string
+
+  @ViewColumn()
+  deposit: boolean
+
+  @ViewColumn()
+  token: string
+
+  @ViewColumn()
+  expire: Date
+
+  @ViewColumn()
+  howToGo: HowToGo
+
+  @ViewColumn()
+  isSuperUser: boolean
+
+  @ViewColumn()
+  createAt: Date
+
+  @ViewColumn()
+  permissions: Permission[]
+
+  @ViewColumn()
+  inOutInfos: InOutInfo[]
+
+  @ViewColumn()
+  roomAssignment: RoomAssignment
+
+  @ViewColumn()
+  groupAssignment: GroupAssignment
 }

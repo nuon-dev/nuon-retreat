@@ -43,7 +43,7 @@ router.post("/insert-data", async (req, res) => {
       user.deposit = row[8] === "true"
       user.token = row[9]
       user.expire = new Date(row[10])
-      user.isCancell = row[11] === "true"
+      user.isCancel = row[11] === "true"
       user.howToGo = row[12].toString() as HowToGo
       user.isSuperUser = row[13] === "true"
       user.createAt = new Date(row[14])
