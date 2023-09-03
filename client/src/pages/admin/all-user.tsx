@@ -14,6 +14,7 @@ import { InOutInfo } from "@entity/inOutInfo"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import Router, { useRouter } from "next/router"
+import { HowToGo } from "types"
 
 function AllUser() {
   const router = useRouter()
@@ -85,7 +86,7 @@ function AllUser() {
             <TableCell>이름</TableCell>
             <TableCell>성별</TableCell>
             <TableCell>나이</TableCell>
-            <TableCell>참석 유형</TableCell>
+            <TableCell>버스 이동 유무</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -94,6 +95,9 @@ function AllUser() {
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.sex === "man" ? "남" : "여"}</TableCell>
               <TableCell>{user.age}</TableCell>
+              <TableCell>
+                {user.howToGo === HowToGo.together ? "버스" : "기타"}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

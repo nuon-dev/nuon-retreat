@@ -1,34 +1,39 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, TreeChildren, TreeParent } from "typeorm";
-import { Days, InOutType, MoveType } from "./types";
-import { User } from "./user";
-
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm"
+import { Days, InOutType, MoveType } from "./types"
+import { User } from "./user"
 
 @Entity()
 export class InOutInfo {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @ManyToOne(() => User, (user) => user.id)
-    user: User
+  @ManyToOne(() => User, (user) => user.id)
+  user: User
 
-    @Column()
-    day: Days
+  @Column()
+  day: Days
 
-    @Column()
-    time: string
+  @Column()
+  time: number
 
-    @Column()
-    inOutType: InOutType
+  @Column()
+  inOutType: InOutType
 
-    @Column()
-    position: string
+  @Column()
+  position: string
 
-    @Column()
-    howToMove: MoveType
+  @Column()
+  howToMove: MoveType
 
-    @ManyToOne(() => InOutInfo, inOutInfo => inOutInfo.userInTheCar)
-    rideCarInfo: InOutInfo | null
+  @ManyToOne(() => InOutInfo, (inOutInfo) => inOutInfo.userInTheCar)
+  rideCarInfo: InOutInfo | null
 
-    @OneToMany(() => InOutInfo, inOutInfo => inOutInfo.rideCarInfo)
-    userInTheCar: InOutInfo[]
+  @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.rideCarInfo)
+  userInTheCar: InOutInfo[]
 }

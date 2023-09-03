@@ -1,6 +1,6 @@
 export const enum HowToGo {
   together = "0",
-  car = "1",
+  etc = "1",
 }
 
 export enum InOutType {

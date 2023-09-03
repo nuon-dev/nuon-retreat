@@ -32,7 +32,7 @@ router.post("/save-attend-time", async (req, res) => {
       inOutInfo.id = data.id
       inOutInfo.inOutType = data.inOutType
       inOutInfo.day = data.day
-      inOutInfo.time = data.time || ""
+      inOutInfo.time = data.time
       inOutInfo.position = data.position
       inOutInfo.howToMove = data.howToMove
 

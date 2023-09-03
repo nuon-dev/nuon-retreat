@@ -152,22 +152,6 @@ function DashBoard() {
             }}
           >
             <Box fontSize="12px" mr="4px">
-              전참/부참
-            </Box>{" "}
-            {getAttendeeStatus.fullAttend} : {getAttendeeStatus.halfAttend}
-          </Stack>
-          <Stack
-            margin="8px"
-            fontSize="24px"
-            direction="row"
-            style={{
-              padding: "20px",
-              borderRadius: "8px",
-              border: "1px solid #ACACAC",
-              boxShadow: "2px 2px 5px 3px #ACACAC;",
-            }}
-          >
-            <Box fontSize="12px" mr="4px">
               버스 이동/카풀
             </Box>{" "}
             {getAttendeeStatus.goTogether} / {getAttendeeStatus.goCar}

@@ -85,10 +85,17 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
           <Stack fontSize="12px" p="6px">
             시간
           </Stack>
-          <TextField
-            value={data.time}
-            onChange={(e) => onChangeInformation("time", e.target.value, index)}
-          />
+          <Select
+            fullWidth={true}
+            value={data.howToMove}
+            onChange={(e) =>
+              onChangeInformation("time", e.target.value.toString(), index)
+            }
+          >
+            {new Array(24).fill(0).map((_, index) => (
+              <MenuItem value={index}>{index}시</MenuItem>
+            ))}
+          </Select>
           <Stack fontSize="12px" p="6px">
             장소
           </Stack>

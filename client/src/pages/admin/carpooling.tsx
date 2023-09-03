@@ -127,9 +127,9 @@ function Carpooling() {
           alignItems="center"
           justifyContent="space-evenly"
         >
-          <Box>{info.user?.name}</Box> <Box>{info.position}</Box>
+          <Box>{info.user?.name}</Box>{" "}
+          <Box textAlign="center">{info.time}시</Box> <Box>{info.position}</Box>
         </Stack>
-        <Box textAlign="center">{info.time}</Box>
       </Stack>
     )
   }
@@ -221,9 +221,9 @@ function Carpooling() {
               >
                 <Stack direction="row" justifyContent="space-evenly">
                   <Box>{car.user.name}의 차</Box>
+                  <Box>{car.time}시</Box>
                   <Box>{car.position}</Box>
                 </Stack>
-                <Box>{car.time}</Box>
               </Stack>
               <Box height="1px" bgcolor="#DDD" my="4px" />
               {car.userInTheCar.map((info) => getRowOfInfo(info))}

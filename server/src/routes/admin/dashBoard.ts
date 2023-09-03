@@ -21,9 +21,6 @@ router.get("/get-attendee-status", async (req, res) => {
       name: Not(IsNull()),
     },
   })
-  const countOfGoCar = await userDatabase.count({
-    where: { howToGo: HowToGo.car, name: Not(IsNull()) },
-  })
   const countOfCompleteDeposit = await userDatabase.count({
     where: { deposit: true, name: Not(IsNull()) },
   })

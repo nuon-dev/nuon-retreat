@@ -164,7 +164,7 @@ export default function UserInformationForm(props: IProps) {
               교회 버스로만 이동
             </MenuItem>
             <MenuItem value={HowToGo.car.toString()}>
-              기타 (카풀 이용 또는 제공)
+              기타 (자차 및 카풀)
             </MenuItem>
           </Select>
         </Stack>

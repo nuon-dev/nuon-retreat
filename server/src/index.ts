@@ -1,11 +1,7 @@
 import express from "express"
 import bodyParser from "body-parser"
 import apiRouter from "./routes"
-import dataSource, {
-  attendInfoDatabase,
-  userDatabase,
-} from "./model/dataSource"
-import { InOutInfo } from "./entity/inOutInfo"
+import dataSource, { userDatabase } from "./model/dataSource"
 import { deleteUser } from "./util"
 
 const app = express()
