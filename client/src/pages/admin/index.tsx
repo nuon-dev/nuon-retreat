@@ -25,70 +25,102 @@ function admin() {
     })
   }, [])
 
-  const menu = () => {
+  function pageButton({
+    pageURL,
+    pageName,
+    icon,
+  }: {
+    pageURL: string
+    pageName: string
+    icon: string
+  }) {
     return (
-      <Stack>
+      <Stack
+        style={{
+          cursor: "pointer",
+        }}
+        justifyContent="center"
+        onClick={() => goToPage(pageURL)}
+      >
         <Stack
-          margin="12px"
-          display="flex"
-          direction="row"
-          flexWrap="wrap"
+          width="100px"
+          height="100px"
+          borderRadius="12px"
           alignItems="center"
           justifyContent="center"
-          gap="8px"
+          border="1px solid #333"
         >
-          <Button variant="contained" onClick={() => goToPage("/all-user")}>
-            접수자 전체 조회
-          </Button>
-          <Stack margin="4px" />
-          <Button variant="contained" onClick={() => goToPage("/carpooling")}>
-            카풀 관리
-          </Button>
-          <Stack margin="4px" />
-          <Button
-            variant="contained"
-            onClick={() => goToPage("/room-assignment")}
-          >
-            방배정 관리
-          </Button>
-          <Stack margin="4px" />
-          <Button
-            variant="contained"
-            onClick={() => goToPage("/group-formation")}
-          >
-            조배정 관리
-          </Button>
-          <Stack margin="4px" />
-          <Button
-            variant="contained"
-            onClick={() => goToPage("/permission-manage")}
-          >
-            권한 관리
-          </Button>
-          <Stack margin="4px" />
-          <Button
-            variant="contained"
-            onClick={() => goToPage("/deposit-check")}
-          >
-            입금 확인 처리
-          </Button>
-          <Stack margin="4px" />
-          <Button
-            variant="contained"
-            onClick={() => goToPage("/edit-user-data")}
-          >
-            정보수정
-          </Button>
-          <Stack margin="4px" />
+          <img style={{ maxWidth: "80px", maxHeight: "80px" }} src={icon} />
+        </Stack>
+        <Stack mt="4px" textAlign="center">
+          {pageName}
+        </Stack>
+      </Stack>
+    )
+  }
+
+  const menu = () => {
+    return (
+      <Stack
+        height="100vh"
+        alignItems="center"
+        width="100%"
+        justifyContent="center"
+      >
+        <Stack
+          width="100%"
+          margin="12px"
+          display="flex"
+          flexWrap="wrap"
+          direction="row"
+          justifyContent="center"
+          gap="20px"
+        >
+          {pageButton({
+            pageName: "접수자 전체 조회",
+            pageURL: "/all-user",
+            icon: "/icon/free-icon-bullet-list.png",
+          })}
+          {pageButton({
+            pageName: "카풀 관리",
+            pageURL: "/carpooling",
+            icon: "/icon/free-icon-car.png",
+          })}
+          {pageButton({
+            pageName: "방배정 관리",
+            pageURL: "/room-assignment",
+            icon: "/icon/free-icon-bunk-bed.png",
+          })}
+          {pageButton({
+            pageName: "조배정 관리",
+            pageURL: "/group-formation",
+            icon: "/icon/free-icon-group.png",
+          })}
+          {pageButton({
+            pageName: "권한 관리",
+            pageURL: "/permission-manage",
+            icon: "/icon/free-icon-lock.png",
+          })}
+          {pageButton({
+            pageName: "입금 확인 처리",
+            pageURL: "/deposit-check",
+            icon: "/icon/free-icon-cost.png",
+          })}
+          {pageButton({
+            pageName: "접수 내용 수정",
+            pageURL: "/edit-user-data",
+            icon: "/icon/free-icon-edit-profile.png",
+          })}
+          {pageButton({
+            pageName: "대시보드",
+            pageURL: "/dash-board",
+            icon: "/icon/free-icon-dashboard-interface.png",
+          })}
           <Button
             variant="contained"
             onClick={() => goToPage("/edit-group-score")}
           >
             그룹 점수 관리
-          </Button>
-          <Stack margin="4px" />
-          <Button variant="contained" onClick={() => goToPage("/dash-board")}>
-            대시보드
           </Button>
         </Stack>
       </Stack>
