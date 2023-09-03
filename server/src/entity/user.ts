@@ -13,7 +13,7 @@ import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
-import { HowToGo } from "./types"
+import { CurrentStatus, HowToGo } from "./types"
 
 @Entity()
 export class User {
@@ -59,6 +59,9 @@ export class User {
 
   @Column({ nullable: true, default: 0 })
   isSuperUser: boolean
+
+  @Column({ nullable: true, default: CurrentStatus.null })
+  currentStatus: CurrentStatus
 
   @Column()
   createAt: Date

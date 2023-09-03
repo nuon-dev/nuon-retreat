@@ -4,6 +4,7 @@ import { Button, Stack } from "@mui/material/index"
 import { useRouter } from "next/router"
 import useKakaoHook from "kakao"
 
+//아이콘 주소 https://www.flaticon.com/kr/
 function admin() {
   const router = useRouter()
   const kakao = useKakaoHook()
@@ -18,8 +19,8 @@ function admin() {
     const token = localStorage.getItem("token")
     post("/auth/check-token", {
       token,
-    }).then((respone) => {
-      if (respone.result === "true") {
+    }).then((response) => {
+      if (response.result === "true") {
         setIsLogin(true)
       }
     })

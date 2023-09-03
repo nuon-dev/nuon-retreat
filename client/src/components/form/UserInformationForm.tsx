@@ -163,7 +163,7 @@ export default function UserInformationForm(props: IProps) {
             <MenuItem value={HowToGo.together.toString()}>
               교회 버스로만 이동
             </MenuItem>
-            <MenuItem value={HowToGo.car.toString()}>
+            <MenuItem value={HowToGo.etc.toString()}>
               기타 (자차 및 카풀)
             </MenuItem>
           </Select>

@@ -12,6 +12,7 @@ export const enum MoveType {
 }
 
 export const enum CurrentStatus {
+  null,
   arriveChurch,
   arriveAuditorium,
 }
