@@ -1,5 +1,5 @@
 import express from "express"
-import { AttendType, HowToGo } from "../../entity/types"
+import { HowToGo } from "../../entity/types"
 import { userDatabase } from "../../model/dataSource"
 import { IsNull, Not } from "typeorm"
 
@@ -15,16 +15,9 @@ router.get("/get-attendee-status", async (req, res) => {
   const countOfWoman = await userDatabase.count({
     where: { sex: "woman", name: Not(IsNull()) },
   })
-  const countOfFullAttend = await userDatabase.count({
-    where: { attendType: AttendType.full, name: Not(IsNull()) },
-  })
-  const countOfHalfAttend = await userDatabase.count({
-    where: { attendType: AttendType.half, name: Not(IsNull()) },
-  })
   const countOfGoTogether = await userDatabase.count({
     where: {
       howToGo: HowToGo.together,
-      attendType: AttendType.full,
       name: Not(IsNull()),
     },
   })
@@ -39,10 +32,7 @@ router.get("/get-attendee-status", async (req, res) => {
     all: countOfAllUser,
     man: countOfMan,
     woman: countOfWoman,
-    fullAttend: countOfFullAttend,
-    halfAttend: countOfHalfAttend,
     goTogether: countOfGoTogether,
-    goCar: countOfGoCar + countOfHalfAttend,
     completeDeposit: countOfCompleteDeposit,
   })
 })

@@ -13,7 +13,7 @@ import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
-import { AttendType, HowToGo } from "./types"
+import { HowToGo } from "./types"
 
 @Entity()
 export class User {
@@ -34,9 +34,6 @@ export class User {
 
   @Column({ nullable: true })
   phone: string
-
-  @Column({ nullable: true })
-  attendType: AttendType
 
   @Column({
     nullable: true,
@@ -108,9 +105,6 @@ export class Participant {
 
   @ViewColumn()
   phone: string
-
-  @ViewColumn()
-  attendType: AttendType
 
   @ViewColumn()
   etc?: string

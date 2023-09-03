@@ -4,7 +4,6 @@ import { InOutInfo } from "@entity/inOutInfo"
 import { User } from "@entity/user"
 import { post } from "../../pages/api"
 import { useEffect, useState } from "react"
-import { AttendType, Days, MoveType } from "@entity/types"
 import InOutFrom from "./InOutForm"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
@@ -43,19 +42,13 @@ export default function UserInformationForm(props: IProps) {
     } else if (!userInformation.age) {
       setNotificationMessage("나이를 입력해주세요.")
       return
-    } else if (!userInformation.attendType) {
-      setNotificationMessage("전참 여부를 선택해주세요.")
-      return
     } else if (!userInformation.sex) {
       setNotificationMessage("성별을 선택해주세요.")
       return
     } else if (!userInformation.phone) {
       setNotificationMessage("전화번호를 입력해주세요.")
       return
-    } else if (
-      userInformation.attendType === AttendType.full &&
-      !userInformation.howToGo
-    ) {
+    } else if (!userInformation.howToGo) {
       setNotificationMessage("이동 방법을 선택해주세요.")
       return
     }
@@ -153,60 +146,31 @@ export default function UserInformationForm(props: IProps) {
       </Stack>
       {getInputGap()}
       <Stack>
+        <Stack ml="10px">
+          {getInputGap()}
+          <Stack minWidth="100px" justifyContent="center">
+            이동 방법
+          </Stack>
+          {getLabelGap()}
+          <Select
+            fullWidth={true}
+            defaultValue={userInformation.howToGo}
+            value={userInformation.howToGo}
+            onChange={(e) =>
+              changeInformation("howToGo", e.target.value.toString())
+            }
+          >
+            <MenuItem value={HowToGo.together.toString()}>
+              교회 버스로만 이동
+            </MenuItem>
+            <MenuItem value={HowToGo.car.toString()}>
+              기타 (카풀 이용 또는 제공)
+            </MenuItem>
+          </Select>
+        </Stack>
         {
           // @ts-ignore
-          showItems && (
-            <Stack>
-              <Stack minWidth="100px" justifyContent="center">
-                전참 / 부참
-              </Stack>
-              {getLabelGap()}
-              <Select
-                fullWidth={true}
-                value={userInformation.attendType}
-                defaultValue={userInformation.attendType}
-                placeholder="참여 시간을 선택하세요."
-                onChange={(e) =>
-                  changeInformation("attendType", e.target.value.toString())
-                }
-              >
-                <MenuItem value={AttendType.full}>전참</MenuItem>
-                <MenuItem value={AttendType.half}>부분 참석</MenuItem>
-              </Select>
-            </Stack>
-          )
-        }
-        {
-          // @ts-ignore
-          userInformation.attendType === AttendType.full && (
-            <Stack ml="10px">
-              {getInputGap()}
-              <Stack minWidth="100px" justifyContent="center">
-                이동 방법
-              </Stack>
-              {getLabelGap()}
-              <Select
-                fullWidth={true}
-                defaultValue={userInformation.howToGo}
-                value={userInformation.howToGo}
-                onChange={(e) =>
-                  changeInformation("howToGo", e.target.value.toString())
-                }
-              >
-                <MenuItem value={HowToGo.together.toString()}>
-                  교회 버스로만 이동
-                </MenuItem>
-                <MenuItem value={HowToGo.car.toString()}>
-                  기타 (카풀 이용 또는 제공)
-                </MenuItem>
-              </Select>
-            </Stack>
-          )
-        }
-        {
-          // @ts-ignore
-          (userInformation.howToGo === HowToGo.car.toString() ||
-            userInformation.attendType === AttendType.half) && (
+          userInformation.howToGo !== HowToGo.together && (
             <Stack ml="10px">
               <InOutFrom setInOutData={setInOutData} inOutData={inOutData} />
             </Stack>

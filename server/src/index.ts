@@ -31,8 +31,6 @@ app.listen(port, async () => {
     user.kakaoId.startsWith("normal")
   )
 
-  console.log(normalUser.length)
-
   const pro = normalUser.map(async (user) => {
     return await deleteUser(user)
   })

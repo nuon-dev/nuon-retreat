@@ -1,8 +1,3 @@
-export const enum AttendType {
-  full = "full",
-  half = "half",
-}
-
 export const enum MoveType {
   together,
   driveCarAlone,

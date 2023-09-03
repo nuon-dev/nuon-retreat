@@ -2,7 +2,6 @@ import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
-import { AttendType } from "./types"
 
 export class User {
   id: number
@@ -12,7 +11,6 @@ export class User {
   age: number
   sex: "man" | "woman"
   phone: string
-  attendType: AttendType
   etc?: string
   deposit: boolean
   token: string

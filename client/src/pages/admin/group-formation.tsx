@@ -3,7 +3,6 @@ import { User } from "@entity/user"
 import { useEffect, useState } from "react"
 import { get, post } from "../../pages/api"
 import { InOutInfo } from "@entity/inOutInfo"
-import { AttendType } from "@entity/types"
 
 function GroupFormation() {
   const [unassignedUserList, setUnassignedUserList] = useState(
@@ -38,15 +37,6 @@ function GroupFormation() {
       const unassignedUserList = response
         .filter((user) => user.groupAssignment.groupNumber === 0)
         .sort((a, b) => a.age - b.age)
-        .sort((a, b) => {
-          if (a.attendType === b.attendType) {
-            return 0
-          }
-          if (a.attendType === AttendType.full) {
-            return -1
-          }
-          return 1
-        })
       setUnassignedUserList(unassignedUserList)
 
       const group = [] as Array<Array<User>>
@@ -89,7 +79,6 @@ function GroupFormation() {
       >
         <Box>
           {user.name}({user.age}) (
-          {user.attendType === AttendType.full ? "전" : "부"})
           {user.etc || (user.inOutInfos && user.inOutInfos.length) > 0
             ? "*"
             : ""}
@@ -119,7 +108,6 @@ function GroupFormation() {
       >
         <Box>
           {user.name}({user.age}) (
-          {user.attendType === AttendType.full ? "전" : "부"})
           {user.etc || (user.inOutInfos && user.inOutInfos.length) > 0
             ? "*"
             : ""}
@@ -236,17 +224,7 @@ function GroupFormation() {
           } else {
             return Group(
               group[0].groupAssignment.groupNumber,
-              group
-                .sort((a, b) => a.age - b.age)
-                .sort((a, b) => {
-                  if (a.attendType === b.attendType) {
-                    return 0
-                  }
-                  if (a.attendType === AttendType.full) {
-                    return -1
-                  }
-                  return 1
-                })
+              group.sort((a, b) => a.age - b.age)
             )
           }
         })}
