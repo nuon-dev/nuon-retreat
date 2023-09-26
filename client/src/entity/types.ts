@@ -1,9 +1,20 @@
+export const enum HowToGo {
+  together = "0",
+  etc = "1",
+}
+
 export const enum MoveType {
   together,
   driveCarAlone,
   driveCarWithPerson,
   rideCar,
   goAlone,
+}
+
+export const enum CurrentStatus {
+  null,
+  arriveChurch,
+  arriveAuditorium,
 }
 
 export enum PermissionType {

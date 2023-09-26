@@ -121,6 +121,7 @@ export default function Edit() {
     },
   }
 
+  //@ts-ignore
   const roomList: any = roomMatch[userData.sex]
 
   return (

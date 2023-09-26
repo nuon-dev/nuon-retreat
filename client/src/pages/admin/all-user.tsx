@@ -13,8 +13,8 @@ import { get } from "../../pages/api"
 import { InOutInfo } from "@entity/inOutInfo"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
-import Router, { useRouter } from "next/router"
-import { HowToGo } from "types"
+import { useRouter } from "next/router"
+import { HowToGo } from "@entity/types"
 
 function AllUser() {
   const router = useRouter()
