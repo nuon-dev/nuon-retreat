@@ -22,6 +22,17 @@ export default function NewLaityDashBoard() {
     setAllList(allList)
   }
 
+  function getStatus(status: number) {
+    switch (status) {
+      case 0:
+        return "고민 중"
+      case 1:
+        return "참석 확정"
+      case 2:
+        return "불참 확정"
+    }
+  }
+
   return (
     <Stack direction="row">
       <Stack
@@ -79,12 +90,14 @@ export default function NewLaityDashBoard() {
         </Box>
       </Stack>
 
-      {allList.map((data) => (
-        <Stack border="1px solid black">
-          {data.user.name} - {data.newMemberName}{" "}
-          {data.status === 0 ? "고민 중" : "확정"}
-        </Stack>
-      ))}
+      <Stack gap="2px">
+        {allList.map((data) => (
+          <Stack border="1px solid black">
+            {data.user.name} {data.user.age} - {data.newMemberName}{" "}
+            {getStatus(data.status)}
+          </Stack>
+        ))}
+      </Stack>
     </Stack>
   )
 }

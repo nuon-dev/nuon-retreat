@@ -125,7 +125,7 @@ export default function NewLaity() {
         onClick={() => {
           setNewLaityList([
             ...newLaityList,
-            { user: userData, status: 0 } as any,
+            { user: userData, status: 0, newMemberName: "" } as any,
           ])
         }}
       >
