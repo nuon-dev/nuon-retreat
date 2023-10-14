@@ -45,6 +45,8 @@ export default function NewLaity() {
     const queryList = newLaityList.map((newLaity) =>
       post("/new-laity/save", newLaity)
     )
+
+    await post("/auth/edit-user", userData)
     await Promise.all(queryList)
     setNotificationMessage(`신청 내역이 저장이 되었습니다.`)
     fetchData()
@@ -103,7 +105,16 @@ export default function NewLaity() {
         justifyContent="center"
       >
         본인 이름
-        <TextField variant="outlined" value={userData.name} />
+        <TextField
+          variant="outlined"
+          value={userData.name}
+          onChange={(e) => {
+            setUserData({
+              ...userData,
+              name: e.target.value.toString(),
+            })
+          }}
+        />
       </Stack>
 
       <Button
@@ -150,7 +161,8 @@ export default function NewLaity() {
             }
           >
             <MenuItem value={0}>고민 중</MenuItem>
-            <MenuItem value={1}>확정</MenuItem>
+            <MenuItem value={1}>참석 확정</MenuItem>
+            <MenuItem value={2}>불참 확정</MenuItem>
           </Select>
           <Button
             variant="contained"
