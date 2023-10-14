@@ -1,4 +1,4 @@
-import { Button, Stack } from "@mui/material"
+import { Box, Button, Stack } from "@mui/material"
 import { useRouter } from "next/router"
 import { get, post } from "./api"
 import useKakaoHook from "kakao"
@@ -23,7 +23,7 @@ function index() {
       token,
     }).then((response) => {
       if (response.result === "true") {
-        router.push("/edit")
+        router.push("/a-new-laity")
       }
     })
   }
@@ -34,7 +34,7 @@ function index() {
       kakaoId: kakaoToken,
     })
     localStorage.setItem("token", token)
-    router.push("/edit")
+    router.push("/a-new-laity")
   }
 
   return (
@@ -48,18 +48,22 @@ function index() {
         style={{
           width: "100%",
           height: "100%",
-          backgroundImage: "url(/main_bg.jpeg)",
           backgroundSize: "cover",
           alignItems: "center",
           backgroundRepeat: "round",
         }}
       >
         <Stack
-          direction="row"
+          justifyContent="center"
+          alignItems="center"
           style={{
-            marginTop: "85vh",
+            marginTop: "30vh",
           }}
         >
+          <Box textAlign="center" marginY="2rem" fontSize="30px" color="#444">
+            태신자 작성
+          </Box>
+          <Box marginY="20px">(접수를 위해 카카로 로그인이 필요합니다.)</Box>
           <Button
             style={{
               backgroundColor: "#FEE500",
@@ -72,7 +76,7 @@ function index() {
             }}
             onClick={kakaoLogin}
           >
-            카카오로 접수하기
+            카카오로 로그인
           </Button>
         </Stack>
       </Stack>
