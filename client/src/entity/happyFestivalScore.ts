@@ -1,5 +1,3 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
-
 export enum GameType {
   축구,
   해머,
@@ -11,17 +9,10 @@ export enum GameType {
   골프,
 }
 
-@Entity()
-export class HappyFastivalScore {
-  @PrimaryGeneratedColumn()
+export class HappyFestivalScore {
   id: number
-
-  @Column()
   gameType: GameType
-
-  @Column()
   gender: string
-
-  @Column()
+  name: string
   score: number
 }

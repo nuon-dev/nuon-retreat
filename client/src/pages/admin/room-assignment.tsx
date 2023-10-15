@@ -87,7 +87,7 @@ function RoomAssingment() {
         px="4px"
       >
         <Box>
-          {user.name}({user.age}) (
+          {user.name}({user.age})
           {user.etc || (user.inOutInfos && user.inOutInfos.length) > 0
             ? "*"
             : ""}

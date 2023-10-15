@@ -71,7 +71,7 @@ function DepositCheck() {
             width: "150px",
           }}
         >
-          {isShowUnpaid ? "전체보기" : "미납부자만 보기"}
+          {isShowUnpaid ? "미납부자만 보기" : "전체보기"}
         </Button>
         <Stack fontWeight="600" fontSize="20px">
           전체 / 납부자 ({allUserCount} / {depositUserCount})
@@ -88,7 +88,6 @@ function DepositCheck() {
         <TableHead>
           <TableRow>
             <TableCell>이름</TableCell>
-            <TableCell>참석 유형</TableCell>
             <TableCell>접수 일자</TableCell>
             <TableCell>전화번호</TableCell>
             <TableCell>입금 유무</TableCell>

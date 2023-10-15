@@ -117,12 +117,16 @@ function admin() {
             pageURL: "/dash-board",
             icon: "/icon/free-icon-dashboard-interface.png",
           })}
-          <Button
-            variant="contained"
-            onClick={() => goToPage("/edit-group-score")}
-          >
-            그룹 점수 관리
-          </Button>
+          {pageButton({
+            pageName: "행복축제",
+            pageURL: "/happy-festival-score",
+            icon: "/icon/free-icon-garland.png",
+          })}
+          {pageButton({
+            pageName: "그룹 점수 관리",
+            pageURL: "/edit-group-score",
+            icon: "/icon/free-icon-score.png",
+          })}
         </Stack>
       </Stack>
     )

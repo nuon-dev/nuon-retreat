@@ -1,11 +1,6 @@
 import express from "express"
-import {
-  attendInfoDatabase,
-  roomAssignmentDatabase,
-  userDatabase,
-} from "../model/dataSource"
+import { attendInfoDatabase, userDatabase } from "../model/dataSource"
 import { InOutInfo } from "../entity/inOutInfo"
-import { MoveType } from "../entity/types"
 
 const router = express.Router()
 

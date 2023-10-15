@@ -6,6 +6,7 @@ import { RoomAssignment } from "../entity/roomAssignment"
 import { User } from "../entity/user"
 import { Team, TeamScoreData } from "../entity/teamScore"
 import { ANewLaity } from "../entity/aNewLaity"
+import { HappyFestivalScore } from "../entity/happyFestivalScore"
 
 const dataSource = new DataSource(require("../../ormconfig.json"))
 
@@ -17,4 +18,6 @@ export const permissionDatabase = dataSource.getRepository(Permission)
 export const teamScoreDataDatabase = dataSource.getRepository(TeamScoreData)
 export const roomAssignmentDatabase = dataSource.getRepository(RoomAssignment)
 export const groupAssignmentDatabase = dataSource.getRepository(GroupAssignment)
+export const happyFestivalScoreDatabase =
+  dataSource.getRepository(HappyFestivalScore)
 export default dataSource
