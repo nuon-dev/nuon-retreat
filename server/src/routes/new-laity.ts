@@ -73,8 +73,11 @@ router.get("/dashboard", async (req, res) => {
   const confirmCount = allList.filter(
     (each) => each.status === status.confirm
   ).length
+  const cancelCount = allList.filter(
+    (each) => each.status === status.cancel
+  ).length
 
-  res.send({ allCount, worryCount, confirmCount, allList })
+  res.send({ allCount, worryCount, confirmCount, allList, cancelCount })
 })
 
 export default router

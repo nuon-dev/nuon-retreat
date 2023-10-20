@@ -6,6 +6,7 @@ export default function NewLaityDashBoard() {
   const [allCount, setAllCount] = useState(0)
   const [worryCount, setWorryCount] = useState(0)
   const [confirmCount, setConfirmCount] = useState(0)
+  const [cancelCount, setCancelCount] = useState(0)
   const [allList, setAllList] = useState<any[]>([])
 
   useEffect(() => {
@@ -13,13 +14,13 @@ export default function NewLaityDashBoard() {
   }, [])
 
   async function fetchData() {
-    const { allCount, worryCount, confirmCount, allList } = await get(
-      "/new-laity/dashboard"
-    )
+    const { allCount, worryCount, confirmCount, allList, cancelCount } =
+      await get("/new-laity/dashboard")
     setAllCount(allCount)
     setWorryCount(worryCount)
     setConfirmCount(confirmCount)
     setAllList(allList)
+    setCancelCount(cancelCount)
   }
 
   function getStatus(status: number) {
@@ -34,7 +35,7 @@ export default function NewLaityDashBoard() {
   }
 
   return (
-    <Stack direction="row">
+    <Stack maxWidth="300px" padding="12px">
       <Stack
         margin="8px"
         fontSize="24px"
@@ -83,16 +84,34 @@ export default function NewLaityDashBoard() {
         direction="row"
       >
         <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">
-          확정
+          참석 확정
         </Box>
         <Box fontSize="28px" alignSelf="end">
           {confirmCount}
         </Box>
       </Stack>
+      <Stack
+        margin="8px"
+        fontSize="24px"
+        style={{
+          padding: "20px",
+          borderRadius: "8px",
+          border: "1px solid #ACACAC",
+          boxShadow: "2px 2px 5px 3px #ACACAC;",
+        }}
+        direction="row"
+      >
+        <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">
+          불참 확정
+        </Box>
+        <Box fontSize="28px" alignSelf="end">
+          {cancelCount}
+        </Box>
+      </Stack>
 
-      <Stack gap="2px">
+      <Stack gap="4px" mt="12px">
         {allList.map((data) => (
-          <Stack border="1px solid black">
+          <Stack border="1px solid black" borderRadius="8px" padding="4px">
             {data.user.name} {data.user.age} - {data.newMemberName}{" "}
             {getStatus(data.status)}
           </Stack>
