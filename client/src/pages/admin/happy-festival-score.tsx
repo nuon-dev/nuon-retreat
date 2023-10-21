@@ -15,7 +15,7 @@ export default function HappyFestivalScorePage() {
 
   function onChangeValue({ key, e, gender, isName }: any) {
     const foundScore = scoreList.find(
-      (score) => score.gender === gender && score.gameType === key
+      (score) => score.gender === gender && score.gameType.toString() === key
     )
     if (foundScore) {
       if (isName) {
@@ -23,7 +23,11 @@ export default function HappyFestivalScorePage() {
       } else {
         foundScore.score = e.target.value.toString()
       }
-      setScoreList([...scoreList])
+      setScoreList(
+        scoreList.map((score) =>
+          score.id === foundScore.id ? foundScore : score
+        )
+      )
     } else {
       var newData: HappyFestivalScore
       if (isName) {

@@ -7,6 +7,7 @@ export default function HappyFestival() {
   const [scoreList, setScoreList] = useState<HappyFestivalScore[]>([])
   useEffect(() => {
     fetchData()
+    setInterval(fetchData, 1000 * 10)
   }, [])
 
   async function fetchData() {
