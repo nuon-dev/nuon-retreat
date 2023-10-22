@@ -1,14 +1,17 @@
 import { Box, Stack } from "@mui/material"
 import { get } from "../../pages/api"
 import { useEffect, useState } from "react"
+import { InOutInfo } from "@entity/inOutInfo"
+import { InOutType } from "@entity/types"
 
 function DashBoard() {
   const [getAttendeeStatus, setAttendeeStatus] = useState(
     {} as Record<string, number>
   )
-  const [getAttendanceTimeList, setAttendaceTimeList] = useState([])
+  const [getAttendanceTimeList, setAttendanceTimeList] = useState([])
   const [getAgeInfoList, setAgeInfoList] = useState<Record<string, number>>({})
   const [windowSize, setWindowSize] = useState({} as Record<string, number>)
+  const [infoList, setInfoList] = useState<InOutInfo[]>([])
 
   useEffect(() => {
     setWindowSize({
@@ -21,8 +24,9 @@ function DashBoard() {
 
   async function fetchData() {
     setAttendeeStatus(await get("/admin/get-attendee-status"))
-    setAttendaceTimeList(await get("/admin/get-attendance-time"))
+    setAttendanceTimeList(await get("/admin/get-attendance-time"))
     setAgeInfoList(await get("/admin/get-age-info"))
+    setInfoList(await get("/admin/in-out-info"))
   }
 
   function attendeeStatus() {
@@ -253,8 +257,6 @@ function DashBoard() {
   }
 
   function ageInfo() {
-    const format = (time: Date) => `${time.getMonth() + 1}.${time.getDate()}`
-
     const elementSize = {
       width: windowSize.width - 32,
       height: windowSize.height / 2 - 20,
@@ -308,6 +310,81 @@ function DashBoard() {
     )
   }
 
+  function getInfoCount(condition: (info: InOutInfo) => boolean) {
+    return infoList.filter(condition).length
+  }
+
+  function attendTimeStatus() {
+    const nightTime = 20
+
+    const conditionFilter = (
+      info: InOutInfo,
+      day: number,
+      inOutType: InOutType
+    ) => info.day === day && info.inOutType === inOutType
+
+    const firstNightInCount = getInfoCount(
+      (info) =>
+        conditionFilter(info, 0, InOutType.IN) &&
+        Number.parseInt(info.time) < nightTime
+    )
+
+    const firstNightOutCount = getInfoCount(
+      (info) =>
+        conditionFilter(info, 0, InOutType.OUT) &&
+        Number.parseInt(info.time) < nightTime
+    )
+
+    const firstDayIn = getInfoCount((info) =>
+      conditionFilter(info, 0, InOutType.IN)
+    )
+
+    const firstDayOut = getInfoCount((info) =>
+      conditionFilter(info, 0, InOutType.OUT)
+    )
+
+    const firstDayAttendResult =
+      getAttendeeStatus.goTogether + firstDayIn - firstDayOut
+
+    const secondNightInCount = getInfoCount(
+      (info) =>
+        conditionFilter(info, 1, InOutType.IN) &&
+        Number.parseInt(info.time) < nightTime
+    )
+
+    const secondNightOutCount = getInfoCount(
+      (info) =>
+        conditionFilter(info, 1, InOutType.OUT) &&
+        Number.parseInt(info.time) < nightTime
+    )
+    const secondDayIn = getInfoCount((info) =>
+      conditionFilter(info, 1, InOutType.IN)
+    )
+
+    const secondDayOut = getInfoCount((info) =>
+      conditionFilter(info, 1, InOutType.OUT)
+    )
+    const secondDayAttendResult =
+      firstDayAttendResult + secondDayIn - secondDayOut
+
+    return (
+      <Stack>
+        시간별 참석자 수
+        <Stack>
+          첫째날 {nightTime}시 참석자 수 :{" "}
+          {getAttendeeStatus.goTogether +
+            firstNightInCount -
+            firstNightOutCount}
+        </Stack>
+        <Stack>
+          둘째날 {nightTime}시 참석자 수 :{" "}
+          {firstDayAttendResult + secondNightInCount + secondNightOutCount}
+        </Stack>
+        <Stack>마지막날 아침 참석자 수 : {secondDayAttendResult}</Stack>
+      </Stack>
+    )
+  }
+
   return (
     <Stack
       width="100%"
@@ -319,6 +396,7 @@ function DashBoard() {
       <Stack direction="row" height="50%">
         <Stack>{attendeeStatus()}</Stack>
       </Stack>
+      <Stack mt="12px">{attendTimeStatus()}</Stack>
       <Stack mt="12px">{attendanceTime()}</Stack>
       <Stack mt="12px">{ageInfo()}</Stack>
     </Stack>

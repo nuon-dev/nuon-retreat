@@ -1,6 +1,6 @@
 import express from "express"
 import { HowToGo } from "../../entity/types"
-import { userDatabase } from "../../model/dataSource"
+import { attendInfoDatabase, userDatabase } from "../../model/dataSource"
 import { IsNull, Not } from "typeorm"
 
 const router = express.Router()
@@ -64,6 +64,11 @@ router.get("/get-age-info", async (req, res) => {
     ageMap[user.age] = ageMap[user.age] + 1
   })
   res.send(ageMap)
+})
+
+router.get("/in-out-info", async (req, res) => {
+  const infoList = await attendInfoDatabase.find()
+  res.send(infoList)
 })
 
 export default router
