@@ -65,7 +65,7 @@ export default function HappyFestivalScorePage() {
   }
 
   return (
-    <Stack gap="8px" padding="12px">
+    <Stack gap="20px" padding="12px">
       {Object.entries(GameType).map(([key, value]) => {
         if (key.length !== 1) {
           return
@@ -77,37 +77,58 @@ export default function HappyFestivalScorePage() {
           (score) => score.gender === "여" && score.gameType.toString() === key
         )
         return (
-          <Stack alignItems="center" direction="row" gap="8px">
-            {value} 남
-            <TextField
-              value={manScore?.name}
-              onChange={(e) =>
-                onChangeValue({ key, e, gender: "남", isName: true })
-              }
-            />
-            <TextField
-              value={manScore?.score}
-              onChange={(e) =>
-                onChangeValue({ key, e, gender: "남", isName: false })
-              }
-            />
-            여
-            <TextField
-              value={womanScore?.name}
-              onChange={(e) =>
-                onChangeValue({ key, e, gender: "여", isName: true })
-              }
-            />
-            <TextField
-              value={womanScore?.score}
-              onChange={(e) =>
-                onChangeValue({ key, e, gender: "여", isName: false })
-              }
-            />
+          <Stack gap="4px" alignItems="center" justifyContent="center">
+            {value}
+            <Stack
+              gap="8px"
+              direction="row"
+              alignItems="center"
+              justifyContent="center"
+            >
+              남
+              <TextField
+                placeholder="이름"
+                value={manScore?.name}
+                onChange={(e) =>
+                  onChangeValue({ key, e, gender: "남", isName: true })
+                }
+              />
+              <TextField
+                placeholder="점수"
+                value={manScore?.score}
+                onChange={(e) =>
+                  onChangeValue({ key, e, gender: "남", isName: false })
+                }
+              />
+            </Stack>
+            <Stack
+              gap="8px"
+              direction="row"
+              alignItems="center"
+              justifyContent="center"
+            >
+              여
+              <TextField
+                placeholder="이름"
+                value={womanScore?.name}
+                onChange={(e) =>
+                  onChangeValue({ key, e, gender: "여", isName: true })
+                }
+              />
+              <TextField
+                placeholder="점수"
+                value={womanScore?.score}
+                onChange={(e) =>
+                  onChangeValue({ key, e, gender: "여", isName: false })
+                }
+              />
+            </Stack>
           </Stack>
         )
       })}
-      <Button onClick={save}>저장</Button>
+      <Button variant="contained" onClick={save}>
+        저장
+      </Button>
     </Stack>
   )
 }
