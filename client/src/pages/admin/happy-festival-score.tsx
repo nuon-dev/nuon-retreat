@@ -94,6 +94,7 @@ export default function HappyFestivalScorePage() {
                 }
               />
               <TextField
+                type="number"
                 placeholder="점수"
                 value={manScore?.score}
                 onChange={(e) =>
@@ -116,6 +117,7 @@ export default function HappyFestivalScorePage() {
                 }
               />
               <TextField
+                type="number"
                 placeholder="점수"
                 value={womanScore?.score}
                 onChange={(e) =>
