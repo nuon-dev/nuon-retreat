@@ -15,45 +15,51 @@ export default function HappyFestival() {
     setScoreList(data)
   }
 
-  return (
-    <Stack padding="30px">
-      <Stack textAlign="center">
-        2023 행복축제
-        <br />
-        점수 현황판
-      </Stack>
-      <Stack
-        direction="row"
-        gap="200px"
-        flexWrap="wrap"
-        justifyContent="center"
-        padding="50px"
-      >
-        {Object.entries(GameType).map(([key, value]) => {
-          if (key.length !== 1) {
-            return
-          }
-          const manScore = scoreList.find(
-            (score) =>
-              score.gender === "남" && score.gameType.toString() === key
-          )
-          const womanScore = scoreList.find(
-            (score) =>
-              score.gender === "여" && score.gameType.toString() === key
-          )
+  function getScoreComponent(key: number, value: string) {
+    const manScore = scoreList.find(
+      (score) => score.gender === "남" && score.gameType === key
+    )
+    const womanScore = scoreList.find(
+      (score) => score.gender === "여" && score.gameType === key
+    )
 
-          return (
-            <Stack border="1px solid black" width="200px">
-              <Box textAlign="center">{value}</Box>
-              <Stack textAlign="center">
-                남자 1등 : {manScore?.name} ({manScore?.score})
-              </Stack>
-              <Stack textAlign="center">
-                여자 1등 : {womanScore?.name} ({womanScore?.score})
-              </Stack>
-            </Stack>
-          )
-        })}
+    return (
+      <Stack width="200px" color="#2E2E2E">
+        <Stack fontSize="30px">
+          {manScore?.name} / {manScore?.score} 점
+        </Stack>
+        <Stack fontSize="30px" mt="3vh">
+          {womanScore?.name} / {womanScore?.score} 점
+        </Stack>
+      </Stack>
+    )
+  }
+
+  return (
+    <Stack
+      style={{
+        width: "100vw",
+        height: "100vh",
+        backgroundSize: "",
+        backgroundImage: "url(/happy_bg.png)",
+      }}
+      padding="30px"
+    >
+      <Stack marginTop="36vh" flexWrap="wrap" justifyContent="center">
+        <Stack direction="row" justifyContent="space-evenly">
+          <Stack ml="2vw">{getScoreComponent(GameType.축구, "축구")}</Stack>
+          <Stack ml="2vw">{getScoreComponent(GameType.농구, "농구")}</Stack>
+          <Stack ml="3vw">{getScoreComponent(GameType.다트, "다트")}</Stack>
+        </Stack>
+        <Stack direction="row" justifyContent="space-evenly" marginTop="19vh">
+          <Stack ml="2vw">
+            {getScoreComponent(GameType.두더지잡기, "두더지잡기")}
+          </Stack>
+          <Stack ml="2vw">{getScoreComponent(GameType.해머, "해머")}</Stack>
+          <Stack ml="3vw">
+            {getScoreComponent(GameType.레크레이션, "레크레이션")}
+          </Stack>
+        </Stack>
       </Stack>
     </Stack>
   )

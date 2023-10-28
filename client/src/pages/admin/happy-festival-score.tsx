@@ -15,8 +15,10 @@ export default function HappyFestivalScorePage() {
 
   function onChangeValue({ key, e, gender, isName }: any) {
     const foundScore = scoreList.find(
-      (score) => score.gender === gender && score.gameType.toString() === key
+      (score) => score.gender === gender && score.gameType === key
     )
+    console.log(foundScore)
+    console.log(scoreList)
     if (foundScore) {
       if (isName) {
         foundScore.name = e.target.value.toString()
@@ -66,15 +68,16 @@ export default function HappyFestivalScorePage() {
 
   return (
     <Stack gap="20px" padding="12px">
-      {Object.entries(GameType).map(([key, value]) => {
-        if (key.length !== 1) {
+      {Object.entries(GameType).map(([k, value]) => {
+        if (k.length !== 1) {
           return
         }
+        const key = Number.parseInt(k)
         const manScore = scoreList.find(
-          (score) => score.gender === "남" && score.gameType.toString() === key
+          (score) => score.gender === "남" && score.gameType === key
         )
         const womanScore = scoreList.find(
-          (score) => score.gender === "여" && score.gameType.toString() === key
+          (score) => score.gender === "여" && score.gameType === key
         )
         return (
           <Stack gap="4px" alignItems="center" justifyContent="center">
