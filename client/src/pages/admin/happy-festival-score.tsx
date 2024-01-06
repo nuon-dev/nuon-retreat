@@ -11,6 +11,7 @@ export default function HappyFestivalScorePage() {
 
   useEffect(() => {
     fetchData()
+    setInterval(fetchData, 1000 * 10)
   }, [])
 
   function onChangeValue({ key, e, gender, isName }: any) {

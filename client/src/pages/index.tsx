@@ -23,7 +23,7 @@ function index() {
       token,
     }).then((response) => {
       if (response.result === "true") {
-        router.push("/a-new-laity")
+        router.push("/edit")
       }
     })
   }
@@ -34,7 +34,7 @@ function index() {
       kakaoId: kakaoToken,
     })
     localStorage.setItem("token", token)
-    router.push("/a-new-laity")
+    router.push("/edit")
   }
 
   return (

@@ -2,6 +2,7 @@ import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
+import { MoveType } from "./types"
 
 export class User {
   id: number
@@ -20,6 +21,7 @@ export class User {
   permissions: Permission[]
   inOutInfos: InOutInfo[]
   roomAssignment: RoomAssignment
+  howToLeave: MoveType
   groupAssignment: GroupAssignment
   isCancell: boolean
   howToGo: string

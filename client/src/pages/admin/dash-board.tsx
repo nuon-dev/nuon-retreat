@@ -326,13 +326,13 @@ function DashBoard() {
     const firstNightInCount = getInfoCount(
       (info) =>
         conditionFilter(info, 0, InOutType.IN) &&
-        Number.parseInt(info.time) < nightTime
+        Number.parseInt(info.time.toString()) < nightTime
     )
 
     const firstNightOutCount = getInfoCount(
       (info) =>
         conditionFilter(info, 0, InOutType.OUT) &&
-        Number.parseInt(info.time) < nightTime
+        Number.parseInt(info.time.toString()) < nightTime
     )
 
     const firstDayIn = getInfoCount((info) =>
@@ -349,13 +349,13 @@ function DashBoard() {
     const secondNightInCount = getInfoCount(
       (info) =>
         conditionFilter(info, 1, InOutType.IN) &&
-        Number.parseInt(info.time) < nightTime
+        Number.parseInt(info.time.toString()) < nightTime
     )
 
     const secondNightOutCount = getInfoCount(
       (info) =>
         conditionFilter(info, 1, InOutType.OUT) &&
-        Number.parseInt(info.time) < nightTime
+        Number.parseInt(info.time.toString()) < nightTime
     )
     const secondDayIn = getInfoCount((info) =>
       conditionFilter(info, 1, InOutType.IN)

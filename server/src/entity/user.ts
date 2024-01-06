@@ -13,7 +13,7 @@ import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
-import { CurrentStatus, HowToGo } from "./types"
+import { CurrentStatus, HowToGo, MoveType } from "./types"
 
 @Entity()
 export class User {
@@ -65,6 +65,9 @@ export class User {
 
   @Column()
   createAt: Date
+
+  @Column()
+  howToLeave: MoveType
 
   @OneToMany(() => Permission, (permission) => permission.user)
   permissions: Permission[]

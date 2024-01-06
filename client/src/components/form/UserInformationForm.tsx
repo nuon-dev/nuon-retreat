@@ -51,6 +51,9 @@ export default function UserInformationForm(props: IProps) {
     } else if (!userInformation.howToGo) {
       setNotificationMessage("이동 방법을 선택해주세요.")
       return
+    } else if (!userInformation.howToLeave) {
+      setNotificationMessage("이동 방법을 선택해주세요.")
+      return
     }
 
     const url = "/auth/edit-user"
@@ -110,16 +113,39 @@ export default function UserInformationForm(props: IProps) {
       {getInputGap()}
       <Stack>
         <Stack width="80px" justifyContent="center">
-          나이
+          전화번호
         </Stack>
         {getLabelGap()}
         <TextField
-          type="number"
           fullWidth={true}
-          placeholder="나이를 입력하세요."
-          value={userInformation.age}
-          onChange={(e) => changeInformation("age", e.target.value)}
+          value={userInformation.phone}
+          placeholder="전화번호를 입력하세요."
+          onChange={(e) => changeInformation("phone", e.target.value)}
         />
+      </Stack>
+      {getInputGap()}
+      <Stack>
+        <Stack width="200px" justifyContent="center">
+          출생년도 (빠른은 친구 기준)
+        </Stack>
+        {getLabelGap()}
+        {userInformation && (
+          <Select
+            fullWidth={true}
+            key={userInformation.age}
+            value={userInformation.age}
+            defaultValue={userInformation.age}
+            onChange={(e) =>
+              changeInformation("age", e.target.value.toString())
+            }
+          >
+            {new Array(45).fill(0).map((_, index) => (
+              <MenuItem value={new Date().getFullYear() - index - 19}>
+                {new Date().getFullYear() - index - 19}
+              </MenuItem>
+            ))}
+          </Select>
+        )}
       </Stack>
       {getInputGap()}
       <Stack>
@@ -146,28 +172,25 @@ export default function UserInformationForm(props: IProps) {
       </Stack>
       {getInputGap()}
       <Stack>
-        <Stack ml="10px">
-          {getInputGap()}
-          <Stack minWidth="100px" justifyContent="center">
-            이동 방법
-          </Stack>
-          {getLabelGap()}
-          <Select
-            fullWidth={true}
-            defaultValue={userInformation.howToGo}
-            value={userInformation.howToGo}
-            onChange={(e) =>
-              changeInformation("howToGo", e.target.value.toString())
-            }
-          >
-            <MenuItem value={HowToGo.together.toString()}>
-              교회 버스로만 이동
-            </MenuItem>
-            <MenuItem value={HowToGo.etc.toString()}>
-              기타 (자차 및 카풀)
-            </MenuItem>
-          </Select>
+        {getInputGap()}
+        <Stack minWidth="100px" justifyContent="center">
+          수련회장 이동 방법
         </Stack>
+        {getLabelGap()}
+        <Select
+          fullWidth={true}
+          key={userInformation.howToGo}
+          defaultValue={userInformation.howToGo}
+          value={userInformation.howToGo}
+          onChange={(e) =>
+            changeInformation("howToGo", e.target.value.toString())
+          }
+        >
+          <MenuItem value={HowToGo.together.toString()}>교회 버스로</MenuItem>
+          <MenuItem value={HowToGo.etc.toString()}>
+            기타 (자차 및 카풀)
+          </MenuItem>
+        </Select>
         {
           // @ts-ignore
           userInformation.howToGo !== HowToGo.together && (
@@ -179,16 +202,25 @@ export default function UserInformationForm(props: IProps) {
       </Stack>
       {getInputGap()}
       <Stack>
-        <Stack width="80px" justifyContent="center">
-          전화번호
+        {getInputGap()}
+        <Stack minWidth="100px" justifyContent="center">
+          교회로 오는 차
         </Stack>
         {getLabelGap()}
-        <TextField
+        <Select
           fullWidth={true}
-          value={userInformation.phone}
-          placeholder="전화번호를 입력하세요."
-          onChange={(e) => changeInformation("phone", e.target.value)}
-        />
+          key={userInformation.howToLeave}
+          defaultValue={userInformation.howToLeave}
+          value={userInformation.howToLeave}
+          onChange={(e) =>
+            changeInformation("howToLeave", e.target.value.toString())
+          }
+        >
+          <MenuItem value={HowToGo.together.toString()}>교회 버스로</MenuItem>
+          <MenuItem value={HowToGo.etc.toString()}>
+            기타 (자차 및 카풀)
+          </MenuItem>
+        </Select>
       </Stack>
       {getInputGap()}
       <Stack>

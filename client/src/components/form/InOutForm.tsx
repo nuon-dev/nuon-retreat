@@ -7,7 +7,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useEffect } from "react"
 import { post } from "pages/api"
 import { InOutInfo } from "@entity/inOutInfo"
 import { Days, InOutType, MoveType } from "@entity/types"
@@ -18,11 +18,18 @@ interface IProps {
 }
 
 export default function InOutFrom({ inOutData, setInOutData }: IProps) {
+  useEffect(() => {
+    if (inOutData.length === 0) {
+      onClickAdd()
+    }
+  })
+
   function onClickAdd() {
     const emptyInfo = new InOutInfo()
     emptyInfo.day = Days.firstDay
     emptyInfo.inOutType = InOutType.IN
     emptyInfo.position = "교회"
+    emptyInfo.time = 9
     emptyInfo.howToMove = MoveType.driveCarWithPerson
     setInOutData([...inOutData, emptyInfo])
   }
@@ -58,7 +65,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
       >
         <Stack>
           <Stack fontSize="12px" p="6px">
-            날짜 선택
+            들어오는 날짜 선택
           </Stack>
           <Select
             value={data.day}
@@ -66,51 +73,37 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
               onChangeInformation("day", e.target.value.toString(), index)
             }
           >
-            <MenuItem value={Days.firstDay}>18(금)</MenuItem>
-            <MenuItem value={Days.secondDay}>19(토)</MenuItem>
-            <MenuItem value={Days.thirdDay}>20(일)</MenuItem>
+            <MenuItem value={Days.firstDay}>2(금)</MenuItem>
+            <MenuItem value={Days.secondDay}>3(토)</MenuItem>
           </Select>
+          {/*
+            <Stack fontSize="12px" p="6px">
+              이동방향
+            </Stack>
+            <Select
+              value={data.inOutType}
+              onChange={(e) =>
+                onChangeInformation("inOutType", e.target.value.toString(), index)
+              }
+            >
+              <MenuItem value={InOutType.IN}>수련회장 들어가기</MenuItem>
+              <MenuItem value={InOutType.OUT}>수련회장에서 나오기</MenuItem>
+            </Select>
+          */}
           <Stack fontSize="12px" p="6px">
-            이동방향
-          </Stack>
-          <Select
-            value={data.inOutType}
-            onChange={(e) =>
-              onChangeInformation("inOutType", e.target.value.toString(), index)
-            }
-          >
-            <MenuItem value={InOutType.IN}>수련회장 들어가기</MenuItem>
-            <MenuItem value={InOutType.OUT}>수련회장에서 나오기</MenuItem>
-          </Select>
-          <Stack fontSize="12px" p="6px">
-            시간
+            수련회장 예상 도착 시간
           </Stack>
           <Select
             fullWidth={true}
-            value={data.howToMove}
+            value={data.time}
             onChange={(e) =>
               onChangeInformation("time", e.target.value.toString(), index)
             }
           >
-            {new Array(24).fill(0).map((_, index) => (
-              <MenuItem value={index}>{index}시</MenuItem>
-            ))}
-          </Select>
-          <Stack fontSize="12px" p="6px">
-            장소
-          </Stack>
-          <Select
-            value={data.position}
-            onChange={(e) =>
-              onChangeInformation("position", e.target.value.toString(), index)
-            }
-          >
-            <MenuItem value={"교회"}>교회</MenuItem>
-            <MenuItem value={"아주대"}>아주대</MenuItem>
-            <MenuItem value={"수원역"}>수원역</MenuItem>
-            <MenuItem value={"광교"}>광교</MenuItem>
-            <MenuItem value={"여주역"}>여주역(수련회장)</MenuItem>
-            <MenuItem value={"기타지역"}>기타지역</MenuItem>
+            <MenuItem value={9}>09시</MenuItem>
+            <MenuItem value={13}>13시</MenuItem>
+            <MenuItem value={15}>15시</MenuItem>
+            <MenuItem value={20}>20시</MenuItem>
           </Select>
         </Stack>
         <Stack>
@@ -140,20 +133,49 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
             </Select>
           </FormControl>
         </Stack>
-        <Stack marginTop="10px">
-          <Button variant="outlined" onClick={() => onClickRemove(index)}>
-            이동 방법 삭제
-          </Button>
-        </Stack>
+        {(data.howToMove == MoveType.driveCarWithPerson ||
+          data.howToMove == MoveType.rideCar) && (
+          <Stack>
+            <Stack fontSize="12px" p="6px">
+              장소
+            </Stack>
+            <Select
+              value={data.position}
+              onChange={(e) =>
+                onChangeInformation(
+                  "position",
+                  e.target.value.toString(),
+                  index
+                )
+              }
+            >
+              <MenuItem value={"교회"}>교회</MenuItem>
+              <MenuItem value={"아주대"}>아주대</MenuItem>
+              <MenuItem value={"수원역"}>수원역</MenuItem>
+              <MenuItem value={"광교"}>광교</MenuItem>
+              <MenuItem value={"여주역"}>여주역(수련회장)</MenuItem>
+              <MenuItem value={"기타지역"}>기타지역</MenuItem>
+            </Select>
+          </Stack>
+        )}
+        {/*
+          <Stack marginTop="10px">
+            <Button variant="outlined" onClick={() => onClickRemove(index)}>
+              이동 방법 삭제
+            </Button>
+          </Stack>
+        */}
       </Stack>
     )
   }
 
   return (
     <Stack marginTop="10px">
+      {/**
       <Button variant="contained" onClick={onClickAdd}>
         이동 방법 추가
       </Button>
+         */}
       {inOutData.map((data, index) => getRow(data, index))}
     </Stack>
   )
