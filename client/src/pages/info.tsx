@@ -13,7 +13,7 @@ export default function Info() {
       kakaoId: kakaoToken,
     })
     localStorage.setItem("token", token)
-    push("/edit")
+    push("/select-date")
   }
 
   return (
