@@ -1,0 +1,243 @@
+import { Stack } from "@mui/material"
+import { get, post } from "./api"
+import { useEffect, useState } from "react"
+import { User } from "@entity/user"
+import { InOutInfo } from "@entity/inOutInfo"
+import styled from "@emotion/styled"
+import { Days, MoveType } from "@entity/types"
+import { InOutType } from "types"
+import { useRouter } from "next/router"
+
+export default function selectData() {
+  const { push } = useRouter()
+  const [userData, setUserData] = useState({} as User)
+  const [inOutData, setInOutData] = useState<InOutInfo>()
+  const [selectedDate, setSelectedData] = useState(Days.firstDay)
+
+  useEffect(() => {
+    checkToken()
+  }, [])
+
+  const checkToken = () => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      return
+    }
+    post("/auth/check-token", {
+      token,
+    }).then((response) => {
+      if (response.result === "true") {
+        setUserData(response.userData)
+        if (response.inoutInfoList.length > 0) {
+          setInOutData(response.inoutInfoList[0])
+        }
+      }
+    })
+  }
+
+  async function onSelectDate(time: number) {
+    const inOutInfo = {
+      id: inOutData?.id || 0,
+      day: selectedDate,
+      time: time,
+      inOutType: InOutType.IN,
+      position: "",
+      howToMove: MoveType.rideCar,
+    }
+    await post("/info/save-attend-time", {
+      userId: userData.id,
+      inOutData: inOutInfo,
+    })
+    push("/detail")
+  }
+
+  const selectList =
+    selectedDate === Days.firstDay
+      ? [
+          {
+            title: "오후 1 : 00",
+            description: "교회 도착 (교회 버스 탑승 필수)",
+            time: 13,
+          },
+          {
+            title: "오후 3 : 00",
+            description: "교회 도착 (자차)",
+            time: 15,
+          },
+          {
+            title: "오후 8 : 00",
+            description: "교회 도착",
+            time: 20,
+          },
+        ]
+      : [
+          {
+            title: "오전 9 : 00",
+            description: "교회 도착",
+            time: 9,
+          },
+          {
+            title: "오후 1 : 00",
+            description: "교회 도착",
+            time: 13,
+          },
+          {
+            title: "오후 3 : 00",
+            description: "교회 도착",
+            time: 15,
+          },
+          {
+            title: "오후 8 : 00",
+            description: "교회 도착",
+            time: 20,
+          },
+        ]
+
+  return (
+    <Stack>
+      <Stack>
+        <img
+          style={{
+            position: "absolute",
+            width: "110%",
+            left: "-5%",
+            top: "-350px",
+            filter: "blur(5px)",
+          }}
+          src="/main_bg.jpg"
+        />
+        <Stack color="white">000</Stack>
+        <Stack zIndex="10" color="white" padding="12px" fontWeight="600">
+          <span>내 귀에 들린 대로 행하리니 &lt; 민 14 : 28 &gt;</span>
+          <span
+            style={{ fontWeight: "600", color: "#aaa", lineHeight: "30px" }}
+          >
+            여주 중앙 청소년 수련원
+          </span>
+        </Stack>
+      </Stack>
+      <Stack bgcolor="white" zIndex="10" width="105%">
+        <Stack gap="12px" padding="12px">
+          <span
+            style={{ fontSize: "32px", textAlign: "center", color: "#333" }}
+          >
+            2024.02
+          </span>
+          <Stack direction="row" justifyContent="space-around">
+            <span color="#ccc">일</span>
+            <span color="#ccc">월</span>
+            <span color="#ccc">화</span>
+            <span color="#ccc">수</span>
+            <span color="#ccc">목</span>
+            <span color="#ccc">금</span>
+            <span color="#ccc">토</span>
+          </Stack>
+          <Stack direction="row" justifyContent="space-around" mt="8px">
+            <CalendalDate> </CalendalDate>
+            <CalendalDate> </CalendalDate>
+            <CalendalDate> </CalendalDate>
+            <CalendalDate> </CalendalDate>
+            <CalendalDate>1</CalendalDate>
+            <CalendalDate
+              style={{
+                color: selectedDate === Days.firstDay ? "white" : "black",
+                backgroundColor:
+                  selectedDate === Days.firstDay ? "#8e43e7" : "",
+              }}
+              onClick={() => setSelectedData(Days.firstDay)}
+            >
+              2
+            </CalendalDate>
+            <CalendalDate
+              style={{
+                color: selectedDate === Days.secondDay ? "white" : "black",
+                backgroundColor:
+                  selectedDate === Days.secondDay ? "#8e43e7" : "",
+              }}
+              onClick={() => setSelectedData(Days.secondDay)}
+            >
+              3
+            </CalendalDate>
+          </Stack>
+          <Stack direction="row" justifyContent="space-around">
+            <CalendalDate>4</CalendalDate>
+            <CalendalDate>5</CalendalDate>
+            <CalendalDate>6</CalendalDate>
+            <CalendalDate>7</CalendalDate>
+            <CalendalDate>8</CalendalDate>
+            <CalendalDate>9</CalendalDate>
+            <CalendalDate>10</CalendalDate>
+          </Stack>
+          <Stack direction="row" justifyContent="space-around">
+            <CalendalDate>11</CalendalDate>
+            <CalendalDate>12</CalendalDate>
+            <CalendalDate>13</CalendalDate>
+            <CalendalDate>14</CalendalDate>
+            <CalendalDate>15</CalendalDate>
+            <CalendalDate>16</CalendalDate>
+            <CalendalDate>17</CalendalDate>
+          </Stack>
+          <Stack direction="row" justifyContent="space-around">
+            <CalendalDate>18</CalendalDate>
+            <CalendalDate>19</CalendalDate>
+            <CalendalDate>20</CalendalDate>
+            <CalendalDate>21</CalendalDate>
+            <CalendalDate>22</CalendalDate>
+            <CalendalDate>23</CalendalDate>
+            <CalendalDate>24</CalendalDate>
+          </Stack>
+          <Stack direction="row" justifyContent="space-around">
+            <CalendalDate>25</CalendalDate>
+            <CalendalDate>26</CalendalDate>
+            <CalendalDate>27</CalendalDate>
+            <CalendalDate>28</CalendalDate>
+            <CalendalDate>29</CalendalDate>
+            <CalendalDate></CalendalDate>
+            <CalendalDate></CalendalDate>
+          </Stack>
+        </Stack>
+        <Stack borderTop="solid 1px black" mt="8px">
+          {selectList.map((item) => (
+            <Stack
+              direction="row"
+              borderBottom="solid 1px black"
+              padding="12px"
+              justifyContent="space-between"
+            >
+              <Stack>
+                <span
+                  color="#ccc"
+                  style={{ fontSize: "1.1rem", fontWeight: "400" }}
+                >
+                  {item.title}
+                </span>
+                <span color="#ccc">{item.description}</span>
+              </Stack>
+              <Stack
+                px="24px"
+                justifyContent="center"
+                bgcolor="#8e43e7"
+                color="white"
+                borderRadius="24px"
+                onClick={() => onSelectDate(item.time)}
+              >
+                선택 &gt;
+              </Stack>
+            </Stack>
+          ))}
+        </Stack>
+      </Stack>
+    </Stack>
+  )
+}
+
+const CalendalDate = styled.span`
+  width: 40px;
+  height: 35px;
+  color: #c4c4c4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  border-radius: 24px;
+`

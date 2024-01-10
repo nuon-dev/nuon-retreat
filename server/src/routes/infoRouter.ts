@@ -8,7 +8,7 @@ router.post("/save-attend-time", async (req, res) => {
   const data = req.body
 
   const userId: number = data.userId
-  const inOutDataList: Array<InOutInfo> = data.inOutData
+  const inOutData: InOutInfo = data.inOutData
 
   let foundUser
   try {
@@ -21,21 +21,22 @@ router.post("/save-attend-time", async (req, res) => {
   }
 
   try {
-    for (const data of inOutDataList) {
+    if (inOutData.id) {
+      await attendInfoDatabase.save(inOutData)
+    } else {
       const inOutInfo = new InOutInfo()
       inOutInfo.user = foundUser
-      inOutInfo.id = data.id
-      inOutInfo.inOutType = data.inOutType
-      inOutInfo.day = data.day
-      inOutInfo.time = data.time
-      inOutInfo.position = data.position
-      inOutInfo.howToMove = data.howToMove
-
+      inOutInfo.id = inOutData.id
+      inOutInfo.inOutType = inOutData.inOutType
+      inOutInfo.day = inOutData.day
+      inOutInfo.time = inOutData.time
+      inOutInfo.position = inOutData.position
+      inOutInfo.howToMove = inOutData.howToMove
       await attendInfoDatabase.save(inOutInfo)
     }
-
     res.send({ result: "success" })
   } catch (e) {
+    console.log(e)
     res.send(e)
   }
 })
