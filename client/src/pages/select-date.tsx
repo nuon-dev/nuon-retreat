@@ -7,12 +7,15 @@ import styled from "@emotion/styled"
 import { Days, MoveType } from "@entity/types"
 import { InOutType } from "types"
 import { useRouter } from "next/router"
+import { useSetRecoilState } from "recoil"
+import { NotificationMessage } from "state/notification"
 
 export default function selectData() {
   const { push } = useRouter()
   const [userData, setUserData] = useState({} as User)
   const [inOutData, setInOutData] = useState<InOutInfo>()
   const [selectedDate, setSelectedData] = useState(Days.firstDay)
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
     checkToken()
@@ -21,18 +24,26 @@ export default function selectData() {
   const checkToken = () => {
     const token = localStorage.getItem("token")
     if (!token) {
+      push("/")
       return
     }
     post("/auth/check-token", {
       token,
-    }).then((response) => {
-      if (response.result === "true") {
-        setUserData(response.userData)
-        if (response.inoutInfoList.length > 0) {
-          setInOutData(response.inoutInfoList[0])
-        }
-      }
     })
+      .then((response) => {
+        if (response.result === "true") {
+          setUserData(response.userData)
+          if (response.inoutInfoList.length > 0) {
+            setInOutData(response.inoutInfoList[0])
+          }
+        }
+      })
+      .catch(() => {
+        setNotificationMessage(
+          "정보를 불러오는 과정에서 문제가 발생하였습니다."
+        )
+        push("/")
+      })
   }
 
   async function onSelectDate(time: number) {

@@ -1,10 +1,10 @@
 export const enum HowToGo {
-  together = "0",
-  etc = "1",
+  together = "1",
+  etc = "2",
 }
 
 export const enum MoveType {
-  together,
+  together = 1,
   driveCarAlone,
   driveCarWithPerson,
   rideCar,

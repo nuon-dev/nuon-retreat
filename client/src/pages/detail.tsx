@@ -65,7 +65,6 @@ export default function selectData() {
     const { result } = await post(url, userInformation)
     if (result === "success") {
       setNotificationMessage(`신청 내역이 저장이 되었습니다.`)
-      window.open("about:blank", "_self")?.close()
       return
     }
     setNotificationMessage("접수중 오류가 발생하였습니다.\n다시 시도해주세요.")
