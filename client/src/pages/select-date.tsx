@@ -61,34 +61,34 @@ export default function selectData() {
           },
           {
             title: "오후 3 : 00",
-            description: "교회 도착 (자차)",
+            description: "수련회장 도착 (자차)",
             time: 15,
           },
           {
             title: "오후 8 : 00",
-            description: "교회 도착",
+            description: "수련회장 도착",
             time: 20,
           },
         ]
       : [
           {
             title: "오전 9 : 00",
-            description: "교회 도착",
+            description: "수련회장 도착",
             time: 9,
           },
           {
             title: "오후 1 : 00",
-            description: "교회 도착",
+            description: "수련회장 도착",
             time: 13,
           },
           {
             title: "오후 3 : 00",
-            description: "교회 도착",
+            description: "수련회장 도착",
             time: 15,
           },
           {
             title: "오후 8 : 00",
-            description: "교회 도착",
+            description: "수련회장 도착",
             time: 20,
           },
         ]
@@ -196,12 +196,21 @@ export default function selectData() {
             <CalendalDate></CalendalDate>
           </Stack>
         </Stack>
+        <Stack
+          p="12px"
+          color="#333"
+          fontWeight="500"
+          fontSize="16px"
+          borderTop="1px solid #ccc"
+        >
+          입장 시간을 선택해주세요.
+        </Stack>
         <Stack borderTop="solid 1px black" mt="8px">
           {selectList.map((item) => (
             <Stack
+              p="12px"
               direction="row"
               borderBottom="solid 1px black"
-              padding="12px"
               justifyContent="space-between"
             >
               <Stack>

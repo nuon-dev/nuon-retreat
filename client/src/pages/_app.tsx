@@ -8,14 +8,22 @@ function MyApp({ Component, pageProps }: any) {
   return (
     <>
       <Head>
-        <meta name="title" property="og:title" content="태신자 작정" />
+        <meta
+          name="title"
+          property="og:title"
+          content="2024 새벽이슬 동계 수련회"
+        />
         <meta
           name="description"
           property="og:description"
-          content="태신자 작정"
+          content="2024 새벽이슬 동계 수련회"
         />
-        {/*<meta name="image" property="og:image" content="%PUBLIC_URL%/logo.png" />
-      <meta name="url" property="og:url" content="" />*/}
+        <meta
+          name="image"
+          property="og:image"
+          content="%PUBLIC_URL%/main_bg.jpg"
+        />
+        <meta name="url" property="og:url" content="main_bg.jpg" />
       </Head>
       <RecoilRoot>
         <Notification />
