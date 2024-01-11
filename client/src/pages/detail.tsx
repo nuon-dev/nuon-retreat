@@ -94,9 +94,8 @@ export default function selectData() {
         <img
           style={{
             position: "absolute",
-            width: "110%",
-            left: "-5%",
-            top: "-350px",
+            top: "-300px",
+            width: "100%",
             filter: "blur(5px)",
           }}
           src="/main_bg.jpg"
@@ -111,7 +110,7 @@ export default function selectData() {
           </span>
         </Stack>
       </Stack>
-      <Stack bgcolor="white" zIndex="10" width="105%" p="12px">
+      <Stack bgcolor="white" zIndex="10" width="100%" p="12px">
         <Stack
           fontSize="14px"
           fontWeight="600"
@@ -254,7 +253,7 @@ export default function selectData() {
             variant="contained"
             onClick={submit}
             style={{
-              backgroundColor: "#8e43e7",
+              backgroundColor: "#2350c0",
               borderRadius: "24px",
             }}
           >

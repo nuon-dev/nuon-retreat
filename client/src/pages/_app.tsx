@@ -10,6 +10,10 @@ function MyApp({ Component, pageProps }: any) {
       <Head>
         <title>2024 새벽이슬 동계 수련회</title>
         <meta
+          name="viewport"
+          content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
+        />
+        <meta
           name="title"
           property="og:title"
           content="2024 새벽이슬 동계 수련회"

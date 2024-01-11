@@ -110,9 +110,8 @@ export default function selectData() {
         <img
           style={{
             position: "absolute",
-            width: "110%",
-            left: "-5%",
-            top: "-350px",
+            width: "100%",
+            top: "-300px",
             filter: "blur(5px)",
           }}
           src="/main_bg.jpg"
@@ -127,7 +126,7 @@ export default function selectData() {
           </span>
         </Stack>
       </Stack>
-      <Stack bgcolor="white" zIndex="10" width="105%">
+      <Stack bgcolor="white" zIndex="10" width="100%">
         <Stack gap="12px" padding="12px">
           <span
             style={{ fontSize: "32px", textAlign: "center", color: "#333" }}
@@ -153,7 +152,7 @@ export default function selectData() {
               style={{
                 color: selectedDate === Days.firstDay ? "white" : "black",
                 backgroundColor:
-                  selectedDate === Days.firstDay ? "#8e43e7" : "",
+                  selectedDate === Days.firstDay ? "#2350c0" : "",
               }}
               onClick={() => setSelectedData(Days.firstDay)}
             >
@@ -163,7 +162,7 @@ export default function selectData() {
               style={{
                 color: selectedDate === Days.secondDay ? "white" : "black",
                 backgroundColor:
-                  selectedDate === Days.secondDay ? "#8e43e7" : "",
+                  selectedDate === Days.secondDay ? "#2350c0" : "",
               }}
               onClick={() => setSelectedData(Days.secondDay)}
             >
@@ -236,7 +235,7 @@ export default function selectData() {
               <Stack
                 px="24px"
                 justifyContent="center"
-                bgcolor="#8e43e7"
+                bgcolor="#2350c0"
                 color="white"
                 borderRadius="24px"
                 onClick={() => onSelectDate(item.time)}

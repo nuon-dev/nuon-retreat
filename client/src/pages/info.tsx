@@ -102,7 +102,7 @@ export default function Info() {
               onClick={kakaoLogin}
               variant="contained"
               style={{
-                backgroundColor: "#8e43e7",
+                backgroundColor: "#2350c0",
                 height: "60px",
                 borderRadius: "12px",
                 fontSize: "20px",
