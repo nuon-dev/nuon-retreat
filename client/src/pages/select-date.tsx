@@ -152,7 +152,7 @@ export default function selectData() {
               style={{
                 color: selectedDate === Days.firstDay ? "white" : "black",
                 backgroundColor:
-                  selectedDate === Days.firstDay ? "#2350c0" : "",
+                  selectedDate === Days.firstDay ? "#5eaaef" : "",
               }}
               onClick={() => setSelectedData(Days.firstDay)}
             >
@@ -162,7 +162,7 @@ export default function selectData() {
               style={{
                 color: selectedDate === Days.secondDay ? "white" : "black",
                 backgroundColor:
-                  selectedDate === Days.secondDay ? "#2350c0" : "",
+                  selectedDate === Days.secondDay ? "#5eaaef" : "",
               }}
               onClick={() => setSelectedData(Days.secondDay)}
             >
@@ -235,7 +235,7 @@ export default function selectData() {
               <Stack
                 px="24px"
                 justifyContent="center"
-                bgcolor="#2350c0"
+                bgcolor="#5eaaef"
                 color="white"
                 borderRadius="24px"
                 onClick={() => onSelectDate(item.time)}

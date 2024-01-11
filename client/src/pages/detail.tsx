@@ -253,7 +253,7 @@ export default function selectData() {
             variant="contained"
             onClick={submit}
             style={{
-              backgroundColor: "#2350c0",
+              backgroundColor: "#5eaaef",
               borderRadius: "24px",
             }}
           >
