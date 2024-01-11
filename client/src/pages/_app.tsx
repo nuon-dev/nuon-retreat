@@ -8,6 +8,7 @@ function MyApp({ Component, pageProps }: any) {
   return (
     <>
       <Head>
+        <title>2024 새벽이슬 동계 수련회</title>
         <meta
           name="title"
           property="og:title"
@@ -16,13 +17,9 @@ function MyApp({ Component, pageProps }: any) {
         <meta
           name="description"
           property="og:description"
-          content="2024 새벽이슬 동계 수련회"
+          content="내 귀에 들린 대로 행하리니 &lt; 민 14 : 28 &gt;"
         />
-        <meta
-          name="image"
-          property="og:image"
-          content="%PUBLIC_URL%/main_bg.jpg"
-        />
+        <meta name="image" property="og:image" content="/main_bg.jpg" />
         <meta name="url" property="og:url" content="main_bg.jpg" />
       </Head>
       <RecoilRoot>
