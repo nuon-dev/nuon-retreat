@@ -222,30 +222,34 @@ export default function selectData() {
             </Select>
           }
         </FormControl>
+        {getInputGap()}
         <Stack>
-          {getInputGap()}
-          <Select
-            fullWidth={true}
-            key={userInformation.howToGo}
-            defaultValue={userInformation.howToGo}
-            value={userInformation.howToGo}
-            onChange={(e) =>
-              changeInformation("howToGo", e.target.value.toString())
-            }
-          >
-            <MenuItem value={HowToMove.together}>교회 버스로</MenuItem>
-            <MenuItem value={HowToMove.driveCarWithPerson}>
-              자차 (카풀 가능)
-            </MenuItem>
-            <MenuItem value={HowToMove.rideCar}>
-              카풀 신청 (시간, 장소 기타사항에)
-            </MenuItem>
-            <MenuItem value={HowToMove.goAlone}>대중교통 (여주역)</MenuItem>
-            <MenuItem value={HowToMove.driveCarAlone}>
-              자차 (카풀 불가)
-            </MenuItem>
-            <MenuItem value={HowToMove.etc}>기타 (하단에 메모)</MenuItem>
-          </Select>
+          <FormControl fullWidth={true}>
+            <InputLabel>참석 방법</InputLabel>
+            <Select
+              label="참석 방법"
+              fullWidth={true}
+              key={userInformation.howToGo}
+              defaultValue={userInformation.howToGo}
+              value={userInformation.howToGo}
+              onChange={(e) =>
+                changeInformation("howToGo", e.target.value.toString())
+              }
+            >
+              <MenuItem value={HowToMove.together}>교회 버스로</MenuItem>
+              <MenuItem value={HowToMove.driveCarWithPerson}>
+                자차 (카풀 가능)
+              </MenuItem>
+              <MenuItem value={HowToMove.rideCar}>
+                카풀 신청 (시간, 장소 기타사항에)
+              </MenuItem>
+              <MenuItem value={HowToMove.goAlone}>대중교통 (여주역)</MenuItem>
+              <MenuItem value={HowToMove.driveCarAlone}>
+                자차 (카풀 불가)
+              </MenuItem>
+              <MenuItem value={HowToMove.etc}>기타 (하단에 메모)</MenuItem>
+            </Select>
+          </FormControl>
         </Stack>
         <Stack>
           {getInputGap()}
