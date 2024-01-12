@@ -102,7 +102,7 @@ export default function ReservationConfirm() {
               }}
             >
               <CopyToClipboard
-                text="3333200247760 카카오뱅크"
+                text="3333200247760 카카오뱅크 60000원"
                 onCopy={() => {
                   setNotificationMessage("계좌 번호가 복사 되었습니다.")
                 }}
