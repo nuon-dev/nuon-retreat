@@ -15,8 +15,10 @@ import styled from "@emotion/styled"
 import { NotificationMessage } from "state/notification"
 import { HowToGo } from "@entity/types"
 import { useSetRecoilState } from "recoil"
+import { useRouter } from "next/router"
 
 export default function selectData() {
+  const { push } = useRouter()
   const [userInformation, setUserInformation] = useState(new User())
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
@@ -65,6 +67,7 @@ export default function selectData() {
     const { result } = await post(url, userInformation)
     if (result === "success") {
       setNotificationMessage(`신청 내역이 저장이 되었습니다.`)
+      push("/reservation-confirm")
       return
     }
     setNotificationMessage("접수중 오류가 발생하였습니다.\n다시 시도해주세요.")
@@ -98,11 +101,11 @@ export default function selectData() {
             width: "100%",
             filter: "blur(5px)",
           }}
-          src="/main_bg.jpg"
+          src="/poster.jpeg"
         />
         <Stack color="white">000</Stack>
-        <Stack zIndex="10" color="white" padding="12px" fontWeight="600">
-          <span>내 귀에 들린 대로 행하리니 &lt; 민 14 : 28 &gt;</span>
+        <Stack zIndex="10" color="#333" padding="12px" fontWeight="600">
+          <span>내 귀에 들린 대로 행하리니 [민 14 : 28]</span>
           <span
             style={{ fontWeight: "600", color: "#aaa", lineHeight: "30px" }}
           >
@@ -264,14 +267,3 @@ export default function selectData() {
     </Stack>
   )
 }
-
-const CalendalDate = styled.span`
-  width: 40px;
-  height: 35px;
-  color: #c4c4c4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  border-radius: 24px;
-`

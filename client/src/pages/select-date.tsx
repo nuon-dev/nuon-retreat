@@ -114,13 +114,18 @@ export default function selectData() {
             top: "-300px",
             filter: "blur(5px)",
           }}
-          src="/main_bg.jpg"
+          src="/poster.jpeg"
         />
         <Stack color="white">000</Stack>
-        <Stack zIndex="10" color="white" padding="12px" fontWeight="600">
-          <span>내 귀에 들린 대로 행하리니 &lt; 민 14 : 28 &gt;</span>
+        <Stack zIndex="10" color="#333" padding="12px" fontWeight="600">
+          <span>내 귀에 들린 대로 행하리니 [민 14 : 28]</span>
           <span
-            style={{ fontWeight: "600", color: "#aaa", lineHeight: "30px" }}
+            style={{
+              color: "#aaa",
+              fontWeight: "600",
+              lineHeight: "30px",
+              fontSize: "14px",
+            }}
           >
             여주 중앙 청소년 수련원
           </span>
@@ -129,7 +134,7 @@ export default function selectData() {
       <Stack bgcolor="white" zIndex="10" width="100%">
         <Stack gap="12px" padding="12px">
           <span
-            style={{ fontSize: "32px", textAlign: "center", color: "#333" }}
+            style={{ fontSize: "24px", textAlign: "center", color: "#333" }}
           >
             2024.02
           </span>
@@ -208,6 +213,7 @@ export default function selectData() {
         </Stack>
         <Stack
           p="12px"
+          pt="40px"
           color="#333"
           fontWeight="500"
           fontSize="16px"
@@ -215,13 +221,14 @@ export default function selectData() {
         >
           입장 시간을 선택해주세요.
         </Stack>
-        <Stack borderTop="solid 1px black" mt="8px">
+        <Stack borderTop="solid 0.1px #ccc" mt="8px">
           {selectList.map((item) => (
             <Stack
               p="12px"
               direction="row"
-              borderBottom="solid 1px black"
+              borderBottom="solid 0.1px #ccc"
               justifyContent="space-between"
+              alignItems="center"
             >
               <Stack>
                 <span
@@ -230,14 +237,25 @@ export default function selectData() {
                 >
                   {item.title}
                 </span>
-                <span color="#ccc">{item.description}</span>
+                <span
+                  color="#ccc"
+                  style={{
+                    marginTop: "6px",
+                    fontSize: "12px",
+                  }}
+                >
+                  {item.description}
+                </span>
               </Stack>
               <Stack
-                px="24px"
-                justifyContent="center"
-                bgcolor="#5eaaef"
+                px="16px"
+                mr="12px"
+                height="30px"
                 color="white"
+                fontSize="16px"
+                bgcolor="#5eaaef"
                 borderRadius="24px"
+                justifyContent="center"
                 onClick={() => onSelectDate(item.time)}
               >
                 선택 &gt;
@@ -251,12 +269,12 @@ export default function selectData() {
 }
 
 const CalendalDate = styled.span`
-  width: 40px;
+  width: 35px;
   height: 35px;
   color: #c4c4c4;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
-  border-radius: 24px;
+  border-radius: 35px;
 `

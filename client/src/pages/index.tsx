@@ -19,7 +19,7 @@ function index() {
         style={{
           width: "100%",
           height: "100%",
-          backgroundImage: "url(/main_bg.jpg)",
+          backgroundImage: "url(/main_bg.jpeg)",
           backgroundSize: "cover",
           alignItems: "center",
           backgroundRepeat: "round",

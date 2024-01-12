@@ -1,7 +1,9 @@
 import { RecoilEnv, RecoilRoot } from "recoil"
 import "../../styles/globals.css"
 import Head from "next/head"
+import "./_app.css"
 import Notification from "components/notification/notification"
+import { Stack } from "@mui/material"
 
 function MyApp({ Component, pageProps }: any) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
@@ -23,13 +25,15 @@ function MyApp({ Component, pageProps }: any) {
           property="og:description"
           content="내 귀에 들린 대로 행하리니 &lt; 민 14 : 28 &gt;"
         />
-        <meta name="image" property="og:image" content="/main_bg.jpg" />
-        <meta name="url" property="og:url" content="main_bg.jpg" />
+        <meta name="image" property="og:image" content="/main_bg.jpeg" />
+        <meta name="url" property="og:url" content="main_bg.jpeg" />
       </Head>
       <RecoilRoot>
         <Notification />
         <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-        <Component {...pageProps} />
+        <Stack fontFamily="PretendardVariable">
+          <Component {...pageProps} />
+        </Stack>
       </RecoilRoot>
     </>
   )
