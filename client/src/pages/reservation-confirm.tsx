@@ -127,7 +127,10 @@ export default function ReservationConfirm() {
           </Stack>
           <Stack direction="row">
             <TableLabel>이용일자</TableLabel>
-            <span>2024.02.02~04 (금~일)</span>
+            <span>
+              2024.02.0{userInformation.whenIn} ~<br /> 2024.02.04 (
+              {userInformation.whenIn?.startsWith("2") ? "금" : "토"} ~ 일)
+            </span>
           </Stack>
           <Stack direction="row">
             <TableLabel>장소</TableLabel>

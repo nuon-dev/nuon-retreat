@@ -11,9 +11,8 @@ import {
 import { post } from "./api"
 import { useEffect, useState } from "react"
 import { User } from "@entity/user"
-import styled from "@emotion/styled"
 import { NotificationMessage } from "state/notification"
-import { HowToMove } from "@entity/types"
+import { HowToMove, MoveType } from "@entity/types"
 import { useSetRecoilState } from "recoil"
 import { useRouter } from "next/router"
 
@@ -39,8 +38,21 @@ export default function selectData() {
       }
     })
   }
+  const rideBus = "2 13:00"
 
   const submit = async () => {
+    if (userInformation.whenIn === rideBus) {
+      userInformation.howToGo = HowToMove.together
+    }
+
+    if (
+      userInformation.whenIn !== rideBus &&
+      userInformation.howToGo === HowToMove.together
+    ) {
+      setNotificationMessage("수련회 이동 방법을 선택해주세요.")
+      return
+    }
+
     if (!userInformation.name) {
       setNotificationMessage("이름을 입력해주세요.")
       return
@@ -53,11 +65,9 @@ export default function selectData() {
     } else if (!userInformation.phone) {
       setNotificationMessage("전화번호를 입력해주세요.")
       return
-      /*
     } else if (!userInformation.howToGo) {
-      setNotificationMessage("이동 방법을 선택해주세요.")
+      setNotificationMessage("수련회 이동 방법을 선택해주세요.")
       return
-      */
     } else if (!userInformation.howToLeave) {
       setNotificationMessage("교회로 오는 방법을 선택해주세요.")
       return
@@ -231,12 +241,19 @@ export default function selectData() {
               fullWidth={true}
               key={userInformation.howToGo}
               defaultValue={userInformation.howToGo}
-              value={userInformation.howToGo}
+              value={
+                userInformation.whenIn === rideBus
+                  ? MoveType.together
+                  : userInformation.howToGo
+              }
+              disabled={userInformation.whenIn === rideBus}
               onChange={(e) =>
                 changeInformation("howToGo", e.target.value.toString())
               }
             >
-              <MenuItem value={HowToMove.together}>교회 버스로</MenuItem>
+              {userInformation.whenIn === rideBus && (
+                <MenuItem value={HowToMove.together}>교회 버스로</MenuItem>
+              )}
               <MenuItem value={HowToMove.driveCarWithPerson}>
                 자차 (카풀 가능)
               </MenuItem>

@@ -86,6 +86,7 @@ function AllUser() {
             <TableCell>이름</TableCell>
             <TableCell>성별</TableCell>
             <TableCell>나이</TableCell>
+            <TableCell>도착 시작</TableCell>
             <TableCell>버스 이동 유무</TableCell>
           </TableRow>
         </TableHead>
@@ -95,6 +96,7 @@ function AllUser() {
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.sex === "man" ? "남" : "여"}</TableCell>
               <TableCell>{user.age}</TableCell>
+              <TableCell>2024.02.0{user.whenIn}</TableCell>
               <TableCell>
                 {user.howToGo === HowToMove.together ? "버스" : "기타"}
               </TableCell>

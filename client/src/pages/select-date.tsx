@@ -12,7 +12,6 @@ import { NotificationMessage } from "state/notification"
 export default function selectData() {
   const { push } = useRouter()
   const [userData, setUserData] = useState({} as User)
-  const [inOutData, setInOutData] = useState<InOutInfo>()
   const [selectedDate, setSelectedData] = useState(Days.firstDay)
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
@@ -32,9 +31,6 @@ export default function selectData() {
       .then((response) => {
         if (response.result === "true") {
           setUserData(response.userData)
-          if (response.inoutInfoList.length > 0) {
-            setInOutData(response.inoutInfoList[0])
-          }
         }
       })
       .catch(() => {
@@ -46,18 +42,9 @@ export default function selectData() {
   }
 
   async function onSelectDate(time: number) {
-    const inOutInfo = {
-      id: inOutData?.id || 0,
-      day: selectedDate,
-      time: time,
-      inOutType: InOutType.IN,
-      position: "",
-      howToMove: MoveType.rideCar,
-    }
-    await post("/info/save-attend-time", {
-      userId: userData.id,
-      inOutData: inOutInfo,
-    })
+    userData.whenIn = `${selectedDate + 2} ${time}:00`
+    const url = "/auth/edit-user"
+    const { result } = await post(url, userData)
     push("/detail")
   }
 
