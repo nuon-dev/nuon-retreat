@@ -9,7 +9,7 @@ import {
 import { User } from "../entity/user"
 import { RoomAssignment } from "../entity/roomAssignment"
 import { GroupAssignment } from "../entity/groupAssignment"
-import { HowToGo } from "../entity/types"
+import { HowToMove } from "../entity/types"
 
 const router = express.Router()
 
@@ -18,7 +18,7 @@ router.post("/edit-user", async (req, res) => {
 
   const foundUser = await userDatabase.save(user)
 
-  if (user.howToGo === HowToGo.together) {
+  if (user.howToGo === HowToMove.together) {
     const infoList = await attendInfoDatabase.find({
       relations: {
         rideCarInfo: true,

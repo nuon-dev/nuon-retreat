@@ -13,7 +13,7 @@ import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
-import { CurrentStatus, HowToGo, MoveType } from "./types"
+import { CurrentStatus, HowToMove, MoveType } from "./types"
 
 @Entity()
 export class User {
@@ -55,7 +55,7 @@ export class User {
   @Column({
     nullable: true,
   })
-  howToGo: HowToGo
+  howToGo: HowToMove
 
   @Column({ nullable: true, default: 0 })
   isSuperUser: boolean
@@ -67,7 +67,7 @@ export class User {
   createAt: Date
 
   @Column()
-  howToLeave: MoveType
+  howToLeave: HowToMove
 
   @OneToMany(() => Permission, (permission) => permission.user)
   permissions: Permission[]
@@ -125,7 +125,7 @@ export class Participant {
   expire: Date
 
   @ViewColumn()
-  howToGo: HowToGo
+  howToGo: HowToMove
 
   @ViewColumn()
   isSuperUser: boolean

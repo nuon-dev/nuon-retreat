@@ -1,5 +1,5 @@
 import express from "express"
-import { HowToGo } from "../../entity/types"
+import { HowToMove } from "../../entity/types"
 import { attendInfoDatabase, userDatabase } from "../../model/dataSource"
 import { IsNull, Not } from "typeorm"
 
@@ -17,7 +17,7 @@ router.get("/get-attendee-status", async (req, res) => {
   })
   const countOfGoTogether = await userDatabase.count({
     where: {
-      howToGo: HowToGo.together,
+      howToGo: HowToMove.together,
       name: Not(IsNull()),
     },
   })

@@ -3,6 +3,7 @@ import { Box, Stack } from "@mui/material"
 import { useEffect, useState } from "react"
 import { post } from "./api"
 import { User } from "@entity/user"
+import { HowToMove, MoveType } from "@entity/types"
 
 export default function ReservationConfirm() {
   const [userInformation, setUserInformation] = useState(new User())
@@ -22,6 +23,23 @@ export default function ReservationConfirm() {
         setUserInformation(response.userData)
       }
     })
+  }
+
+  function getMoveTypeString(howToMove: HowToMove) {
+    switch (howToMove) {
+      case HowToMove.driveCarAlone:
+        return "자차 (카풀 불가)"
+      case HowToMove.driveCarWithPerson:
+        return "자차 (카풀 가능)"
+      case HowToMove.goAlone:
+        return "대중교통 (여주역)"
+      case HowToMove.etc:
+        return "기타 (하단에 메모)"
+      case HowToMove.rideCar:
+        return "카풀 신청 (시간, 장소 기타사항에)"
+      case HowToMove.together:
+        return "교회 버스로"
+    }
   }
 
   return (
@@ -47,7 +65,7 @@ export default function ReservationConfirm() {
         </Stack>
       </Stack>
       <Stack bgcolor="white" zIndex="10" width="100%" gap="12px">
-        <Stack p="12px">
+        <Stack p="12px" gap="12px">
           <Stack textAlign="center" fontSize="20px" fontWeight="600">
             예매 확인 / 취소
           </Stack>
@@ -116,6 +134,18 @@ export default function ReservationConfirm() {
             <span>여주중앙청소년수련원</span>
           </Stack>
           <Stack direction="row">
+            <TableLabel>수련회 이동 방법</TableLabel>
+            <span>{getMoveTypeString(userInformation.howToGo)}</span>
+          </Stack>
+          <Stack direction="row">
+            <TableLabel>교회 이동 방법</TableLabel>
+            <span>
+              {userInformation.howToLeave === HowToMove.together
+                ? "버스"
+                : "기타 (자차 및 카풀)"}
+            </span>
+          </Stack>
+          <Stack direction="row">
             <TableLabel>티켓 수량</TableLabel>
             <span>1매</span>
           </Stack>
@@ -124,7 +154,7 @@ export default function ReservationConfirm() {
             <span>2024.01.28</span>
           </Stack>
           <Stack direction="row">
-            <TableLabel>현재 상태</TableLabel>
+            <TableLabel>입금 확인 유무</TableLabel>
             <span>{userInformation.deposit ? "입금 완료" : "입금 대기중"}</span>
           </Stack>
         </Stack>
@@ -155,5 +185,5 @@ export default function ReservationConfirm() {
 }
 
 const TableLabel = styled.span`
-  width: 100px;
+  width: 150px;
 `

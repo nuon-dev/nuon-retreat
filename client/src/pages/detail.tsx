@@ -13,7 +13,7 @@ import { useEffect, useState } from "react"
 import { User } from "@entity/user"
 import styled from "@emotion/styled"
 import { NotificationMessage } from "state/notification"
-import { HowToGo } from "@entity/types"
+import { HowToMove } from "@entity/types"
 import { useSetRecoilState } from "recoil"
 import { useRouter } from "next/router"
 
@@ -224,6 +224,31 @@ export default function selectData() {
         </FormControl>
         <Stack>
           {getInputGap()}
+          <Select
+            fullWidth={true}
+            key={userInformation.howToGo}
+            defaultValue={userInformation.howToGo}
+            value={userInformation.howToGo}
+            onChange={(e) =>
+              changeInformation("howToGo", e.target.value.toString())
+            }
+          >
+            <MenuItem value={HowToMove.together}>교회 버스로</MenuItem>
+            <MenuItem value={HowToMove.driveCarWithPerson}>
+              자차 (카풀 가능)
+            </MenuItem>
+            <MenuItem value={HowToMove.rideCar}>
+              카풀 신청 (시간, 장소 기타사항에)
+            </MenuItem>
+            <MenuItem value={HowToMove.goAlone}>대중교통 (여주역)</MenuItem>
+            <MenuItem value={HowToMove.driveCarAlone}>
+              자차 (카풀 불가)
+            </MenuItem>
+            <MenuItem value={HowToMove.etc}>기타 (하단에 메모)</MenuItem>
+          </Select>
+        </Stack>
+        <Stack>
+          {getInputGap()}
           <Stack minWidth="100px" justifyContent="center">
             주일 점심 교회로 오는 차
           </Stack>
@@ -237,8 +262,10 @@ export default function selectData() {
               changeInformation("howToLeave", e.target.value.toString())
             }
           >
-            <MenuItem value={HowToGo.together.toString()}>교회 버스로</MenuItem>
-            <MenuItem value={HowToGo.etc.toString()}>
+            <MenuItem value={HowToMove.together.toString()}>
+              교회 버스로
+            </MenuItem>
+            <MenuItem value={HowToMove.etc.toString()}>
               기타 (자차 및 카풀)
             </MenuItem>
           </Select>
