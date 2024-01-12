@@ -14,7 +14,7 @@ import { InOutInfo } from "@entity/inOutInfo"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { useRouter } from "next/router"
-import { HowToGo } from "@entity/types"
+import { HowToMove } from "@entity/types"
 
 function AllUser() {
   const router = useRouter()
@@ -96,7 +96,7 @@ function AllUser() {
               <TableCell>{user.sex === "man" ? "남" : "여"}</TableCell>
               <TableCell>{user.age}</TableCell>
               <TableCell>
-                {user.howToGo === HowToGo.together ? "버스" : "기타"}
+                {user.howToGo === HowToMove.together ? "버스" : "기타"}
               </TableCell>
             </TableRow>
           ))}

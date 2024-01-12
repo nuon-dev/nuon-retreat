@@ -7,8 +7,8 @@ import { useEffect, useState } from "react"
 import InOutFrom from "./InOutForm"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
-import { HowToGo, InOutType } from "types"
 import { useRouter } from "next/router"
+import { HowToMove } from "@entity/types"
 interface IProps {
   user: User
   inOutData: Array<InOutInfo>
@@ -61,7 +61,10 @@ export default function UserInformationForm(props: IProps) {
     const saveResult = await post(url, userInformation)
     let attendTimeResult
     // @ts-ignore
-    if (inOutData.length > 0 && userInformation.howToGo !== HowToGo.together) {
+    if (
+      inOutData.length > 0 &&
+      userInformation.howToGo !== HowToMove.together
+    ) {
       attendTimeResult = await post("/info/save-attend-time", {
         userId: saveResult.userId,
         inOutData,
@@ -186,14 +189,14 @@ export default function UserInformationForm(props: IProps) {
             changeInformation("howToGo", e.target.value.toString())
           }
         >
-          <MenuItem value={HowToGo.together.toString()}>교회 버스로</MenuItem>
-          <MenuItem value={HowToGo.etc.toString()}>
+          <MenuItem value={HowToMove.together.toString()}>교회 버스로</MenuItem>
+          <MenuItem value={HowToMove.etc.toString()}>
             기타 (자차 및 카풀)
           </MenuItem>
         </Select>
         {
           // @ts-ignore
-          userInformation.howToGo !== HowToGo.together && (
+          userInformation.howToGo !== HowToMove.together && (
             <Stack ml="10px">
               <InOutFrom setInOutData={setInOutData} inOutData={inOutData} />
             </Stack>
@@ -216,8 +219,8 @@ export default function UserInformationForm(props: IProps) {
             changeInformation("howToLeave", e.target.value.toString())
           }
         >
-          <MenuItem value={HowToGo.together.toString()}>교회 버스로</MenuItem>
-          <MenuItem value={HowToGo.etc.toString()}>
+          <MenuItem value={HowToMove.together.toString()}>교회 버스로</MenuItem>
+          <MenuItem value={HowToMove.etc.toString()}>
             기타 (자차 및 카풀)
           </MenuItem>
         </Select>
