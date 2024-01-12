@@ -15,6 +15,7 @@ import { NotificationMessage } from "state/notification"
 import { HowToMove, MoveType } from "@entity/types"
 import { useSetRecoilState } from "recoil"
 import { useRouter } from "next/router"
+import { CopyToClipboard } from "react-copy-to-clipboard"
 
 export default function selectData() {
   const { push } = useRouter()
@@ -95,12 +96,6 @@ export default function selectData() {
     setUserInformation({ ...userInformation, [type]: data })
   }
 
-  function copy() {
-    navigator.clipboard.writeText("3333200247760 카카오뱅크").then(() => {
-      setNotificationMessage("계좌 번호가 복사 되었습니다.")
-    })
-  }
-
   return (
     <Stack>
       <Stack>
@@ -124,16 +119,16 @@ export default function selectData() {
         </Stack>
       </Stack>
       <Stack bgcolor="white" zIndex="10" width="100%" p="12px">
-        <Stack
-          fontSize="14px"
-          fontWeight="600"
-          px="24px"
-          pt="4px"
-          pb="12px"
-          onTouchStart={copy}
-        >
+        <Stack fontSize="14px" fontWeight="600" px="24px" pt="4px" pb="12px">
           <span>입금 계좌와 금액을 확인 해주세요</span>
-          <span>카카오뱅크: 3333200247760 (성은비)</span>
+          <CopyToClipboard
+            text="3333200247760 카카오뱅크"
+            onCopy={() => {
+              setNotificationMessage("계좌 번호가 복사 되었습니다.")
+            }}
+          >
+            <span>카카오뱅크 : 3333200247760 (성은비)</span>
+          </CopyToClipboard>
         </Stack>
         <Stack alignItems="center" width="100%">
           <Box width="95%" height="4px" bgcolor="black" borderRadius="2px" />

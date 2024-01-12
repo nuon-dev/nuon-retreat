@@ -3,10 +3,14 @@ import { Box, Stack } from "@mui/material"
 import { useEffect, useState } from "react"
 import { post } from "./api"
 import { User } from "@entity/user"
-import { HowToMove, MoveType } from "@entity/types"
+import { HowToMove } from "@entity/types"
+import { CopyToClipboard } from "react-copy-to-clipboard"
+import { useSetRecoilState } from "recoil"
+import { NotificationMessage } from "state/notification"
 
 export default function ReservationConfirm() {
   const [userInformation, setUserInformation] = useState(new User())
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
   useEffect(() => {
     checkToken()
   }, [])
@@ -97,7 +101,24 @@ export default function ReservationConfirm() {
                 marginLeft: "12px",
               }}
             >
-              카카오뱅크 : 3333200247760 (성은비)
+              <CopyToClipboard
+                text="3333200247760 카카오뱅크"
+                onCopy={() => {
+                  setNotificationMessage("계좌 번호가 복사 되었습니다.")
+                }}
+              >
+                <Stack>
+                  <span>카카오뱅크 : 3333200247760 (성은비)</span>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      lineHeight: "20px",
+                    }}
+                  >
+                    (클릭하면 복사됩니다.)
+                  </span>
+                </Stack>
+              </CopyToClipboard>
             </span>
           </Stack>
           <Stack gap="12px">
@@ -154,7 +175,7 @@ export default function ReservationConfirm() {
           </Stack>
           <Stack direction="row">
             <TableLabel>수정 가능일</TableLabel>
-            <span>2024.01.28</span>
+            <span>2024.01.28 까지</span>
           </Stack>
           <Stack direction="row">
             <TableLabel>입금 확인 유무</TableLabel>
