@@ -66,7 +66,7 @@ export class User {
   @Column()
   createAt: Date
 
-  @Column()
+  @Column({ default: HowToMove.together })
   howToLeave: HowToMove
 
   @OneToMany(() => Permission, (permission) => permission.user)
