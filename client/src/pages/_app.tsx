@@ -25,8 +25,8 @@ function MyApp({ Component, pageProps }: any) {
           property="og:description"
           content="내 귀에 들린 대로 행하리니 &lt; 민 14 : 28 &gt;"
         />
-        <meta name="image" property="og:image" content="/main_bg.jpeg" />
-        <meta name="url" property="og:url" content="main_bg.jpeg" />
+        <meta name="image" property="og:image" content="/main_bg.webp" />
+        <meta name="url" property="og:url" content="main_bg.webp" />
       </Head>
       <RecoilRoot>
         <Notification />

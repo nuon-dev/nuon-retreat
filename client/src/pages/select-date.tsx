@@ -113,7 +113,7 @@ export default function selectData() {
             top: "-300px",
             filter: "blur(5px)",
           }}
-          src="/poster.jpeg"
+          src="/poster.webp"
         />
         <Stack color="white">000</Stack>
         <Stack zIndex="10" color="#333" padding="12px" fontWeight="600">

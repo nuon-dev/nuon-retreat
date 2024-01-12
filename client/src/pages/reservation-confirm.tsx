@@ -52,7 +52,7 @@ export default function ReservationConfirm() {
             width: "100%",
             filter: "blur(5px)",
           }}
-          src="/poster.jpeg"
+          src="/poster.webp"
         />
         <Stack color="white">000</Stack>
         <Stack zIndex="10" color="#333" padding="12px" fontWeight="600">

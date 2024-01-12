@@ -23,7 +23,7 @@ export default function Info() {
           style={{
             filter: "blur(5px)",
           }}
-          src="/main_bg.jpeg"
+          src="/main_bg.webp"
         />
         <Stack
           style={{
@@ -37,7 +37,7 @@ export default function Info() {
               width: "140px",
               marginLeft: "20px",
             }}
-            src="/poster.jpeg"
+            src="/poster.webp"
           />
         </Stack>
       </Stack>
@@ -95,7 +95,7 @@ export default function Info() {
             <span style={{ fontSize: "14px" }}>2024.02.02 ~ 04 (금~일)</span>
           </Stack>
           <Stack mt="12px">
-            <img src="./map.png" />
+            <img src="./map.webp" />
           </Stack>
           <Stack>
             <Button
