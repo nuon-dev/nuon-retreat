@@ -57,7 +57,7 @@ export default function selectData() {
             time: 13,
           },
           {
-            title: "오후 2 : 00",
+            title: "오후 2 : 30",
             description: "수련회장 도착 (자차)",
             time: 14,
           },
