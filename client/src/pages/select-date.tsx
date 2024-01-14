@@ -57,9 +57,9 @@ export default function selectData() {
             time: 13,
           },
           {
-            title: "오후 3 : 00",
+            title: "오후 2 : 00",
             description: "수련회장 도착 (자차)",
-            time: 15,
+            time: 14,
           },
           {
             title: "오후 8 : 00",
@@ -72,16 +72,6 @@ export default function selectData() {
             title: "오전 9 : 00",
             description: "수련회장 도착",
             time: 9,
-          },
-          {
-            title: "오후 1 : 00",
-            description: "수련회장 도착",
-            time: 13,
-          },
-          {
-            title: "오후 3 : 00",
-            description: "수련회장 도착",
-            time: 15,
           },
           {
             title: "오후 8 : 00",

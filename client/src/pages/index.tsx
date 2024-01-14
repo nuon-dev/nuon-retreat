@@ -16,15 +16,9 @@ function index() {
         onClick={() => {
           push("/info")
         }}
-        style={{
-          width: "100%",
-          height: "100%",
-          backgroundImage: "url(/main_bg.webp)",
-          backgroundSize: "cover",
-          alignItems: "center",
-          backgroundRepeat: "round",
-        }}
-      ></Stack>
+      >
+        <img src="/main_bg.webp" width="100%" />
+      </Stack>
     </Stack>
   )
 }
