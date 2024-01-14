@@ -4,4 +4,4 @@ sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-po
 npm run start &
 cd ..
 cd server
-npm run start &
+forever start -v -c ts-node src/index.ts
