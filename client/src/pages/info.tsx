@@ -2,18 +2,33 @@ import useKakaoHook from "kakao"
 import { useRouter } from "next/router"
 import { get, post } from "./api"
 import { Box, Button, Stack } from "@mui/material"
+import { useSetRecoilState } from "recoil"
+import { NotificationMessage } from "state/notification"
 
 export default function Info() {
   const { push } = useRouter()
   const kakao = useKakaoHook()
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   async function kakaoLogin() {
-    const kakaoToken = await kakao.getKakaoToken()
-    const { token } = await post("/auth/receipt-record", {
-      kakaoId: kakaoToken,
-    })
-    localStorage.setItem("token", token)
-    push("/select-date")
+    let kakaoToken
+    try {
+      kakaoToken = await kakao.getKakaoToken()
+    } catch {
+      setNotificationMessage("카카오 로그인 실패")
+      return
+    }
+    try {
+      const { token } = await post("/auth/receipt-record", {
+        kakaoId: kakaoToken,
+      })
+      localStorage.setItem("token", token)
+      push("/select-date")
+    } catch {
+      setNotificationMessage(
+        "서버가 응답하지 않습니다.\n잠시후 다시 시도해주세요."
+      )
+    }
   }
 
   return (

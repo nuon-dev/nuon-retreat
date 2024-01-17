@@ -27,8 +27,8 @@ export default function EditUserData() {
         }
       })
       .catch(() => {
-        push("/admin")
         setNotificationMessage("권한이 없습니다.")
+        push("/admin")
         return
       })
   }, [])

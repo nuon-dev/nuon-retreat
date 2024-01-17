@@ -4,9 +4,18 @@ import Head from "next/head"
 import "./_app.css"
 import Notification from "components/notification/notification"
 import { Stack } from "@mui/material"
+import { useEffect } from "react"
 
 function MyApp({ Component, pageProps }: any) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
+
+  useEffect(() => {
+    if (window.location.href.startsWith("https://")) {
+      console.log(window.location.host + window.location.pathname)
+      window.location.href =
+        "http://" + window.location.host + window.location.pathname
+    }
+  })
   return (
     <>
       <Head>
