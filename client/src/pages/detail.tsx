@@ -36,6 +36,9 @@ export default function selectData() {
     }).then((response) => {
       if (response.result === "true") {
         setUserInformation(response.userData)
+      } else {
+        setNotificationMessage("카카오 로그인 이후 이용 가능힙니다.")
+        push("/")
       }
     })
   }
