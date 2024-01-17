@@ -18,12 +18,6 @@ interface IProps {
 }
 
 export default function InOutFrom({ inOutData, setInOutData }: IProps) {
-  useEffect(() => {
-    if (inOutData.length === 0) {
-      onClickAdd()
-    }
-  })
-
   function onClickAdd() {
     const emptyInfo = new InOutInfo()
     emptyInfo.day = Days.firstDay
@@ -65,7 +59,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
       >
         <Stack>
           <Stack fontSize="12px" p="6px">
-            들어오는 날짜 선택
+            날짜 선택
           </Stack>
           <Select
             value={data.day}
@@ -76,20 +70,18 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
             <MenuItem value={Days.firstDay}>2(금)</MenuItem>
             <MenuItem value={Days.secondDay}>3(토)</MenuItem>
           </Select>
-          {/*
-            <Stack fontSize="12px" p="6px">
-              이동방향
-            </Stack>
-            <Select
-              value={data.inOutType}
-              onChange={(e) =>
-                onChangeInformation("inOutType", e.target.value.toString(), index)
-              }
-            >
-              <MenuItem value={InOutType.IN}>수련회장 들어가기</MenuItem>
-              <MenuItem value={InOutType.OUT}>수련회장에서 나오기</MenuItem>
-            </Select>
-          */}
+          <Stack fontSize="12px" p="6px">
+            이동방향
+          </Stack>
+          <Select
+            value={data.inOutType}
+            onChange={(e) =>
+              onChangeInformation("inOutType", e.target.value.toString(), index)
+            }
+          >
+            <MenuItem value={InOutType.IN}>수련회장 들어가기</MenuItem>
+            <MenuItem value={InOutType.OUT}>수련회장에서 나오기</MenuItem>
+          </Select>
           <Stack fontSize="12px" p="6px">
             수련회장 예상 도착 시간
           </Stack>
@@ -104,6 +96,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
             <MenuItem value={13}>13시</MenuItem>
             <MenuItem value={15}>15시</MenuItem>
             <MenuItem value={20}>20시</MenuItem>
+            <MenuItem value={24}>집회 후</MenuItem>
           </Select>
         </Stack>
         <Stack>
@@ -158,24 +151,24 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
             </Select>
           </Stack>
         )}
-        {/*
+        {
           <Stack marginTop="10px">
             <Button variant="outlined" onClick={() => onClickRemove(index)}>
               이동 방법 삭제
             </Button>
           </Stack>
-        */}
+        }
       </Stack>
     )
   }
 
   return (
     <Stack marginTop="10px">
-      {/**
-      <Button variant="contained" onClick={onClickAdd}>
-        이동 방법 추가
-      </Button>
-         */}
+      {
+        <Button variant="contained" onClick={onClickAdd}>
+          이동 방법 추가
+        </Button>
+      }
       {inOutData.map((data, index) => getRow(data, index))}
     </Stack>
   )

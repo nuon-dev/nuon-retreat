@@ -30,7 +30,7 @@ function DashBoard() {
   }
 
   function attendeeStatus() {
-    const targetCount = 300
+    const targetCount = 350
     return (
       <Stack>
         <Box
@@ -156,9 +156,9 @@ function DashBoard() {
             }}
           >
             <Box fontSize="12px" mr="4px">
-              버스 이동/카풀
+              버스 (수련회장 출발 / 교회 출발)
             </Box>{" "}
-            {getAttendeeStatus.goTogether} / {getAttendeeStatus.goCar}
+            {getAttendeeStatus.leaveTogether}/ {getAttendeeStatus.goTogether}
           </Stack>
           <Stack
             margin="8px"
@@ -211,7 +211,7 @@ function DashBoard() {
       }
     })
 
-    const WEIGHT = 5
+    const WEIGHT = 3
     const STEP = 5
 
     return (
@@ -371,16 +371,16 @@ function DashBoard() {
       <Stack>
         시간별 참석자 수
         <Stack>
-          첫째날 {nightTime}시 참석자 수 :{" "}
+          첫째날 {nightTime}시 참석자 예상 수 :{" "}
           {getAttendeeStatus.goTogether +
             firstNightInCount -
             firstNightOutCount}
         </Stack>
         <Stack>
-          둘째날 {nightTime}시 참석자 수 :{" "}
+          둘째날 {nightTime}시 참석자 예상 수 :{" "}
           {firstDayAttendResult + secondNightInCount + secondNightOutCount}
         </Stack>
-        <Stack>마지막날 아침 참석자 수 : {secondDayAttendResult}</Stack>
+        <Stack>마지막날 아침 참석자 예상 수 : {secondDayAttendResult}</Stack>
       </Stack>
     )
   }

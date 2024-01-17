@@ -7,8 +7,11 @@ import UserInformationForm from "components/form/UserInformationForm"
 import { InOutInfo } from "@entity/inOutInfo"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
+import { useRouter } from "next/router"
+import { HowToMove, MoveType } from "@entity/types"
 
 export default function EditUserData() {
+  const { push } = useRouter()
   const [userList, setUserList] = useState([] as Array<User>)
   const [selectedUserId, setSelectedUserId] = useState(0)
   const [userData, setUserData] = useState({} as User)
@@ -16,12 +19,18 @@ export default function EditUserData() {
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
-    get("/admin/get-all-user").then((response: Array<User>) => {
-      setUserList(response.sort((a, b) => (a.name > b.name ? 1 : -1)))
-      if (response.length > 0) {
-        setSelectedUserId(response[0].id)
-      }
-    })
+    get("/admin/get-all-user")
+      .then((response: Array<User>) => {
+        setUserList(response.sort((a, b) => (a.name > b.name ? 1 : -1)))
+        if (response.length > 0) {
+          setSelectedUserId(response[0].id)
+        }
+      })
+      .catch(() => {
+        push("/admin")
+        setNotificationMessage("권한이 없습니다.")
+        return
+      })
   }, [])
 
   function onClickUser(event: SelectChangeEvent<number>) {
@@ -67,8 +76,11 @@ export default function EditUserData() {
         <Select value={selectedUserId} onChange={onClickUser}>
           {userList.map((user) => (
             <MenuItem key={user.id} value={user.id}>
-              {user.name} ({user.age}) (
-              {user.kakaoId.startsWith("no") ? "일" : "카"})
+              {user.name} ({user.age})
+              {user.howToGo !== HowToMove.together &&
+              (!user.inOutInfos || user.inOutInfos?.length === 0)
+                ? " (카풀 확인 필요)"
+                : ""}
             </MenuItem>
           ))}
         </Select>
@@ -89,3 +101,7 @@ export default function EditUserData() {
     </Stack>
   )
 }
+/*
+김규호
+김ㅏ영 05
+*/

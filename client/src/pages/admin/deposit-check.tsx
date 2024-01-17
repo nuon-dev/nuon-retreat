@@ -10,12 +10,17 @@ import {
 import { User } from "@entity/user"
 import { get, post } from "../../pages/api"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
+import { NotificationMessage } from "state/notification"
+import { useSetRecoilState } from "recoil"
 
 function DepositCheck() {
+  const { push } = useRouter()
   const [allUserCount, setAllUserCount] = useState(0)
   const [isShowUnpaid, setIsShowUnpaid] = useState(false)
   const [depositUserCount, setDepositUserCount] = useState(0)
   const [allUserList, setAllUserList] = useState([] as Array<User>)
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
     fetchData()
@@ -35,15 +40,21 @@ function DepositCheck() {
   }
 
   function fetchData() {
-    get("/admin/get-all-user").then((data: User[]) => {
-      setAllUserCount(data.length)
-      setDepositUserCount(data.filter((user) => user.deposit).length)
-      if (isShowUnpaid) {
-        setAllUserList(data)
+    get("/admin/get-all-user")
+      .then((data: User[]) => {
+        setAllUserCount(data.length)
+        setDepositUserCount(data.filter((user) => user.deposit).length)
+        if (isShowUnpaid) {
+          setAllUserList(data)
+          return
+        }
+        setAllUserList(data.filter((user) => !user.deposit))
+      })
+      .catch(() => {
+        push("/admin")
+        setNotificationMessage("권한이 없습니다.")
         return
-      }
-      setAllUserList(data.filter((user) => !user.deposit))
-    })
+      })
   }
 
   function clickFilter() {

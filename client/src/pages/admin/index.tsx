@@ -117,11 +117,12 @@ function admin() {
             pageURL: "/dash-board",
             icon: "/icon/free-icon-dashboard-interface.png",
           })}
-          {pageButton({
+          {/*
+          pageButton({
             pageName: "행복축제",
             pageURL: "/happy-festival-score",
             icon: "/icon/free-icon-garland.png",
-          })}
+          })*/}
           {pageButton({
             pageName: "그룹 점수 관리",
             pageURL: "/edit-group-score",

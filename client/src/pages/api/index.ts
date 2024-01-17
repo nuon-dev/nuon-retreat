@@ -2,7 +2,7 @@ const PORT = 8000
 const SERVER_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost"
-    : "http://112.145.135.65"
+    : "http://iubns.net"
 export const SERVER_FULL_PATH = `${SERVER_URL}:${PORT}`
 
 const COMMON_HEADER = {}
@@ -22,7 +22,7 @@ export async function post(path: string, data: any) {
   header.append("Content-Type", "application/json")
   header.append("token", token)
 
-  const response = await fetch(`/api/post${path}`, {
+  const response = await fetch(`${SERVER_FULL_PATH}${path}`, {
     method: "POST",
     headers: header,
     body: JSON.stringify(data),
@@ -33,7 +33,7 @@ export async function post(path: string, data: any) {
 
 export async function get(path: string) {
   const token = localStorage.getItem("token") || ""
-  const response = await fetch(`/api/get${path}`, {
+  const response = await fetch(`${SERVER_FULL_PATH}${path}`, {
     headers: new Headers({
       token,
     }),

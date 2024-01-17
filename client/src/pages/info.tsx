@@ -87,15 +87,15 @@ export default function Info() {
             <span style={{ fontWeight: "400" }}>10.0</span>
           </Stack>
           <Stack direction="row" alignItems="center" gap="12px">
-            <img src="./point.png" style={{ width: "20px" }} />
+            <img src="/point.png" style={{ width: "20px" }} />
             <span style={{ fontSize: "14px" }}>여주 중앙 청소년 수련원</span>
           </Stack>
           <Stack direction="row" alignItems="center" gap="12px" mt="-4px">
-            <img src="./calendal.png" style={{ width: "20px" }} />
+            <img src="/calendal.png" style={{ width: "20px" }} />
             <span style={{ fontSize: "14px" }}>2024.02.02 ~ 04 (금~일)</span>
           </Stack>
           <Stack mt="12px">
-            <img src="./map.webp" />
+            <img src="/map.webp" />
           </Stack>
           <Stack>
             <Button

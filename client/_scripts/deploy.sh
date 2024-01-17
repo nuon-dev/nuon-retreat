@@ -1,7 +1,8 @@
 #var/www/html
-npm run build
-sftp iubns@112.145.135.65:/home/nuon-retreat/client << EOF
-put -r ./.next/* .next
+npm run out
+sftp iubns@112.145.135.65:/var/www/html << EOF
+rm -R *
+put -r ./out/* ./
 EOF
 
 ssh iubns@112.145.135.65 << EOF

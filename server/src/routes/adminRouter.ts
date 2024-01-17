@@ -67,9 +67,13 @@ router.get("/get-all-user", async (req, res) => {
   }
 
   return res.send(
-    (await userDatabase.find()).filter(
-      (user) => user.name && user.name.length > 0
-    )
+    (
+      await userDatabase.find({
+        relations: {
+          inOutInfos: true,
+        },
+      })
+    ).filter((user) => user.name && user.name.length > 0)
   )
 })
 

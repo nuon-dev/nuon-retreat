@@ -12,21 +12,32 @@ import {
   Stack,
 } from "@mui/material"
 import { PermissionType } from "@entity/types"
+import { useRouter } from "next/router"
+import { useSetRecoilState } from "recoil"
+import { NotificationMessage } from "state/notification"
 
 function PermissionManage() {
+  const { push } = useRouter()
   const [userList, setUserList] = useState([] as Array<User>)
   const [selectedUserId, setSelectedUserId] = useState(0)
   const [userPermission, setUserPermission] = useState<{
     [key: number]: boolean
   }>({})
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
-    get("/admin/get-all-user-name").then((response: Array<User>) => {
-      setUserList(response.sort((a, b) => (a.name > b.name ? 1 : -1)))
-      if (response.length > 0) {
-        setSelectedUserId(response[0].id)
-      }
-    })
+    get("/admin/get-all-user-name")
+      .then((response: Array<User>) => {
+        setUserList(response.sort((a, b) => (a.name > b.name ? 1 : -1)))
+        if (response.length > 0) {
+          setSelectedUserId(response[0].id)
+        }
+      })
+      .catch(() => {
+        push("/admin")
+        setNotificationMessage("권한이 없습니다.")
+        return
+      })
   }, [])
 
   useEffect(() => {

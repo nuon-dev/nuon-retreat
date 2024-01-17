@@ -16,7 +16,7 @@ export class InOutInfo {
   @ManyToOne(() => User, (user) => user.id)
   user: User
 
-  @Column()
+  @Column({})
   day: Days
 
   @Column()

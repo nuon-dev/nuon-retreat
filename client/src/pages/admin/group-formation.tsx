@@ -3,8 +3,12 @@ import { User } from "@entity/user"
 import { useEffect, useState } from "react"
 import { get, post } from "../../pages/api"
 import { InOutInfo } from "@entity/inOutInfo"
+import { useRouter } from "next/router"
+import { NotificationMessage } from "state/notification"
+import { useSetRecoilState } from "recoil"
 
 function GroupFormation() {
+  const { push } = useRouter()
   const [unassignedUserList, setUnassignedUserList] = useState(
     [] as Array<User>
   )
@@ -18,6 +22,7 @@ function GroupFormation() {
     [] as Array<Array<InOutInfo>>
   )
   const [userAttendInfo, setUserAttendInfo] = useState([] as Array<InOutInfo>)
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   function onMouseMove(event: MouseEvent) {
     setMousePoint([event.pageX, event.pageY])
@@ -33,30 +38,36 @@ function GroupFormation() {
   }, [])
 
   function fetchData() {
-    get("/admin/get-group-formation").then((response: Array<User>) => {
-      const unassignedUserList = response
-        .filter((user) => user.groupAssignment.groupNumber === 0)
-        .sort((a, b) => a.age - b.age)
-      setUnassignedUserList(unassignedUserList)
+    get("/admin/get-group-formation")
+      .then((response: Array<User>) => {
+        const unassignedUserList = response
+          .filter((user) => user.groupAssignment.groupNumber === 0)
+          .sort((a, b) => a.age - b.age)
+        setUnassignedUserList(unassignedUserList)
 
-      const group = [] as Array<Array<User>>
-      const assignedUserList = response.filter(
-        (user) => user.groupAssignment.groupNumber !== 0
-      )
-      assignedUserList.map((user) => {
-        const groupNumber = user.groupAssignment.groupNumber - 1
-        if (!group[groupNumber]) {
-          group[groupNumber] = [user]
-        } else {
-          group[groupNumber].push(user)
-        }
-        setGroupList(group)
+        const group = [] as Array<Array<User>>
+        const assignedUserList = response.filter(
+          (user) => user.groupAssignment.groupNumber !== 0
+        )
+        assignedUserList.map((user) => {
+          const groupNumber = user.groupAssignment.groupNumber - 1
+          if (!group[groupNumber]) {
+            group[groupNumber] = [user]
+          } else {
+            group[groupNumber].push(user)
+          }
+          setGroupList(group)
+        })
+        const maxNumber = Math.max(
+          ...response.map((user) => user.groupAssignment.groupNumber)
+        )
+        setMaxGroupNumber(maxNumber)
       })
-      const maxNumber = Math.max(
-        ...response.map((user) => user.groupAssignment.groupNumber)
-      )
-      setMaxGroupNumber(maxNumber)
-    })
+      .catch(() => {
+        push("/admin")
+        setNotificationMessage("권한이 없습니다.")
+        return
+      })
   }
 
   function unassignedUserRow(user: User) {

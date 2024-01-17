@@ -23,14 +23,15 @@ function AllUser() {
 
   useEffect(() => {
     ;(async () => {
-      const list = await get("/admin/get-all-user")
-      if (list.error) {
+      try {
+        const list = await get("/admin/get-all-user")
+        if (list) {
+          setAllUserList(list)
+        }
+      } catch {
         router.push("/admin")
         setNotificationMessage("권한이 없습니다.")
         return
-      }
-      if (list) {
-        setAllUserList(list)
       }
     })()
   }, [])

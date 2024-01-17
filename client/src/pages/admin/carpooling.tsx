@@ -77,19 +77,10 @@ function Carpooling() {
   function fetchData() {
     get("/admin/get-car-info")
       .then((data: InOutInfo[]) => {
-        // @ts-ignore
-        if (data.error) {
-          router.push("/admin")
-          setNotificationMessage("권한이 없습니다.")
-          return
-        }
-
-        // @ts-ignore
         const cars = data.filter(
           (info) => info.howToMove === MoveType.driveCarWithPerson
         )
         setCarList(cars)
-        // @ts-ignore
         const rideUsers = data.filter(
           (info) =>
             (info.howToMove === MoveType.rideCar && !info.rideCarInfo) ||
@@ -97,8 +88,10 @@ function Carpooling() {
         )
         setRideUserList(rideUsers)
       })
-      .catch((response) => {
-        console.log(response)
+      .catch(() => {
+        router.push("/admin")
+        setNotificationMessage("권한이 없습니다.")
+        return
       })
   }
 

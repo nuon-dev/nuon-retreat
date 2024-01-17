@@ -3,8 +3,12 @@ import { User } from "@entity/user"
 import { useEffect, useState } from "react"
 import { get, post } from "../../pages/api"
 import { InOutInfo } from "@entity/inOutInfo"
+import { useRouter } from "next/router"
+import { useSetRecoilState } from "recoil"
+import { NotificationMessage } from "state/notification"
 
 function RoomAssingment() {
+  const { push } = useRouter()
   const [unassignedUserList, setUnassignedUserList] = useState(
     [] as Array<User>
   )
@@ -19,6 +23,7 @@ function RoomAssingment() {
   )
   const [mousePoint, setMousePoint] = useState([0, 0])
   const [sex, setSex] = useState("man")
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   function onMouseMove(event: MouseEvent) {
     setMousePoint([event.pageX, event.pageY])
@@ -34,38 +39,44 @@ function RoomAssingment() {
   }, [])
 
   function fetchData() {
-    get("/admin/get-room-assignment").then((response: Array<User>) => {
-      const unassignedUserList = response
-        .filter(
-          (user) =>
-            !user.roomAssignment ||
-            user.roomAssignment.isUpdated ||
-            user.roomAssignment.roomNumber === 0
-        )
-        .sort((a, b) => a.age - b.age)
-      setUnassignedUserList(unassignedUserList)
+    get("/admin/get-room-assignment")
+      .then((response: Array<User>) => {
+        const unassignedUserList = response
+          .filter(
+            (user) =>
+              !user.roomAssignment ||
+              user.roomAssignment.isUpdated ||
+              user.roomAssignment.roomNumber === 0
+          )
+          .sort((a, b) => a.age - b.age)
+        setUnassignedUserList(unassignedUserList)
 
-      const room = [] as Array<Array<User>>
-      const assignedUserList = response.filter(
-        (user) => user.roomAssignment && !user.roomAssignment.isUpdated
-      )
-      assignedUserList.map((user) => {
-        const roomNumber = user.roomAssignment.roomNumber - 1
-        if (!room[roomNumber]) {
-          room[roomNumber] = [user]
-        } else {
-          room[roomNumber].push(user)
-          room[roomNumber].sort((a, b) => a.age - b.age)
-        }
-        setRoomList(room)
-      })
-      const maxNumer = Math.max(
-        ...response.map(
-          (user) => user.roomAssignment && user.roomAssignment.roomNumber
+        const room = [] as Array<Array<User>>
+        const assignedUserList = response.filter(
+          (user) => user.roomAssignment && !user.roomAssignment.isUpdated
         )
-      )
-      setMaxRoomNumber(maxNumer)
-    })
+        assignedUserList.map((user) => {
+          const roomNumber = user.roomAssignment.roomNumber - 1
+          if (!room[roomNumber]) {
+            room[roomNumber] = [user]
+          } else {
+            room[roomNumber].push(user)
+            room[roomNumber].sort((a, b) => a.age - b.age)
+          }
+          setRoomList(room)
+        })
+        const maxNumer = Math.max(
+          ...response.map(
+            (user) => user.roomAssignment && user.roomAssignment.roomNumber
+          )
+        )
+        setMaxRoomNumber(maxNumer)
+      })
+      .catch(() => {
+        push("/admin")
+        setNotificationMessage("권한이 없습니다.")
+        return
+      })
   }
 
   function unassignedUserRow(user: User) {
