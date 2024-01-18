@@ -5,13 +5,13 @@ import dataSource, { userDatabase } from "./model/dataSource"
 import { deleteUser } from "./util"
 import fs from "fs"
 import https from "https"
+import cors from "cors"
 
 const app = express()
 const port = 8000
 
 app.use(bodyParser.json())
-
-const router = express.Router()
+app.use(cors())
 app.use("/", apiRouter)
 
 var server = express()
