@@ -5,22 +5,18 @@ import "./_app.css"
 import Notification from "components/notification/notification"
 import { Stack } from "@mui/material"
 import { useEffect } from "react"
-
 function MyApp({ Component, pageProps }: any) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
 
-  useEffect(() => {
-    if (window.location.href.startsWith("https://")) {
-      console.log(window.location.host + window.location.pathname)
-      window.location.href =
-        "http://" + window.location.host + window.location.pathname
-    }
-  })
   return (
     <>
       <Head>
         <title>2024 새벽이슬 동계 수련회</title>
-        <meta name="referrer" content="same-origin" />
+        <meta name="referrer" content="unsafe-url" />
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
         <meta
           name="viewport"
           content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
