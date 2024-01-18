@@ -5,6 +5,7 @@ import "./_app.css"
 import Notification from "components/notification/notification"
 import { Stack } from "@mui/material"
 import { useEffect } from "react"
+
 function MyApp({ Component, pageProps }: any) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
 
@@ -12,7 +13,7 @@ function MyApp({ Component, pageProps }: any) {
     <>
       <Head>
         <title>2024 새벽이슬 동계 수련회</title>
-        <meta name="referrer" content="unsafe-url" />
+        <meta name="referrer" content="same-origin" />
         <meta
           http-equiv="Content-Security-Policy"
           content="upgrade-insecure-requests"

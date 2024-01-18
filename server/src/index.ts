@@ -14,8 +14,6 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use("/", apiRouter)
 
-var server = express()
-
 var privateKey = fs.readFileSync("/etc/letsencrypt/live/iubns.net/privkey.pem")
 var certificate = fs.readFileSync("/etc/letsencrypt/live/iubns.net/cert.pem")
 var ca = fs.readFileSync("/etc/letsencrypt/live/iubns.net/chain.pem")
@@ -24,7 +22,7 @@ const credentials = { key: privateKey, cert: certificate, ca: ca }
 //이 부분에 router등 설정을 해주면 됩니다.
 */
 
-https.createServer(credentials, server).listen(port, async () => {
+https.createServer(credentials, app).listen(port, async () => {
   await Promise.all([dataSource.initialize()])
   //dataSource.dropDatabase()
   const userList = await userDatabase.find({
