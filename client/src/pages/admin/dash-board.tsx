@@ -211,7 +211,7 @@ function DashBoard() {
       }
     })
 
-    const WEIGHT = 3
+    const WEIGHT = 2
     const STEP = 5
 
     return (

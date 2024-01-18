@@ -66,24 +66,15 @@ function DepositCheck() {
   }, [isShowUnpaid])
 
   return (
-    <Stack>
+    <Stack padding="4px" alignItems="center">
       <Stack
-        direction="row"
         alignItems="center"
         justifyContent="space-between"
+        gap="12px"
         style={{
           margin: "24px",
         }}
       >
-        <Button
-          onClick={clickFilter}
-          variant="contained"
-          style={{
-            width: "150px",
-          }}
-        >
-          {isShowUnpaid ? "미납부자만 보기" : "전체보기"}
-        </Button>
         <Stack fontWeight="600" fontSize="20px">
           전체 / 납부자 ({allUserCount} / {depositUserCount})
         </Stack>
@@ -94,15 +85,29 @@ function DepositCheck() {
             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           원 ({depositUserCount * 6}만원)
         </Stack>
+
+        <Button
+          onClick={clickFilter}
+          variant="contained"
+          style={{
+            width: "150px",
+          }}
+        >
+          {isShowUnpaid ? "미납부자만 보기" : "전체보기"}
+        </Button>
       </Stack>
-      <Table>
+      <Table
+        style={{
+          maxWidth: "500px",
+          border: "1px solid #ccc",
+        }}
+      >
         <TableHead>
           <TableRow>
-            <TableCell>이름</TableCell>
-            <TableCell>접수 일자</TableCell>
-            <TableCell>전화번호</TableCell>
-            <TableCell>입금 유무</TableCell>
-            <TableCell>입금 처리</TableCell>
+            <TableCell style={{ paddingLeft: "8px" }}>이름</TableCell>
+            <TableCell style={{ padding: 0 }}>접수 일자</TableCell>
+            <TableCell style={{ padding: 0 }}>전화번호</TableCell>
+            <TableCell style={{ padding: 0 }}>입금 처리</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -110,15 +115,23 @@ function DepositCheck() {
             const createDate = new Date(user.createAt.toString())
             return (
               <TableRow>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>
-                  {`${createDate.getFullYear()}-${
-                    createDate.getMonth() + 1
-                  }-${createDate.getDate()} ${createDate.getHours()}:${createDate.getMinutes()}:${createDate.getSeconds()}`}
+                <TableCell
+                  style={{
+                    padding: 0,
+                    paddingTop: "24px",
+                    paddingBottom: "24px",
+                  }}
+                >
+                  {user.name}
                 </TableCell>
-                <TableCell>{user.phone}</TableCell>
-                <TableCell>{user.deposit ? "Y" : "N"}</TableCell>
-                <TableCell>
+                <TableCell style={{ padding: 0 }}>
+                  {`${createDate.getFullYear() - 2000}.${
+                    createDate.getMonth() + 1
+                  }.${createDate.getDate()} 
+                  ${createDate.getHours()}:${createDate.getMinutes()}`}
+                </TableCell>
+                <TableCell style={{ padding: 0 }}>{user.phone}</TableCell>
+                <TableCell style={{ padding: 0 }}>
                   <Button
                     onClick={() => DepositProcessing(user.id)}
                     variant="contained"
