@@ -1,13 +1,12 @@
 import { Stack } from "@mui/material"
-import { get, post } from "./api"
+import { post } from "./api"
 import { useEffect, useState } from "react"
-import { User } from "@entity/user"
-import { InOutInfo } from "@entity/inOutInfo"
 import styled from "@emotion/styled"
-import { Days, InOutType, MoveType } from "@entity/types"
+import { Days } from "@entity/types"
 import { useRouter } from "next/router"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
+import { User } from "@entity/user"
 
 export default function selectData() {
   const { push } = useRouter()

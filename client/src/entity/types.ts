@@ -36,6 +36,8 @@ export enum PermissionType {
   editUserData,
   editTeamScore,
   deleteUser,
+  game1,
+  game2,
 }
 
 export enum Days {

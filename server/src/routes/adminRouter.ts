@@ -11,6 +11,7 @@ import DashBoard from "./admin/dashBoard"
 import Deposit from "./admin/deposit"
 import teamScore from "./admin/group-score"
 import EditUserData from "./admin/edit-user-data"
+import gameRouter from "./admin/game"
 import { IsNull, Not } from "typeorm"
 
 const router = express.Router()
@@ -123,5 +124,6 @@ router.use("/", DashBoard)
 router.use("/", Deposit)
 router.use("/", EditUserData)
 router.use("/", teamScore)
+router.use("/game", gameRouter)
 
 export default router
