@@ -30,6 +30,21 @@ function getUserColor(user: UserType) {
   }
 }
 
+function getUserString(user: UserType) {
+  switch (user) {
+    case UserType.payer1:
+      return "1번 팀"
+    case UserType.payer2:
+      return "2번 팀"
+    case UserType.payer3:
+      return "3번 팀"
+    case UserType.payer4:
+      return "4번 팀"
+    case UserType.admin:
+      return "관리자"
+  }
+}
+
 export default function Game1() {
   const [user, setUserType] = useState(UserType.none)
   const [mySeats, setMySeats] = useState<(ISeat & { user: UserType })[]>([])
@@ -101,6 +116,7 @@ export default function Game1() {
 
   return (
     <Stack height="100vh">
+      {getUserString(user)}
       {user === UserType.none ? (
         <SelectUserSection setUserType={setUserType} />
       ) : (
@@ -165,7 +181,7 @@ function SelectUserSection({ setUserType }: IProps) {
         variant="contained"
         onClick={() => setUserType(UserType.payer1)}
       >
-        사용자 1
+        1번 팀
       </Button>
       <Button
         style={{
@@ -174,7 +190,7 @@ function SelectUserSection({ setUserType }: IProps) {
         variant="contained"
         onClick={() => setUserType(UserType.payer2)}
       >
-        사용자 2
+        2번 팀
       </Button>
       <Button
         style={{
@@ -183,7 +199,7 @@ function SelectUserSection({ setUserType }: IProps) {
         variant="contained"
         onClick={() => setUserType(UserType.payer3)}
       >
-        사용자 3
+        3번 팀
       </Button>
       <Button
         style={{
@@ -192,7 +208,7 @@ function SelectUserSection({ setUserType }: IProps) {
         variant="contained"
         onClick={() => setUserType(UserType.payer4)}
       >
-        사용자 4
+        4번 팀
       </Button>
       <Button
         style={{

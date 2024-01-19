@@ -61,6 +61,8 @@ function PermissionManage() {
     [PermissionType.editUserData]: "정보 수정",
     [PermissionType.editTeamScore]: "조 점수 수정",
     [PermissionType.deleteUser]: "접수 삭제",
+    [PermissionType.game1]: "오락국 게임 1",
+    [PermissionType.game2]: "오락국 게임 2",
   }
 
   function loadUserPermission() {
