@@ -78,4 +78,26 @@ router.post("/game1/delete", async (req, res) => {
   res.send({ result: "success" })
 })
 
+router.get("/game1/check-permission", async (req, res) => {
+  const token = req.header("token")
+
+  if (false === (await hasPermission(token, PermissionType.game1))) {
+    res.sendStatus(401)
+    return
+  }
+  res.send({ result: "success" })
+})
+
+/////////////
+
+router.get("/game2/check-permission", async (req, res) => {
+  const token = req.header("token")
+
+  if (false === (await hasPermission(token, PermissionType.game2))) {
+    res.sendStatus(401)
+    return
+  }
+  res.send({ result: "success" })
+})
+
 export default router

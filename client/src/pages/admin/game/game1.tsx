@@ -2,6 +2,9 @@ import { Box, Button, Stack } from "@mui/material"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import styled from "@emotion/styled"
 import { get, post } from "pages/api"
+import { useRouter } from "next/router"
+import { NotificationMessage } from "state/notification"
+import { useSetRecoilState } from "recoil"
 
 enum UserType {
   admin,
@@ -46,14 +49,23 @@ function getUserString(user: UserType) {
 }
 
 export default function Game1() {
+  const { push } = useRouter()
   const [user, setUserType] = useState(UserType.none)
   const [mySeats, setMySeats] = useState<(ISeat & { user: UserType })[]>([])
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
     fetchMySeat()
   }, [user])
 
   async function fetchMySeat() {
+    try {
+      await get(`/admin/game/game1/check-permission`)
+    } catch {
+      push("/admin")
+      setNotificationMessage("권한이 없습니다.")
+      return
+    }
     if (user === UserType.admin) {
       setInterval(async () => {
         const mySeats = await get(`/admin/game/game1/all-seat?user=${user}`)
