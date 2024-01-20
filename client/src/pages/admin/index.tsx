@@ -113,6 +113,11 @@ function admin() {
             icon: "/icon/free-icon-edit-profile.png",
           })}
           {pageButton({
+            pageName: "인원 관리",
+            pageURL: "/show-status-table",
+            icon: "/icon/free-icon-table.png",
+          })}
+          {pageButton({
             pageName: "대시보드",
             pageURL: "/dash-board",
             icon: "/icon/free-icon-dashboard-interface.png",

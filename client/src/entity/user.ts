@@ -2,7 +2,7 @@ import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
-import { HowToMove, MoveType } from "./types"
+import { CurrentStatus, HowToMove, MoveType } from "./types"
 
 export class User {
   id: number
@@ -16,6 +16,7 @@ export class User {
   deposit: boolean
   token: string
   expire: Date
+  currentStatus: CurrentStatus
   isSuperUser: boolean
   createAt: Date
   permissions: Permission[]
