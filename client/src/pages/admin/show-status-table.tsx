@@ -15,6 +15,7 @@ export default function ShowStatusTable() {
 
   useEffect(() => {
     fetchUserData()
+    setInterval(fetchUserData, 1000 * 30)
   }, [])
 
   async function fetchUserData() {

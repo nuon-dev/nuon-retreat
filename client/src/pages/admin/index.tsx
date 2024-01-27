@@ -113,6 +113,11 @@ function admin() {
             icon: "/icon/free-icon-edit-profile.png",
           })}
           {pageButton({
+            pageName: "인원 확인 처리",
+            pageURL: "/check-status",
+            icon: "/icon/free-icon-qr-code.png",
+          })}
+          {pageButton({
             pageName: "인원 관리",
             pageURL: "/show-status-table",
             icon: "/icon/free-icon-table.png",
@@ -179,7 +184,7 @@ function admin() {
     )
   }
 
-  return <Stack>{isLogin ? menu() : loginForm()}</Stack>
+  return <Stack py="40px">{isLogin ? menu() : loginForm()}</Stack>
 }
 
 export default admin

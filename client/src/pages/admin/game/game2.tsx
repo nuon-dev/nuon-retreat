@@ -1,13 +1,12 @@
 import { Box, Button, Stack } from "@mui/material"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "@emotion/styled"
 import { get, post } from "pages/api"
 import { useRouter } from "next/router"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
-import { access } from "fs"
 
-const SIZE = 7
+const SIZE = 8
 
 type Position = {
   x: number
@@ -118,7 +117,7 @@ export default function Game2() {
   }
 
   function move(position: Position) {
-    setMoveHistory([...moveHistory, position])
+    setMoveHistory([...moveHistory, userPosition])
     setUserPosition(position)
   }
 
@@ -169,17 +168,6 @@ export default function Game2() {
     const foundHistoryIndex = moveHistory.findIndex((p) =>
       isSamePosition([p, position])
     )
-
-    if (foundHistoryIndex !== -1) {
-      const before =
-        foundHistoryIndex === 0
-          ? moveHistory[0]
-          : moveHistory[foundHistoryIndex]
-      const after =
-        foundHistoryIndex === moveHistory.length - 1
-          ? moveHistory[moveHistory.length - 1]
-          : moveHistory[foundHistoryIndex]
-    }
 
     const myWalls = walls.filter(
       (wall) =>
@@ -234,6 +222,9 @@ export default function Game2() {
         {userPosition.y === rowIndex && userPosition.x === colIndex && (
           <Box bgcolor="red" width="50px" height="50px" borderRadius="50px" />
         )}
+        {foundHistoryIndex !== -1 && (
+          <Box bgcolor="#ccc" width="50px" height="50px" borderRadius="50px" />
+        )}
       </Stack>
     )
   }
@@ -260,6 +251,7 @@ export default function Game2() {
               x: 0,
               y: SIZE - 1,
             })
+            setMoveHistory([])
           }}
           style={{
             width: "100px",

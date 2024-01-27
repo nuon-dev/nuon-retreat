@@ -34,10 +34,10 @@ function MyApp({ Component, pageProps }: any) {
         />
         <meta name="image" property="og:image" content="/main_bg.webp" />
         <meta name="url" property="og:url" content="main_bg.webp" />
+        <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
       </Head>
       <RecoilRoot>
         <Notification />
-        <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
         <Stack fontFamily="PretendardVariable">
           <Component {...pageProps} />
         </Stack>

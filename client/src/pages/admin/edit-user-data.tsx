@@ -101,7 +101,3 @@ export default function EditUserData() {
     </Stack>
   )
 }
-/*
-김규호
-김ㅏ영 05
-*/

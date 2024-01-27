@@ -60,11 +60,7 @@ export default function UserInformationForm(props: IProps) {
 
     const saveResult = await post(url, userInformation)
     let attendTimeResult
-    // @ts-ignore
-    if (
-      inOutData.length > 0 &&
-      userInformation.howToGo !== HowToMove.together
-    ) {
+    if (inOutData.length > 0) {
       attendTimeResult = await post("/info/save-attend-time", {
         userId: saveResult.userId,
         inOutData,
@@ -200,14 +196,9 @@ export default function UserInformationForm(props: IProps) {
           <MenuItem value={HowToMove.driveCarAlone}>자차 (카풀 불가)</MenuItem>
           <MenuItem value={HowToMove.etc}>기타 (하단에 메모)</MenuItem>
         </Select>
-        {
-          // @ts-ignore
-          userInformation.howToGo !== HowToMove.together && (
-            <Stack ml="10px">
-              <InOutFrom setInOutData={setInOutData} inOutData={inOutData} />
-            </Stack>
-          )
-        }
+        <Stack ml="10px">
+          <InOutFrom setInOutData={setInOutData} inOutData={inOutData} />
+        </Stack>
       </Stack>
       {getInputGap()}
       <Stack>
@@ -239,6 +230,7 @@ export default function UserInformationForm(props: IProps) {
         {getLabelGap()}
         <TextField
           fullWidth={true}
+          key={userInformation.kakaoId}
           value={userInformation.etc}
           placeholder="기타사항이 있을 경우 입력하세요."
           onChange={(e) => changeInformation("etc", e.target.value)}

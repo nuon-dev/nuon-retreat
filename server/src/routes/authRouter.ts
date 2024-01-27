@@ -97,7 +97,7 @@ router.post("/receipt-record", async (req, res) => {
     const expireDay = new Date()
     expireDay.setDate(expireDay.getDate() + 21)
     foundUser.expire = expireDay
-    userDatabase.save(foundUser)
+    await userDatabase.save(foundUser)
     res.send({ token: foundUser.token })
   } else {
     const roomAssignment = new RoomAssignment()

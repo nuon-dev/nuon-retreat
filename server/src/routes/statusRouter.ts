@@ -7,11 +7,11 @@ const router = express.Router()
 router.post("/set", async (req, res) => {
   const data = req.body
 
-  const userId = data.userId as number
+  const userId = data.userId as string
   const status = data.status as CurrentStatus
 
   const foundUser = await userDatabase.findOneByOrFail({
-    id: userId,
+    kakaoId: userId,
   })
 
   if (!foundUser) {
@@ -22,7 +22,7 @@ router.post("/set", async (req, res) => {
   foundUser.currentStatus = status
 
   await userDatabase.save(foundUser)
-  res.send({ result: "success" })
+  res.send({ result: "success", name: foundUser.name, age: foundUser.age })
 })
 
 export default router
