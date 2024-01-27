@@ -1,7 +1,8 @@
 import express from "express"
 import { hasPermission } from "../../util"
 import { PermissionType } from "../../entity/types"
-import { game1Database } from "../../model/dataSource"
+import { game1Database, game2Database } from "../../model/dataSource"
+import { Game2 } from "../../entity/game2"
 
 const router = express.Router()
 
@@ -97,6 +98,71 @@ router.get("/game2/check-permission", async (req, res) => {
     res.sendStatus(401)
     return
   }
+  res.send({ result: "success" })
+})
+
+router.post("/game2/set-position", async (req, res) => {
+  const token = req.header("token")
+
+  if (false === (await hasPermission(token, PermissionType.game2))) {
+    res.sendStatus(401)
+    return
+  }
+
+  const body = req.body as Game2
+
+  const foundTeamData = await game2Database.findOneBy({
+    teamNumber: body.teamNumber,
+  })
+  if (foundTeamData) {
+    body.id = foundTeamData.id
+    body.moveCount = body.moveCount + foundTeamData.moveCount
+  } else {
+    body.id = null
+  }
+  await game2Database.save(body)
+  res.send({ result: "success" })
+})
+
+router.get("/game2/my-position", async (req, res) => {
+  const token = req.header("token")
+
+  if (false === (await hasPermission(token, PermissionType.game2))) {
+    res.sendStatus(401)
+    return
+  }
+
+  const query = req.query
+  const { teamNumber } = query
+
+  const foundPosition = await game2Database.findOneBy({
+    teamNumber: teamNumber as any,
+  })
+
+  res.send(foundPosition)
+})
+
+router.get("/game2/all-position", async (req, res) => {
+  const token = req.header("token")
+
+  if (false === (await hasPermission(token, PermissionType.game2))) {
+    res.sendStatus(401)
+    return
+  }
+
+  const foundPosition = await game2Database.find()
+  res.send(foundPosition)
+})
+
+router.post("/game2/reset", async (req, res) => {
+  const token = req.header("token")
+
+  if (false === (await hasPermission(token, PermissionType.game2))) {
+    res.sendStatus(401)
+    return
+  }
+
+  await game2Database.delete({})
   res.send({ result: "success" })
 })
 
