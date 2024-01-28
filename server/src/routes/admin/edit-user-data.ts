@@ -54,7 +54,7 @@ router.post("/delete-user", async (req, res) => {
   }
 
   foundUser.isCancel = true
-  await userDatabase.save(foundUser)
+  await userDatabase.remove(foundUser)
   res.send({ result: "success" })
 })
 

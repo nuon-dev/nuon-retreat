@@ -81,6 +81,7 @@ export default function EditUserData() {
               (!user.inOutInfos || user.inOutInfos?.length === 0)
                 ? " (카풀 확인 필요)"
                 : ""}
+              {user.etc ? "*" : ""}
             </MenuItem>
           ))}
         </Select>

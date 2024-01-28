@@ -84,7 +84,7 @@ function Carpooling() {
         const rideUsers = data.filter(
           (info) =>
             (info.howToMove === MoveType.rideCar && !info.rideCarInfo) ||
-            info.howToMove === MoveType.goAlone
+            (info.howToMove === MoveType.goAlone && !info.rideCarInfo)
         )
         setRideUserList(rideUsers)
       })
@@ -121,7 +121,10 @@ function Carpooling() {
           justifyContent="space-evenly"
         >
           <Box>{info.user?.name}</Box>{" "}
-          <Box textAlign="center">{info.time}시</Box> <Box>{info.position}</Box>
+          <Box textAlign="center">{info.time}시</Box>{" "}
+          <Box>
+            {info.howToMove === MoveType.goAlone ? "여주역" : info.position}
+          </Box>
         </Stack>
       </Stack>
     )
