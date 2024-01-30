@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use("/", apiRouter)
 
-const is_dev = false
+const is_dev = true
 
 var server
 

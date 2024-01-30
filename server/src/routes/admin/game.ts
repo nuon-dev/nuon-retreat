@@ -1,8 +1,13 @@
 import express from "express"
 import { hasPermission } from "../../util"
 import { PermissionType } from "../../entity/types"
-import { game1Database, game2Database } from "../../model/dataSource"
+import {
+  game1Database,
+  game2Database,
+  gameMapDatabase,
+} from "../../model/dataSource"
 import { Game2 } from "../../entity/game2"
+import { GameMap } from "../../entity/gameMap"
 
 const router = express.Router()
 
@@ -164,6 +169,38 @@ router.post("/game2/reset", async (req, res) => {
 
   await game2Database.delete({})
   res.send({ result: "success" })
+})
+
+router.post("/game-map/new-country", async (req, res) => {
+  const token = req.header("token")
+
+  if (false === (await hasPermission(token, PermissionType.gameMap))) {
+    res.sendStatus(401)
+    return
+  }
+
+  const body = req.body
+  await gameMapDatabase.save(body)
+  res.send({ result: "success" })
+})
+
+router.post("/game-map/delete-country", async (req, res) => {
+  const token = req.header("token")
+
+  if (false === (await hasPermission(token, PermissionType.gameMap))) {
+    res.sendStatus(401)
+    return
+  }
+  const body = req.body as GameMap
+
+  await gameMapDatabase.delete(body)
+  res.send({ result: "success" })
+  return
+})
+
+router.get("/game-map/all-country", async (req, res) => {
+  const list = await gameMapDatabase.find()
+  res.send(list)
 })
 
 export default router

@@ -37,6 +37,7 @@ export default function Game2() {
 
   useEffect(() => {
     checkPermission()
+    getWallData()
   }, [])
 
   useEffect(() => {
@@ -46,6 +47,14 @@ export default function Game2() {
     getAllList()
     setInterval(getAllList, 1000)
   }, [userType])
+
+  function getWallData() {
+    const wallData = localStorage.getItem("walls")
+    if (!wallData) {
+      return
+    }
+    setWalls(JSON.parse(wallData))
+  }
 
   async function checkPermission() {
     try {
@@ -78,14 +87,14 @@ export default function Game2() {
 
   function AllowButton() {
     return (
-      <Stack justifyContent="space-evenly" mt="24px">
+      <Stack justifyContent="space-evenly">
         <Stack direction="row">
-          <Box width="100px" height="100px" />
+          <Box width="15vw" height="15vw" />
           <Button
             variant="contained"
             style={{
-              width: "100px",
-              height: "100px",
+              width: "15vw",
+              height: "15vw",
             }}
             onClick={() =>
               move({
@@ -96,14 +105,14 @@ export default function Game2() {
           >
             상
           </Button>
-          <Box width="100px" height="100px" />
+          <Box width="15vw" height="15vw" />
         </Stack>
         <Stack direction="row">
           <Button
             variant="contained"
             style={{
-              width: "100px",
-              height: "100px",
+              width: "15vw",
+              height: "15vw",
             }}
             onClick={() =>
               move({
@@ -114,12 +123,12 @@ export default function Game2() {
           >
             좌
           </Button>
-          <Box width="100px" height="100px" />
+          <Box width="15vw" height="15vw" />
           <Button
             variant="contained"
             style={{
-              width: "100px",
-              height: "100px",
+              width: "15vw",
+              height: "15vw",
             }}
             onClick={() =>
               move({
@@ -132,12 +141,12 @@ export default function Game2() {
           </Button>
         </Stack>
         <Stack direction="row">
-          <Box width="100px" height="100px" />
+          <Box width="15vw" height="15vw" />
           <Button
             variant="contained"
             style={{
-              width: "100px",
-              height: "100px",
+              width: "15vw",
+              height: "15vw",
             }}
             onClick={() =>
               move({
@@ -148,7 +157,7 @@ export default function Game2() {
           >
             하
           </Button>
-          <Box width="100px" height="100px" />
+          <Box width="15vw" height="15vw" />
         </Stack>
       </Stack>
     )
@@ -220,6 +229,10 @@ export default function Game2() {
       return
     }
 
+    localStorage.setItem(
+      "walls",
+      JSON.stringify([...walls, [startWalls, position]])
+    )
     setWalls([...walls, [startWalls, position]])
     setStartWalls({ x: -1, y: -1 })
   }
@@ -275,8 +288,8 @@ export default function Game2() {
     return (
       <Stack
         key={`col_${colIndex}`}
-        width="100px"
-        height="100px"
+        width="10vw"
+        height="10vw"
         borderTop={`3px solid ${
           wallList.find((p) => p.y === -1) ? "red" : "black"
         }`}
@@ -301,11 +314,35 @@ export default function Game2() {
         {userType !== 0 &&
           userPosition.y === rowIndex &&
           userPosition.x === colIndex && (
-            <Box bgcolor="red" width="50px" height="50px" borderRadius="50px" />
+            <Box
+              bgcolor="red"
+              width="6vw"
+              height="6vw"
+              borderRadius="50px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              color="white"
+            >
+              {rowIndex * SIZE + colIndex + 1}
+            </Box>
           )}
         {userType !== 0 && foundHistoryIndex !== -1 && (
-          <Box bgcolor="#ccc" width="50px" height="50px" borderRadius="50px" />
+          <Box
+            bgcolor="#ccc"
+            width="6vw"
+            height="6vw"
+            borderRadius="50px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            {rowIndex * SIZE + colIndex + 1}
+          </Box>
         )}
+        {foundHistoryIndex === -1 &&
+          !(userPosition.y === rowIndex && userPosition.x === colIndex) &&
+          rowIndex * SIZE + colIndex + 1}
         {inTeams.map((team: any) => (
           <Box
             bgcolor={colors[team.teamNumber - 1]}
@@ -316,7 +353,7 @@ export default function Game2() {
             justifyContent="center"
             alignItems="center"
             borderRadius="50px"
-          >{`${team.teamNumber}조 앞`}</Box>
+          >{`${team.teamNumber}조`}</Box>
         ))}
         {inTeamBacks.map((team: any) => (
           <Box
@@ -329,7 +366,7 @@ export default function Game2() {
             alignItems="center"
             borderRadius="50px"
           >
-            {`${team.teamNumber}조 뒤`}
+            {`${team.teamNumber}조`}
           </Box>
         ))}
       </Stack>
@@ -385,7 +422,7 @@ export default function Game2() {
   }
 
   return (
-    <Stack height="100vh" gap="24px" p="24px">
+    <Stack height="100vh" gap="24px" p="24px" width="100vw">
       <TeamSelect />
       <Stack alignItems="center">
         {new Array(SIZE).fill(0).map((_, rowIndex) => {
@@ -398,7 +435,7 @@ export default function Game2() {
           )
         })}
       </Stack>
-      <Stack p="24px">
+      <Stack p="12px">
         {userType !== 0 && (
           <Stack
             justifyContent="space-evenly"
@@ -406,30 +443,32 @@ export default function Game2() {
             alignItems="center"
           >
             <AllowButton />
-            <Button
-              variant="contained"
-              color="error"
-              onClick={movePreventPosition}
-              style={{
-                width: "100px",
-                height: "100px",
-              }}
-            >
-              이전
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setUserPosition(startPoint)
-                setMoveHistory([])
-              }}
-              style={{
-                width: "100px",
-                height: "100px",
-              }}
-            >
-              리셋
-            </Button>
+            <Stack ml="24px" gap="24px">
+              <Button
+                variant="contained"
+                color="error"
+                onClick={movePreventPosition}
+                style={{
+                  width: "15vw",
+                  height: "15vw",
+                }}
+              >
+                이전
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setUserPosition(startPoint)
+                  setMoveHistory([])
+                }}
+                style={{
+                  width: "15vw",
+                  height: "15vw",
+                }}
+              >
+                리셋
+              </Button>
+            </Stack>
           </Stack>
         )}
         {userType === 0 && (
