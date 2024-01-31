@@ -5,6 +5,7 @@ import { get, post } from "pages/api"
 import { useRouter } from "next/router"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
+const colors = ["", "#A9D18E", "#FFD966", "#9DC3E6", "#F4B183"]
 
 enum UserType {
   admin,
@@ -21,16 +22,7 @@ type ISeat = {
 }
 
 function getUserColor(user: UserType) {
-  switch (user) {
-    case UserType.payer1:
-      return "red"
-    case UserType.payer2:
-      return "blue"
-    case UserType.payer3:
-      return "green"
-    case UserType.payer4:
-      return "purple"
-  }
+  return colors[user]
 }
 
 function getUserString(user: UserType) {
@@ -126,51 +118,121 @@ export default function Game1() {
     )
   }
 
+  function getScore(user: UserType) {
+    const player1Seats = mySeats.filter((seat) => seat.user === user)
+    return calcPoint(player1Seats)
+
+    function calcPoint(seats: ISeat[]) {
+      return seats.reduce((acc, current) => {
+        if (current.seatClass === "V") {
+          return acc + 5
+        } else if (current.seatClass === "R") {
+          return acc + 3
+        } else if (current.seatClass === "S") {
+          return acc + 2
+        } else if (current.seatClass === "A") {
+          return acc + 1
+        }
+        return acc
+      }, 0)
+    }
+  }
+
   return (
     <Stack height="100vh">
-      {getUserString(user)}
       {user === UserType.none ? (
         <SelectUserSection setUserType={setUserType} />
       ) : (
-        <Stack height="100%" alignItems="center" justifyContent="space-evenly">
-          <Stack direction="row" justifyContent="space-evenly" width="100%">
-            {new Array(10).fill(0).map((_, index) => {
-              return <Seat seatClass="V" position={index + 1} />
-            })}
+        <Stack height="100%">
+          <Stack
+            p="12px"
+            m="12px"
+            borderRadius="12px"
+            bgcolor={colors[user]}
+            width="120px"
+            textAlign="center"
+            color="white"
+            fontWeight="600"
+            fontSize="24px"
+          >
+            {getUserString(user)}
           </Stack>
+          {user === UserType.admin ? (
+            <Stack
+              textAlign="center"
+              fontWeight="600"
+              fontSize="24px"
+              alignItems="center"
+            >
+              점수 안내
+              <Stack direction="row" gap="24px" mt="24px">
+                <Stack>1팀 {getScore(UserType.payer1)}점</Stack>
+                <Stack>2팀 {getScore(UserType.payer2)}점</Stack>
+                <Stack>3팀 {getScore(UserType.payer3)}점</Stack>
+                <Stack>4팀 {getScore(UserType.payer4)}점</Stack>
+              </Stack>
+            </Stack>
+          ) : (
+            <Stack textAlign="center" fontWeight="600" fontSize="18px">
+              좌석 안내
+              <br />
+              <br />
+              <Stack>V - 5점, R - 3점, S - 2점, A - 1점</Stack>
+            </Stack>
+          )}
+          <Stack
+            height="100%"
+            alignItems="center"
+            py="120px"
+            justifyContent="space-between"
+          >
+            <Stack direction="row" justifyContent="space-evenly" width="100%">
+              {new Array(7).fill(0).map((_, index) => {
+                return <Seat seatClass="V" position={index + 1} />
+              })}
+            </Stack>
 
-          <Stack direction="row" justifyContent="space-evenly" width="100%">
-            {new Array(5).fill(0).map((_, index) => {
-              return <Seat seatClass="R" position={index + 1} />
-            })}
-            <Box width="24px" />
-            {new Array(5).fill(0).map((_, index) => {
-              return <Seat seatClass="R" position={index + 6} />
-            })}
-            <Box width="24px" />
-            {new Array(5).fill(0).map((_, index) => {
-              return <Seat seatClass="R" position={index + 11} />
-            })}
-          </Stack>
+            <Stack direction="row" justifyContent="space-evenly" width="100%">
+              {new Array(5).fill(0).map((_, index) => {
+                return <Seat seatClass="R" position={index + 1} />
+              })}
+              <Box width="24px" />
+              {new Array(5).fill(0).map((_, index) => {
+                return <Seat seatClass="R" position={index + 6} />
+              })}
+            </Stack>
 
-          <Stack direction="row" justifyContent="space-evenly" width="100%">
-            {new Array(5).fill(0).map((_, index) => {
-              return <Seat seatClass="S" position={index + 1} />
-            })}
-            <Box width="24px" />
-            {new Array(5).fill(0).map((_, index) => {
-              return <Seat seatClass="S" position={index + 6} />
-            })}
-            <Box width="24px" />
-            {new Array(5).fill(0).map((_, index) => {
-              return <Seat seatClass="S" position={index + 11} />
-            })}
-          </Stack>
+            <Stack direction="row" justifyContent="space-evenly" width="100%">
+              {new Array(5).fill(0).map((_, index) => {
+                return <Seat seatClass="S" position={index + 1} />
+              })}
+              <Box width="24px" />
+              {new Array(5).fill(0).map((_, index) => {
+                return <Seat seatClass="S" position={index + 6} />
+              })}
+              <Box width="24px" />
+              {new Array(5).fill(0).map((_, index) => {
+                return <Seat seatClass="S" position={index + 11} />
+              })}
+            </Stack>
 
-          <Stack direction="row" justifyContent="space-evenly" width="100%">
-            {new Array(10).fill(0).map((_, index) => {
-              return <Seat seatClass="A" position={index + 1} />
-            })}
+            <Stack direction="row" justifyContent="space-evenly" width="100%">
+              <Stack direction="row" justifyContent="space-evenly" width="100%">
+                {new Array(6).fill(0).map((_, index) => {
+                  return <Seat seatClass="A" position={index + 1} />
+                })}
+              </Stack>
+              <Stack direction="row" justifyContent="space-evenly" width="100%">
+                {new Array(6).fill(0).map((_, index) => {
+                  return <Seat seatClass="A" position={index + 7} />
+                })}
+              </Stack>
+              <Stack direction="row" justifyContent="space-evenly" width="100%">
+                {new Array(6).fill(0).map((_, index) => {
+                  return <Seat seatClass="A" position={index + 13} />
+                })}
+              </Stack>
+            </Stack>
           </Stack>
         </Stack>
       )}

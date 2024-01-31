@@ -1,14 +1,12 @@
-import { Stack } from "@mui/material"
+import { Select, Stack } from "@mui/material"
 import { get } from "pages/api"
 import { useEffect, useRef, useState } from "react"
 
 const colors = [
+  "#FFD700",
   "#F7A3A7",
   "#F7AD97",
   "#FAD892",
-  "#C8D7C4",
-  "#BBCBD2",
-  "#B7B6D6",
   "#E2BBD8",
   "#E55D62",
   "#DB7E6A",
@@ -22,10 +20,9 @@ const colors = [
 ]
 
 export default function HeavenConcert() {
-  const worldMapRef = useRef<SVGSVGElement>()
+  const worldMapRef = useRef<HTMLElement>()
   const [selectedTeam, setSelectedTeam] = useState(0)
 
-  const tempList = ["American_Samoa", "Brazil"]
   useEffect(() => {
     fetchMap()
   }, [worldMapRef])
@@ -40,6 +37,7 @@ export default function HeavenConcert() {
     }
     const svgString = await (await fetch("/world_map.svg")).text()
     worldMapRef.current.innerHTML = svgString
+    const svgElement = worldMapRef.current.children[0] as SVGSVGElement
 
     await drawMap()
   }
@@ -50,10 +48,11 @@ export default function HeavenConcert() {
     }
     const data = await get("/admin/game/game-map/all-country")
     const countryList = data
-      //@ts-ignore
-      .filter((d) => d.teamNumber === selectedTeam)
-      //@ts-ignore
-      .map((d) => d.country)
+      .filter((d: any) => selectedTeam === 0 || d.teamNumber === selectedTeam)
+      .map((d: any) => d.country)
+    if (worldMapRef.current?.childNodes.length === 0) {
+      return
+    }
     const mapNodes = worldMapRef.current?.childNodes[0].childNodes
     if (!mapNodes) {
       return
@@ -62,13 +61,11 @@ export default function HeavenConcert() {
       if (node.childNodes.length === 0) {
         continue
       }
-      //@ts-ignore
-      if (countryList.includes(node.childNodes[1].id)) {
-        //@ts-ignore
-        node.childNodes[1].style = `fill: ${colors[selectedTeam]}; stroke: rgb(0, 0, 0); stroke-width: 0.15;`
+      const country = node.childNodes[1] as any
+      if (countryList.includes(country.id)) {
+        country.style = `fill: ${colors[selectedTeam]}; stroke: rgb(0, 0, 0); stroke-width: 0.15;`
       } else {
-        //@ts-ignore
-        node.childNodes[1].style = `fill: #ddd; stroke: rgb(0, 0, 0); stroke-width: 0.15;`
+        country.style = `fill: #eee; stroke: rgb(0, 0, 0); stroke-width: 0.15;`
       }
     }
   }
@@ -78,26 +75,49 @@ export default function HeavenConcert() {
   }
 
   return (
-    <Stack width="100vw" height="100vh">
-      <Stack direction="row" p="12px" gap="4px">
+    <Stack direction="row">
+      <Stack p="12px" py="4px" gap="4px">
+        <Stack
+          width="8vw"
+          textAlign="center"
+          padding="10px"
+          borderRadius="4px"
+          fontWeight="600"
+          border="1px solid black"
+          justifyContent="center"
+          height="6vh"
+          onClick={() => clickTeam(0)}
+          color={selectedTeam === 0 ? "white" : "black"}
+          bgcolor={selectedTeam === 0 ? "gray" : "white"}
+        >
+          전체
+        </Stack>
         {new Array(12).fill(0).map((_, index) => {
           return (
             <Stack
-              padding="12px"
-              onClick={() => clickTeam(index)}
-              border="1px solid black"
+              width="8vw"
+              height="6vh"
+              padding="10px"
+              fontWeight="600"
               borderRadius="4px"
-              bgcolor={selectedTeam === index ? "gray" : "white"}
+              textAlign="center"
+              border="1px solid black"
+              justifyContent="center"
+              onClick={() => clickTeam(index + 1)}
+              color={selectedTeam === index + 1 ? "white" : "black"}
+              bgcolor={selectedTeam === index + 1 ? "gray" : "white"}
             >
               {index + 1} 팀
             </Stack>
           )
         })}
       </Stack>
-      {
-        //@ts-ignore
-        <svg ref={worldMapRef} width="100%" height="100%" />
-      }
+      <Stack width="600px">
+        {
+          //@ts-ignore
+          <div ref={worldMapRef} width="900px" height="470px" />
+        }
+      </Stack>
     </Stack>
   )
 }

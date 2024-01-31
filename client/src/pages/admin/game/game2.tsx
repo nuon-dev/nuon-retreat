@@ -14,14 +14,14 @@ type Position = {
 }
 
 const colors = [
-  "red",
-  "orange",
-  "yellow",
-  "green",
-  "blue",
-  "Indigo",
-  "purple",
-  "pink",
+  "#F7AD97",
+  "#E2BBD8",
+  "#87B27C",
+  "#7DB0C7",
+  "#7774B6",
+  "#B780A9",
+  "#B1A995",
+  "#333F4D",
 ]
 
 export default function Game2() {
@@ -315,7 +315,7 @@ export default function Game2() {
           userPosition.y === rowIndex &&
           userPosition.x === colIndex && (
             <Box
-              bgcolor="red"
+              bgcolor={colors[userType]}
               width="6vw"
               height="6vw"
               borderRadius="50px"
@@ -346,8 +346,8 @@ export default function Game2() {
         {inTeams.map((team: any) => (
           <Box
             bgcolor={colors[team.teamNumber - 1]}
-            width="50px"
-            height="50px"
+            width="6vw"
+            height="6vw"
             display="flex"
             flexDirection="row"
             justifyContent="center"
@@ -358,8 +358,8 @@ export default function Game2() {
         {inTeamBacks.map((team: any) => (
           <Box
             bgcolor={colors[team.teamNumber - 1]}
-            width="50px"
-            height="50px"
+            width="6vw"
+            height="6vw"
             display="flex"
             flexDirection="row"
             justifyContent="center"
@@ -395,10 +395,6 @@ export default function Game2() {
         <MenuItem value={2}>2조</MenuItem>
         <MenuItem value={3}>3조</MenuItem>
         <MenuItem value={4}>4조</MenuItem>
-        <MenuItem value={5}>5조</MenuItem>
-        <MenuItem value={6}>6조</MenuItem>
-        <MenuItem value={7}>7조</MenuItem>
-        <MenuItem value={8}>8조</MenuItem>
       </Select>
     )
   }

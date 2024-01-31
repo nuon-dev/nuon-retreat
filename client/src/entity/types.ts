@@ -38,6 +38,7 @@ export enum PermissionType {
   deleteUser,
   game1,
   game2,
+  gameMap,
 }
 
 export enum Days {

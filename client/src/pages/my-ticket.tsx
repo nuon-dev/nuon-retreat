@@ -16,6 +16,84 @@ export default function MyTicket() {
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
   const { getKakaoToken } = useKakaoHook()
 
+  //여자
+  //1번방 = 201호 ~ 22번방 = 222호
+  //23번방 = 313호, 24번방 = 312, 25번방 311호,
+  //26번방, 27번 준비팀방1,2
+  //28번방 = 318호
+  //29번방 = 310호
+  const roomW = {
+    1: 201,
+    2: 202,
+    3: 203,
+    4: 204,
+    5: 205,
+    6: 206,
+    7: 207,
+    8: 208,
+    9: 209,
+    10: 210,
+    11: 211,
+    12: 212,
+    13: 213,
+    14: 214,
+    15: 215,
+    16: 216,
+    17: 217,
+    18: 218,
+    19: 219,
+    20: 220,
+    21: 221,
+    22: 222,
+    23: 313,
+    24: 312,
+    25: 311,
+    26: "준비팀 1",
+    27: "준비팀 2",
+    28: 318,
+    29: 310,
+  }
+
+  //남자
+  //1~4번방 = 301~304호, 5번방 = 418호 ~ 10번 = 413호
+  //22번방 = 412호 ~ 11번 401호,
+  //23번방 = 305호, 24번방 306호
+  //27~28번방 준비팀
+  //29번방 = 320호
+  //30번방 = 319호
+  const roomM = {
+    1: 301,
+    2: 302,
+    3: 303,
+    4: 304,
+    5: 418,
+    6: 417,
+    7: 416,
+    8: 415,
+    9: 414,
+    10: 413,
+    11: 401,
+    12: 402,
+    13: 403,
+    14: 404,
+    15: 405,
+    16: 406,
+    17: 407,
+    18: 408,
+    19: 409,
+    20: 410,
+    21: 411,
+    22: 412,
+    23: 305,
+    24: 306,
+    25: 0,
+    26: 0,
+    27: "준비팀 1",
+    28: "준비팀 2",
+    29: 320,
+    30: 319,
+  }
+
   useEffect(() => {
     checkToken()
   }, [])
@@ -152,32 +230,44 @@ export default function MyTicket() {
           src="/poster.webp"
         />
         <Stack fontSize="24px" fontWeight="bold" textAlign="center">
-          2024.02.02 ~ 2024.02.04
-        </Stack>
-        <Stack fontSize="24px" fontWeight="bold" textAlign="center">
           입장권
+        </Stack>
+        <Stack fontSize="18px" fontWeight="bold" textAlign="center">
+          2024.02.02 ~ 2024.02.04
         </Stack>
         <Stack color="#666" textAlign="center">
           수원제일교회 새벽이슬 청년부
         </Stack>
-        <Stack direction="row" justifyContent="center" gap="12px" color="#333">
-          <Box key={userInformation.name}>{userInformation.name}</Box>
-          <Box width="1px" height="20px" bgcolor="#ccc" />
-          <Box key={userInformation.age}>{userInformation.age}</Box>
-          <Box width="1px" height="20px" bgcolor="#ccc" />
-          <Box>60,000 (일반)</Box>
-          <Box width="1px" height="20px" bgcolor="#ccc" />
-          <Box key={userInformation.name + "deposit"}>
-            {userInformation.deposit ? "입금 확인" : "입금 대기"}
-          </Box>
-        </Stack>
+        {userInformation.id && (
+          <Stack
+            direction="row"
+            justifyContent="center"
+            gap="12px"
+            color="#333"
+          >
+            <Box key={userInformation.name}>{userInformation.name}</Box>
+            <Box width="1px" height="20px" bgcolor="#ccc" />
+            <Box key={userInformation.id}>
+              {userInformation.groupAssignment.groupNumber}조
+            </Box>
+            <Box width="1px" height="20px" bgcolor="#ccc" />
+            <Box key={userInformation.id}>
+              {userInformation.sex === "man"
+                ? //@ts-ignore
+                  roomM[userInformation.roomAssignment.roomNumber]
+                : //@ts-ignore
+                  roomW[userInformation.roomAssignment.roomNumber]}
+              호
+            </Box>
+          </Stack>
+        )}
         <Stack mt="24px" alignItems="center">
           <Stack
-            border="2px solid #ccc"
-            borderRadius="12px"
-            padding="12px"
             zIndex="5"
-            width="100px"
+            width="150px"
+            padding="12px"
+            borderRadius="12px"
+            border="2px solid #ccc"
           >
             <img
               style={{
@@ -188,6 +278,9 @@ export default function MyTicket() {
                 setShowQrCode(!showQrCode)
               }}
             />
+            <Box style={{ whiteSpace: "pre" }} mt="12px" fontWeight="500">
+              눌러서 입장 QR 확인
+            </Box>
           </Stack>
         </Stack>
         <Transition in={showQrCode} timeout={0}>

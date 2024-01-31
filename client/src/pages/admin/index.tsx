@@ -142,6 +142,11 @@ function admin() {
             pageURL: "/game/game2",
             icon: "/icon/free-icon-joystick.png",
           })}
+          {pageButton({
+            pageName: "오락국 게임 (지도)",
+            pageURL: "/game/game-map",
+            icon: "/icon/free-icon-joystick.png",
+          })}
         </Stack>
       </Stack>
     )

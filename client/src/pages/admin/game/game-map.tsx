@@ -1,13 +1,18 @@
 import { Button, MenuItem, Select, Stack } from "@mui/material"
+import { useRouter } from "next/router"
 import { get, post } from "pages/api"
 import { useEffect, useRef, useState } from "react"
+import { useSetRecoilState } from "recoil"
+import { NotificationMessage } from "state/notification"
 
 export default function GameMap() {
+  const { push } = useRouter()
   const worldMapRef = useRef<SVGSVGElement>()
   const [allCountryList, setAllCountryList] = useState<string[]>([])
   const [teamCountryList, setTeamCountryList] = useState<string[]>([])
   const [selectedTeam, setSelectedTeam] = useState(0)
   const [selectedCountry, setSelectedCountry] = useState("Canada")
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
     if (worldMapRef) {
@@ -39,18 +44,22 @@ export default function GameMap() {
   async function fetchTeamCountry() {
     const gameMapList: [] = await get("/admin/game/game-map/all-country")
     const teamCountryList = gameMapList.filter(
-      //@ts-ignore
-      (gameData) => gameData.teamNumber === selectedTeam
+      (gameData: any) => gameData.teamNumber === selectedTeam
     )
-    //@ts-ignore
-    setTeamCountryList(teamCountryList.map((d) => d.country))
+    setTeamCountryList(teamCountryList.map((d: any) => d.country))
   }
 
   async function addCountry() {
-    await post("/admin/game/game-map/new-country", {
-      teamNumber: selectedTeam,
-      country: selectedCountry,
-    })
+    try {
+      await post("/admin/game/game-map/new-country", {
+        teamNumber: selectedTeam,
+        country: selectedCountry,
+      })
+    } catch {
+      push("/admin")
+      setNotificationMessage("권한이 없습니다.")
+      return
+    }
     await fetchTeamCountry()
   }
 
@@ -59,10 +68,16 @@ export default function GameMap() {
   }
 
   async function deleteCountry(country: string) {
-    await post("/admin/game/game-map/delete-country", {
-      teamNumber: selectedTeam,
-      country,
-    })
+    try {
+      await post("/admin/game/game-map/delete-country", {
+        teamNumber: selectedTeam,
+        country,
+      })
+    } catch {
+      push("/admin")
+      setNotificationMessage("권한이 없습니다.")
+      return
+    }
     await fetchTeamCountry()
   }
 
@@ -72,23 +87,25 @@ export default function GameMap() {
         //@ts-ignore
         <svg ref={worldMapRef} width="1px" height="1px" />
       }
-      <Stack direction="row" gap="12px" p="12px">
+      <Stack direction="row" gap="12px" p="12px" flexWrap="wrap">
         {new Array(12).fill(0).map((_, index) => {
           return (
             <Stack
               padding="12px"
-              onClick={() => clickTeam(index)}
-              border="1px solid black"
+              fontWeight="600"
               borderRadius="4px"
-              bgcolor={selectedTeam === index ? "gray" : "white"}
+              border="1px solid black"
+              onClick={() => clickTeam(index + 1)}
+              color={selectedTeam === index + 1 ? "white" : "black"}
+              bgcolor={selectedTeam === index + 1 ? "gray" : "white"}
             >
               {index + 1} 팀
             </Stack>
           )
         })}
       </Stack>
-      <Stack direction="row" gap="12px">
-        <Stack flex={1} p="24px" gap="40px">
+      <Stack gap="12px">
+        <Stack flex={1} p="24px" gap="24px">
           <Select
             onChange={(e) => setSelectedCountry(e.target.value as string)}
             value={selectedCountry}
@@ -101,10 +118,24 @@ export default function GameMap() {
             추가하기
           </Button>
         </Stack>
-        <Stack flex={1} p="24px">
+        <Stack flex={1} p="24px" gap="8px">
           {teamCountryList.map((country) => (
-            <Stack onClick={() => deleteCountry(country)}>
-              {country}(눌러서 삭제)
+            <Stack
+              p="4px"
+              px="12px"
+              borderRadius="12px"
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              border="1px solid black"
+            >
+              {country}{" "}
+              <Button
+                variant="contained"
+                onClick={() => deleteCountry(country)}
+              >
+                삭제
+              </Button>
             </Stack>
           ))}
         </Stack>

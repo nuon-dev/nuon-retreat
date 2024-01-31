@@ -63,6 +63,7 @@ function PermissionManage() {
     [PermissionType.deleteUser]: "접수 삭제",
     [PermissionType.game1]: "오락국 게임 1",
     [PermissionType.game2]: "오락국 게임 2",
+    [PermissionType.gameMap]: "오락국 게임 지도",
   }
 
   function loadUserPermission() {
