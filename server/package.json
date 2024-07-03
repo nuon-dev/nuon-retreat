@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
+    "dev": "export NODE_ENV=development;nodemon src/index.ts",
     "start": "nodemon src/index.ts",
     "stop": "pkill -f nodemon"
   },

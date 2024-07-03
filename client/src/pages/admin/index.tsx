@@ -127,26 +127,6 @@ function admin() {
             pageURL: "/dash-board",
             icon: "/icon/free-icon-dashboard-interface.png",
           })}
-          {pageButton({
-            pageName: "그룹 점수 관리",
-            pageURL: "/game/edit-group-score",
-            icon: "/icon/free-icon-score.png",
-          })}
-          {pageButton({
-            pageName: "오락국 게임1",
-            pageURL: "/game/game1",
-            icon: "/icon/free-icon-joystick.png",
-          })}
-          {pageButton({
-            pageName: "오락국 게임2",
-            pageURL: "/game/game2",
-            icon: "/icon/free-icon-joystick.png",
-          })}
-          {pageButton({
-            pageName: "오락국 게임 (지도)",
-            pageURL: "/game/game-map",
-            icon: "/icon/free-icon-joystick.png",
-          })}
         </Stack>
       </Stack>
     )

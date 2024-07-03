@@ -8,13 +8,13 @@ import https from "https"
 import cors from "cors"
 
 const app = express()
-const port = 3000
+const port = 8000
 
 app.use(bodyParser.json())
 app.use(cors())
 app.use("/", apiRouter)
 
-const is_dev = false
+const is_dev = process.env.NODE_ENV === "development"
 
 var server
 

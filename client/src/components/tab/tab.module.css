@@ -1,0 +1,7 @@
+.tab-area {
+  width: 100vw;
+  height: 60px;
+  position: fixed;
+  background-color: #eee;
+  bottom: 0;
+}

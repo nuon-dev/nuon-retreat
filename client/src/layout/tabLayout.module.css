@@ -1,0 +1,9 @@
+.tab-layout-root {
+  height: 100vh;
+  width: 100vw;
+}
+
+.inner {
+  overflow-y: scroll;
+  margin-bottom: 60px;
+}
