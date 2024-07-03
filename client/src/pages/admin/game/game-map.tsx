@@ -37,6 +37,7 @@ export default function GameMap() {
         //@ts-ignore
         tempList.push(node.childNodes[1].id)
       }
+      tempList.sort()
       setAllCountryList(tempList)
     }
   }

@@ -12,9 +12,13 @@ export default function CheckStatus() {
   const [selectState, setSelectState] = useState(CurrentStatus.null)
   const [lastScanTime, setLastScanTime] = useState(new Date())
   const [user, setUser] = useState<User>({} as any)
+  const [currentTime, setCurrentTime] = useState(new Date())
 
   useEffect(() => {
     loadCamera()
+    setInterval(() => {
+      setCurrentTime(new Date())
+    }, 3000)
   }, [])
 
   async function loadCamera() {
@@ -30,7 +34,6 @@ export default function CheckStatus() {
     if (!data) {
       return
     }
-    console.log(data)
     const now = new Date()
     if (now.getTime() - lastScanTime.getTime() < 1000 * 2) {
       return
@@ -84,10 +87,10 @@ export default function CheckStatus() {
       </Select>
       {cameraId && (
         <QrReader
+          key={selectState.toString() + (user.id || "") + currentTime.getTime()}
           constraints={
             cameraId && { audio: false, video: { deviceId: cameraId } }
           }
-          onError={() => {}}
           onScan={onScan}
         />
       )}

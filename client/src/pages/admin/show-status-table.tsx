@@ -22,7 +22,15 @@ export default function ShowStatusTable() {
     try {
       const list: User[] = await get("/admin/get-all-user")
       if (list) {
-        setAllUserList(list.sort((a, b) => a.age - b.age))
+        setAllUserList(
+          list
+            .sort((a, b) => a.age - b.age)
+            .sort(
+              (a, b) =>
+                new Date("2024-02-0" + a.whenIn).getTime() -
+                new Date("2024-02-0" + b.whenIn).getTime()
+            )
+        )
       }
     } catch {
       router.push("/admin")
