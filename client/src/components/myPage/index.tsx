@@ -30,8 +30,19 @@ export default function MyPage() {
   const innerColor = "white"
 
   return (
-    <Stack bgcolor={bgcolor} height="100vh">
-      <Stack margin="40px" bgcolor={innerColor} borderRadius="12px" gap="40px">
+    <Stack
+      bgcolor={bgcolor}
+      height="100vh"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Stack
+        width="300px"
+        bgcolor={innerColor}
+        borderRadius="12px"
+        gap="40px"
+        justifyContent="center"
+      >
         <Box className={styles["symbol"]}></Box>
         <Box textAlign="center">{userInformation.name}님</Box>
         <Stack direction="row" justifyContent="space-around">
@@ -45,7 +56,7 @@ export default function MyPage() {
           </Box>
           <Box textAlign="center">
             <Box fontSize="20px" color={bgcolor}>
-              {userInformation.id}
+              {userInformation.id + 100}
             </Box>
             <Box fontSize="12px" fontWeight="600">
               접수번호

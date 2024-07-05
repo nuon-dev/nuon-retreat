@@ -1,5 +1,6 @@
 import { Box, Stack } from "@mui/material"
-import { useState } from "react"
+import { MouseEvent, MouseEventHandler, useState } from "react"
+import Edit from "./edit"
 
 interface DayInfo {
   day: number
@@ -8,6 +9,7 @@ interface DayInfo {
 
 export default function Home() {
   const [selectedDay, setSelectedDay] = useState(0)
+  const [showEditPage, setShowEditPage] = useState(false)
 
   const days: DayInfo[] = [
     {
@@ -53,7 +55,7 @@ export default function Home() {
         <Box fontSize="20px" textAlign="center" margin="16px" fontWeight="bold">
           2024. 08
         </Box>
-        <Stack direction="row" justifyContent="space-around" margin="4px">
+        <Stack direction="row" justifyContent="space-around" gap="4px">
           {days.map((day, index) =>
             Day(day, selectedDay === index, () => {
               setSelectedDay(index)
@@ -62,7 +64,8 @@ export default function Home() {
         </Stack>
       </Stack>
       <Stack p="20px">{TodayPlan(selectedDay)}</Stack>
-      {AddButton()}
+      {AddButton(() => setShowEditPage(true))}
+      {showEditPage && <Edit onClose={() => setShowEditPage(false)} />}
     </Stack>
   )
 }
@@ -116,9 +119,12 @@ function TodayPlan(day: number) {
   return null
 }
 
-function AddButton() {
+function AddButton(
+  onClick: (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => void
+) {
   return (
     <Stack
+      onClick={onClick}
       width="40px"
       height="40px"
       justifyContent="center"
@@ -140,9 +146,10 @@ function AddButton() {
 function Day(dayInfo: DayInfo, isSelected: boolean, onClick: () => void) {
   return (
     <Stack
+      key={dayInfo.day}
       gap="4px"
       onClick={onClick}
-      padding="12px"
+      padding="8px"
       borderRadius="24px"
       style={{
         border: isSelected ? "1px solid black" : "1px solid white",
