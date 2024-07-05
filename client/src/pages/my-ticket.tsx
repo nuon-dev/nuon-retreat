@@ -1,7 +1,6 @@
 import { User } from "@entity/user"
 import { Box, Stack } from "@mui/material"
 import { useEffect, useState } from "react"
-import QRCode from "react-qr-code"
 //@ts-ignore
 import Transition from "react-transition-group/transition"
 import { useSetRecoilState } from "recoil"
@@ -343,12 +342,6 @@ function QrPopup({
         <Stack>모바일 티켓</Stack>
         <img width="53px" src="/icon/free-icon-close-window.png" />
       </Stack>
-      <QRCode
-        size={256}
-        value={`${qrContent}/${currentTime}`}
-        viewBox={`0 0 256 256`}
-        style={{ height: "auto", width: "70%" }}
-      />
     </Stack>
   )
 }

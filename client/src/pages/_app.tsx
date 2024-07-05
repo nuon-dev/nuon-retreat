@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }: any) {
   return (
     <>
       <Head>
-        <title>2024 새벽이슬 동계 수련회</title>
+        <title>2024 새벽이슬 하계 수련회</title>
         <meta name="referrer" content="same-origin" />
         <meta
           http-equiv="Content-Security-Policy"
@@ -25,12 +25,12 @@ function MyApp({ Component, pageProps }: any) {
         <meta
           name="title"
           property="og:title"
-          content="2024 새벽이슬 동계 수련회"
+          content="2024 새벽이슬 하계 수련회"
         />
         <meta
           name="description"
           property="og:description"
-          content="내 귀에 들린 대로 행하리니 &lt; 민 14 : 28 &gt;"
+          content="너는 물 댄 동산 같겠고 &lt; 사 58 : 11 &gt;"
         />
         <meta name="image" property="og:image" content="/main_bg.webp" />
         <meta name="url" property="og:url" content="main_bg.webp" />

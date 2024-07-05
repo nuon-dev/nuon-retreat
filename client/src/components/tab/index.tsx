@@ -17,9 +17,25 @@ export default function Tab() {
       justifyContent="space-around"
       alignItems="center"
     >
-      <Stack onClick={() => onClickTab(Tabs.Home)}>Home</Stack>
-      <Stack onClick={() => onClickTab(Tabs.Etc)}>Etc</Stack>
-      <Stack onClick={() => onClickTab(Tabs.MyPage)}>MyPage</Stack>
+      <Stack flex={1} textAlign="center" onClick={() => onClickTab(Tabs.Home)}>
+        Home
+      </Stack>
+      <Stack
+        flex={1}
+        textAlign="center"
+        width="40px"
+        onClick={() => onClickTab(Tabs.Etc)}
+      >
+        Etc
+      </Stack>
+      <Stack
+        flex={1}
+        textAlign="center"
+        width="40px"
+        onClick={() => onClickTab(Tabs.MyPage)}
+      >
+        MyPage
+      </Stack>
     </Stack>
   )
 }
