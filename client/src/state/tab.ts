@@ -2,7 +2,8 @@ import { atom } from "recoil"
 
 export enum Tabs {
   Home,
-  Etc,
+  Receipt,
+  Info,
   MyPage,
 }
 

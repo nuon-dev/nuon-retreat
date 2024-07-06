@@ -24,9 +24,17 @@ export default function Tab() {
         flex={1}
         textAlign="center"
         width="40px"
-        onClick={() => onClickTab(Tabs.Etc)}
+        onClick={() => onClickTab(Tabs.Receipt)}
       >
-        Etc
+        Receipt
+      </Stack>
+      <Stack
+        flex={1}
+        textAlign="center"
+        width="40px"
+        onClick={() => onClickTab(Tabs.Info)}
+      >
+        Info
       </Stack>
       <Stack
         flex={1}

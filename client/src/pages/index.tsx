@@ -1,19 +1,18 @@
-import { Stack, Box } from "@mui/material"
-import { useRouter } from "next/router"
-import { useRecoilState, useSetRecoilState } from "recoil"
-import { SelectedTab, Tabs } from "state/tab"
+import { post } from "./api"
+import useKakaoHook from "kakao"
+import { User } from "@entity/user"
 import Tab from "components/tab"
+import Info from "components/info"
 import Home from "components/home"
 import MyPage from "components/myPage"
-import useKakaoHook from "kakao"
-import { NotificationMessage } from "state/notification"
+import Receipt from "components/receipt"
+import { Stack, Box } from "@mui/material"
 import { useEffect, useState } from "react"
-import { post } from "./api"
-import { User } from "@entity/user"
-import Etc from "components/etc"
+import { SelectedTab, Tabs } from "state/tab"
+import { NotificationMessage } from "state/notification"
+import { useRecoilState, useSetRecoilState } from "recoil"
 
 function index() {
-  const { push } = useRouter()
   const [showLoginPopup, setShowLoginPopup] = useState(false)
   const [userInformation, setUserInformation] = useState(new User())
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
@@ -45,8 +44,10 @@ function index() {
     switch (selectedTab) {
       case Tabs.Home:
         return <Home />
-      case Tabs.Etc:
-        return <Etc />
+      case Tabs.Receipt:
+        return <Receipt />
+      case Tabs.Info:
+        return <Info />
       case Tabs.MyPage:
         return <MyPage />
     }
