@@ -1,15 +1,31 @@
 import { Box, Stack } from "@mui/material"
-import { MouseEvent, MouseEventHandler, useState } from "react"
-import Edit from "./edit"
+import { useEffect, useRef, useState } from "react"
 
 interface DayInfo {
   day: number
   dayOfWeek: string
 }
 
+interface OneDayPlan {
+  day: string
+  hour: number
+  content: string
+}
+
 export default function Home() {
   const [selectedDay, setSelectedDay] = useState(0)
-  const [showEditPage, setShowEditPage] = useState(false)
+  const [calandalHeight, setCalandalHeight] = useState(0)
+  const topArea = useRef<HTMLElement>()
+
+  useEffect(() => {
+    calcHeight()
+  }, [topArea])
+
+  function calcHeight() {
+    if (!topArea.current) return
+    const leftHeight = window.innerHeight - topArea.current.clientHeight
+    setCalandalHeight(leftHeight)
+  }
 
   const days: DayInfo[] = [
     {
@@ -42,20 +58,49 @@ export default function Home() {
     },
   ]
 
+  const data: OneDayPlan[] = [
+    { day: "sun", hour: 9, content: "" },
+    { day: "sun", hour: 10, content: "" },
+    { day: "sun", hour: 11, content: "수련회 신청 시작" },
+    { day: "sun", hour: 12, content: "" },
+    { day: "sun", hour: 13, content: "" },
+    { day: "sun", hour: 14, content: "" },
+    { day: "sun", hour: 15, content: "" },
+    { day: "sun", hour: 16, content: "" },
+    { day: "sun", hour: 17, content: "" },
+    { day: "sun", hour: 18, content: "" },
+    { day: "sun", hour: 19, content: "" },
+    { day: "sun", hour: 20, content: "" },
+    { day: "sun", hour: 21, content: "" },
+    { day: "sun", hour: 22, content: "" },
+    { day: "sun", hour: 23, content: "" },
+    { day: "sun", hour: 24, content: "" },
+  ]
+
   return (
-    <Stack>
-      <Stack
-        padding="20px"
-        gap="12px"
-        borderBottom="1px solid #ddd"
-        borderRadius="20px"
-      >
-        <Box fontSize="30px">What's on</Box>
-        <Box width="100%" height="0.1px" bgcolor="#ccc" />
-        <Box fontSize="20px" textAlign="center" margin="16px" fontWeight="bold">
-          2024. 08
-        </Box>
-        <Stack direction="row" justifyContent="space-around" gap="4px">
+    <Stack bgcolor="#E8E1D0">
+      <Stack ref={topArea}>
+        <Stack height="200px" gap="12px">
+          <img
+            width="100%"
+            height="100%"
+            style={{
+              objectFit: "cover",
+              borderBottomLeftRadius: "20px",
+              borderBottomRightRadius: "20px",
+            }}
+            src="./bg_2.webp"
+            alt=""
+          />
+        </Stack>
+        <Stack
+          height="100px"
+          direction="row"
+          justifyContent="space-around"
+          gap="4px"
+          p="20px 10px"
+          m="0 10px"
+        >
           {days.map((day, index) =>
             Day(day, selectedDay === index, () => {
               setSelectedDay(index)
@@ -63,9 +108,52 @@ export default function Home() {
           )}
         </Stack>
       </Stack>
-      <Stack p="20px">{TodayPlan(selectedDay)}</Stack>
-      {AddButton(() => setShowEditPage(true))}
-      {showEditPage && <Edit onClose={() => setShowEditPage(false)} />}
+      <Stack px="30px" pb="0">
+        {HourPlan(
+          calandalHeight,
+          data.filter(
+            (d) => d.day === days[selectedDay].dayOfWeek.toLocaleLowerCase()
+          )
+        )}
+      </Stack>
+    </Stack>
+  )
+}
+
+function HourPlan(height: number, data: OneDayPlan[]) {
+  const hourPlanData: number[] = new Array(16).fill(0)
+  return (
+    <Stack height={height - 60} overflow="auto">
+      {hourPlanData.map((_, idx) => {
+        const toDayPlan = data[idx]
+        const hour = idx + 9
+        return (
+          <Stack
+            height="40px"
+            pb="20px"
+            mb="20px"
+            borderBottom="1px dashed #aaa"
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            fontWeight="600"
+          >
+            <Stack>{hour}:00</Stack>
+
+            {toDayPlan && (
+              <Stack
+                p="7px 10px"
+                borderRadius="30px"
+                bgcolor={toDayPlan.content !== "" ? "#AC9173" : ""}
+                color="white"
+                fontWeight="300"
+              >
+                {toDayPlan.content}
+              </Stack>
+            )}
+          </Stack>
+        )
+      })}
     </Stack>
   )
 }
@@ -119,30 +207,6 @@ function TodayPlan(day: number) {
   return null
 }
 
-function AddButton(
-  onClick: (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => void
-) {
-  return (
-    <Stack
-      onClick={onClick}
-      width="40px"
-      height="40px"
-      justifyContent="center"
-      alignSelf="center"
-      alignItems="center"
-      borderRadius="40px"
-      position="fixed"
-      bottom="40px"
-      zIndex="10"
-      bgcolor="orange"
-      color="white"
-      fontSize="24px"
-    >
-      +
-    </Stack>
-  )
-}
-
 function Day(dayInfo: DayInfo, isSelected: boolean, onClick: () => void) {
   return (
     <Stack
@@ -152,12 +216,12 @@ function Day(dayInfo: DayInfo, isSelected: boolean, onClick: () => void) {
       padding="8px"
       borderRadius="24px"
       style={{
-        border: isSelected ? "1px solid black" : "1px solid white",
+        border: isSelected ? "1px solid black" : "1px solid #E8E1D0",
       }}
     >
       <Box
         textAlign="center"
-        color={dayInfo.dayOfWeek === "Sun" ? "red" : "#ccc"}
+        color={dayInfo.dayOfWeek === "Sun" ? "#A77265" : "#7A766c"}
         fontSize="12px"
       >
         {dayInfo.dayOfWeek}

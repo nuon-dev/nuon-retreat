@@ -32,8 +32,8 @@ function MyApp({ Component, pageProps }: any) {
           property="og:description"
           content="너는 물 댄 동산 같겠고 &lt; 사 58 : 11 &gt;"
         />
-        <meta name="image" property="og:image" content="/main_bg.webp" />
-        <meta name="url" property="og:url" content="main_bg.webp" />
+        <meta name="image" property="og:image" content="/bg_1.webp" />
+        <meta name="url" property="og:url" content="bg_1.webp" />
         <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
       </Head>
       <RecoilRoot>
