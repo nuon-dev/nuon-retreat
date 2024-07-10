@@ -97,13 +97,14 @@ export default function UserInformationForm(props: IProps) {
   }
 
   return (
-    <Stack padding="6px" minWidth="360px">
+    <Stack padding="6px" minWidth="340px" gap="4px">
       <Stack>
         {getInputGap()}
         <Stack>이름</Stack>
         {getLabelGap()}
         <TextField
           fullWidth={true}
+          className="TextField"
           value={userInformation.name}
           placeholder="이름을 입력하세요."
           onChange={(e) => changeInformation("name", e.target.value)}
@@ -117,6 +118,7 @@ export default function UserInformationForm(props: IProps) {
         {getLabelGap()}
         <TextField
           fullWidth={true}
+          className="TextField"
           value={userInformation.phone}
           placeholder="전화번호를 입력하세요."
           onChange={(e) => changeInformation("phone", e.target.value)}
@@ -131,6 +133,7 @@ export default function UserInformationForm(props: IProps) {
         {userInformation && (
           <Select
             fullWidth={true}
+            className="Select"
             key={userInformation.age}
             value={userInformation.age}
             defaultValue={userInformation.age}
@@ -158,6 +161,7 @@ export default function UserInformationForm(props: IProps) {
             showItems && (
               <Select
                 value={userInformation.sex}
+                className="Select"
                 defaultValue={userInformation.sex}
                 placeholder="성별을 선택하세요."
                 onChange={(e) => changeInformation("sex", e.target.value)}
@@ -178,20 +182,23 @@ export default function UserInformationForm(props: IProps) {
         {getLabelGap()}
         <Select
           fullWidth={true}
+          className="Select"
           key={userInformation.howToGo}
           defaultValue={userInformation.howToGo}
           value={userInformation.howToGo}
-          onChange={(e) =>
+          onChange={(e) => {
+            console.log(inOutData)
+            if (inOutData.length === 0) {
+              setInOutData([])
+            }
             changeInformation("howToGo", e.target.value.toString())
-          }
+          }}
         >
           <MenuItem value={HowToMove.together}>교회 버스로</MenuItem>
           <MenuItem value={HowToMove.driveCarWithPerson}>
             자차 (카풀 가능)
           </MenuItem>
-          <MenuItem value={HowToMove.rideCar}>
-            카풀 신청 (시간, 장소 기타사항에)
-          </MenuItem>
+          <MenuItem value={HowToMove.rideCar}>카풀 신청</MenuItem>
           <MenuItem value={HowToMove.goAlone}>대중교통 (여주역)</MenuItem>
           <MenuItem value={HowToMove.driveCarAlone}>자차 (카풀 불가)</MenuItem>
           <MenuItem value={HowToMove.etc}>기타 (하단에 메모)</MenuItem>
@@ -209,6 +216,7 @@ export default function UserInformationForm(props: IProps) {
         {getLabelGap()}
         <Select
           fullWidth={true}
+          className="Select"
           key={userInformation.howToLeave}
           defaultValue={userInformation.howToLeave}
           value={userInformation.howToLeave}
@@ -230,6 +238,7 @@ export default function UserInformationForm(props: IProps) {
         {getLabelGap()}
         <TextField
           fullWidth={true}
+          className="TextField"
           key={userInformation.kakaoId}
           value={userInformation.etc}
           placeholder="기타사항이 있을 경우 입력하세요."
@@ -239,8 +248,12 @@ export default function UserInformationForm(props: IProps) {
       {getInputGap()}
 
       <Stack marginTop="10px">
-        <Button variant="contained" onClick={submit}>
-          저장
+        <Button
+          variant="contained"
+          onClick={submit}
+          style={{ fontSize: "18px" }}
+        >
+          신청 완료하기
         </Button>
       </Stack>
     </Stack>

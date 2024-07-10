@@ -51,10 +51,11 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
     return (
       <Stack
         marginTop="10px"
+        gap="12px"
         style={{
           border: "1px solid #AAA",
-          borderRadius: "4px",
-          padding: "4px",
+          borderRadius: "24px",
+          padding: "12px",
         }}
       >
         <Stack>
@@ -63,6 +64,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
           </Stack>
           <Select
             value={data.day}
+            className="Select"
             onChange={(e) =>
               onChangeInformation("day", e.target.value.toString(), index)
             }
@@ -75,6 +77,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
           </Stack>
           <Select
             value={data.inOutType}
+            className="Select"
             onChange={(e) =>
               onChangeInformation("inOutType", e.target.value.toString(), index)
             }
@@ -87,6 +90,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
           </Stack>
           <Select
             fullWidth={true}
+            className="Select"
             value={data.time}
             onChange={(e) =>
               onChangeInformation("time", e.target.value.toString(), index)
@@ -106,6 +110,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
           <FormControl>
             <Select
               fullWidth={true}
+              className="Select"
               value={data.howToMove}
               onChange={(e) =>
                 onChangeInformation(
@@ -134,6 +139,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
             </Stack>
             <Select
               value={data.position}
+              className="Select"
               onChange={(e) =>
                 onChangeInformation(
                   "position",
@@ -153,7 +159,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
         )}
         {
           <Stack marginTop="10px">
-            <Button variant="outlined" onClick={() => onClickRemove(index)}>
+            <Button variant="contained" onClick={() => onClickRemove(index)}>
               이동 방법 삭제
             </Button>
           </Stack>

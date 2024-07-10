@@ -132,7 +132,6 @@ function index() {
       {showLoginPopup && <KakaoLoginPopup />}
       <Box
         style={{
-          overflowY: "scroll",
           marginBottom: "60px",
         }}
       >

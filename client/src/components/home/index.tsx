@@ -9,12 +9,14 @@ interface DayInfo {
 interface OneDayPlan {
   day: string
   hour: number
+  minute: number
   content: string
+  progressTime: number
 }
 
 export default function Home() {
   const [selectedDay, setSelectedDay] = useState(0)
-  const [calandalHeight, setCalandalHeight] = useState(0)
+  const [calendarHeight, setCalendarHeight] = useState(0)
   const topArea = useRef<HTMLElement>()
 
   useEffect(() => {
@@ -24,14 +26,10 @@ export default function Home() {
   function calcHeight() {
     if (!topArea.current) return
     const leftHeight = window.innerHeight - topArea.current.clientHeight
-    setCalandalHeight(leftHeight)
+    setCalendarHeight(leftHeight)
   }
 
   const days: DayInfo[] = [
-    {
-      day: 11,
-      dayOfWeek: "Sun",
-    },
     {
       day: 12,
       dayOfWeek: "Mon",
@@ -56,25 +54,20 @@ export default function Home() {
       day: 17,
       dayOfWeek: "Sat",
     },
+    {
+      day: 18,
+      dayOfWeek: "Sun",
+    },
   ]
 
   const data: OneDayPlan[] = [
-    { day: "sun", hour: 9, content: "" },
-    { day: "sun", hour: 10, content: "" },
-    { day: "sun", hour: 11, content: "수련회 신청 시작" },
-    { day: "sun", hour: 12, content: "" },
-    { day: "sun", hour: 13, content: "" },
-    { day: "sun", hour: 14, content: "" },
-    { day: "sun", hour: 15, content: "" },
-    { day: "sun", hour: 16, content: "" },
-    { day: "sun", hour: 17, content: "" },
-    { day: "sun", hour: 18, content: "" },
-    { day: "sun", hour: 19, content: "" },
-    { day: "sun", hour: 20, content: "" },
-    { day: "sun", hour: 21, content: "" },
-    { day: "sun", hour: 22, content: "" },
-    { day: "sun", hour: 23, content: "" },
-    { day: "sun", hour: 24, content: "" },
+    {
+      day: "Mon",
+      hour: 20,
+      minute: 30,
+      content: "월요\n기도회",
+      progressTime: 75,
+    },
   ]
 
   return (
@@ -108,12 +101,10 @@ export default function Home() {
           )}
         </Stack>
       </Stack>
-      <Stack px="30px" pb="0">
+      <Stack pb="0">
         {HourPlan(
-          calandalHeight,
-          data.filter(
-            (d) => d.day === days[selectedDay].dayOfWeek.toLocaleLowerCase()
-          )
+          calendarHeight,
+          data.filter((d) => d.day === days[selectedDay].dayOfWeek)
         )}
       </Stack>
     </Stack>
@@ -123,10 +114,10 @@ export default function Home() {
 function HourPlan(height: number, data: OneDayPlan[]) {
   const hourPlanData: number[] = new Array(16).fill(0)
   return (
-    <Stack height={height - 60} overflow="auto">
+    <Stack px="30px" height={height - 60} overflow="auto">
       {hourPlanData.map((_, idx) => {
-        const toDayPlan = data[idx]
         const hour = idx + 9
+        const toDayPlan = data.find((d) => d.hour === hour)
         return (
           <Stack
             height="40px"
@@ -142,11 +133,22 @@ function HourPlan(height: number, data: OneDayPlan[]) {
 
             {toDayPlan && (
               <Stack
-                p="7px 10px"
-                borderRadius="30px"
+                px="10px"
+                mr="10px"
+                justifyContent="center"
+                alignItems="center"
+                borderRadius="12px"
                 bgcolor={toDayPlan.content !== "" ? "#AC9173" : ""}
                 color="white"
+                whiteSpace="pre-wrap"
+                textAlign="center"
                 fontWeight="300"
+                height={toDayPlan.progressTime + "px"}
+                marginTop={
+                  (toDayPlan.minute / 60) * 60 +
+                  toDayPlan.progressTime / 2 +
+                  "px"
+                }
               >
                 {toDayPlan.content}
               </Stack>
@@ -158,55 +160,6 @@ function HourPlan(height: number, data: OneDayPlan[]) {
   )
 }
 
-function TodayPlan(day: number) {
-  switch (day) {
-    case 0:
-      return (
-        <Stack>
-          <Box>주일의 일정</Box>
-        </Stack>
-      )
-    case 1:
-      return (
-        <Stack>
-          <Box>월요일 일정</Box>
-        </Stack>
-      )
-    case 2:
-      return (
-        <Stack>
-          <Box>화요일 일정1</Box>
-        </Stack>
-      )
-    case 3:
-      return (
-        <Stack>
-          <Box>수요일 일정1</Box>
-        </Stack>
-      )
-    case 4:
-      return (
-        <Stack>
-          <Box>목요일 일정1</Box>
-        </Stack>
-      )
-    case 5:
-      return (
-        <Stack>
-          <Box>금요일 일정1</Box>
-        </Stack>
-      )
-
-    case 6:
-      return (
-        <Stack>
-          <Box>토요일 일정1</Box>
-        </Stack>
-      )
-  }
-  return null
-}
-
 function Day(dayInfo: DayInfo, isSelected: boolean, onClick: () => void) {
   return (
     <Stack
@@ -215,6 +168,7 @@ function Day(dayInfo: DayInfo, isSelected: boolean, onClick: () => void) {
       onClick={onClick}
       padding="8px"
       borderRadius="24px"
+      className="day-select"
       style={{
         border: isSelected ? "1px solid black" : "1px solid #E8E1D0",
       }}
