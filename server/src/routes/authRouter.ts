@@ -16,6 +16,7 @@ const router = express.Router()
 router.post("/edit-user", async (req, res) => {
   const user = req.body as User
 
+  user.isCancel = false
   const foundUser = await userDatabase.save(user)
 
   if (user.howToGo === HowToMove.together) {

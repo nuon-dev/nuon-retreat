@@ -45,6 +45,7 @@ export enum Days {
   firstDay,
   secondDay,
   thirdDay,
+  fourthDay,
 }
 
 export enum InOutType {

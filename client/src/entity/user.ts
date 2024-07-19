@@ -27,4 +27,7 @@ export class User {
   isCancell: boolean
   howToGo: HowToMove
   whenIn: string
+  village: string
+  darak: string
+  isOutAtThursday: string
 }

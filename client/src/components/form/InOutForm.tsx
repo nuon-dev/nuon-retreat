@@ -1,13 +1,5 @@
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-} from "@mui/material"
-import { Dispatch, SetStateAction, useEffect } from "react"
+import { Button, FormControl, MenuItem, Select, Stack } from "@mui/material"
+import { Dispatch, SetStateAction } from "react"
 import { post } from "pages/api"
 import { InOutInfo } from "@entity/inOutInfo"
 import { Days, InOutType, MoveType } from "@entity/types"
@@ -69,8 +61,9 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
               onChangeInformation("day", e.target.value.toString(), index)
             }
           >
-            <MenuItem value={Days.firstDay}>2(금)</MenuItem>
-            <MenuItem value={Days.secondDay}>3(토)</MenuItem>
+            <MenuItem value={Days.firstDay}>15(목)</MenuItem>
+            <MenuItem value={Days.secondDay}>16(금)</MenuItem>
+            <MenuItem value={Days.thirdDay}>17(토)</MenuItem>
           </Select>
           <Stack fontSize="12px" p="6px">
             이동방향

@@ -91,6 +91,7 @@ export default function EditUserData() {
           user={userData}
           inOutData={inOutData}
           reloadFunction={loadData}
+          setEditMode={() => {}}
         />
       </Stack>
       <Box height="50px" />

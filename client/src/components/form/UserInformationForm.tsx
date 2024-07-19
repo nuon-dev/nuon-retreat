@@ -3,7 +3,7 @@ import { Stack } from "@mui/system"
 import { InOutInfo } from "@entity/inOutInfo"
 import { User } from "@entity/user"
 import { post } from "../../pages/api"
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import InOutFrom from "./InOutForm"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
@@ -13,22 +13,19 @@ interface IProps {
   user: User
   inOutData: Array<InOutInfo>
   reloadFunction: () => void
+  setEditMode: Dispatch<SetStateAction<boolean>>
 }
 
 export default function UserInformationForm(props: IProps) {
   const router = useRouter()
   const [userInformation, setUserInformation] = useState(new User())
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
-  const [showItems, setShowItems] = useState(false)
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
-    setShowItems(false)
     setUserInformation(props.user || ({} as User))
+    console.log(props.user)
     setInOutData(props.inOutData || ({} as Array<InOutInfo>))
-    if (props.user && props.user.id) {
-      setShowItems(true)
-    }
   }, [props.user])
 
   const changeInformation = (type: string, data: string) => {
@@ -86,6 +83,7 @@ export default function UserInformationForm(props: IProps) {
     }
     setNotificationMessage(`신청 내역이 저장이 되었습니다.`)
     props.reloadFunction()
+    props.setEditMode(false)
   }
 
   function getInputGap() {
@@ -156,22 +154,62 @@ export default function UserInformationForm(props: IProps) {
         </Stack>
         {getLabelGap()}
         <FormControl fullWidth={true}>
-          {
-            // @ts-ignore
-            showItems && (
-              <Select
-                value={userInformation.sex}
-                className="Select"
-                defaultValue={userInformation.sex}
-                placeholder="성별을 선택하세요."
-                onChange={(e) => changeInformation("sex", e.target.value)}
-              >
-                <MenuItem value={"man"}>남</MenuItem>
-                <MenuItem value={"woman"}>여</MenuItem>
-              </Select>
-            )
-          }
+          {userInformation.kakaoId && (
+            <Select
+              value={userInformation.sex}
+              className="Select"
+              defaultValue={userInformation.sex}
+              placeholder="성별을 선택하세요."
+              onChange={(e) => changeInformation("sex", e.target.value)}
+            >
+              <MenuItem value={"man"}>남</MenuItem>
+              <MenuItem value={"woman"}>여</MenuItem>
+            </Select>
+          )}
         </FormControl>
+      </Stack>
+      {getInputGap()}
+      <Stack direction="row" gap="12px">
+        <Stack width="50%">
+          <Stack width="80px" justifyContent="center">
+            마을
+          </Stack>
+          {getLabelGap()}
+          <FormControl fullWidth={true}>
+            {userInformation.kakaoId && (
+              <Select
+                value={userInformation.village}
+                className="Select"
+                defaultValue={userInformation.village}
+                placeholder="마을을 선택하세요."
+                onChange={(e) => changeInformation("village", e.target.value)}
+              >
+                <MenuItem value={"man"}>1</MenuItem>
+                <MenuItem value={"woman"}>2</MenuItem>
+              </Select>
+            )}
+          </FormControl>
+        </Stack>
+        <Stack width="50%">
+          <Stack width="80px" justifyContent="center">
+            다락방
+          </Stack>
+          {getLabelGap()}
+          <FormControl fullWidth={true}>
+            {userInformation.kakaoId && (
+              <Select
+                value={userInformation.darak}
+                className="Select"
+                defaultValue={userInformation.darak}
+                placeholder="다락방을 선택하세요."
+                onChange={(e) => changeInformation("darak", e.target.value)}
+              >
+                <MenuItem value={"man"}>1</MenuItem>
+                <MenuItem value={"woman"}>2</MenuItem>
+              </Select>
+            )}
+          </FormControl>
+        </Stack>
       </Stack>
       {getInputGap()}
       <Stack>
@@ -187,7 +225,6 @@ export default function UserInformationForm(props: IProps) {
           defaultValue={userInformation.howToGo}
           value={userInformation.howToGo}
           onChange={(e) => {
-            console.log(inOutData)
             if (inOutData.length === 0) {
               setInOutData([])
             }
@@ -196,9 +233,11 @@ export default function UserInformationForm(props: IProps) {
         >
           <MenuItem value={HowToMove.together}>교회 버스로</MenuItem>
           <MenuItem value={HowToMove.driveCarWithPerson}>
-            자차 (카풀 가능)
+            자차 (카풀 가능, 이동 방법을 추가해주세요)
           </MenuItem>
-          <MenuItem value={HowToMove.rideCar}>카풀 신청</MenuItem>
+          <MenuItem value={HowToMove.rideCar}>
+            카풀 신청 (이동 방법을 추가해주세요)
+          </MenuItem>
           <MenuItem value={HowToMove.goAlone}>대중교통 (여주역)</MenuItem>
           <MenuItem value={HowToMove.driveCarAlone}>자차 (카풀 불가)</MenuItem>
           <MenuItem value={HowToMove.etc}>기타 (하단에 메모)</MenuItem>
@@ -229,6 +268,27 @@ export default function UserInformationForm(props: IProps) {
             기타 (자차 및 카풀)
           </MenuItem>
         </Select>
+      </Stack>
+      {getInputGap()}
+      <Stack>
+        <Stack width="200px" justifyContent="center">
+          목요일 집회 이후 나가시나요?
+        </Stack>
+        {getLabelGap()}
+        {userInformation.kakaoId && (
+          <Select
+            fullWidth={true}
+            className="Select"
+            value={userInformation.isOutAtThursday}
+            defaultValue={userInformation.isOutAtThursday}
+            onChange={(e) =>
+              changeInformation("isOutAtThursday", e.target.value.toString())
+            }
+          >
+            <MenuItem value={"true"}>예</MenuItem>
+            <MenuItem value={"false"}>아니요</MenuItem>
+          </Select>
+        )}
       </Stack>
       {getInputGap()}
       <Stack>

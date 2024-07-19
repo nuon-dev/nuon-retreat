@@ -71,9 +71,9 @@ export default function Home() {
   ]
 
   return (
-    <Stack bgcolor="#E8E1D0">
+    <Stack bgcolor="#1d321a">
       <Stack ref={topArea}>
-        <Stack height="200px" gap="12px">
+        <Stack height="150px" gap="12px">
           <img
             width="100%"
             height="100%"
@@ -82,7 +82,7 @@ export default function Home() {
               borderBottomLeftRadius: "20px",
               borderBottomRightRadius: "20px",
             }}
-            src="./bg_2.webp"
+            src="./bg_2.jpeg"
             alt=""
           />
         </Stack>
@@ -93,6 +93,7 @@ export default function Home() {
           gap="4px"
           p="20px 10px"
           m="0 10px"
+          color="white"
         >
           {days.map((day, index) =>
             Day(day, selectedDay === index, () => {
@@ -128,6 +129,7 @@ function HourPlan(height: number, data: OneDayPlan[]) {
             justifyContent="space-between"
             alignItems="center"
             fontWeight="600"
+            color="white"
           >
             <Stack>{hour}:00</Stack>
 

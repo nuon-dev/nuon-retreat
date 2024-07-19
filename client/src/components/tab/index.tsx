@@ -36,6 +36,7 @@ export default function Tab() {
       >
         Info
       </Stack>
+      {/*
       <Stack
         flex={1}
         textAlign="center"
@@ -44,6 +45,7 @@ export default function Tab() {
       >
         MyPage
       </Stack>
+      */}
     </Stack>
   )
 }

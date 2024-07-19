@@ -52,7 +52,7 @@ export class User {
   @Column({ nullable: true })
   expire: Date
 
-  @Column({ nullable: true, default: 0 })
+  @Column({ nullable: true, default: 1 })
   isCancel: boolean
 
   @Column({
@@ -60,8 +60,17 @@ export class User {
   })
   howToGo: HowToMove
 
+  @Column({ nullable: true })
+  village: string
+
+  @Column({ nullable: true })
+  darak: string
+
   @Column({ nullable: true, default: 0 })
   isSuperUser: boolean
+
+  @Column({ nullable: true, default: 0 })
+  isOutAtThursday: string
 
   @Column({ nullable: true, default: CurrentStatus.null })
   currentStatus: CurrentStatus

@@ -5,11 +5,11 @@ import { User } from "@entity/user"
 import { InOutInfo } from "@entity/inOutInfo"
 import { get, post } from "pages/api"
 import UserInformationForm from "components/form/UserInformationForm"
+import ReceiptResult from "components/form/ReceiptResult"
 
 export default function Receipt() {
-  const COUNT_TINE = 10
-  let count = COUNT_TINE
   const [userData, setUserData] = useState({} as User)
+  const [isEditMode, setEditMode] = useState(false)
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
 
   let startTimer = false
@@ -28,74 +28,20 @@ export default function Receipt() {
     post("/auth/check-token", {
       token,
     }).then((response) => {
-      if (response.result === "true") {
-        setUserData(response.userData)
-        setInOutData(response.inoutInfoList)
+      if (response.result !== "true") {
+        return
       }
+      if (response.userData.isCancel) {
+        const id = response.userData.id as number
+        const kakaoId = response.userData.kakaoId as string
+        setUserData({ kakaoId, id } as any)
+        setEditMode(true)
+        return
+      }
+      setUserData(response.userData)
+      setInOutData(response.inoutInfoList)
     })
   }
-
-  const roomMatch = {
-    man: {
-      1: "311",
-      2: "312",
-      3: "313",
-      4: "314",
-      5: "315",
-      6: "316",
-      7: "317",
-      8: "318",
-      9: "319",
-      10: "320",
-      11: "401",
-      12: "402",
-      13: "403",
-      14: "404",
-      15: "405",
-      16: "406",
-      17: "407",
-      18: "408",
-      19: "409",
-      20: "410",
-      21: "411",
-      22: "412",
-      23: "413",
-      24: "414",
-      25: "415",
-      31: "준비팀",
-      32: "준비팀",
-      33: "준비팀",
-    },
-    woman: {
-      1: "201",
-      2: "202",
-      3: "203",
-      4: "204",
-      5: "205",
-      6: "206",
-      7: "207",
-      8: "208",
-      9: "209",
-      10: "210",
-      11: "211",
-      12: "212",
-      13: "213",
-      14: "214",
-      15: "215",
-      16: "216",
-      17: "217",
-      18: "218",
-      19: "219",
-      20: "220",
-      21: "221",
-      22: "222",
-      23: "306",
-      24: "307",
-    },
-  }
-
-  //@ts-ignore
-  const roomList: any = roomMatch[userData.sex]
 
   return (
     <Stack padding="12px" bgcolor="#e6e0d1" gap="12px" pb="72px">
@@ -146,11 +92,22 @@ export default function Receipt() {
         borderRadius="24px"
         bgcolor="#f7f4ef"
       >
-        <UserInformationForm
-          user={userData}
-          inOutData={inOutData}
-          reloadFunction={checkToken}
-        />
+        {isEditMode && (
+          <UserInformationForm
+            user={userData}
+            inOutData={inOutData}
+            reloadFunction={checkToken}
+            setEditMode={setEditMode}
+          />
+        )}
+        {!isEditMode && (
+          <ReceiptResult
+            user={userData}
+            inOutData={inOutData}
+            reloadFunction={checkToken}
+            setEditMode={setEditMode}
+          />
+        )}
       </Stack>
     </Stack>
   )
