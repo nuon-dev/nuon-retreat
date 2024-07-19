@@ -30,6 +30,7 @@ router.get("/get-group-formation", async (req, res) => {
     },
     where: {
       name: Not(IsNull()),
+      isCancel: false,
     },
   })
 

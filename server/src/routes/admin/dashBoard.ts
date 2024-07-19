@@ -7,28 +7,30 @@ const router = express.Router()
 
 router.get("/get-attendee-status", async (req, res) => {
   const countOfAllUser = await userDatabase.count({
-    where: { name: Not(IsNull()) },
+    where: { name: Not(IsNull()), isCancel: false },
   })
   const countOfMan = await userDatabase.count({
-    where: { sex: "man", name: Not(IsNull()) },
+    where: { sex: "man", name: Not(IsNull()), isCancel: false },
   })
   const countOfWoman = await userDatabase.count({
-    where: { sex: "woman", name: Not(IsNull()) },
+    where: { sex: "woman", name: Not(IsNull()), isCancel: false },
   })
   const countOfGoTogether = await userDatabase.count({
     where: {
       howToGo: HowToMove.together,
       name: Not(IsNull()),
+      isCancel: false,
     },
   })
   const countOfLeaveTogether = await userDatabase.count({
     where: {
       howToLeave: HowToMove.together,
       name: Not(IsNull()),
+      isCancel: false,
     },
   })
   const countOfCompleteDeposit = await userDatabase.count({
-    where: { deposit: true, name: Not(IsNull()) },
+    where: { deposit: true, name: Not(IsNull()), isCancel: false },
   })
 
   res.send({
@@ -48,6 +50,7 @@ router.get("/get-attendance-time", async (req, res) => {
     },
     where: {
       name: Not(IsNull()),
+      isCancel: false,
     },
   })
   res.send(allUser.map((user) => user.createAt))
@@ -60,6 +63,7 @@ router.get("/get-age-info", async (req, res) => {
     },
     where: {
       name: Not(IsNull()),
+      isCancel: false,
     },
   })
   const ageMap = {}

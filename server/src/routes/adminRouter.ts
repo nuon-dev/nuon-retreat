@@ -29,6 +29,7 @@ router.get("/get-all-user-name", async (req, res) => {
     },
     where: {
       name: Not(IsNull()),
+      isCancel: false,
     },
   })
   res.send(userList)
@@ -70,6 +71,9 @@ router.get("/get-all-user", async (req, res) => {
       await userDatabase.find({
         relations: {
           inOutInfos: true,
+        },
+        where: {
+          isCancel: false,
         },
       })
     ).filter((user) => user.name && user.name.length > 0)

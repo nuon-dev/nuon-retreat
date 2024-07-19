@@ -34,6 +34,7 @@ router.get("/get-room-assignment", async (req, res) => {
     },
     where: {
       name: Not(IsNull()),
+      isCancel: false,
     },
   })
 

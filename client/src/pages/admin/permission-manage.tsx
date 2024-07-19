@@ -59,11 +59,7 @@ function PermissionManage() {
     [PermissionType.groupManage]: "조편성",
     [PermissionType.deposit]: "입금 처리",
     [PermissionType.editUserData]: "정보 수정",
-    [PermissionType.editTeamScore]: "조 점수 수정",
     [PermissionType.deleteUser]: "접수 삭제",
-    [PermissionType.game1]: "오락국 게임 1",
-    [PermissionType.game2]: "오락국 게임 2",
-    [PermissionType.gameMap]: "오락국 게임 지도",
   }
 
   function loadUserPermission() {
