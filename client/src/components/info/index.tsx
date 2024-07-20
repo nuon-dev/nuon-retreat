@@ -50,7 +50,7 @@ export default function Info() {
   }
 
   return (
-    <Stack>
+    <Stack height="100%">
       {/* @ts-ignore */}
       <img ref={imgRef} src="./bg_info.jpeg" />
       <a href="https://www.instagram.com/suwonjeilch_youngpeople/">

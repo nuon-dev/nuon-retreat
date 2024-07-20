@@ -218,7 +218,7 @@ export default function Home() {
   ]
 
   return (
-    <Stack bgcolor="#1d321a">
+    <Stack bgcolor="#1d321a" pb="60px">
       <Stack ref={topArea}>
         <Stack height="150px" gap="12px">
           <img
@@ -249,7 +249,7 @@ export default function Home() {
           )}
         </Stack>
       </Stack>
-      <Stack pb="0">
+      <Stack mb="20px">
         {HourPlan(
           calendarHeight,
           data.filter((d) => d.day === days[selectedDay].dayOfWeek)

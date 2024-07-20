@@ -69,8 +69,8 @@ export default function EditUserData() {
   }
 
   return (
-    <Stack justifyContent="center">
-      <Stack margin="8px">
+    <Stack justifyContent="center" bgcolor="#2d422a">
+      <Stack margin="8px" color="white">
         수정 할 사람 선택
         <Stack m="4px" />
         <Select value={selectedUserId} onChange={onClickUser}>
@@ -86,7 +86,7 @@ export default function EditUserData() {
           ))}
         </Select>
       </Stack>
-      <Stack>
+      <Stack p="8x" border="1px solid grey" m="8px" borderRadius="12px">
         <UserInformationForm
           user={userData}
           inOutData={inOutData}
@@ -95,7 +95,7 @@ export default function EditUserData() {
         />
       </Stack>
       <Box height="50px" />
-      <Stack width="100px" ml="100px">
+      <Stack m="12px" flex={1}>
         <Button variant="contained" color="error" onClick={deleteUser}>
           접수 삭제
         </Button>

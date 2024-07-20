@@ -49,7 +49,7 @@ export class User {
   @Column({ nullable: true })
   expire: Date
 
-  @Column({ nullable: true, default: 1 })
+  @Column({ nullable: true, default: 0 })
   isCancel: boolean
 
   @Column({

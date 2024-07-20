@@ -37,13 +37,14 @@ export default function ReceiptResult(props: IProps) {
             borderRadius="12px"
             p="12px"
             gap="12px"
+            color="#1d321a"
           >
-            <Stack direction="row" gap="12px">
-              <Box>{inout.day + 15}일 </Box>
+            <Stack direction="row" gap="8px">
+              <Box>{inout.day + 15}일</Box>
               <Box>{inout.time}시에 </Box>
             </Stack>
-            <Stack direction="row" gap="12px">
-              <Box>{getMoveTypeString(inout.howToMove)}타고 </Box>
+            <Stack direction="row" gap="8px">
+              <Box>{getMoveTypeString(inout.howToMove)} 타고 </Box>
               <Box>{inout.inOutType === "in" ? "나가기" : "들어오기"}</Box>
             </Stack>
           </Stack>
