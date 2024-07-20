@@ -17,7 +17,7 @@ export default function CheckStatus() {
   useEffect(() => {
     loadCamera()
     setInterval(() => {
-      setCurrentTime(new Date())
+      //setCurrentTime(new Date())
     }, 3000)
   }, [])
 

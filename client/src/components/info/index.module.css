@@ -15,29 +15,14 @@
   }
 }
 
-.instagram {
-  width: 150px;
-  top: 25%;
-  left: 55%;
-}
-
 .play_list {
-  width: 150px;
-  top: 40%;
-  left: 45%;
   animation-duration: 1.9s;
 }
 
 .poster {
-  width: 150px;
-  top: 32%;
-  left: 15%;
   animation-duration: 2.1s;
 }
 
 .notice {
-  width: 150px;
-  top: 50%;
-  left: 7%;
   animation-duration: 2.2s;
 }

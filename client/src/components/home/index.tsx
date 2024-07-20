@@ -68,6 +68,153 @@ export default function Home() {
       content: "월요\n기도회",
       progressTime: 75,
     },
+    {
+      day: "Thu",
+      hour: 10,
+      minute: 30,
+      content: "교회 집합",
+      progressTime: 30,
+    },
+    {
+      day: "Thu",
+      hour: 12,
+      minute: 0,
+      content: "점심",
+      progressTime: 60,
+    },
+    {
+      day: "Thu",
+      hour: 14,
+      minute: 0,
+      content: "애니어그램",
+      progressTime: 120,
+    },
+    {
+      day: "Thu",
+      hour: 17,
+      minute: 0,
+      content: "저녁",
+      progressTime: 60,
+    },
+    {
+      day: "Thu",
+      hour: 18,
+      minute: 30,
+      content: "저녁 집회",
+      progressTime: 240,
+    },
+    {
+      day: "Fri",
+      hour: 8,
+      minute: 0,
+      content: "아침",
+      progressTime: 60,
+    },
+    {
+      day: "Fri",
+      hour: 9,
+      minute: 0,
+      content: "세미나",
+      progressTime: 150,
+    },
+    {
+      day: "Fri",
+      hour: 12,
+      minute: 0,
+      content: "점심",
+      progressTime: 60,
+    },
+    {
+      day: "Fri",
+      hour: 14,
+      minute: 0,
+      content: "오후\n프로그램",
+      progressTime: 240,
+    },
+    {
+      day: "Fri",
+      hour: 18,
+      minute: 0,
+      content: "저녁",
+      progressTime: 90,
+    },
+    {
+      day: "Fri",
+      hour: 20,
+      minute: 30,
+      content: "저녁 집회",
+      progressTime: 240,
+    },
+    {
+      day: "Sat",
+      hour: 8,
+      minute: 0,
+      content: "아침",
+      progressTime: 60,
+    },
+    {
+      day: "Sat",
+      hour: 9,
+      minute: 0,
+      content: "세미나",
+      progressTime: 150,
+    },
+    {
+      day: "Sat",
+      hour: 12,
+      minute: 0,
+      content: "점심",
+      progressTime: 60,
+    },
+    {
+      day: "Sat",
+      hour: 14,
+      minute: 0,
+      content: "오후\n프로그램",
+      progressTime: 240,
+    },
+    {
+      day: "Sat",
+      hour: 18,
+      minute: 0,
+      content: "저녁",
+      progressTime: 90,
+    },
+    {
+      day: "Sat",
+      hour: 20,
+      minute: 30,
+      content: "저녁 집회",
+      progressTime: 240,
+    },
+    {
+      day: "Sun",
+      hour: 10,
+      minute: 0,
+      content: "오전\n프로그램",
+      progressTime: 60,
+    },
+    {
+      day: "Sun",
+      hour: 11,
+      minute: 0,
+      content: "점심",
+      progressTime: 60,
+    },
+    {
+      day: "Sun",
+      hour: 12,
+      minute: 0,
+      content: "교회로 이동",
+      progressTime: 120,
+    },
+    {
+      day: "Sun",
+      hour: 14,
+      minute: 0,
+      content: "청년부 예배",
+      progressTime: 120,
+    },
   ]
 
   return (
@@ -113,44 +260,42 @@ export default function Home() {
 }
 
 function HourPlan(height: number, data: OneDayPlan[]) {
-  const hourPlanData: number[] = new Array(16).fill(0)
+  const hourPlanData: number[] = new Array(17).fill(0)
+  const gap = 10
   return (
     <Stack px="30px" height={height - 60} overflow="auto">
       {hourPlanData.map((_, idx) => {
-        const hour = idx + 9
+        const hour = idx + 8
         const toDayPlan = data.find((d) => d.hour === hour)
         return (
           <Stack
-            height="40px"
-            pb="20px"
-            mb="20px"
-            borderBottom="1px dashed #aaa"
+            minHeight="60px"
             direction="row"
+            borderBottom="1px dashed #aaa"
             justifyContent="space-between"
-            alignItems="center"
+            alignItems="start"
             fontWeight="600"
             color="white"
           >
-            <Stack>{hour}:00</Stack>
-
+            <Stack height="100%" justifyContent="center">
+              {hour}:00
+            </Stack>
             {toDayPlan && (
               <Stack
                 px="10px"
-                mr="10px"
+                mr="40px"
+                width="100px"
                 justifyContent="center"
                 alignItems="center"
                 borderRadius="12px"
-                bgcolor={toDayPlan.content !== "" ? "#AC9173" : ""}
-                color="white"
+                bgcolor="white"
+                color="#1d321a"
                 whiteSpace="pre-wrap"
                 textAlign="center"
                 fontWeight="300"
-                height={toDayPlan.progressTime + "px"}
-                marginTop={
-                  (toDayPlan.minute / 60) * 60 +
-                  toDayPlan.progressTime / 2 +
-                  "px"
-                }
+                height={toDayPlan.progressTime - gap + "px"}
+                marginTop={toDayPlan.minute + gap / 2 + "px"}
+                zIndex="20"
               >
                 {toDayPlan.content}
               </Stack>

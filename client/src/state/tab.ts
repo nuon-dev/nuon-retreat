@@ -9,5 +9,5 @@ export enum Tabs {
 
 export const SelectedTab = atom({
   key: "selected-tab",
-  default: Tabs.Home,
+  default: Tabs.Receipt,
 })

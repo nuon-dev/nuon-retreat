@@ -25,7 +25,6 @@ export default function UserInformationForm(props: IProps) {
 
   useEffect(() => {
     setUserInformation(props.user || ({} as User))
-    console.log(props.user)
     setInOutData(props.inOutData || ({} as Array<InOutInfo>))
   }, [props.user])
 
@@ -102,7 +101,7 @@ export default function UserInformationForm(props: IProps) {
   }
 
   return (
-    <Stack padding="6px" minWidth="340px" gap="4px">
+    <Stack padding="6px" minWidth="340px" gap="4px" color="white">
       <Stack>
         {getInputGap()}
         <Stack>이름</Stack>
@@ -132,7 +131,7 @@ export default function UserInformationForm(props: IProps) {
       {getInputGap()}
       <Stack>
         <Stack width="200px" justifyContent="center">
-          출생년도 (빠른은 친구 기준)
+          출생년도 (빠른은 기수 기준)
         </Stack>
         {getLabelGap()}
         {userInformation && (
@@ -325,7 +324,11 @@ export default function UserInformationForm(props: IProps) {
         <Button
           variant="contained"
           onClick={submit}
-          style={{ fontSize: "18px" }}
+          style={{
+            fontSize: "18px",
+            backgroundColor: "white",
+            color: "#1d321a",
+          }}
         >
           신청 완료하기
         </Button>

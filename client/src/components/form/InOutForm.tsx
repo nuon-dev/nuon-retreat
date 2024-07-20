@@ -152,7 +152,11 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
         )}
         {
           <Stack marginTop="10px">
-            <Button variant="contained" onClick={() => onClickRemove(index)}>
+            <Button
+              variant="contained"
+              onClick={() => onClickRemove(index)}
+              style={{ backgroundColor: "#1d321a" }}
+            >
               이동 방법 삭제
             </Button>
           </Stack>
@@ -164,7 +168,11 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
   return (
     <Stack marginTop="10px">
       {
-        <Button variant="contained" onClick={onClickAdd}>
+        <Button
+          variant="contained"
+          onClick={onClickAdd}
+          style={{ backgroundColor: "#1d321a" }}
+        >
           이동 방법 추가
         </Button>
       }

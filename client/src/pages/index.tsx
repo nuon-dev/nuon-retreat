@@ -1,3 +1,5 @@
+"use client"
+
 import { post } from "./api"
 import useKakaoHook from "kakao"
 import { User } from "@entity/user"
@@ -10,13 +12,12 @@ import { Stack, Box } from "@mui/material"
 import { useEffect, useState } from "react"
 import { SelectedTab, Tabs } from "state/tab"
 import { NotificationMessage } from "state/notification"
-import { useRecoilState, useSetRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 
 function index() {
   const [showLoginPopup, setShowLoginPopup] = useState(false)
-  const [userInformation, setUserInformation] = useState(new User())
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
-  const [selectedTab, setSelectedTab] = useRecoilState(SelectedTab)
+  const selectedTab = useRecoilValue(SelectedTab)
 
   useEffect(() => {
     checkToken()
@@ -32,10 +33,6 @@ function index() {
     const { result, userData } = await post("/auth/check-token", {
       token,
     })
-    if (result === "true") {
-      setUserInformation(userData)
-      return
-    }
     setNotificationMessage("카카오 로그인 이후 이용 가능힙니다.")
     setShowLoginPopup(true)
   }
@@ -74,7 +71,6 @@ function index() {
           token,
         })
         if (result === "true") {
-          setUserInformation(userData)
           setShowLoginPopup(false)
         } else {
           setNotificationMessage("카카오 로그인 실패")
@@ -92,14 +88,29 @@ function index() {
         height="100vh"
         position="absolute"
         zIndex="40"
-        bgcolor="#000000cc"
         direction="row"
         justifyContent="center"
         alignItems="end"
-        padding="24px"
+        style={{ zIndex: 2000 }}
       >
+        <img
+          src="bg_info.jpeg"
+          style={{
+            position: "fixed",
+            height: "100%",
+          }}
+        />
+        <Stack
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "fixed",
+            backgroundColor: "#00000055",
+          }}
+        />
         <Stack
           gap="24px"
+          margin="24px"
           fontSize="20px"
           fontWeight="700"
           style={{
@@ -127,16 +138,20 @@ function index() {
       style={{
         height: "100vh",
         width: "100vw",
+        overflowY: showLoginPopup ? "clip" : "unset",
       }}
     >
-      {showLoginPopup && <KakaoLoginPopup />}
-      <Box
-        style={{
-          marginBottom: "60px",
-        }}
-      >
-        {render()}
-      </Box>
+      {showLoginPopup ? (
+        <KakaoLoginPopup />
+      ) : (
+        <Box
+          style={{
+            marginBottom: "60px",
+          }}
+        >
+          {render()}
+        </Box>
+      )}
       <Tab />
     </Stack>
   )

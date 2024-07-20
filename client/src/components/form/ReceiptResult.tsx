@@ -13,7 +13,7 @@ interface IProps {
 
 export default function ReceiptResult(props: IProps) {
   return (
-    <Stack padding="6px" minWidth="340px" gap="16px">
+    <Stack padding="6px" minWidth="340px" gap="16px" color="white">
       <InfoStack title="이름" content={props.user.name} />
       <InfoStack title="전화번호" content={props.user.phone} />
       <InfoStack title="출생년도" content={props.user.age + " 년생"} />
@@ -63,7 +63,7 @@ export default function ReceiptResult(props: IProps) {
       <Button
         variant="contained"
         onClick={() => props.setEditMode(true)}
-        style={{ fontSize: "18px" }}
+        style={{ fontSize: "18px", backgroundColor: "white", color: "#1d321a" }}
       >
         수정하기
       </Button>
@@ -76,9 +76,10 @@ function InfoStack({ title, content }: { title: string; content: string }) {
     <Stack gap="12px">
       <Box>{title}</Box>
       <Box
-        bgcolor="white"
-        borderRadius="12px"
         p="12px"
+        color="#1d321a"
+        borderRadius="12px"
+        bgcolor="white"
         lineHeight="20px"
         alignItems="center"
       >

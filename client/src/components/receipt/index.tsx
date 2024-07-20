@@ -6,11 +6,15 @@ import { InOutInfo } from "@entity/inOutInfo"
 import { get, post } from "pages/api"
 import UserInformationForm from "components/form/UserInformationForm"
 import ReceiptResult from "components/form/ReceiptResult"
+import CopyToClipboard from "react-copy-to-clipboard"
+import { useSetRecoilState } from "recoil"
+import { NotificationMessage } from "state/notification"
 
 export default function Receipt() {
   const [userData, setUserData] = useState({} as User)
-  const [isEditMode, setEditMode] = useState(false)
+  const [isEditMode, setEditMode] = useState(true)
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   let startTimer = false
   useEffect(() => {
@@ -39,22 +43,23 @@ export default function Receipt() {
         setEditMode(true)
         return
       }
+      setEditMode(false)
       setUserData(response.userData)
       setInOutData(response.inoutInfoList)
     })
   }
 
   return (
-    <Stack padding="12px" bgcolor="#e6e0d1" gap="12px" pb="72px">
+    <Stack padding="12px" bgcolor="#1d321a" gap="12px" pb="72px">
       {userData.deposit ? (
         <Stack
           px="24px"
           py="12px"
           fontWeight="500"
           textAlign="center"
-          border="solid #bda786 2px"
+          border="1px solid grey"
           borderRadius="12px"
-          color="#bda786"
+          color="white"
         >
           입금 확인이 완료 되었습니다.
         </Stack>
@@ -67,6 +72,7 @@ export default function Receipt() {
           alignItems="center"
           justifyContent="center"
           border="1px solid grey"
+          color="white"
         >
           <Stack fontSize="20px" fontWeight="bold">
             수련회비 안내
@@ -79,9 +85,18 @@ export default function Receipt() {
             }}
           >
             {" "}
-            3333246704805 카카오뱅크 (조영래)
-            <br />
-            회비 : 10만원 (직장인), 7만원 (대학생)
+            <CopyToClipboard
+              text="3333246704805 카카오뱅크"
+              onCopy={() => {
+                setNotificationMessage("계좌 번호가 복사 되었습니다.")
+              }}
+            >
+              <span>
+                3333246704805 카카오뱅크 (조영래)
+                <br />
+                회비 : 10만원 (직장인), 7만원 (대학생)
+              </span>
+            </CopyToClipboard>
           </Stack>
         </Stack>
       )}
@@ -91,7 +106,7 @@ export default function Receipt() {
         alignItems="center"
         justifyContent="center"
         borderRadius="24px"
-        bgcolor="#f7f4ef"
+        bgcolor="#2d422a"
       >
         {isEditMode && (
           <UserInformationForm
