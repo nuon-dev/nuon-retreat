@@ -13,7 +13,7 @@ interface IProps {
 
 export default function ReceiptResult(props: IProps) {
   return (
-    <Stack padding="6px" minWidth="340px" gap="12px">
+    <Stack padding="6px" minWidth="340px" gap="16px">
       <InfoStack title="이름" content={props.user.name} />
       <InfoStack title="전화번호" content={props.user.phone} />
       <InfoStack title="출생년도" content={props.user.age + " 년생"} />
@@ -23,7 +23,7 @@ export default function ReceiptResult(props: IProps) {
       />
       <InfoStack
         title="소속 마을 / 다락방"
-        content={props.user.village + " / " + props.user.darak}
+        content={props.user.village + " 마을 / " + props.user.darak + " 다락방"}
       />
       <InfoStack
         title="수련회장 이동 방법"
@@ -54,10 +54,12 @@ export default function ReceiptResult(props: IProps) {
         content={getHowToMoveString(props.user.howToLeave)}
       />
       <InfoStack
-        title="목요일 집회 이후 나가시나요?"
+        title="금요일 출근 예정이신가요?"
         content={props.user.isOutAtThursday === "true" ? "예" : "아니요"}
       />
-      <InfoStack title="기타 사항" content={props.user.etc} />
+      {props.user.etc && (
+        <InfoStack title="기타 사항" content={props.user.etc} />
+      )}
       <Button
         variant="contained"
         onClick={() => props.setEditMode(true)}
@@ -69,13 +71,7 @@ export default function ReceiptResult(props: IProps) {
   )
 }
 
-function InfoStack({
-  title,
-  content,
-}: {
-  title: string
-  content: string | undefined
-}) {
+function InfoStack({ title, content }: { title: string; content: string }) {
   return (
     <Stack gap="12px">
       <Box>{title}</Box>

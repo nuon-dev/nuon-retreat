@@ -9,6 +9,7 @@ import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
 import { useRouter } from "next/router"
 import { HowToMove } from "@entity/types"
+import DarakData from "darakData"
 interface IProps {
   user: User
   inOutData: Array<InOutInfo>
@@ -184,8 +185,11 @@ export default function UserInformationForm(props: IProps) {
                 placeholder="마을을 선택하세요."
                 onChange={(e) => changeInformation("village", e.target.value)}
               >
-                <MenuItem value={"man"}>1</MenuItem>
-                <MenuItem value={"woman"}>2</MenuItem>
+                {Object.keys(DarakData).map((village) => (
+                  <MenuItem key={village} value={village}>
+                    {village}
+                  </MenuItem>
+                ))}
               </Select>
             )}
           </FormControl>
@@ -204,8 +208,12 @@ export default function UserInformationForm(props: IProps) {
                 placeholder="다락방을 선택하세요."
                 onChange={(e) => changeInformation("darak", e.target.value)}
               >
-                <MenuItem value={"man"}>1</MenuItem>
-                <MenuItem value={"woman"}>2</MenuItem>
+                {DarakData[userInformation.village] &&
+                  DarakData[userInformation.village].map((village) => (
+                    <MenuItem key={village} value={village}>
+                      {village}
+                    </MenuItem>
+                  ))}
               </Select>
             )}
           </FormControl>
@@ -272,7 +280,7 @@ export default function UserInformationForm(props: IProps) {
       {getInputGap()}
       <Stack>
         <Stack width="200px" justifyContent="center">
-          목요일 집회 이후 나가시나요?
+          금요일 출근 예정이신가요?
         </Stack>
         {getLabelGap()}
         {userInformation.kakaoId && (

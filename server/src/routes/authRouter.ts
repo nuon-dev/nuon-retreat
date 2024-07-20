@@ -43,7 +43,7 @@ router.post("/edit-user", async (req, res) => {
     })
   }
 
-  res.send({ result: "success", userId: user.id, token: user.token })
+  res.send({ result: "success", userId: user.id, token: foundUser.token })
 })
 
 router.post("/check-token", async (req, res) => {

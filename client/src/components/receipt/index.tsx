@@ -34,7 +34,8 @@ export default function Receipt() {
       if (response.userData.isCancel) {
         const id = response.userData.id as number
         const kakaoId = response.userData.kakaoId as string
-        setUserData({ kakaoId, id } as any)
+        const token = response.userData.token as string
+        setUserData({ kakaoId, id, token } as any)
         setEditMode(true)
         return
       }
@@ -78,7 +79,7 @@ export default function Receipt() {
             }}
           >
             {" "}
-            3333276342153 카카오뱅크 (조영래)
+            3333246704805 카카오뱅크 (조영래)
             <br />
             회비 : 10만원 (직장인), 7만원 (대학생)
           </Stack>
