@@ -52,6 +52,12 @@ export default function UserInformationForm(props: IProps) {
     } else if (!userInformation.howToLeave) {
       setNotificationMessage("이동 방법을 선택해주세요.")
       return
+    } else if (!userInformation.village) {
+      setNotificationMessage("마을을 선택해주세요.")
+      return
+    } else if (!userInformation.darak) {
+      setNotificationMessage("다락방을 선택해주세요.")
+      return
     }
 
     const url = "/auth/edit-user"

@@ -47,9 +47,6 @@ export class User {
   token: string
 
   @Column({ nullable: true })
-  whenIn: string
-
-  @Column({ nullable: true })
   expire: Date
 
   @Column({ nullable: true, default: 1 })

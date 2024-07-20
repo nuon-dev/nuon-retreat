@@ -26,7 +26,6 @@ export class User {
   groupAssignment: GroupAssignment
   isCancell: boolean
   howToGo: HowToMove
-  whenIn: string
   village: string
   darak: string
   isOutAtThursday: string

@@ -22,15 +22,7 @@ export default function ShowStatusTable() {
     try {
       const list: User[] = await get("/admin/get-all-user")
       if (list) {
-        setAllUserList(
-          list
-            .sort((a, b) => a.age - b.age)
-            .sort(
-              (a, b) =>
-                new Date("2024-02-0" + a.whenIn).getTime() -
-                new Date("2024-02-0" + b.whenIn).getTime()
-            )
-        )
+        setAllUserList(list.sort((a, b) => a.age - b.age))
       }
     } catch {
       router.push("/admin")
@@ -83,13 +75,10 @@ export default function ShowStatusTable() {
       (user) => user.currentStatus === CurrentStatus.arriveAuditorium
     )
 
-    const notArriveUser = allUserList
-      .filter((user) => user.currentStatus !== CurrentStatus.arriveAuditorium)
-      .sort(
-        (a, b) =>
-          new Date(`2024.02.0${a.whenIn}`).getTime() -
-          new Date(`2024.02.0${b.whenIn}`).getTime()
-      )
+    const notArriveUser = allUserList.filter(
+      (user) => user.currentStatus !== CurrentStatus.arriveAuditorium
+    )
+
     return (
       <Stack gap="24px">
         도착해야 하는 인원 ({notArriveUser.length}명)
@@ -104,7 +93,6 @@ export default function ShowStatusTable() {
               bgcolor={user.sex === "man" ? "lightblue" : "pink"}
             >
               <Box>{user.name}</Box>
-              <Box>02.0{user.whenIn}</Box>
               <Box>{user.age}</Box>
               <Box>{user.phone}</Box>
             </Stack>
