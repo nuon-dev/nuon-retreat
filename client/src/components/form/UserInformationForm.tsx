@@ -263,7 +263,7 @@ export default function UserInformationForm(props: IProps) {
       <Stack>
         {getInputGap()}
         <Stack minWidth="100px" justifyContent="center">
-          교회로 오는 차
+          주일날 교회로 오는 방법
         </Stack>
         {getLabelGap()}
         <Select

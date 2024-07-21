@@ -4,7 +4,7 @@ import Head from "next/head"
 import "./_app.css"
 import Notification from "components/notification/notification"
 import { Stack } from "@mui/material"
-import { useEffect } from "react"
+import Script from "next/script"
 
 function MyApp({ Component, pageProps }: any) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
@@ -34,9 +34,19 @@ function MyApp({ Component, pageProps }: any) {
         />
         <meta name="image" property="og:image" content="/bg_1.jpeg" />
         <meta name="url" property="og:url" content="bg_1.jpeg" />
-        <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
       </Head>
       <RecoilRoot>
+        <Script
+          src="https://developers.kakao.com/sdk/js/kakao.js"
+          strategy="beforeInteractive"
+          onReady={() => {
+            const globalValue: any = global
+            var Kakao: any = globalValue.Kakao
+            if (Kakao && !Kakao.isInitialized()) {
+              Kakao.init("24c68e47fc07af3735433d60a3c4f4b3") //발급받은 키 중 javascript키를 사용해준다.
+            }
+          }}
+        />
         <Notification />
         <Stack fontFamily="PretendardVariable">
           <Component {...pageProps} />

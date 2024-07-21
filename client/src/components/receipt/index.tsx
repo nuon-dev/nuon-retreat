@@ -16,12 +16,8 @@ export default function Receipt() {
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
-  let startTimer = false
   useEffect(() => {
     checkToken()
-    if (startTimer === false) {
-      startTimer = true
-    }
   }, [])
 
   const checkToken = () => {

@@ -12,7 +12,7 @@ import { Stack, Box } from "@mui/material"
 import { useEffect, useState } from "react"
 import { SelectedTab, Tabs } from "state/tab"
 import { NotificationMessage } from "state/notification"
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
+import { useRecoilValue, useSetRecoilState } from "recoil"
 
 function index() {
   const [showLoginPopup, setShowLoginPopup] = useState(false)
@@ -30,7 +30,7 @@ function index() {
       setShowLoginPopup(true)
       return
     }
-    const { result, userData } = await post("/auth/check-token", {
+    await post("/auth/check-token", {
       token,
     })
     setNotificationMessage("카카오 로그인 이후 이용 가능힙니다.")

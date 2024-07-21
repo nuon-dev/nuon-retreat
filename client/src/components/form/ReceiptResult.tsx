@@ -51,7 +51,7 @@ export default function ReceiptResult(props: IProps) {
         )
       })}
       <InfoStack
-        title="교회로 오는 방법"
+        title="주일날 교회로 오는 방법"
         content={getHowToMoveString(props.user.howToLeave)}
       />
       <InfoStack

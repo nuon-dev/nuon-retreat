@@ -1,7 +1,7 @@
 .notification-stack {
   width: 100vw;
   right: calc(-100vw + 325px);
-  z-index: 100;
+  z-index: 99999;
   position: fixed;
 }
 
