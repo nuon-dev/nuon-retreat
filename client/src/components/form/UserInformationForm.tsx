@@ -10,6 +10,7 @@ import { useSetRecoilState } from "recoil"
 import { useRouter } from "next/router"
 import { HowToMove } from "@entity/types"
 import DarakData from "darakData"
+
 interface IProps {
   user: User
   inOutData: Array<InOutInfo>

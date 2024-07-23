@@ -80,10 +80,10 @@ function DepositCheck() {
         </Stack>
         <Stack fontWeight="500" fontSize="18px">
           예상 납부 금액 -{" "}
-          {(depositUserCount * 60000)
+          {(depositUserCount * 75000)
             .toString()
             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          원 ({depositUserCount * 6}만원)
+          원 ({depositUserCount * 7.5}만원)
         </Stack>
 
         <Button
