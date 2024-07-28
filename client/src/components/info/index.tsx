@@ -137,7 +137,7 @@ export default function Info() {
           src="./instagram.png"
         />
       </a>
-      <a href="https://youtu.be/IOfautRI2aA">
+      <a href="https://youtube.com/playlist?list=PLdxGTKLutWR4V-8fvAX47193ut-_AJOvo&feature=shared">
         <img
           className={styles["img_button"] + " " + styles["play_list"]}
           style={{

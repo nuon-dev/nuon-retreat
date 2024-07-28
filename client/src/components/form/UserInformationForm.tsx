@@ -49,6 +49,12 @@ export default function UserInformationForm(props: IProps) {
     } else if (!userInformation.howToGo) {
       setNotificationMessage("이동 방법을 선택해주세요.")
       return
+    } else if (
+      userInformation.howToGo !== HowToMove.together &&
+      inOutData.length === 0
+    ) {
+      setNotificationMessage("이동 방법을 추가해주세요.")
+      return
     } else if (!userInformation.howToLeave) {
       setNotificationMessage("이동 방법을 선택해주세요.")
       return

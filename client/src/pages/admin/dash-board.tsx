@@ -179,6 +179,22 @@ function DashBoard() {
               100
             ).toFixed(1)}
             %
+          </Stack>{" "}
+          <Stack
+            margin="8px"
+            fontSize="24px"
+            direction="row"
+            style={{
+              padding: "20px",
+              borderRadius: "8px",
+              border: "1px solid #ACACAC",
+              boxShadow: "2px 2px 5px 3px #ACACAC;",
+            }}
+          >
+            <Box fontSize="12px" mr="4px">
+              금요일 출근 예정자{" "}
+            </Box>{" "}
+            {getAttendeeStatus.countOfIsOutAtThursday}명
           </Stack>
         </Box>
       </Stack>
@@ -285,7 +301,7 @@ function DashBoard() {
               y={elementSize.height - STEP}
               fontSize="12px"
             >
-              {xValue}
+              {xValue.slice(2, 4)}
             </text>
           ))}
           {xAxis.map((xValue, index) => (
@@ -339,8 +355,19 @@ function DashBoard() {
     const secondDayOut = getInfoCount((info) =>
       conditionFilter(info, 1, InOutType.OUT)
     )
+
     const secondDayAttendResult =
       firstDayAttendResult + secondDayIn - secondDayOut
+
+    const thirdDayDayIn = getInfoCount((info) =>
+      conditionFilter(info, 2, InOutType.IN)
+    )
+
+    const thirdDayDayOut = getInfoCount((info) =>
+      conditionFilter(info, 2, InOutType.OUT)
+    )
+    const thirdDayAttendResult =
+      secondDayAttendResult + thirdDayDayIn - thirdDayDayOut
 
     const timeList = [15, 20, 24]
     return (
@@ -361,7 +388,7 @@ function DashBoard() {
             )
             return (
               <Stack>
-                첫째날 {time}시 예상 참석자 수 :{" "}
+                첫째날 (목요일) {time}시 예상 참석자 수 :{" "}
                 {getAttendeeStatus.goTogether + inCount - outCount}
               </Stack>
             )
@@ -382,13 +409,34 @@ function DashBoard() {
             )
             return (
               <Stack>
-                둘째날 {time}시 예상 참석자 수 :{" "}
+                둘째날 (금요일) {time}시 예상 참석자 수 :{" "}
+                {firstDayAttendResult + inCount - outCount}
+              </Stack>
+            )
+          })}
+        </Stack>{" "}
+        <Stack>
+          {timeList.map((time) => {
+            const inCount = getInfoCount(
+              (info) =>
+                conditionFilter(info, 2, InOutType.IN) &&
+                Number.parseInt(info.time.toString()) <= time
+            )
+
+            const outCount = getInfoCount(
+              (info) =>
+                conditionFilter(info, 2, InOutType.OUT) &&
+                Number.parseInt(info.time.toString()) <= time
+            )
+            return (
+              <Stack>
+                셋째날 (토요일) {time}시 예상 참석자 수 :{" "}
                 {firstDayAttendResult + inCount - outCount}
               </Stack>
             )
           })}
         </Stack>
-        <Stack>마지막날 아침 참석자 예상 수 : {secondDayAttendResult}</Stack>
+        <Stack>주일 아침 참석자 예상 수 : {thirdDayAttendResult}</Stack>
       </Stack>
     )
   }

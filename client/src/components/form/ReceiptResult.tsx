@@ -45,7 +45,7 @@ export default function ReceiptResult(props: IProps) {
             </Stack>
             <Stack direction="row" gap="8px">
               <Box>{getMoveTypeString(inout.howToMove)} 타고 </Box>
-              <Box>{inout.inOutType === "in" ? "나가기" : "들어오기"}</Box>
+              <Box>{inout.inOutType === "in" ? "들어오기" : "나가기"}</Box>
             </Stack>
           </Stack>
         )
@@ -110,11 +110,11 @@ export function getHowToMoveString(howToMove: HowToMove) {
 export function getMoveTypeString(moveType: MoveType) {
   switch (moveType) {
     case MoveType.driveCarWithPerson:
-      return "자차 이동(카풀 가능)"
+      return "자차 (카풀 가능)"
     case MoveType.driveCarAlone:
-      return "자차 이동(카풀 불가)"
+      return "자차 (카풀 불가)"
     case MoveType.rideCar:
-      return "카풀 요청"
+      return "신청한 카풀"
     case MoveType.goAlone:
       return "대중교통 (여주역)"
   }

@@ -155,7 +155,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
             <Button
               variant="contained"
               onClick={() => onClickRemove(index)}
-              style={{ backgroundColor: "#1d321a" }}
+              style={{ backgroundColor: "#3d524a" }}
             >
               이동 방법 삭제
             </Button>
@@ -171,7 +171,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
         <Button
           variant="contained"
           onClick={onClickAdd}
-          style={{ backgroundColor: "#1d321a" }}
+          style={{ backgroundColor: "#3d524a" }}
         >
           이동 방법 추가
         </Button>

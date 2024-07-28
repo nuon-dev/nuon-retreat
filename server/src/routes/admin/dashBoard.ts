@@ -29,8 +29,13 @@ router.get("/get-attendee-status", async (req, res) => {
       isCancel: false,
     },
   })
+
   const countOfCompleteDeposit = await userDatabase.count({
     where: { deposit: true, name: Not(IsNull()), isCancel: false },
+  })
+
+  const countOfIsOutAtThursday = await userDatabase.count({
+    where: { isOutAtThursday: "true", name: Not(IsNull()), isCancel: false },
   })
 
   res.send({
@@ -40,6 +45,7 @@ router.get("/get-attendee-status", async (req, res) => {
     goTogether: countOfGoTogether,
     leaveTogether: countOfLeaveTogether,
     completeDeposit: countOfCompleteDeposit,
+    countOfIsOutAtThursday,
   })
 })
 
