@@ -1,5 +1,5 @@
 import express from "express"
-import { HowToMove } from "../../entity/types"
+import { HowToMove, InOutType } from "../../entity/types"
 import { attendInfoDatabase, userDatabase } from "../../model/dataSource"
 import { IsNull, Not } from "typeorm"
 
@@ -38,6 +38,34 @@ router.get("/get-attendee-status", async (req, res) => {
     where: { isOutAtThursday: "true", name: Not(IsNull()), isCancel: false },
   })
 
+  const allUser = await userDatabase.find()
+  const allInfo = await attendInfoDatabase.find()
+  const busUserList = allUser
+    .filter((user) => user.howToGo === HowToMove.together)
+    .map((u) => u.id)
+  const aloneAttend = allInfo
+    .filter(
+      (info) =>
+        info.day === 0 && info.time < 14 && info.inOutType === InOutType.IN
+    )
+    .map((info) => info.user.id)
+
+  const firstAttendUser = [...busUserList, ...aloneAttend]
+  const lastAttendUser = allInfo
+    .filter(
+      (info) =>
+        !(info.day === 0 && info.time < 14 && info.inOutType === InOutType.IN)
+    )
+    .map((info) => info.user.id)
+
+  const attendUser = allUser.filter((user) =>
+    firstAttendUser.find((id) => id === user.id)
+  )
+
+  const allAttendUserNumber = attendUser.filter(
+    (user) => !lastAttendUser.find((id) => id === user.id)
+  ).length
+
   res.send({
     all: countOfAllUser,
     man: countOfMan,
@@ -46,6 +74,7 @@ router.get("/get-attendee-status", async (req, res) => {
     leaveTogether: countOfLeaveTogether,
     completeDeposit: countOfCompleteDeposit,
     countOfIsOutAtThursday,
+    allAttendUserNumber,
   })
 })
 

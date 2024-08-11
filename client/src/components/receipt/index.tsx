@@ -39,9 +39,11 @@ export default function Receipt() {
         setEditMode(true)
         return
       }
-      setEditMode(false)
-      setUserData(response.userData)
-      setInOutData(response.inoutInfoList)
+      if (response.userData.name) {
+        setEditMode(false)
+        setUserData(response.userData)
+        setInOutData(response.inoutInfoList)
+      }
     })
   }
 

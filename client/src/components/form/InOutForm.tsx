@@ -79,7 +79,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
             <MenuItem value={InOutType.OUT}>수련회장에서 나오기</MenuItem>
           </Select>
           <Stack fontSize="12px" p="6px">
-            수련회장 예상 도착 시간
+            예상 출발 시간
           </Stack>
           <Select
             fullWidth={true}

@@ -156,9 +156,25 @@ function DashBoard() {
             }}
           >
             <Box fontSize="12px" mr="4px">
-              버스 (수련회장 출발 / 교회 출발)
+              주일 수련회장 출발 인원
             </Box>{" "}
-            {getAttendeeStatus.leaveTogether}/ {getAttendeeStatus.goTogether}
+            {getAttendeeStatus.leaveTogether}명
+          </Stack>{" "}
+          <Stack
+            margin="8px"
+            fontSize="24px"
+            direction="row"
+            style={{
+              padding: "20px",
+              borderRadius: "8px",
+              border: "1px solid #ACACAC",
+              boxShadow: "2px 2px 5px 3px #ACACAC;",
+            }}
+          >
+            <Box fontSize="12px" mr="4px">
+              목요일 교회 출발 인원
+            </Box>{" "}
+            {getAttendeeStatus.goTogether}명
           </Stack>
           <Stack
             margin="8px"
@@ -369,7 +385,7 @@ function DashBoard() {
     const thirdDayAttendResult =
       secondDayAttendResult + thirdDayDayIn - thirdDayDayOut
 
-    const timeList = [15, 20, 24]
+    const timeList = [12, 15, 20, 24]
     return (
       <Stack>
         시간별 참석자 수
@@ -431,7 +447,7 @@ function DashBoard() {
             return (
               <Stack>
                 셋째날 (토요일) {time}시 예상 참석자 수 :{" "}
-                {firstDayAttendResult + inCount - outCount}
+                {secondDayAttendResult + inCount - outCount}
               </Stack>
             )
           })}

@@ -37,7 +37,7 @@ export default function Info() {
     function downloadFile(e: any, index: number) {
       e.stopPropagation()
       const files = [
-        "말씀노트.pdf",
+        "word_notes.pdf",
         "P20240716_223129000_E07A8DD3-CBF4-4105-A326-19A7C724BA12.JPG",
         "P20240716_223129000_F20057DC-3386-4C7E-911D-09EB4BAC36D7.JPG",
         "P20240717_200239000_44C46409-6D63-4200-B115-4F6655841989.JPG",
