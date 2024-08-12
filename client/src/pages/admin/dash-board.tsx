@@ -107,6 +107,53 @@ function DashBoard() {
               border: "1px solid #ACACAC",
               boxShadow: "2px 2px 5px 3px #ACACAC;",
             }}
+            display="flex"
+            direction="row"
+            justifyContent="center"
+            alignContent="end"
+          >
+            <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">
+              전참
+            </Box>{" "}
+            <Box fontSize="28px" alignSelf="end">
+              {getAttendeeStatus.allAttendUserNumber}명
+            </Box>{" "}
+          </Stack>
+          <Stack
+            margin="8px"
+            fontSize="24px"
+            style={{
+              padding: "20px",
+              borderRadius: "8px",
+              border: "1px solid #ACACAC",
+              boxShadow: "2px 2px 5px 3px #ACACAC;",
+            }}
+            direction="row"
+          >
+            <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">
+              전참율
+            </Box>
+            <Box fontSize="28px" alignSelf="end">
+              {(
+                (getAttendeeStatus.allAttendUserNumber /
+                  getAttendeeStatus.all) *
+                100
+              ).toFixed(1)}
+            </Box>{" "}
+            <Box pb="2px" pl="3px" alignSelf="end" fontSize="20px">
+              {" "}
+              % {}
+            </Box>
+          </Stack>
+          <Stack
+            margin="8px"
+            fontSize="24px"
+            style={{
+              padding: "20px",
+              borderRadius: "8px",
+              border: "1px solid #ACACAC",
+              boxShadow: "2px 2px 5px 3px #ACACAC;",
+            }}
             direction="row"
           >
             <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">

@@ -69,6 +69,13 @@ export default function Home() {
       progressTime: 75,
     },
     {
+      day: "Tue",
+      hour: 20,
+      minute: 30,
+      content: "화요\n기도회",
+      progressTime: 75,
+    },
+    {
       day: "Thu",
       hour: 10,
       minute: 30,
