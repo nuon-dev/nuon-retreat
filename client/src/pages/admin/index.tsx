@@ -12,7 +12,7 @@ function admin() {
   const [isLogin, setIsLogin] = useState(false)
 
   const goToPage = (path: string) => {
-    router.push(`/admin/${path}`)
+    router.push(`/admin${path}`)
   }
 
   useEffect(() => {

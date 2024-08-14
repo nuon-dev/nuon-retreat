@@ -35,10 +35,91 @@ export default function MyPage() {
 
   const fontColor = "#254820"
 
+  const defaultWidth = 390
   function calc(value: number) {
-    const defaultWidth = 390
-
     return (value * imgWidth) / defaultWidth + "px"
+  }
+
+  const room = {
+    man: {
+      1: 401,
+      2: 402,
+      3: 403,
+      4: 404,
+      5: 405,
+      6: 406,
+      7: 407,
+      8: 408,
+      9: 409,
+      10: 410,
+      11: 411,
+      12: 412,
+      13: 413,
+      14: 414,
+      15: 415,
+      16: 416,
+      17: 417,
+      18: 418,
+
+      19: 314,
+      20: 315,
+      21: 316,
+      22: 317,
+      23: 318,
+      24: 319,
+      25: 320,
+    },
+    woman: {
+      1: 201,
+      2: 202,
+      3: 203,
+      4: 204,
+      5: 205,
+      6: 206,
+      7: 207,
+      8: 208,
+      9: 209,
+      10: 210,
+      11: 211,
+      12: 212,
+      13: 213,
+      14: 214,
+      15: 215,
+      16: 216,
+      17: 217,
+      18: 218,
+      19: 301,
+      20: 302,
+      21: 303,
+      22: 304,
+      23: 305,
+      24: 306,
+      25: 307,
+      26: 308,
+      27: 309,
+      28: 310,
+      29: 311,
+      30: 312,
+      31: 313,
+      33: "준비팀1",
+      34: "준비팀2",
+      35: "준비팀3",
+    },
+  }
+
+  const BarcodeItemScreen = (barcodeNumber: string) => {
+    const [imageUrl, setImageUrl] = useState<string>()
+
+    useEffect(() => {
+      const canvas = document.createElement("canvas")
+      JsBarcode(canvas, barcodeNumber, {
+        height: (70 * imgWidth) / defaultWidth,
+        displayValue: false,
+      })
+      setImageUrl(canvas.toDataURL("image/png"))
+    }, [barcodeNumber])
+
+    return <div>{imageUrl && barcodeNumber && <img src={imageUrl} />}</div>
   }
 
   return (
@@ -90,7 +171,12 @@ export default function MyPage() {
             fontWeight="bold"
             color={fontColor}
           >
-            -호
+            {userInformation.sex &&
+              //@ts-ignore
+              room[userInformation.sex][
+                userInformation.roomAssignment?.roomNumber
+              ]}
+            호
           </Box>
         </Stack>
         <Stack height={calc(60)} alignSelf="center" mt={calc(50)}>
@@ -107,17 +193,4 @@ export default function MyPage() {
       </Stack>
     </Stack>
   )
-}
-
-const BarcodeItemScreen = (barcodeNumber: string) => {
-  const [imageUrl, setImageUrl] = useState<string>()
-
-  useEffect(() => {
-    const canvas = document.createElement("canvas")
-    const ctx = canvas.getContext("2d")
-    JsBarcode(canvas, barcodeNumber, { height: 60, displayValue: false })
-    setImageUrl(canvas.toDataURL("image/png"))
-  }, [])
-
-  return <div>{imageUrl && <img src={imageUrl} />}</div>
 }

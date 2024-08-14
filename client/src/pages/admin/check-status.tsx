@@ -1,39 +1,46 @@
 import { CurrentStatus } from "@entity/types"
 import { User } from "@entity/user"
-import { MenuItem, Select, Stack } from "@mui/material"
+import { Button, MenuItem, Select, Stack } from "@mui/material"
 import { post } from "pages/api"
 import { useEffect, useRef, useState } from "react"
+//@ts-ignore
 import Quagga from "quagga"
 
 export default function CheckStatus(props: any) {
-  const [cameraId, setCameraId] = useState("")
   const [selectState, setSelectState] = useState(CurrentStatus.null)
-  const [lastScanTime, setLastScanTime] = useState(new Date())
   const [user, setUser] = useState<User>({} as any)
 
   const firstUpdate = useRef(true)
-  const [isStart, setIsStart] = useState(false)
   const [barcode, setBarcode] = useState("")
 
   useEffect(() => {
-    return () => {
-      if (isStart) stopScanner()
-    }
+    startScanner()
   }, [])
 
+  const statusRef = useRef<CurrentStatus>()
   useEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false
-      return
+    statusRef.current = selectState
+  }, [selectState])
+
+  const [isPlay, setPlay] = useState(false)
+  useEffect(() => {
+    if (isPlay) {
+      play()
+      setPlay(false)
     }
+  }, [isPlay])
 
-    if (isStart) startScanner()
-    else stopScanner()
-  }, [isStart])
-
-  const _onDetected = (res) => {
+  //@ts-ignore
+  async function _onDetected(res) {
     setBarcode(res.codeResult.code)
-    console.log(res.codeResult.code)
+
+    const response = await post("/status/set", {
+      userId: res.codeResult.code,
+      status: statusRef.current,
+    })
+
+    setUser(response)
+    setPlay(true)
   }
 
   const startScanner = () => {
@@ -60,7 +67,7 @@ export default function CheckStatus(props: any) {
           halfSample: false,
           patchSize: "large", // x-small, small, medium, large, x-large
           debug: {
-            showCanvas: false,
+            showCanvas: true,
             showPatches: false,
             showFoundPatches: false,
             showSkeleton: false,
@@ -78,6 +85,7 @@ export default function CheckStatus(props: any) {
           readers: props.readers,
         },
       },
+      //@ts-ignore
       (err) => {
         if (err) {
           return console.log(err)
@@ -86,6 +94,7 @@ export default function CheckStatus(props: any) {
       }
     )
     Quagga.onDetected(_onDetected)
+    //@ts-ignore
     Quagga.onProcessed((result) => {
       let drawingCtx = Quagga.canvas.ctx.overlay,
         drawingCanvas = Quagga.canvas.dom.overlay
@@ -99,7 +108,9 @@ export default function CheckStatus(props: any) {
             parseInt(drawingCanvas.getAttribute("height"))
           )
           result.boxes
+            //@ts-ignore
             .filter((box) => box !== result.box)
+            //@ts-ignore
             .forEach((box) => {
               Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, {
                 color: "green",
@@ -134,38 +145,7 @@ export default function CheckStatus(props: any) {
     Quagga.stop()
   }
 
-  async function onScan(data: { text: string }) {
-    if (!data) {
-      return
-    }
-    const now = new Date()
-    if (now.getTime() - lastScanTime.getTime() < 1000 * 2) {
-      return
-    }
-    const scanDataList = data.text.split("/")
-    if (scanDataList.length !== 2) {
-      return
-    }
-    const [userInfo, scanUserTime] = scanDataList
-    if (!userInfo) {
-      return
-    }
-
-    const diff = Number.parseInt(scanUserTime) - now.getTime()
-    const diffSecond = Math.abs(diff / 1000)
-
-    if (diffSecond > 20) {
-      return
-    }
-    setLastScanTime(now)
-
-    const response = await post("/status/set", {
-      userId: userInfo,
-      status: selectState,
-    })
-
-    setUser(response)
-
+  function play() {
     const audio = new Audio("/scan_alert.mp3")
     audio.play()
   }
@@ -182,23 +162,13 @@ export default function CheckStatus(props: any) {
           수련회장 도착
         </MenuItem>
       </Select>
-      <button
-        onClick={() => setIsStart((prevStart) => !prevStart)}
-        style={{ marginBottom: 20 }}
-      >
-        {isStart ? "Stop" : "Start"}
-      </button>
-      {isStart && (
-        <>
-          <div
-            id="scanner-container"
-            style={{
-              position: "relative",
-            }}
-          />
-          <span>Barcode: {barcode}</span>
-        </>
-      )}
+      <div
+        id="scanner-container"
+        style={{
+          position: "relative",
+        }}
+      />
+      <span>Barcode: {barcode}</span>
       {user.name && (
         <Stack>
           {user.name}[{user.age}]
