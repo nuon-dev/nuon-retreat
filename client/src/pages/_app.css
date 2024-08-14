@@ -2,3 +2,9 @@
   font-family: "PretendardVariable";
   src: url("../font/PretendardVariable.ttf");
 }
+
+.drawingBuffer {
+  position: absolute;
+  left: 0;
+  top: 0;
+}

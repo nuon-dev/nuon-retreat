@@ -47,16 +47,16 @@ export default function Tab() {
       >
         <img className={styles["icon"]} src="free-icon-info.png" />
       </Stack>
-      {/*
       <Stack
         flex={1}
-        textAlign="center"
-        width="40px"
+        height="100%"
+        alignItems="center"
+        justifyContent="center"
+        border="1px solid #ccc"
         onClick={() => onClickTab(Tabs.MyPage)}
       >
-        MyPage
+        <img className={styles["icon"]} src="free-icon-person.png" />
       </Stack>
-      */}
     </Stack>
   )
 }

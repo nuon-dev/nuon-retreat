@@ -30,11 +30,13 @@ function index() {
       setShowLoginPopup(true)
       return
     }
-    await post("/auth/check-token", {
+    const { result } = await post("/auth/check-token", {
       token,
     })
-    setNotificationMessage("카카오 로그인 이후 이용 가능힙니다.")
-    setShowLoginPopup(true)
+    if (!result || result !== "true") {
+      setNotificationMessage("카카오 로그인 이후 이용 가능힙니다.")
+      setShowLoginPopup(true)
+    }
   }
 
   function render() {

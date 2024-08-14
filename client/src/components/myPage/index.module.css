@@ -1,9 +1,4 @@
 .symbol {
-  border: 1px solid black;
-  background-color: #fff;
-  width: 50px;
-  height: 50px;
-  margin-top: -20px;
   align-self: center;
-  border-radius: 40px;
+  border-radius: 100px;
 }

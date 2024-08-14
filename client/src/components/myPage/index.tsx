@@ -1,15 +1,22 @@
 import { Box, Stack } from "@mui/material"
 import styles from "./index.module.css"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { User } from "@entity/user"
 import { post } from "pages/api"
 import JsBarcode from "jsbarcode"
 
 export default function MyPage() {
+  const imgRef = useRef<HTMLImageElement>({} as any)
   const [userInformation, setUserInformation] = useState(new User())
+  const [imgWidth, setImgWidth] = useState(0)
 
   useEffect(() => {
     checkToken()
+    if (!imgRef.current) {
+      return
+    }
+    const imgWidth = imgRef.current.width as number
+    setImgWidth(imgWidth)
   }, [])
 
   const checkToken = () => {
@@ -26,83 +33,77 @@ export default function MyPage() {
     })
   }
 
-  const bgcolor = "gray"
-  const innerColor = "white"
+  const fontColor = "#254820"
+
+  function calc(value: number) {
+    const defaultWidth = 390
+
+    return (value * imgWidth) / defaultWidth + "px"
+  }
 
   return (
-    <Stack
-      bgcolor={bgcolor}
-      height="100vh"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Stack height="100vh" alignItems="center">
+      <img
+        ref={imgRef}
+        src="./my-page-bg.jpeg"
+        width="100%"
+        style={{
+          position: "absolute",
+        }}
+      />
       <Stack
-        width="300px"
-        bgcolor={innerColor}
+        mt={calc(180)}
+        width={calc(300)}
         borderRadius="12px"
-        gap="40px"
+        zIndex="10"
         justifyContent="center"
       >
-        <Box className={styles["symbol"]}></Box>
-        <Box textAlign="center">{userInformation.name}님</Box>
-        <Stack direction="row" justifyContent="space-around">
-          <Box textAlign="center">
-            <Box fontSize="20px" color={bgcolor}>
-              200
-            </Box>
-            <Box fontSize="12px" fontWeight="600">
-              총인원
-            </Box>
+        <Box
+          className={styles["symbol"]}
+          width={calc(72)}
+          height={calc(72)}
+          mt={calc(-35)}
+        ></Box>
+        <Stack direction="row" justifyContent="space-around" mt={calc(15)}>
+          <Box
+            width="80px"
+            textAlign="center"
+            fontSize="20px"
+            fontWeight="bold"
+            color={fontColor}
+          >
+            {userInformation.groupAssignment?.groupNumber}조
           </Box>
-          <Box textAlign="center">
-            <Box fontSize="20px" color={bgcolor}>
-              {userInformation.id + 100}
-            </Box>
-            <Box fontSize="12px" fontWeight="600">
-              접수번호
-            </Box>
+          <Box
+            width="80px"
+            textAlign="center"
+            fontSize="20px"
+            fontWeight="bold"
+            color={fontColor}
+          >
+            {userInformation.village}
           </Box>
-          <Box textAlign="center">
-            <Box fontSize="20px" color={bgcolor}>
-              205호
-            </Box>
-            <Box fontSize="12px" fontWeight="600">
-              방번호
-            </Box>
+          <Box
+            width="80px"
+            textAlign="center"
+            fontSize="20px"
+            fontWeight="bold"
+            color={fontColor}
+          >
+            -호
           </Box>
         </Stack>
-        <Stack height="60px" alignSelf="center">
-          {BarcodeItemScreen("test")}
+        <Stack height={calc(60)} alignSelf="center" mt={calc(50)}>
+          {BarcodeItemScreen(userInformation.kakaoId)}
         </Stack>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
+        <Box
+          textAlign="center"
+          mt={calc(75)}
+          color={fontColor}
+          fontWeight="bold"
         >
-          <Box
-            bgcolor={bgcolor}
-            width="40px"
-            height="40px"
-            borderRadius="40px"
-            marginLeft="-15px"
-          />
-          <Box flex={1} height="0.1px" bgcolor="gray" margin="10px" />
-          <Box
-            bgcolor={bgcolor}
-            width="40px"
-            height="40px"
-            borderRadius="40px"
-            marginRight="-15px"
-          />
-        </Stack>
-        <Stack direction="row" justifyContent="space-around" padding="20px">
-          <Box>
-            <img width="60px" src="./1939.png" />
-          </Box>
-          <Box>
-            <img width="60px" src="./favicon.ico" />
-          </Box>
-        </Stack>
+          {userInformation.name}님
+        </Box>
       </Stack>
     </Stack>
   )
@@ -113,6 +114,7 @@ const BarcodeItemScreen = (barcodeNumber: string) => {
 
   useEffect(() => {
     const canvas = document.createElement("canvas")
+    const ctx = canvas.getContext("2d")
     JsBarcode(canvas, barcodeNumber, { height: 60, displayValue: false })
     setImageUrl(canvas.toDataURL("image/png"))
   }, [])
