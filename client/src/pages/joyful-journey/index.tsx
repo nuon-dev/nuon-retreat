@@ -115,11 +115,12 @@ export default function JoyfulJourney() {
 
   return (
     <Stack
-      height="100vh"
+      height="100%"
       style={{
         color: "#61986f",
         fontWeight: "600",
         backgroundImage: 'url("/middle.jpg")',
+        backgroundSize: "420px",
         backgroundRepeat: "repeat",
         justifyContent: "space-between",
       }}
