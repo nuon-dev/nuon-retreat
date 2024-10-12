@@ -1,4 +1,3 @@
-import { Stack } from "@mui/system"
 import { useEffect, useState } from "react"
 
 import { User } from "@entity/user"
@@ -9,6 +8,7 @@ import ReceiptResult from "components/form/ReceiptResult"
 import CopyToClipboard from "react-copy-to-clipboard"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
+import { Stack } from "@mui/material"
 
 export default function Receipt() {
   const [userData, setUserData] = useState({} as User)

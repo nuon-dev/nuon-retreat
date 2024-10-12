@@ -1,8 +1,14 @@
-import { Stack } from "@mui/system"
 import { get, post } from "../api"
 import { useEffect, useState } from "react"
 import { User } from "@entity/user"
-import { Box, Button, MenuItem, Select, SelectChangeEvent } from "@mui/material"
+import {
+  Box,
+  Button,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+} from "@mui/material"
 import UserInformationForm from "components/form/UserInformationForm"
 import { InOutInfo } from "@entity/inOutInfo"
 import { useSetRecoilState } from "recoil"

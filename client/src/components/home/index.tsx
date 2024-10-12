@@ -79,8 +79,8 @@ export default function Home() {
       day: "Thu",
       hour: 10,
       minute: 30,
-      content: "수련회장 출발",
-      progressTime: 30,
+      content: "수련회장\n출발",
+      progressTime: 90,
     },
     {
       day: "Thu",

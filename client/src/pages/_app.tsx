@@ -32,8 +32,8 @@ function MyApp({ Component, pageProps }: any) {
           property="og:description"
           content="너는 물 댄 동산 같겠고 &lt; 사 58 : 11 &gt;"
         />
-        <meta name="image" property="og:image" content="/bg_1.jpeg" />
-        <meta name="url" property="og:url" content="bg_1.jpeg" />
+        <meta name="image" property="og:image" content="top.jpg" />
+        <meta name="url" property="og:url" content="top.jpg" />
       </Head>
       <RecoilRoot>
         <Script
