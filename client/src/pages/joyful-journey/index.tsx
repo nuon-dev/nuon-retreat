@@ -4,72 +4,59 @@ import { useState } from "react"
 export default function JoyfulJourney() {
   const [showFourCuts, setShowFourCuts] = useState(false)
   const [showHowTo, setShowHowTo] = useState(false)
-  const [showSticker, setShowSticker] = useState(0)
+  const [showSticker, setShowSticker] = useState(false)
   const [currentImage, setCurrentImage] = useState(1)
 
-  const folderName = [
-    "",
-    "스티커_모음_색칠",
-    "스티커_모음_손글씨",
-    "스티커_모음_외곽선",
-  ]
   const stickers = [
-    [],
-    [
-      "Bless_you.png",
-      "cute.png",
-      "yummy.png",
-      "가보자고~!!.png",
-      "기분_체고.png",
-      "두근..!.png",
-      "만남의_축복이_끝이_없네.png",
-      "매일_행복하게_살기.png",
-      "세잎클로버_길게.png",
-      "세잎클로버.png",
-      "아자아자.png",
-      "와!.png",
-      "재미따.png",
-      "하트.png",
-      "행복_다_우리꺼.png",
-    ],
-    [
-      "!!!.png",
-      "happy_day.png",
-      "Joyful_Journey.png",
-      "rec.png",
-      "start.png",
-      "today.png",
-      "worship_is_my_life.png",
-      "고깔모자.png",
-      "냠냠.png",
-      "노란_긴_하트.png",
-      "룰루랄라.png",
-      "반짝.png",
-      "별.png",
-      "스마일.png",
-      "애두라_고마오.png",
-      "음표.png",
-      "클로버1.png",
-      "클로버2.png",
-      "플레이리스트.png",
-      "하트_세_개.png",
-      "해피_클로버.png",
-      "행복_충전_중.png",
-      "행복을_찾아서.png",
-    ],
-    [
-      "love.png",
-      "so_cute.png",
-      "귀여오.png",
-      "기분조아.png",
-      "두둥.png",
-      "오늘의_말씀.png",
-      "완료.png",
-      "짜잔.png",
-      "최고.png",
-      "커피.png",
-      "행복가득.png",
-    ],
+    "Bless_you.png",
+    "cute.png",
+    "yummy.png",
+    "가보자고~!!.png",
+    "기분_체고.png",
+    "두근..!.png",
+    "만남의_축복이_끝이_없네.png",
+    "매일_행복하게_살기.png",
+    "세잎클로버_길게.png",
+    "세잎클로버.png",
+    "아자아자.png",
+    "와!.png",
+    "재미따.png",
+    "하트.png",
+    "행복_다_우리꺼.png",
+    "!!!.png",
+    "happy_day.png",
+    "Joyful_Journey.png",
+    "rec.png",
+    "start.png",
+    "today.png",
+    "worship_is_my_life.png",
+    "고깔모자.png",
+    "냠냠.png",
+    "노란_긴_하트.png",
+    "룰루랄라.png",
+    "반짝.png",
+    "별.png",
+    "스마일.png",
+    "애두라_고마오.png",
+    "음표.png",
+    "클로버1.png",
+    "클로버2.png",
+    "플레이리스트.png",
+    "하트_세_개.png",
+    "해피_클로버.png",
+    "행복_충전_중.png",
+    "행복을_찾아서.png",
+    "love.png",
+    "so_cute.png",
+    "귀여오.png",
+    "기분조아.png",
+    "두둥.png",
+    "오늘의_말씀.png",
+    "완료.png",
+    "짜잔.png",
+    "최고.png",
+    "커피.png",
+    "행복가득.png",
   ]
 
   function onClickClub() {
@@ -102,7 +89,7 @@ export default function JoyfulJourney() {
   function downloadStickerFile(e: any) {
     e.stopPropagation()
 
-    const fileName = `/${folderName[showSticker]}/${stickers[showSticker][currentImage]}`
+    const fileName = `/sticker/${stickers[currentImage]}`
     var pom = document.createElement("a")
     // file 폴더의 파일을 다운로드
     var filePath = "/" + encodeURIComponent(fileName)
@@ -154,7 +141,7 @@ export default function JoyfulJourney() {
             setShowFourCuts(true)
           }}
         >
-          행복축제 인생네컷
+          행복축제 네컷사진 프레임
         </Stack>
         <Stack
           textAlign="center"
@@ -180,42 +167,10 @@ export default function JoyfulJourney() {
           boxShadow="0px 3px 5px 2px #aaa"
           onClick={() => {
             setCurrentImage(0)
-            setShowSticker(1)
+            setShowSticker(true)
           }}
         >
-          행복축제 스티커 색칠
-        </Stack>
-        <Stack
-          textAlign="center"
-          bgcolor="white"
-          height="80px"
-          marginX="40px"
-          alignContent="center"
-          justifyContent="center"
-          borderRadius="50px"
-          boxShadow="0px 3px 5px 2px #aaa"
-          onClick={() => {
-            setCurrentImage(0)
-            setShowSticker(2)
-          }}
-        >
-          행복축제 스티커 손글씨
-        </Stack>
-        <Stack
-          textAlign="center"
-          bgcolor="white"
-          height="80px"
-          marginX="40px"
-          alignContent="center"
-          justifyContent="center"
-          borderRadius="50px"
-          boxShadow="0px 3px 5px 2px #aaa"
-          onClick={() => {
-            setCurrentImage(0)
-            setShowSticker(3)
-          }}
-        >
-          행복축제 스티커 외곽선
+          행복축제 네컷사진 스티커 png
         </Stack>
         <Stack
           textAlign="center"
@@ -326,15 +281,97 @@ export default function JoyfulJourney() {
           bgcolor="white"
           onClick={() => setShowHowTo(false)}
         >
-          <Stack gap="24px" padding="40px" mb="40px">
+          <Stack gap="24px" padding="40px" mb="40px" alignItems="center">
+            <Stack
+              bgcolor="#61986f"
+              width="40px"
+              color="white"
+              fontWeight="bold"
+              textAlign="center"
+              borderRadius="8px"
+              padding="4px"
+            >
+              #1
+            </Stack>
             <img src={`/sticker/스티커_적용법1.jpg`} width="100%" />
+            <Stack
+              bgcolor="#61986f"
+              width="40px"
+              color="white"
+              fontWeight="bold"
+              textAlign="center"
+              borderRadius="8px"
+              padding="4px"
+            >
+              #2
+            </Stack>
             <img src={`/sticker/스티커_적용법2.jpg`} width="100%" />
+            <Stack
+              bgcolor="#61986f"
+              width="40px"
+              color="white"
+              fontWeight="bold"
+              textAlign="center"
+              borderRadius="8px"
+              padding="4px"
+            >
+              #3
+            </Stack>
             <img src={`/sticker/스티커_적용법3.jpg`} width="100%" />
+            <Stack
+              bgcolor="#61986f"
+              width="40px"
+              color="white"
+              fontWeight="bold"
+              textAlign="center"
+              borderRadius="8px"
+              padding="4px"
+            >
+              #4
+            </Stack>
             <img src={`/sticker/스티커_적용법4.jpg`} width="100%" />
+
+            <Stack
+              bgcolor="#61986f"
+              width="80px"
+              color="white"
+              fontWeight="bold"
+              textAlign="center"
+              borderRadius="8px"
+              padding="4px"
+            >
+              #예시1
+            </Stack>
             <img src={`/sticker/단체샷_색칠.JPG`} width="100%" />
+
+            <Stack
+              bgcolor="#61986f"
+              width="80px"
+              color="white"
+              fontWeight="bold"
+              textAlign="center"
+              borderRadius="8px"
+              padding="4px"
+            >
+              #예시2
+            </Stack>
             <img src={`/sticker/단체샷_손글씨.JPG`} width="100%" />
+
+            <Stack
+              bgcolor="#61986f"
+              width="80px"
+              color="white"
+              fontWeight="bold"
+              textAlign="center"
+              borderRadius="8px"
+              padding="4px"
+            >
+              #예시3
+            </Stack>
             <img src={`/sticker/단체샷_외곽선.JPG`} width="100%" />
-            <Button variant="outlined">닫기</Button>
+            <Button variant="outlined" fullWidth>
+              닫기
+            </Button>
           </Stack>
         </Stack>
       )}
@@ -347,7 +384,7 @@ export default function JoyfulJourney() {
           alignItems="center"
           zIndex="1000"
           bgcolor="#00000077"
-          onClick={() => setShowSticker(0)}
+          onClick={() => setShowSticker(false)}
         >
           <Stack width="80%" position="relative">
             <Stack
@@ -363,10 +400,10 @@ export default function JoyfulJourney() {
               <br /> 인스타 스토리를 통해 네컷사진을 완성해보세요!
             </Stack>
             <Stack height="400px" bgcolor="#333" borderRadius="24px">
-              <img
-                width="100%"
-                src={`/${folderName[showSticker]}/${stickers[showSticker][currentImage]}`}
-              />
+              <Stack textAlign="right" padding="12px">
+                {currentImage + 1}/{stickers.length}
+              </Stack>
+              <img width="100%" src={`/sticker/${stickers[currentImage]}`} />
             </Stack>
             <Stack direction="row" justifyContent="space-around" padding="24px">
               <Stack
@@ -395,16 +432,14 @@ export default function JoyfulJourney() {
               </Stack>
               <Stack
                 bgcolor={
-                  currentImage === stickers[showSticker].length - 1
-                    ? "#aaa"
-                    : "white"
+                  currentImage === stickers.length - 1 ? "#aaa" : "white"
                 }
                 padding="12px"
                 borderRadius="12px"
                 fontSize="20px"
                 onClick={(e) => {
                   e.stopPropagation()
-                  if (currentImage === stickers[showSticker].length - 1) {
+                  if (currentImage === stickers.length - 1) {
                     return
                   }
                   setCurrentImage((pre) => pre + 1)
