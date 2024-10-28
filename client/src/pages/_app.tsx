@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }: any) {
   return (
     <>
       <Head>
-        <title>2024 새벽이슬 하계 수련회</title>
+        <title>2024 행복축제</title>
         <meta name="referrer" content="same-origin" />
         <meta
           http-equiv="Content-Security-Policy"

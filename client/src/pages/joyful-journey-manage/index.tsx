@@ -137,21 +137,8 @@ export default function JoyfulJourneyManege() {
     )
   }
 
-  if (!userData) {
-    return (
-      <Stack>
-        사용자 정보가 없습니다. <br /> 금준호 (010-8768-3842)로 연락주세요.
-      </Stack>
-    )
-  }
   return (
-    <Stack
-      style={{
-        height: "100vh",
-        width: "100vw",
-        overflowY: showLoginPopup ? "clip" : "unset",
-      }}
-    >
+    <Stack>
       {showLoginPopup ? (
         <KakaoLoginPopup />
       ) : (
@@ -164,7 +151,7 @@ export default function JoyfulJourneyManege() {
           }}
         >
           <Box>
-            {userData.village} 마을 / {userData.darak}
+            {userData?.village} 마을 / {userData?.darak}
           </Box>
           <Stack gap="8px" direction="row" alignItems="center">
             예상 인원:
@@ -189,6 +176,10 @@ export default function JoyfulJourneyManege() {
           <Button variant="outlined" onClick={saveData}>
             저장
           </Button>
+          <Box>
+            마을과 다락방 명이 잘못 나온다면, <br />
+            금준호(010-8768-3842)로 연락주세요
+          </Box>
         </Stack>
       )}
     </Stack>
