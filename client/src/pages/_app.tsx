@@ -8,6 +8,13 @@ import Script from "next/script"
 
 function MyApp({ Component, pageProps }: any) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
+  if (global.location) {
+    var useragt = navigator.userAgent.toLowerCase()
+    if (useragt.includes("kakao"))
+      global.location.href =
+        "kakaotalk://web/openExternal?url=" +
+        encodeURIComponent("https://iubns.net/joyful-journey/")
+  }
 
   return (
     <>
@@ -22,17 +29,9 @@ function MyApp({ Component, pageProps }: any) {
           name="viewport"
           content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
         />
-        <meta
-          name="title"
-          property="og:title"
-          content="2024 새벽이슬 하계 수련회"
-        />
-        <meta
-          name="description"
-          property="og:description"
-          content="너는 물 댄 동산 같겠고 &lt; 사 58 : 11 &gt;"
-        />
-        <meta name="image" property="og:image" content="top.jpg" />
+        <meta name="title" property="og:title" content="2024 행복축제" />
+        <meta name="description" property="og:description" content="" />
+        <meta name="image" property="og:image" content="/top.jpg" />
         <meta name="url" property="og:url" content="top.jpg" />
       </Head>
       <RecoilRoot>
