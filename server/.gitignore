@@ -4,3 +4,4 @@
 /node_modules
 .env
 ormconfig.json
+pnpm-lock.yaml

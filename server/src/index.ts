@@ -22,10 +22,12 @@ if (is_dev) {
   server = app
 } else {
   var privateKey = fs.readFileSync(
-    "/etc/letsencrypt/live/iubns.net/privkey.pem"
+    "/etc/letsencrypt/live/nuon.iubns.net/privkey.pem"
   )
-  var certificate = fs.readFileSync("/etc/letsencrypt/live/iubns.net/cert.pem")
-  var ca = fs.readFileSync("/etc/letsencrypt/live/iubns.net/chain.pem")
+  var certificate = fs.readFileSync(
+    "/etc/letsencrypt/live/nuon.iubns.net/cert.pem"
+  )
+  var ca = fs.readFileSync("/etc/letsencrypt/live/nuon.iubns.net/chain.pem")
   const credentials = { key: privateKey, cert: certificate, ca: ca }
 
   server = https.createServer(credentials, app)

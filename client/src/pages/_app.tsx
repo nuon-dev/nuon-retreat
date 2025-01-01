@@ -10,10 +10,11 @@ function MyApp({ Component, pageProps }: any) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
   if (global.location) {
     var useragt = navigator.userAgent.toLowerCase()
-    if (useragt.includes("kakao"))
+    if (useragt.includes("kakao")) {
       global.location.href =
         "kakaotalk://web/openExternal?url=" +
-        encodeURIComponent("https://iubns.net/joyful-journey/")
+        encodeURIComponent("https://nuon.iubns.net/joyful-journey/")
+    }
   }
 
   return (

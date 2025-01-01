@@ -1,11 +1,11 @@
 #var/www/html
 pnpm run out
-sftp iubns@112.145.135.65:/var/www/html << EOF
+sftp iubns@112.145.135.65:/var/www/nuon << EOF
 rm -R *
 put -r ./out/* ./
 EOF
 
-ssh iubns@112.145.135.65 << EOF
-cd /home/nuon-retreat
-sh start.sh
-EOF
+#ssh iubns@112.145.135.65 << EOF
+#cd /home/nuon
+#sh start.sh
+#EOF
