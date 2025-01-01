@@ -1,11 +1,11 @@
-import { Box, Stack } from "@mui/material"
+import { Stack } from "@mui/material"
 
 interface IPops {
   content: string
   time: string
 }
 
-export default function MyContent(props: IPops) {
+export default function MyChat(props: IPops) {
   return (
     <Stack
       mx="16px"
