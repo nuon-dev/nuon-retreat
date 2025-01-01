@@ -17,10 +17,15 @@ function MyApp({ Component, pageProps }: any) {
     }
   }
 
+  var title = "새벽이슬"
+  if (global.location?.pathname.includes("retreat")) {
+    title = "2025 겨울 수련회"
+  }
+
   return (
     <>
       <Head>
-        <title>2024 행복축제</title>
+        <title>{title}</title>
         <meta name="referrer" content="same-origin" />
         <meta
           http-equiv="Content-Security-Policy"
@@ -30,7 +35,7 @@ function MyApp({ Component, pageProps }: any) {
           name="viewport"
           content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
         />
-        <meta name="title" property="og:title" content="2024 행복축제" />
+        <meta name="title" property="og:title" content={title} />
         <meta name="description" property="og:description" content="" />
         <meta name="image" property="og:image" content="/top.jpg" />
         <meta name="url" property="og:url" content="top.jpg" />
