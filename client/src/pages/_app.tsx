@@ -13,7 +13,9 @@ function MyApp({ Component, pageProps }: any) {
     if (useragt.includes("kakao")) {
       global.location.href =
         "kakaotalk://web/openExternal?url=" +
-        encodeURIComponent("https://nuon.iubns.net/joyful-journey/")
+        encodeURIComponent(
+          `https://nuon.iubns.net/${global.location?.pathname}/`
+        )
     }
   }
 
