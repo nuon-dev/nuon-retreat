@@ -1,18 +1,15 @@
 import express, { Router } from "express"
 
 import authRouter from "./authRouter"
-import infoRouter from "./infoRouter"
-import adminRouter from "./adminRouter"
-import statusRouter from "./statusRouter"
+//import infoRouter from "./retreat/infoRouter"
+//import adminRouter from "./retreat/adminRouter"
 import cors from "cors"
-import { userDatabase } from "../model/dataSource"
 
 const router: Router = express.Router()
 
 router.use(cors())
 router.use("/auth", authRouter)
-router.use("/info", infoRouter)
-router.use("/admin", adminRouter)
-router.use("/status", statusRouter)
+//router.use("/info", infoRouter)
+//router.use("/admin", adminRouter)
 
 export default router

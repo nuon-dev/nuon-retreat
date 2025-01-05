@@ -2,7 +2,6 @@ import express from "express"
 import bodyParser from "body-parser"
 import apiRouter from "./routes"
 import dataSource, { userDatabase } from "./model/dataSource"
-import { deleteUser } from "./util"
 import fs from "fs"
 import https from "https"
 import cors from "cors"
@@ -36,22 +35,6 @@ if (is_dev) {
 server.listen(port, async () => {
   await Promise.all([dataSource.initialize()])
   //dataSource.dropDatabase()
-  const userList = await userDatabase.find({
-    relations: {
-      roomAssignment: true,
-      groupAssignment: true,
-      permissions: true,
-      inOutInfos: true,
-    },
-  })
-  const normalUser = userList.filter((user) =>
-    user.kakaoId.startsWith("normal")
-  )
-
-  const pro = normalUser.map(async (user) => {
-    return await deleteUser(user)
-  })
-  await Promise.all(pro)
   console.log("start server")
 })
 

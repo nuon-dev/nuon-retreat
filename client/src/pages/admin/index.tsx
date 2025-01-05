@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import { Stack } from "@mui/material"
 import { useEffect } from "react"
-import Header from "components/header"
+import Header from "components/AdminHeader"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import useUserData from "hooks/useUserData"

@@ -24,7 +24,7 @@ import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined
 import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined"
 import useUserData from "hooks/useUserData"
 
-export default function Header() {
+export default function AdminHeader() {
   const { getUserDataFromToken } = useUserData()
   const { push } = useRouter()
   const [isShowMenu, setShowMenu] = useState(false)
@@ -119,7 +119,7 @@ export default function Header() {
                 <ListItemIcon>
                   <PermIdentityOutlinedIcon fontSize="small" />
                 </ListItemIcon>
-                <ListItemText primary={"순원 정보 수정"} />
+                <ListItemText primary={"나의 순 정보 수정"} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>

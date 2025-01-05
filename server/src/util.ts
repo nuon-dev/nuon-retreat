@@ -9,6 +9,7 @@ import {
   userDatabase,
 } from "./model/dataSource"
 import { User } from "./entity/user"
+import express from "express"
 
 const env = dotenv.config().parsed || {}
 
@@ -71,15 +72,23 @@ export async function deleteUser(user: User) {
     return await permissionDatabase.delete(permission)
   })
   await Promise.all(permissionDelete)
-  const inoutInfoDelete = user.inOutInfos.map(async (info) => {
-    await attendInfoDatabase.update(
-      { rideCarInfo: { id: info.id } },
-      { rideCarInfo: null }
-    )
-    return await attendInfoDatabase.delete(info)
-  })
-  await Promise.all(inoutInfoDelete)
+
   await userDatabase.delete({ id: user.id })
-  await groupAssignmentDatabase.delete({ id: user.groupAssignment.id })
-  await roomAssignmentDatabase.delete({ id: user.roomAssignment.id })
+}
+
+export async function getUserFromToken(req: express.Request) {
+  const token = req.header("token")
+  return await userDatabase.findOne({
+    where: {
+      token,
+    },
+  })
+}
+
+export async function hasPermissionFromReq(
+  req: express.Request,
+  permissionType: PermissionType
+) {
+  const token = req.header("token")
+  return await hasPermission(token, permissionType)
 }

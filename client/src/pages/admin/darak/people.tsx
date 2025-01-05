@@ -1,6 +1,6 @@
 import { type Group } from "@server/entity/group"
 import { Box, Stack } from "@mui/material"
-import Header from "components/header"
+import Header from "components/AdminHeader"
 import { useEffect, useMemo, useState } from "react"
 import { get, post } from "pages/api"
 

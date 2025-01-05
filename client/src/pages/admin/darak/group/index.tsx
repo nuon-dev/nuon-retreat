@@ -1,6 +1,6 @@
 import { type Group } from "@server/entity/group"
 import { Button, Card, Stack } from "@mui/material"
-import Header from "components/header"
+import Header from "components/AdminHeader"
 import { MouseEvent, useEffect, useState } from "react"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"

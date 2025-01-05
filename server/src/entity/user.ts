@@ -3,18 +3,9 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
-  OneToOne,
-  JoinColumn,
-  ViewEntity,
-  DataSource,
-  ViewColumn,
   ManyToOne,
 } from "typeorm"
-import { GroupAssignment } from "./groupAssignment"
-import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
-import { RoomAssignment } from "./roomAssignment"
-import { CurrentStatus, HowToMove, MoveType } from "./types"
 import { Group } from "./group"
 
 @Entity()
@@ -29,10 +20,10 @@ export class User {
   name: string
 
   @Column({ nullable: true })
-  age: number
+  yearOfBirth: number
 
   @Column({ nullable: true })
-  sex: string
+  gender: string
 
   @Column({ nullable: true })
   phone: string
@@ -42,25 +33,11 @@ export class User {
   })
   etc?: string
 
-  @Column({ nullable: true, default: 0 })
-  deposit: boolean
-
   @Column({ nullable: true })
   token: string
 
   @Column({ nullable: true })
   expire: Date
-
-  @Column({ nullable: true, default: 0 })
-  isCancel: boolean
-
-  @Column({
-    nullable: true,
-  })
-  howToGo: HowToMove
-
-  @Column({ nullable: true })
-  village: string
 
   @Column({ nullable: true })
   darak: string
@@ -68,32 +45,12 @@ export class User {
   @Column({ nullable: true, default: 0 })
   isSuperUser: boolean
 
-  @Column({ nullable: true, default: 0 })
-  isOutAtThursday: string
-
-  @Column({ nullable: true, default: CurrentStatus.null })
-  currentStatus: CurrentStatus
-
   @Column()
   createAt: Date
-
-  @Column({ default: HowToMove.together })
-  howToLeave: HowToMove
 
   @OneToMany(() => Permission, (permission) => permission.user)
   permissions: Permission[]
 
-  @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.user)
-  inOutInfos: InOutInfo[]
-
   @ManyToOne(() => Group, (group) => group.users)
   groups: Group
-
-  @OneToOne(() => RoomAssignment)
-  @JoinColumn()
-  roomAssignment: RoomAssignment
-
-  @OneToOne(() => GroupAssignment)
-  @JoinColumn()
-  groupAssignment: GroupAssignment
 }
