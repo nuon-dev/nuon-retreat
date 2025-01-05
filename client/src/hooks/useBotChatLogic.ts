@@ -1,6 +1,7 @@
 import { ChatContent } from "pages/retreat"
 import { useEffect, useState } from "react"
 import useUserData from "./useUserData"
+import { User } from "@entity/user"
 
 interface IPops {
   addChat: (chat: ChatContent) => void
@@ -18,7 +19,12 @@ export enum EditContent {
 }
 export default function useBotChatLogic({ addChat }: IPops) {
   const [editContent, setEditContent] = useState<EditContent>(EditContent.none)
-  const { getUserDataFromToken, getUserDataFromKakaoLogin } = useUserData()
+  const {
+    getUserDataFromToken,
+    getUserDataFromKakaoLogin,
+    editUserInformation,
+    checkMissedUserInformation,
+  } = useUserData()
 
   useEffect(() => {
     init()
@@ -52,6 +58,11 @@ export default function useBotChatLogic({ addChat }: IPops) {
       type: "bot",
       content: `또 오셨군요!. ${userData.name}님이 환영합니다!`,
     })
+    const isMissed = checkMissedUserInformationAndEdit(userData)
+    if (isMissed) {
+      return
+    }
+    whatDoYouWantToDo()
   }
 
   async function login() {
@@ -75,6 +86,46 @@ export default function useBotChatLogic({ addChat }: IPops) {
       type: "bot",
       content: `어! 저는 당신을 알아요! ${userData.name}님이시죠? 환영합니다!`,
     })
+    const isMissed = checkMissedUserInformationAndEdit(userData)
+    if (isMissed) {
+      return
+    }
+    whatDoYouWantToDo()
+  }
+
+  function checkMissedUserInformationAndEdit(userInformation: User) {
+    const missedContent = checkMissedUserInformation(userInformation)
+    if (missedContent !== EditContent.none) {
+      addChat({
+        type: "bot",
+        content: `몇가지 정보가 누락되어 있어요.`,
+      })
+    }
+    switch (missedContent) {
+      case EditContent.none:
+        return false
+      case EditContent.name:
+        editUserName()
+        break
+      case EditContent.age:
+        editUserAge()
+        break
+      case EditContent.sex:
+        editUserSex()
+        break
+      case EditContent.phone:
+        editUserPhone()
+        break
+      case EditContent.none:
+        break
+      default:
+        addChat({
+          type: "bot",
+          content: `엇! 개발자의 실수가 있어요. 관리자에게 문의하세요!`,
+        })
+        break
+    }
+    return true
   }
 
   function editUserName() {
@@ -105,6 +156,8 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: "남자",
             })
+            editUserInformation("sex", "man")
+
             editUserPhone()
           },
         },
@@ -115,6 +168,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: "여자",
             })
+            editUserInformation("sex", "woman")
             editUserPhone()
           },
         },
@@ -131,5 +185,39 @@ export default function useBotChatLogic({ addChat }: IPops) {
     setEditContent(EditContent.phone)
   }
 
-  return { editContent, editUserPhone, editUserSex, editUserAge }
+  function savedUserInformation() {
+    addChat({
+      type: "bot",
+      content: `모든 정보를 저장했어요!`,
+    })
+    setEditContent(EditContent.none)
+  }
+
+  function showUserInformation() {}
+
+  function whatDoYouWantToDo() {
+    addChat({
+      type: "bot",
+      content: `무엇을 도와드릴까요?`,
+      buttons: [
+        {
+          content: "수련회 접수 내용 확인",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: " 수련회 접수 내용 확인",
+            })
+            showUserInformation()
+          },
+        },
+      ],
+    })
+  }
+  return {
+    editContent,
+    editUserPhone,
+    editUserSex,
+    editUserAge,
+    savedUserInformation,
+  }
 }

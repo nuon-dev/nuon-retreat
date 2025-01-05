@@ -3,8 +3,6 @@
   src: url("../font/PretendardVariable.ttf");
 }
 
-.drawingBuffer {
-  position: absolute;
-  left: 0;
-  top: 0;
+body {
+  background-color: rgb(55, 38, 143);
 }

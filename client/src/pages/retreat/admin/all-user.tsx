@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@mui/material"
 import { User } from "@entity/user"
-import { get } from "../../pages/api"
+import { get } from "../../../pages/api"
 import { InOutInfo } from "@entity/inOutInfo"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"

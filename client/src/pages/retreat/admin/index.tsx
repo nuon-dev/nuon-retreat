@@ -1,4 +1,4 @@
-import { post } from "../../pages/api"
+import { post } from "../../../pages/api"
 import { useEffect, useState } from "react"
 import { Button, Stack } from "@mui/material/index"
 import { useRouter } from "next/router"
@@ -12,7 +12,7 @@ function admin() {
   const [isLogin, setIsLogin] = useState(false)
 
   const goToPage = (path: string) => {
-    router.push(`/admin${path}`)
+    router.push(`/retreat/admin${path}`)
   }
 
   useEffect(() => {
