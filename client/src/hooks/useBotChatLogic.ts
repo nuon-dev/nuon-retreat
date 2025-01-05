@@ -77,6 +77,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
         content: "카카오 로그인을 실패했어요. (ㅠ.ㅠ) 관리자에게 문의 하세요!",
         type: "bot",
       })
+      return
     }
     if (!userData.name) {
       editUserName()

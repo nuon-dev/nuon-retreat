@@ -1,55 +1,37 @@
 import express from "express"
-import { PermissionType } from "../../entity/types"
-import { groupAssignmentDatabase, userDatabase } from "../../model/dataSource"
-import { hasPermission } from "../../util"
-import { IsNull, Not } from "typeorm"
+import { groupDatabase } from "../../model/dataSource"
 
 const router = express.Router()
 
-router.get("/get-group-formation", async (req, res) => {
-  const token = req.header("token")
-  if (
-    false === (await hasPermission(token, PermissionType.showGroupAssignment))
-  ) {
-    res.sendStatus(401)
-    return
-  }
-
-  const userList = await userDatabase.find({
-    select: {
-      id: true,
-      name: true,
-      age: true,
-      sex: true,
-      etc: true,
-      inOutInfos: true,
-    },
-    relations: {
-      groupAssignment: true,
-      inOutInfos: true,
-    },
-    where: {
-      name: Not(IsNull()),
-      isCancel: false,
-    },
-  })
-
-  res.send(userList.filter((user) => user.name && user.name.length > 0))
+router.get("/", async (req, res) => {
+  const groupList = await groupDatabase.find()
+  res.send(groupList)
 })
 
-router.post("/set-group", async (req, res) => {
-  const token = req.header("token")
-  if (false === (await hasPermission(token, PermissionType.groupManage))) {
-    res.sendStatus(401)
-    return
-  }
-
-  const data = req.body
-  const groupAssignment = data.groupAssignment
-
-  await groupAssignmentDatabase.save(groupAssignment)
+router.post("/", async (req, res) => {
+  const group = req.body
+  await groupDatabase.save(group)
   res.send({ result: "success" })
-  return
+})
+
+router.put("/", async (req, res) => {
+  const group = req.body
+  await groupDatabase.save(group)
+  res.send({ result: "success" })
+})
+
+router.get("/user-list/:groupId", async (req, res) => {
+  const { groupId } = req.params
+
+  const group = await groupDatabase.findOne({
+    where: {
+      id: parseInt(groupId),
+    },
+    relations: {
+      users: true,
+    },
+  })
+  res.send(group.users)
 })
 
 export default router

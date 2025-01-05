@@ -36,6 +36,7 @@ export async function get(path: string) {
   const response = await fetch(`${SERVER_FULL_PATH}${path}`, {
     headers: new Headers({
       token,
+      method: "GET",
     }),
   })
   return await response.json()

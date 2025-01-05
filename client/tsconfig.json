@@ -21,8 +21,8 @@
     "experimentalDecorators": true,
     "paths": {
       "@node_modules/*": ["../node_modules/*"],
-      "@entity/*": ["./entity/*"]
-      //"@entity/*": ["../../server/src/entity/*"]
+      "@entity/*": ["./entity/*"],
+      "@server/entity/*": ["../../server/src/entity/*"]
     },
     "resolveJsonModule": true
   },

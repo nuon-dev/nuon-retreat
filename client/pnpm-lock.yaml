@@ -17,6 +17,9 @@ importers:
       '@emotion/styled':
         specifier: 11.10.4
         version: 11.10.4(@babel/core@7.25.2)(@emotion/react@11.10.4(@babel/core@7.25.2)(@types/react@17.0.19)(react@18.2.0))(@types/react@17.0.19)(react@18.2.0)
+      '@mui/icons-material':
+        specifier: ^6.3.1
+        version: 6.3.1(@mui/material@5.10.4(@emotion/react@11.10.4(@babel/core@7.25.2)(@types/react@17.0.19)(react@18.2.0))(@emotion/styled@11.10.4(@babel/core@7.25.2)(@emotion/react@11.10.4(@babel/core@7.25.2)(@types/react@17.0.19)(react@18.2.0))(@types/react@17.0.19)(react@18.2.0))(@types/react@17.0.19)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@types/react@17.0.19)(react@18.2.0)
       '@mui/material':
         specifier: 5.10.4
         version: 5.10.4(@emotion/react@11.10.4(@babel/core@7.25.2)(@types/react@17.0.19)(react@18.2.0))(@emotion/styled@11.10.4(@babel/core@7.25.2)(@emotion/react@11.10.4(@babel/core@7.25.2)(@types/react@17.0.19)(react@18.2.0))(@types/react@17.0.19)(react@18.2.0))(@types/react@17.0.19)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -35,6 +38,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      mui:
+        specifier: ^0.0.1
+        version: 0.0.1
       next:
         specifier: 12.2.5
         version: 12.2.5(@babel/core@7.25.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -705,6 +711,10 @@ packages:
     resolution: {integrity: sha512-7dRy4DwXwtzBrPbZflqxnvfxLF8kdZXPkhymtDeFoFqE6ldzjQFgYTtYIFARcLEYDrqfBfYcZt1WqFxRoyC9Rw==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/runtime@7.26.0':
+    resolution: {integrity: sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/template@7.25.0':
     resolution: {integrity: sha512-aOOgh1/5XzKvg1jvVz7AVrx2piJ2XBi227DHmbY6y+bM9H2FlN+IfecYu4Xl0cNiiVejlsCri89LUsbj8vJD9Q==}
     engines: {node: '>=6.9.0'}
@@ -839,6 +849,17 @@ packages:
 
   '@mui/core-downloads-tracker@5.16.6':
     resolution: {integrity: sha512-kytg6LheUG42V8H/o/Ptz3olSO5kUXW9zF0ox18VnblX6bO2yif1FPItgc3ey1t5ansb1+gbe7SatntqusQupg==}
+
+  '@mui/icons-material@6.3.1':
+    resolution: {integrity: sha512-nJmWj1PBlwS3t1PnoqcixIsftE+7xrW3Su7f0yrjPw4tVjYrgkhU0hrRp+OlURfZ3ptdSkoBkalee9Bhf1Erfw==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      '@mui/material': ^6.3.1
+      '@types/react': ^17.0.0 || ^18.0.0 || ^19.0.0
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@mui/material@5.10.4':
     resolution: {integrity: sha512-uwupjunU3p8XxZU4f2zF1GYlwB9GDxW1H05BMDPSh0u+37yLxuQDMMxwQQPUo9jSA5Y22/eR4Y71ScxKU89QHg==}
@@ -2157,6 +2178,9 @@ packages:
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
+
+  mui@0.0.1:
+    resolution: {integrity: sha512-iB9zfxsJBcMkZ/SY6X+HGSPr4fftCZIQ76ZMH8iSMfVkidVzRtZlLW2gbWXUe+IMcj8JLv1p+dGKvPVlgtiocA==}
 
   nanoid@3.3.7:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
@@ -3555,6 +3579,10 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
+  '@babel/runtime@7.26.0':
+    dependencies:
+      regenerator-runtime: 0.14.1
+
   '@babel/template@7.25.0':
     dependencies:
       '@babel/code-frame': 7.24.7
@@ -3739,6 +3767,14 @@ snapshots:
       '@types/react': 17.0.19
 
   '@mui/core-downloads-tracker@5.16.6': {}
+
+  '@mui/icons-material@6.3.1(@mui/material@5.10.4(@emotion/react@11.10.4(@babel/core@7.25.2)(@types/react@17.0.19)(react@18.2.0))(@emotion/styled@11.10.4(@babel/core@7.25.2)(@emotion/react@11.10.4(@babel/core@7.25.2)(@types/react@17.0.19)(react@18.2.0))(@types/react@17.0.19)(react@18.2.0))(@types/react@17.0.19)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@types/react@17.0.19)(react@18.2.0)':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      '@mui/material': 5.10.4(@emotion/react@11.10.4(@babel/core@7.25.2)(@types/react@17.0.19)(react@18.2.0))(@emotion/styled@11.10.4(@babel/core@7.25.2)(@emotion/react@11.10.4(@babel/core@7.25.2)(@types/react@17.0.19)(react@18.2.0))(@types/react@17.0.19)(react@18.2.0))(@types/react@17.0.19)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+    optionalDependencies:
+      '@types/react': 17.0.19
 
   '@mui/material@5.10.4(@emotion/react@11.10.4(@babel/core@7.25.2)(@types/react@17.0.19)(react@18.2.0))(@emotion/styled@11.10.4(@babel/core@7.25.2)(@emotion/react@11.10.4(@babel/core@7.25.2)(@types/react@17.0.19)(react@18.2.0))(@types/react@17.0.19)(react@18.2.0))(@types/react@17.0.19)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
@@ -5232,6 +5268,8 @@ snapshots:
   ms@2.1.2: {}
 
   ms@2.1.3: {}
+
+  mui@0.0.1: {}
 
   nanoid@3.3.7: {}
 

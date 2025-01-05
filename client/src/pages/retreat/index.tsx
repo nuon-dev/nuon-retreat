@@ -2,11 +2,11 @@
 
 import { Stack } from "@mui/material"
 import { useEffect, useState } from "react"
-import BotChat, { ChatButton } from "components/BotChat"
-import MyChat from "components/MyChat"
+import BotChat, { ChatButton } from "components/retreat/BotChat"
+import MyChat from "components/retreat/MyChat"
 import dayjs from "dayjs"
 import useBotChatLogic, { EditContent } from "hooks/useBotChatLogic"
-import InputText from "components/InputText"
+import InputText from "components/retreat/InputText"
 import useUserData from "hooks/useUserData"
 
 export interface Chat extends ChatContent {

@@ -8,12 +8,14 @@ import {
   ViewEntity,
   DataSource,
   ViewColumn,
+  ManyToOne,
 } from "typeorm"
 import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
 import { CurrentStatus, HowToMove, MoveType } from "./types"
+import { Group } from "./group"
 
 @Entity()
 export class User {
@@ -83,6 +85,9 @@ export class User {
 
   @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.user)
   inOutInfos: InOutInfo[]
+
+  @ManyToOne(() => Group, (group) => group.users)
+  groups: Group
 
   @OneToOne(() => RoomAssignment)
   @JoinColumn()

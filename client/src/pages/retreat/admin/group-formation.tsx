@@ -38,7 +38,7 @@ function GroupFormation() {
   }, [])
 
   function fetchData() {
-    get("/admin/get-group-formation")
+    get("/admin/get-retreat-group-formation")
       .then((response: Array<User>) => {
         const unassignedUserList = response
           .filter((user) => user.groupAssignment.groupNumber === 0)
@@ -158,7 +158,7 @@ function GroupFormation() {
       return
     }
     selectedUser.groupAssignment.groupNumber = groupNumber
-    await post("/admin/set-group", {
+    await post("/admin/set-retreat-group", {
       groupAssignment: selectedUser.groupAssignment,
     })
     fetchData()

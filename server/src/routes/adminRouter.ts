@@ -5,10 +5,11 @@ import { PermissionType } from "../entity/types"
 import { Permission } from "../entity/permission"
 
 import RoomRouter from "./admin/room"
-import GroupRouter from "./admin/group"
+import GroupRouter from "./admin/retreatGroup"
 import CarRouter from "./admin/car"
 import DashBoard from "./admin/dashBoard"
 import Deposit from "./admin/deposit"
+import Group from "./admin/group"
 import EditUserData from "./admin/edit-user-data"
 import { IsNull, Not } from "typeorm"
 
@@ -125,5 +126,6 @@ router.use("/", CarRouter)
 router.use("/", DashBoard)
 router.use("/", Deposit)
 router.use("/", EditUserData)
+router.use("/group", Group)
 
 export default router

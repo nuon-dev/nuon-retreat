@@ -5,7 +5,7 @@ import infoRouter from "./infoRouter"
 import adminRouter from "./adminRouter"
 import statusRouter from "./statusRouter"
 import cors from "cors"
-import { joyfulJourneyManageDatabase, userDatabase } from "../model/dataSource"
+import { userDatabase } from "../model/dataSource"
 
 const router: Router = express.Router()
 

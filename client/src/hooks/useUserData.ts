@@ -14,7 +14,7 @@ export default function useUserData() {
   const [userInformation, setUserInformation] =
     useRecoilState(UserInformationAtom)
 
-  async function getUserDataFromToken() {
+  async function getUserDataFromToken(): Promise<User | undefined> {
     const token = localStorage.getItem("token")
     if (!token) {
       return undefined
@@ -29,7 +29,7 @@ export default function useUserData() {
     return undefined
   }
 
-  async function getUserDataFromKakaoLogin() {
+  async function getUserDataFromKakaoLogin(): Promise<User | undefined> {
     try {
       var kakaoToken = await getKakaoToken()
       const { token } = await post("/auth/receipt-record", {
