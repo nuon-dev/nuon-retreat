@@ -1,19 +1,18 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { PermissionType } from "./types";
-import { User } from "./user";
-
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+import { PermissionType } from "./types"
+import { User } from "./user"
 
 @Entity()
 export class Permission {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @ManyToOne(() => User, (user) => user.permissions)
-    user: User
+  @ManyToOne(() => User, (user) => user.permissions)
+  user: User
 
-    @Column()
-    permissionType: PermissionType
+  @Column()
+  permissionType: PermissionType
 
-    @Column()
-    have: boolean
+  @Column()
+  have: boolean
 }

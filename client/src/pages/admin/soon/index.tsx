@@ -18,11 +18,9 @@ import { get } from "pages/api"
 const emptyUser = {
   id: 0,
   name: "",
-  age: 0,
+  yearOfBirth: 0,
   phone: "",
-  village: "",
-  darak: "",
-  sex: "man",
+  gender: "man",
   etc: "",
 } as User
 
@@ -35,7 +33,7 @@ export default function Soon() {
   }, [])
 
   async function fetchData() {
-    const data = await get("/admin/get-all-user")
+    const data = await get("/admin/soon/get-all-user")
     setUserList(data)
   }
 
@@ -59,7 +57,7 @@ export default function Soon() {
                 return (
                   <TableRow onClick={() => setSelectedUsers(user)}>
                     <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.age}</TableCell>
+                    <TableCell>{user.gender}</TableCell>
                     <TableCell>{user.phone}</TableCell>
                   </TableRow>
                 )
@@ -81,7 +79,7 @@ export default function Soon() {
           </Stack>
           <Stack direction="row" alignItems="center" gap="12px">
             <Box>생년 : </Box>
-            <Input value={selectedUser.age} />
+            <Input value={selectedUser.yearOfBirth} />
           </Stack>
           <Stack direction="row" alignItems="center" gap="12px">
             <Box>연락처 : </Box>
@@ -89,7 +87,7 @@ export default function Soon() {
           </Stack>{" "}
           <Stack direction="row" alignItems="center" gap="12px">
             <Box>성별 : </Box>
-            <Input value={selectedUser.sex} />
+            <Input value={selectedUser.gender} />
           </Stack>
           <Stack direction="row" alignItems="center" gap="12px">
             <Box>기타사항 : </Box>
@@ -97,11 +95,11 @@ export default function Soon() {
           </Stack>
           <Stack direction="row" alignItems="center" gap="12px">
             <Box>마을 : </Box>
-            <Input disabled value={selectedUser.village} />
+            <Input disabled value={""} />
           </Stack>
           <Stack direction="row" alignItems="center" gap="12px">
             <Box>다락방 : </Box>
-            <Input disabled value={selectedUser.darak} />
+            <Input disabled value={""} />
           </Stack>
         </Stack>
       </Stack>

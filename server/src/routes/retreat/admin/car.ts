@@ -1,8 +1,8 @@
 import express from "express"
-import { PermissionType } from "../../entity/types"
-import { attendInfoDatabase, userDatabase } from "../../model/dataSource"
-import { hasPermission } from "../../util"
-import { InOutInfo } from "../../entity/inOutInfo"
+import { PermissionType } from "../../../entity/types"
+import { attendInfoDatabase, userDatabase } from "../../../model/dataSource"
+import { hasPermission } from "../../../util"
+import { InOutInfo } from "../../../entity/inOutInfo"
 import { IsNull, Not } from "typeorm"
 
 const router = express.Router()

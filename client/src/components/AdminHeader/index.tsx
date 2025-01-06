@@ -46,28 +46,12 @@ export default function AdminHeader() {
     setOpen(value)
   }
 
-  function goToEditMyData() {
-    push("/remove/user/me")
-  }
-
   function goToHome() {
     push("/admin")
   }
 
-  function goToEditMyGroup() {
-    push("/admin/soon")
-  }
-
   function goToEditAllSoonList() {
-    push("/remove/soon/all-list")
-  }
-
-  function goToManageGroup() {
-    push("/remove/group/manage-group")
-  }
-
-  function goToSoonMe() {
-    push("/remove/soon/me")
+    push("/admin/soon")
   }
 
   function goToDarakGroupManagement() {
@@ -106,38 +90,6 @@ export default function AdminHeader() {
           onClick={() => toggleDrawer(false)}
         >
           <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={goToEditMyData}>
-                <ListItemIcon>
-                  <PermIdentityOutlinedIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary={"나의 정보 수정"} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton onClick={goToSoonMe}>
-                <ListItemIcon>
-                  <PermIdentityOutlinedIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary={"나의 순 정보 수정"} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton onClick={goToEditMyGroup}>
-                <ListItemIcon>
-                  <PeopleOutlineOutlinedIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary={"순원 정보 관리"} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton onClick={goToManageGroup}>
-                <ListItemIcon>
-                  <ApartmentIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary={"다락방 관리"} />
-              </ListItemButton>
-            </ListItem>
             <ListItem disablePadding>
               <ListItemButton onClick={goToEditAllSoonList}>
                 <ListItemIcon>

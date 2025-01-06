@@ -1,17 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 export class RoomAssignment {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @Column({
-        default: 0
-    })
-    roomNumber: number
+  @Column({
+    default: 0,
+  })
+  roomNumber: number
 
-    @Column({
-        default: true
-    })
-    isUpdated: boolean
+  @Column({
+    default: true,
+  })
+  isUpdated: boolean
 }

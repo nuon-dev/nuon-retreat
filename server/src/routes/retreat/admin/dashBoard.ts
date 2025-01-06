@@ -1,19 +1,19 @@
 import express from "express"
-import { HowToMove, InOutType } from "../../entity/types"
-import { attendInfoDatabase, userDatabase } from "../../model/dataSource"
+import { HowToMove, InOutType } from "../../../entity/types"
+import { attendInfoDatabase, userDatabase } from "../../../model/dataSource"
 import { IsNull, Not } from "typeorm"
 
 const router = express.Router()
 
 router.get("/get-attendee-status", async (req, res) => {
   const countOfAllUser = await userDatabase.count({
-    where: { name: Not(IsNull()), isCancel: false },
+    where: { name: Not(IsNull()) },
   })
   const countOfMan = await userDatabase.count({
-    where: { sex: "man", name: Not(IsNull()), isCancel: false },
+    where: { gender: "man", name: Not(IsNull()) },
   })
   const countOfWoman = await userDatabase.count({
-    where: { sex: "woman", name: Not(IsNull()), isCancel: false },
+    where: { gender: "woman", name: Not(IsNull()) },
   })
   const countOfGoTogether = await userDatabase.count({
     where: {

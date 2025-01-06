@@ -1,7 +1,7 @@
 import express from "express"
-import { hasPermission } from "../../util"
-import { PermissionType } from "../../entity/types"
-import { attendInfoDatabase, userDatabase } from "../../model/dataSource"
+import { hasPermission } from "../../../../src/util"
+import { PermissionType } from "../../../entity/types"
+import { attendInfoDatabase, userDatabase } from "../../../model/dataSource"
 
 const router = express.Router()
 
