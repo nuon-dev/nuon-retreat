@@ -8,7 +8,7 @@ import {
 } from "@mui/material"
 import { InOutInfo } from "@entity/inOutInfo"
 import { User } from "@entity/user"
-import { post } from "../../../pages/api"
+import { post } from "../../pages/api"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import InOutFrom from "./InOutForm"
 import { NotificationMessage } from "state/notification"

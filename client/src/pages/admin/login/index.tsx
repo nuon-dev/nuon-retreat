@@ -1,5 +1,5 @@
-import { Button } from "@node_modules/@mui/material"
-import { useRouter } from "@node_modules/next/router"
+import { Button } from "@mui/material"
+import { useRouter } from "next/router"
 import useKakaoHook from "kakao"
 import { post } from "pages/api"
 
