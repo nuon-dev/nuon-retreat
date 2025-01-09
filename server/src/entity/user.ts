@@ -53,5 +53,5 @@ export class User {
   permissions: Permission[]
 
   @ManyToOne(() => Group, (group) => group.users)
-  groups: Group
+  group: Group | null
 }

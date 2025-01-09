@@ -78,7 +78,7 @@ export default function GroupComponent() {
       setSelectedGroup(undefined)
       return
     }
-    selectedGroup.parentId = parentGroup.id
+    selectedGroup.parent = parentGroup
     await saveGroup(selectedGroup)
     setSelectedGroup(undefined)
     fetchData()
@@ -92,15 +92,16 @@ export default function GroupComponent() {
 
   function checkLoopReference(checkGroup: Group, parentId: number): boolean {
     if (checkGroup.id === parentId) return false
-    const childList = groupList.filter(
-      (group) => group.parentId === checkGroup.id
-    )
+    const childList = groupList.filter((group) => {
+      if (!group.parent) return false
+      group.parent.id === checkGroup.id
+    })
     return childList.every((child) => checkLoopReference(child, parentId))
   }
 
   async function resetParent() {
     if (!selectedGroup) return
-    selectedGroup.parentId = 0
+    selectedGroup.parent = null
     await saveGroup(selectedGroup)
     setSelectedGroup(undefined)
     fetchData()
@@ -144,13 +145,14 @@ export default function GroupComponent() {
               setIsGroupNameEditMode(true)
             }}
             onClick={(e) => e.stopPropagation()}
-            borderRadius="4px"
-            border="1px solid #ccc"
+            borderBottom="1px solid #ccc"
             padding="4px"
+            textAlign="center"
           >
             {isGroupNameEditMode && clickedGroup?.id === rootGroup.id ? (
               <Input
                 value={clickedGroupName}
+                autoFocus
                 onChange={(e) => {
                   setClickedGroupName(e.target.value)
                 }}
@@ -160,9 +162,9 @@ export default function GroupComponent() {
             )}
           </Stack>
           {editMode === EditMode.All && (
-            <Stack gap="4px">
+            <Stack gap="8px" p="4px">
               {groupList
-                .filter((group) => group.parentId === rootGroup.id)
+                .filter((group) => group.parent?.id === rootGroup.id)
                 .map((group) => GroupRecursion(group, depth + 1))}
             </Stack>
           )}
@@ -238,7 +240,7 @@ export default function GroupComponent() {
         </Stack>
       </Stack>
       <Stack
-        p="4px"
+        p="8px"
         gap="12px"
         display="flex"
         direction="row"
@@ -256,8 +258,8 @@ export default function GroupComponent() {
       >
         {groupList
           .filter((group) => {
-            if (groupStack.length === 0) return !group.parentId
-            return group.parentId === groupStack[groupStack.length - 1].id
+            if (groupStack.length === 0) return !group.parent
+            return group.parent?.id === groupStack[groupStack.length - 1].id
           })
           .map((group) => GroupRecursion(group))}
         {selectedGroup &&

@@ -1,10 +1,15 @@
 import express from "express"
-import { groupDatabase } from "../../model/dataSource"
+import { groupDatabase, userDatabase } from "../../model/dataSource"
+import { IsNull } from "typeorm"
 
 const router = express.Router()
 
 router.get("/", async (req, res) => {
-  const groupList = await groupDatabase.find()
+  const groupList = await groupDatabase.find({
+    relations: {
+      parent: true,
+    },
+  })
   res.send(groupList)
 })
 
@@ -29,15 +34,34 @@ router.delete("/", async (req, res) => {
 router.get("/user-list/:groupId", async (req, res) => {
   const { groupId } = req.params
 
-  const group = await groupDatabase.findOne({
+  const groupList = await groupDatabase.find({
     where: {
-      id: parseInt(groupId),
+      parent: {
+        id: parseInt(groupId),
+      },
     },
     relations: {
-      users: true,
+      users: {
+        group: true,
+      },
     },
   })
-  res.send(group.users)
+  res.send(groupList)
+})
+
+router.get("/no-group-user-list", async (req, res) => {
+  const userList = await userDatabase.find({
+    where: {
+      group: IsNull(),
+    },
+  })
+  res.send(userList)
+})
+
+router.post("/set-user", async (req, res) => {
+  const { groupId, userId } = req.body
+  await userDatabase.update(userId, { group: groupId })
+  res.send({ result: "success" })
 })
 
 export default router

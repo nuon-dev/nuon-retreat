@@ -9,26 +9,21 @@ import {
 } from "typeorm"
 import { User } from "./user"
 
-export enum GroupType {
-  DARAKBANG = "DARAKBANG",
-  VILLAGE = "VILLAGE",
-}
-
 @Entity()
 export class Group {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column({ nullable: true })
-  parentId: number
+  @ManyToOne(() => Group, (group) => group.children, { nullable: true })
+  parent: Group | null
+
+  @OneToMany(() => Group, (group) => group.parent)
+  children: Group[]
 
   @Column()
   name: string
 
-  @Column({ default: "DARAKBANG" })
-  groupType: GroupType
-
-  @OneToMany(() => Group, (group) => group.parentId)
+  @OneToMany(() => User, (user) => user.group)
   users: User[]
 
   @CreateDateColumn({
