@@ -4,6 +4,7 @@ import {
   Column,
   OneToMany,
   ManyToOne,
+  CreateDateColumn,
 } from "typeorm"
 import { Permission } from "./permission"
 import { Group } from "./group"
@@ -13,7 +14,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({ nullable: true })
   kakaoId: string
 
   @Column({ nullable: true })
@@ -23,7 +24,7 @@ export class User {
   yearOfBirth: number
 
   @Column({ nullable: true })
-  gender: string
+  gender: "man" | "woman"
 
   @Column({ nullable: true })
   phone: string
@@ -39,13 +40,13 @@ export class User {
   @Column({ nullable: true })
   expire: Date
 
-  @Column({ nullable: true })
-  darak: string
-
   @Column({ nullable: true, default: 0 })
   isSuperUser: boolean
 
-  @Column()
+  @CreateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+  })
   createAt: Date
 
   @OneToMany(() => Permission, (permission) => permission.user)

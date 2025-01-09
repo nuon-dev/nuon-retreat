@@ -1,3 +1,4 @@
 .group_name:hover {
   background-color: seashell;
+  border: 1px solid #11f !important;
 }

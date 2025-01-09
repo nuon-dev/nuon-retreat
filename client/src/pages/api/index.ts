@@ -41,3 +41,29 @@ export async function get(path: string) {
   })
   return await response.json()
 }
+
+export async function put(path: string, data: any) {
+  const token = localStorage.getItem("token") || ""
+  const response = await fetch(`${SERVER_FULL_PATH}${path}`, {
+    method: "PUT",
+    headers: new Headers({
+      "Content-Type": "application/json",
+      token,
+    }),
+    body: JSON.stringify(data),
+  })
+  return await response.json()
+}
+
+export async function dele(path: string, data: any) {
+  const token = localStorage.getItem("token") || ""
+  const response = await fetch(`${SERVER_FULL_PATH}${path}`, {
+    method: "DELETE",
+    headers: new Headers({
+      "Content-Type": "application/json",
+      token,
+    }),
+    body: JSON.stringify(data),
+  })
+  return await response.json()
+}

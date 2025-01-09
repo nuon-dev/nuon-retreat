@@ -25,9 +25,6 @@ export class Group {
   @Column()
   name: string
 
-  @Column()
-  description: string
-
   @Column({ default: "DARAKBANG" })
   groupType: GroupType
 
@@ -47,9 +44,9 @@ export class Group {
   })
   lastModifiedAt: string
 
-  @Column()
+  @Column({ default: 0 })
   x: number
 
-  @Column()
+  @Column({ default: 0 })
   y: number
 }
