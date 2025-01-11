@@ -1,10 +1,10 @@
 import useKakaoHook from "kakao"
 import { post } from "pages/api"
-import { atom, useRecoilState, useSetRecoilState } from "recoil"
-import useBotChatLogic, { EditContent } from "./useBotChatLogic"
+import { atom, useRecoilState } from "recoil"
+import { EditContent } from "./useBotChatLogic"
 import { User } from "@server/entity/user"
 
-export const UserInformationAtom = atom<User>({
+export const UserInformationAtom = atom<User | undefined>({
   key: "user-information",
   default: undefined,
 })
@@ -23,7 +23,6 @@ export default function useUserData() {
       token,
     })
     if (result === "true") {
-      console.log(userData)
       setUserInformation(userData)
       return userData
     }
@@ -52,11 +51,12 @@ export default function useUserData() {
 
   type UserKey = keyof User
   function editUserInformation(key: UserKey, value: User[UserKey]) {
-    setUserInformation((prev) => {
-      return {
-        ...prev,
-        [key]: value,
-      }
+    if (!userInformation) {
+      return
+    }
+    setUserInformation({
+      ...userInformation,
+      [key]: value,
     })
   }
 
@@ -64,7 +64,7 @@ export default function useUserData() {
     await post("/auth/edit-my-information", userInformation)
   }
 
-  function checkMissedUserInformation(userInformation: User) {
+  function checkMissedUserInformation() {
     if (!userInformation) {
       return EditContent.none
     }
@@ -76,7 +76,7 @@ export default function useUserData() {
       return EditContent.phone
     } else if (!userInformation.gender) {
       return EditContent.gender
-    } else if (!userInformation.group) {
+    } else if (!userInformation.community) {
       return EditContent.darak
     }
     return EditContent.none

@@ -30,7 +30,7 @@ export enum PermissionType {
   showRoomAssignment,
   roomManage,
   showGroupAssignment,
-  groupManage,
+  communityManage,
   dashBoard,
   deposit,
   editUserData,

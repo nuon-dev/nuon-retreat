@@ -1,10 +1,10 @@
 import express from "express"
-import groupRouter from "./groupRouter"
+import communityRouter from "./communityRouter"
 import soonRouter from "./soonRouter"
 
 const router = express.Router()
 
-router.use("/group", groupRouter)
+router.use("/community", communityRouter)
 router.use("/soon", soonRouter)
 
 export default router

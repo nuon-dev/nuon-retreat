@@ -1,7 +1,7 @@
 import { ChatContent } from "pages/retreat"
 import { useEffect, useState } from "react"
-import useUserData from "./useUserData"
-import { User } from "@server/entity/user"
+import useUserData, { UserInformationAtom } from "./useUserData"
+import { useRecoilValue } from "recoil"
 
 interface IPops {
   addChat: (chat: ChatContent) => void
@@ -24,7 +24,10 @@ export default function useBotChatLogic({ addChat }: IPops) {
     getUserDataFromKakaoLogin,
     editUserInformation,
     checkMissedUserInformation,
+    saveUserInformation,
   } = useUserData()
+
+  const userInformation = useRecoilValue(UserInformationAtom)
 
   useEffect(() => {
     init()
@@ -51,18 +54,20 @@ export default function useBotChatLogic({ addChat }: IPops) {
       return
     }
     if (!userData.name) {
-      editUserName()
-      return
+      firstTime()
+    } else {
+      addChat({
+        type: "bot",
+        content: `또 오셨군요!. ${userData.name}님이 환영합니다!`,
+      })
     }
+  }
+
+  async function firstTime() {
     addChat({
       type: "bot",
-      content: `또 오셨군요!. ${userData.name}님이 환영합니다!`,
+      content: "처음 오셨군요! 당신에 대해 더 알아보고 싶어요.",
     })
-    const isMissed = checkMissedUserInformationAndEdit(userData)
-    if (isMissed) {
-      return
-    }
-    whatDoYouWantToDo()
   }
 
   async function login() {
@@ -87,24 +92,21 @@ export default function useBotChatLogic({ addChat }: IPops) {
       type: "bot",
       content: `어! 저는 당신을 알아요! ${userData.name}님이시죠? 환영합니다!`,
     })
-    const isMissed = checkMissedUserInformationAndEdit(userData)
-    if (isMissed) {
-      return
-    }
-    whatDoYouWantToDo()
   }
 
-  function checkMissedUserInformationAndEdit(userInformation: User) {
-    const missedContent = checkMissedUserInformation(userInformation)
-    if (missedContent !== EditContent.none) {
-      addChat({
-        type: "bot",
-        content: `몇가지 정보가 누락되어 있어요.`,
-      })
+  useEffect(() => {
+    if (userInformation) {
+      setTimeout(checkMissedUserInformationAndEdit)
+    }
+  }, [userInformation])
+
+  function checkMissedUserInformationAndEdit() {
+    const missedContent = checkMissedUserInformation()
+    if (missedContent === EditContent.none) {
+      whatDoYouWantToDo()
+      return false
     }
     switch (missedContent) {
-      case EditContent.none:
-        return false
       case EditContent.name:
         editUserName()
         break
@@ -116,8 +118,6 @@ export default function useBotChatLogic({ addChat }: IPops) {
         break
       case EditContent.phone:
         editUserPhone()
-        break
-      case EditContent.none:
         break
       default:
         addChat({
@@ -132,7 +132,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
   function editUserName() {
     addChat({
       type: "bot",
-      content: `우리 처음 보는거 같은데요! 당신에 대해 알고 싶어요. 이름을 알려주세요.`,
+      content: `이름을 알려주세요.`,
     })
     setEditContent(EditContent.name)
   }
@@ -140,9 +140,98 @@ export default function useBotChatLogic({ addChat }: IPops) {
   function editUserYearOfBirth() {
     addChat({
       type: "bot",
-      content: `그럼 몇년생이신가요?. 빠른은 동기기준입니다.`,
+      content: `몇년생이신가요?. 빠른은 동기기준입니다.`,
     })
     setEditContent(EditContent.yearOfBirth)
+  }
+
+  async function checkUserData(phone: string) {
+    const userData = userInformation
+    if (!userData) {
+      addChat({
+        type: "bot",
+        content: "제가 당신을 기억할 수 있도록 카카오 로그인을 해주세요!",
+        buttons: [
+          {
+            content: "카카오톡 로그인",
+            onClick: login,
+          },
+        ],
+      })
+      return
+    }
+    addChat({
+      type: "bot",
+      content: `${userData.name}님이 입력하신 정보를 정리해볼게요. 
+      ${userData.yearOfBirth}년생이고 ${
+        userData.gender === "man" ? "남성" : "여성"
+      }이시네요. 
+      연락은 ${phone}로 드릴게요.`,
+      buttons: [
+        {
+          content: "엇.. 틀린게 있어요.",
+          onClick: () => {
+            selectEditContent()
+          },
+        },
+        {
+          content: "네! 좋아요.",
+          onClick: async () => {
+            await saveUserInformation()
+            savedUserInformation()
+          },
+        },
+      ],
+    })
+  }
+
+  function selectEditContent() {
+    addChat({
+      type: "bot",
+      content: `무엇을 바꾸고 싶으신가요?`,
+      buttons: [
+        {
+          content: "이름",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "이름",
+            })
+            editUserName()
+          },
+        },
+        {
+          content: "생년",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "생년",
+            })
+            editUserYearOfBirth()
+          },
+        },
+        {
+          content: "성별",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "성별",
+            })
+            editUserGender()
+          },
+        },
+        {
+          content: "연락처",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "연락처",
+            })
+            editUserPhone()
+          },
+        },
+      ],
+    })
   }
 
   function editUserGender() {
@@ -194,13 +283,31 @@ export default function useBotChatLogic({ addChat }: IPops) {
     setEditContent(EditContent.none)
   }
 
-  function showUserInformation() {}
-
   function whatDoYouWantToDo() {
     addChat({
       type: "bot",
       content: `무엇을 도와드릴까요?`,
       buttons: [
+        {
+          content: "나의 정보 확인",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "나의 정보  확인",
+            })
+            checkUserData("")
+          },
+        },
+        {
+          content: "나의 정보 수정",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "나의 정보 수정",
+            })
+            selectEditContent()
+          },
+        },
         {
           content: "수련회 접수 내용 확인",
           onClick: () => {
@@ -208,7 +315,17 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: " 수련회 접수 내용 확인",
             })
-            showUserInformation()
+            checkUserData("")
+          },
+        },
+        {
+          content: "수련회 접수 내용 수정",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: " 수련회 접수 내용 수정",
+            })
+            selectEditContent()
           },
         },
       ],
@@ -216,9 +333,5 @@ export default function useBotChatLogic({ addChat }: IPops) {
   }
   return {
     editContent,
-    editUserPhone,
-    editUserGender,
-    editUserYearOfBirth,
-    savedUserInformation,
   }
 }

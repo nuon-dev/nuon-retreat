@@ -10,20 +10,22 @@ import {
 import { User } from "./user"
 
 @Entity()
-export class Group {
+export class Community {
   @PrimaryGeneratedColumn()
   id: number
 
-  @ManyToOne(() => Group, (group) => group.children, { nullable: true })
-  parent: Group | null
+  @ManyToOne(() => Community, (community) => community.children, {
+    nullable: true,
+  })
+  parent: Community | null
 
-  @OneToMany(() => Group, (group) => group.parent)
-  children: Group[]
+  @OneToMany(() => Community, (community) => community.parent)
+  children: Community[]
 
   @Column()
   name: string
 
-  @OneToMany(() => User, (user) => user.group)
+  @OneToMany(() => User, (user) => user.community)
   users: User[]
 
   @CreateDateColumn({

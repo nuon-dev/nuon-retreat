@@ -1,13 +1,16 @@
 import express from "express"
-import { groupDatabase, userDatabase } from "../../model/dataSource"
+import { communityDatabase, userDatabase } from "../../model/dataSource"
 import { IsNull } from "typeorm"
 
 const router = express.Router()
 
 router.get("/", async (req, res) => {
-  const groupList = await groupDatabase.find({
+  const groupList = await communityDatabase.find({
     relations: {
       parent: true,
+    },
+    order: {
+      name: "ASC",
     },
   })
   res.send(groupList)
@@ -15,26 +18,26 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const group = req.body
-  await groupDatabase.insert(group)
+  await communityDatabase.insert(group)
   res.send({ result: "success" })
 })
 
 router.put("/", async (req, res) => {
   const group = req.body
-  await groupDatabase.save(group)
+  await communityDatabase.save(group)
   res.send({ result: "success" })
 })
 
 router.delete("/", async (req, res) => {
   const group = req.body
-  await groupDatabase.remove(group)
+  await communityDatabase.remove(group)
   res.send({ result: "success" })
 })
 
 router.get("/user-list/:groupId", async (req, res) => {
   const { groupId } = req.params
 
-  const groupList = await groupDatabase.find({
+  const groupList = await communityDatabase.find({
     where: {
       parent: {
         id: parseInt(groupId),
@@ -42,7 +45,7 @@ router.get("/user-list/:groupId", async (req, res) => {
     },
     relations: {
       users: {
-        group: true,
+        community: true,
       },
     },
   })
@@ -52,7 +55,7 @@ router.get("/user-list/:groupId", async (req, res) => {
 router.get("/no-group-user-list", async (req, res) => {
   const userList = await userDatabase.find({
     where: {
-      group: IsNull(),
+      community: IsNull(),
     },
   })
   res.send(userList)
@@ -60,7 +63,7 @@ router.get("/no-group-user-list", async (req, res) => {
 
 router.post("/set-user", async (req, res) => {
   const { groupId, userId } = req.body
-  await userDatabase.update(userId, { group: groupId })
+  await userDatabase.update(userId, { community: groupId })
   res.send({ result: "success" })
 })
 

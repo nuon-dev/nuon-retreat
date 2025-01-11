@@ -22,13 +22,8 @@ export interface ChatContent {
 let ChatList: Chat[] = []
 function index() {
   const [chatList, setChatList] = useState<Array<Chat>>([])
-  const { editUserInformation, saveUserInformation } = useUserData()
-  const {
-    editContent,
-    editUserYearOfBirth,
-    editUserGender,
-    savedUserInformation,
-  } = useBotChatLogic({
+  const { editUserInformation } = useUserData()
+  const { editContent } = useBotChatLogic({
     addChat,
   })
 
@@ -47,7 +42,6 @@ function index() {
     switch (editContent) {
       case EditContent.name:
         editUserInformation("name", text)
-        editUserYearOfBirth()
         break
       case EditContent.yearOfBirth:
         let yearOfBirth = parseInt(text)
@@ -57,13 +51,9 @@ function index() {
           yearOfBirth += 1900
         }
         editUserInformation("yearOfBirth", yearOfBirth)
-        editUserGender()
-        break
         break
       case EditContent.phone:
         editUserInformation("phone", text)
-        await saveUserInformation()
-        savedUserInformation()
         break
       default:
         break

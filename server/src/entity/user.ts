@@ -7,7 +7,7 @@ import {
   CreateDateColumn,
 } from "typeorm"
 import { Permission } from "./permission"
-import { Group } from "./group"
+import { Community } from "./community"
 
 @Entity()
 export class User {
@@ -52,6 +52,6 @@ export class User {
   @OneToMany(() => Permission, (permission) => permission.user)
   permissions: Permission[]
 
-  @ManyToOne(() => Group, (group) => group.users)
-  group: Group | null
+  @ManyToOne(() => Community, (community) => community.users)
+  community: Community | null
 }

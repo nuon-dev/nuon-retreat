@@ -1,4 +1,4 @@
-import { type Group } from "@server/entity/group"
+import { type Community } from "@server/entity/community"
 import { type User } from "@server/entity/user"
 import { Box, Button, Stack } from "@mui/material"
 import Header from "components/AdminHeader"
@@ -6,10 +6,11 @@ import { get, put } from "pages/api"
 import { MouseEvent, useEffect, useState } from "react"
 
 export default function People() {
-  const [groupList, setGroupList] = useState<Group[]>([])
-  const [noGroupUser, setNoGroupUser] = useState<User[]>([])
-  const [selectedRootGroup, setSelectedRootGroup] = useState<Group | null>(null)
-  const [childGroupList, setChildGroupList] = useState<Group[]>([])
+  const [communityList, setCommunityList] = useState<Community[]>([])
+  const [noCommunityUser, setNoCommunityUser] = useState<User[]>([])
+  const [selectedRootCommunity, setSelectedRootCommunity] =
+    useState<Community | null>(null)
+  const [childCommunityList, setChildCommunityList] = useState<Community[]>([])
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -22,58 +23,65 @@ export default function People() {
   }, [])
 
   useEffect(() => {
-    if (selectedRootGroup) {
-      fetchGroupUserList(selectedRootGroup.id)
+    if (selectedRootCommunity) {
+      fetchCommunityUserList(selectedRootCommunity.id)
     }
-  }, [selectedRootGroup])
+  }, [selectedRootCommunity])
 
   function mousemoveListener(e: any) {
     const event = e as MouseEvent
     setMousePosition({ x: event.pageX, y: event.pageY })
   }
 
-  async function fetchGroupUserList(groupId: number) {
-    const groupUserListData = await get(`/admin/group/user-list/${groupId}`)
-    setChildGroupList(groupUserListData)
+  async function fetchCommunityUserList(communityId: number) {
+    const communityUserListData = await get(
+      `/admin/community/user-list/${communityId}`
+    )
+    setChildCommunityList(communityUserListData)
   }
 
   async function fetchData() {
-    const groupListData = await get("/admin/group")
-    setGroupList(groupListData)
-    const noGroupUserData = await get("/admin/group/no-group-user-list")
-    setNoGroupUser(noGroupUserData)
+    const communityListData = await get("/admin/community")
+    setCommunityList(communityListData)
+    const noCommunityUserData = await get(
+      "/admin/community/no-community-user-list"
+    )
+    setNoCommunityUser(noCommunityUserData)
   }
 
-  function groupFilter(targetGroup: Group) {
-    if (!selectedRootGroup) {
-      return !targetGroup.parent
+  function communityFilter(targetCommunity: Community) {
+    if (!selectedRootCommunity) {
+      return !targetCommunity.parent
     }
-    return targetGroup.parent?.id === selectedRootGroup.id
+    return targetCommunity.parent?.id === selectedRootCommunity.id
   }
 
-  async function removeGroupToUser() {
+  async function removeCommunityToUser() {
     if (!selectedUser) return
-    selectedUser.group = null
+    selectedUser.community = null
     await saveUser(selectedUser)
     setSelectedUser(null)
-    if (selectedRootGroup) {
-      await fetchGroupUserList(selectedRootGroup.id)
+    if (selectedRootCommunity) {
+      await fetchCommunityUserList(selectedRootCommunity.id)
       await fetchData()
     }
   }
 
-  async function setUser(e: MouseEvent, targetGroup: Group) {
+  async function setUser(e: MouseEvent, targetCommunity: Community) {
     if (!selectedUser) return
     e.stopPropagation()
-    if (selectedUser.group && selectedUser.group.id === targetGroup.id) {
+    if (
+      selectedUser.community &&
+      selectedUser.community.id === targetCommunity.id
+    ) {
       setSelectedUser(null)
       return
     }
-    selectedUser.group = targetGroup
+    selectedUser.community = targetCommunity
     await saveUser(selectedUser)
     setSelectedUser(null)
-    if (selectedRootGroup) {
-      await fetchGroupUserList(selectedRootGroup.id)
+    if (selectedRootCommunity) {
+      await fetchCommunityUserList(selectedRootCommunity.id)
       await fetchData()
     }
   }
@@ -110,18 +118,20 @@ export default function People() {
     )
   }
 
-  function GroupBox(displayGroup: Group) {
-    const myGroup = childGroupList.find((group) => group.id === displayGroup.id)
+  function CommunityBox(displayCommunity: Community) {
+    const myCommunity = childCommunityList.find(
+      (community) => community.id === displayCommunity.id
+    )
 
-    if (!myGroup) {
+    if (!myCommunity) {
       return (
         <Box
           p="4px"
           borderRadius="4px"
           border="1px solid #ccc"
-          onClick={() => setSelectedRootGroup(displayGroup)}
+          onClick={() => setSelectedRootCommunity(displayCommunity)}
         >
-          {displayGroup.name}
+          {displayCommunity.name}
         </Box>
       )
     }
@@ -131,26 +141,26 @@ export default function People() {
         p="4px"
         borderRadius="4px"
         border="1px solid #ccc"
-        onClick={() => setSelectedRootGroup(displayGroup)}
-        onMouseUp={(e) => setUser(e, displayGroup)}
+        onClick={() => setSelectedRootCommunity(displayCommunity)}
+        onMouseUp={(e) => setUser(e, displayCommunity)}
         gap="4px"
       >
-        {displayGroup.name}
-        {myGroup.users.map((user) => (
+        {displayCommunity.name}
+        {myCommunity.users.map((user) => (
           <UserBox key={user.id} user={user} />
         ))}
       </Stack>
     )
   }
 
-  function getParentGroupName(group: Group | null): string {
-    if (!group) {
+  function getParentCommunityName(community: Community | null): string {
+    if (!community) {
       return "> "
     }
-    if (!group.parent) {
-      return "> " + group.name
+    if (!community.parent) {
+      return "> " + community.name
     }
-    return `${getParentGroupName(group.parent)} > ${group.name}`
+    return `${getParentCommunityName(community.parent)} > ${community.name}`
   }
 
   return (
@@ -169,14 +179,14 @@ export default function People() {
           border="1px solid #ccc"
           gap="4px"
           direction="row"
-          onMouseUp={removeGroupToUser}
+          onMouseUp={removeCommunityToUser}
         >
-          {noGroupUser.map((user) => UserBox({ user }))}
+          {noCommunityUser.map((user) => UserBox({ user }))}
         </Stack>
         <Stack width="200px" gap="12px">
           <Stack direction="row" gap="12px">
             <Button
-              onClick={() => setSelectedRootGroup(null)}
+              onClick={() => setSelectedRootCommunity(null)}
               variant="outlined"
             >
               최상위로
@@ -184,19 +194,21 @@ export default function People() {
             <Button
               variant="outlined"
               onClick={() =>
-                setSelectedRootGroup(
-                  selectedRootGroup ? selectedRootGroup.parent : null
+                setSelectedRootCommunity(
+                  selectedRootCommunity ? selectedRootCommunity.parent : null
                 )
               }
             >
               바로 위로
             </Button>
           </Stack>
-          <Stack>{getParentGroupName(selectedRootGroup)}</Stack>
-          {groupList.filter(groupFilter).length === 0 && (
+          <Stack>{getParentCommunityName(selectedRootCommunity)}</Stack>
+          {communityList.filter(communityFilter).length === 0 && (
             <Box>하위 그룹 없음</Box>
           )}
-          {groupList.filter(groupFilter).map((group) => GroupBox(group))}
+          {communityList
+            .filter(communityFilter)
+            .map((community) => CommunityBox(community))}
         </Stack>
         {selectedUser && selectedUser.id && (
           <Stack

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 
-import { User } from "@entity/user"
 import { InOutInfo } from "@entity/inOutInfo"
 import { get, post } from "pages/api"
 import UserInformationForm from "components/form/UserInformationForm"
@@ -9,6 +8,7 @@ import CopyToClipboard from "react-copy-to-clipboard"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { Stack } from "@mui/material"
+import { User } from "@server/entity/user"
 
 export default function Receipt() {
   const [userData, setUserData] = useState({} as User)

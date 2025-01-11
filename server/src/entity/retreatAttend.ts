@@ -17,7 +17,7 @@ export class RetreatAttend {
   user: User
 
   @Column()
-  groupNumber: number
+  communityNumber: number
 
   @Column()
   roomNumber: number

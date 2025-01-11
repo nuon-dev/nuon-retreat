@@ -17,7 +17,7 @@ import { useEffect, useState } from "react"
 import MenuIcon from "@mui/icons-material/Menu"
 import { useRouter } from "next/router"
 
-import GroupsIcon from "@mui/icons-material/Groups"
+import CommunitysIcon from "@mui/icons-material/Groups"
 import ApartmentIcon from "@mui/icons-material/Apartment"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined"
@@ -54,8 +54,8 @@ export default function AdminHeader() {
     push("/admin/soon")
   }
 
-  function goToDarakGroupManagement() {
-    push("/admin/darak/group")
+  function goToDarakCommunityManagement() {
+    push("/admin/darak/community")
   }
 
   function goToDarakPeopleManagement() {
@@ -93,13 +93,13 @@ export default function AdminHeader() {
             <ListItem disablePadding>
               <ListItemButton onClick={goToEditAllSoonList}>
                 <ListItemIcon>
-                  <GroupsIcon fontSize="small" />
+                  <CommunitysIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={"순 관리"} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton onClick={goToDarakGroupManagement}>
+              <ListItemButton onClick={goToDarakCommunityManagement}>
                 <ListItemIcon>
                   <LibraryAddCheckOutlinedIcon fontSize="small" />
                 </ListItemIcon>
