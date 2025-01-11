@@ -14,7 +14,7 @@ import { InOutInfo } from "@entity/inOutInfo"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { useRouter } from "next/router"
-import { HowToMove } from "@entity/types"
+import { HowToMove } from "@server/entity/types"
 
 function AllUser() {
   const router = useRouter()

@@ -1,12 +1,3 @@
-export const enum HowToMove {
-  together = "1",
-  driveCarAlone = "2",
-  driveCarWithPerson = "3",
-  rideCar = "4",
-  goAlone = "5",
-  etc = "6",
-}
-
 export const enum MoveType {
   together = 1,
   driveCarAlone,

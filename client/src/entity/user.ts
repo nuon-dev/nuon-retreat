@@ -1,8 +1,9 @@
+import { HowToMove } from "@server/entity/types"
 import { GroupAssignment } from "./groupAssignment"
 import { InOutInfo } from "./inOutInfo"
 import { Permission } from "./permission"
 import { RoomAssignment } from "./roomAssignment"
-import { CurrentStatus, HowToMove, MoveType } from "./types"
+import { CurrentStatus, MoveType } from "./types"
 
 export class User {
   id: number

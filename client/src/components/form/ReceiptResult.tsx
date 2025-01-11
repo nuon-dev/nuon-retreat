@@ -1,7 +1,8 @@
 import { InOutInfo } from "@entity/inOutInfo"
-import { HowToMove, MoveType } from "@entity/types"
+import { MoveType } from "@entity/types"
 import { User } from "@entity/user"
 import { Box, Button, Stack } from "@mui/material"
+import { HowToMove } from "@server/entity/types"
 import { Dispatch, SetStateAction } from "react"
 
 interface IProps {
@@ -90,7 +91,7 @@ function InfoStack({ title, content }: { title: string; content: string }) {
   )
 }
 
-export function getHowToMoveString(howToMove: HowToMove) {
+export function getHowToMoveString(howToMove: HowToMove): string {
   switch (howToMove) {
     case HowToMove.driveCarAlone:
       return "자차 (카풀 불가)"
@@ -105,6 +106,7 @@ export function getHowToMoveString(howToMove: HowToMove) {
     case HowToMove.together:
       return "교회 버스로"
   }
+  return ""
 }
 
 export function getMoveTypeString(moveType: MoveType) {

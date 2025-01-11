@@ -6,7 +6,6 @@ import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import styles from "./index.module.css"
 import { dele, get, post, put } from "pages/api"
-import { set } from "@node_modules/@types/lodash"
 
 enum EditMode {
   All,

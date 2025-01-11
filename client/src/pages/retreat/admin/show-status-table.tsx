@@ -1,6 +1,7 @@
-import { CurrentStatus, HowToMove } from "@entity/types"
+import { CurrentStatus } from "@entity/types"
 import { User } from "@entity/user"
 import { Box, MenuItem, Select, Stack } from "@mui/material"
+import { HowToMove } from "@server/entity/types"
 import { useRouter } from "next/router"
 import { get } from "pages/api"
 import { useEffect, useState } from "react"

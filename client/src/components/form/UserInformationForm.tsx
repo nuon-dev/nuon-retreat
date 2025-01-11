@@ -14,8 +14,8 @@ import InOutFrom from "./InOutForm"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
 import { useRouter } from "next/router"
-import { HowToMove } from "@entity/types"
 import DarakData from "darakData"
+import { HowToMove } from "@server/entity/types"
 
 interface IProps {
   user: User
