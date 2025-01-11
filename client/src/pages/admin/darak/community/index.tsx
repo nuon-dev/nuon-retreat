@@ -134,6 +134,7 @@ export default function CommunityComponent() {
         style={{
           border: "1px solid #ddd",
           minHeight: "60px",
+          boxShadow: "0px 0px 4px 1px #aaa",
         }}
         onMouseUp={(e) => setCommunity(e, rootCommunity)}
         onMouseDown={(e) => selectCommunity(e, rootCommunity)}
@@ -169,7 +170,7 @@ export default function CommunityComponent() {
             )}
           </Stack>
           {editMode === EditMode.All && (
-            <Stack gap="8px" p="4px">
+            <Stack gap="8px" m="4px" p="4px" direction="row">
               {communityList
                 .filter(
                   (community) => community.parent?.id === rootCommunity.id
@@ -249,7 +250,7 @@ export default function CommunityComponent() {
         </Stack>
       </Stack>
       <Stack
-        p="8px"
+        p="12px"
         gap="12px"
         display="flex"
         direction="row"
@@ -282,7 +283,9 @@ export default function CommunityComponent() {
               position="absolute"
               top={mousePosition.y - shiftPosition.y}
               left={mousePosition.x - shiftPosition.x}
-              style={{ pointerEvents: "none" }}
+              style={{
+                pointerEvents: "none",
+              }}
             >
               {CommunityRecursion(selectedCommunity)}
             </Stack>

@@ -104,6 +104,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
     const missedContent = checkMissedUserInformation()
     if (missedContent === EditContent.none) {
       whatDoYouWantToDo()
+      saveUserInformation()
       return false
     }
     switch (missedContent) {
@@ -118,6 +119,9 @@ export default function useBotChatLogic({ addChat }: IPops) {
         break
       case EditContent.phone:
         editUserPhone()
+        break
+      case EditContent.darak:
+        editDarak()
         break
       default:
         addChat({
@@ -283,6 +287,14 @@ export default function useBotChatLogic({ addChat }: IPops) {
     setEditContent(EditContent.none)
   }
 
+  async function editDarak() {
+    addChat({
+      type: "bot",
+      content: "순장님은 누구인가요? 성까지 입력해주세요!",
+    })
+    setEditContent(EditContent.darak)
+  }
+
   function whatDoYouWantToDo() {
     addChat({
       type: "bot",
@@ -331,6 +343,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
       ],
     })
   }
+
   return {
     editContent,
   }

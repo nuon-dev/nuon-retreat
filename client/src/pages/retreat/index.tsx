@@ -8,6 +8,8 @@ import dayjs from "dayjs"
 import useBotChatLogic, { EditContent } from "hooks/useBotChatLogic"
 import InputText from "components/retreat/InputText"
 import useUserData from "hooks/useUserData"
+import { get } from "pages/api"
+import { Community } from "@server/entity/community"
 
 export interface Chat extends ChatContent {
   time: string
@@ -54,6 +56,18 @@ function index() {
         break
       case EditContent.phone:
         editUserInformation("phone", text)
+        break
+      case EditContent.darak:
+        const communityList: Community[] = await get("/auth/community")
+        const foundCommunity = communityList.find((c) => c.name === text)
+        if (foundCommunity) {
+          editUserInformation("community", foundCommunity)
+        } else {
+          addChat({
+            type: "bot",
+            content: "순장님을 찾지 못했어요 ㅠㅠ 다시 입력해주세요.",
+          })
+        }
         break
       default:
         break

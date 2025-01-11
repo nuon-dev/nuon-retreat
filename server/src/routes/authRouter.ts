@@ -1,6 +1,6 @@
 import express from "express"
 import { getUserFromToken, hashCode, isTokenExpire } from "../util"
-import { userDatabase } from "../model/dataSource"
+import { communityDatabase, userDatabase } from "../model/dataSource"
 import { User } from "../entity/user"
 
 const router = express.Router()
@@ -44,8 +44,14 @@ router.post("/check-token", async (req, res) => {
       name: foundUser.name,
       yearOfBirth: foundUser.yearOfBirth,
       phone: foundUser.phone,
+      community: foundUser.community,
     },
   })
+})
+
+router.get("/community", async (req, res) => {
+  const communityList = await communityDatabase.find()
+  res.send(communityList)
 })
 
 router.post("/receipt-record", async (req, res) => {
