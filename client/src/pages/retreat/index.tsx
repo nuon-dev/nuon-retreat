@@ -23,10 +23,14 @@ let ChatList: Chat[] = []
 function index() {
   const [chatList, setChatList] = useState<Array<Chat>>([])
   const { editUserInformation, saveUserInformation } = useUserData()
-  const { editContent, editUserAge, editUserSex, savedUserInformation } =
-    useBotChatLogic({
-      addChat,
-    })
+  const {
+    editContent,
+    editUserYearOfBirth,
+    editUserGender,
+    savedUserInformation,
+  } = useBotChatLogic({
+    addChat,
+  })
 
   function addChat(chatContent: ChatContent) {
     const chat = chatContent as Chat
@@ -43,22 +47,21 @@ function index() {
     switch (editContent) {
       case EditContent.name:
         editUserInformation("name", text)
-        editUserAge()
+        editUserYearOfBirth()
         break
-      case EditContent.age:
-        let age = parseInt(text)
-        if (age < 50) {
-          age += 2000
-        } else if (age < 100 && age > 50) {
-          age += 1900
+      case EditContent.yearOfBirth:
+        let yearOfBirth = parseInt(text)
+        if (yearOfBirth < 50) {
+          yearOfBirth += 2000
+        } else if (yearOfBirth < 100 && yearOfBirth > 50) {
+          yearOfBirth += 1900
         }
-        editUserInformation("age", age)
-        editUserSex()
+        editUserInformation("yearOfBirth", yearOfBirth)
+        editUserGender()
         break
         break
       case EditContent.phone:
         editUserInformation("phone", text)
-        await new Promise((resolve) => setTimeout(resolve, 1000))
         await saveUserInformation()
         savedUserInformation()
         break

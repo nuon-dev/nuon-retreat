@@ -1,5 +1,5 @@
 // import express from "express"
-// import { attendInfoDatabase, userDatabase } from "../../model/dataSource"
+// import { inOutInfoDatabase, userDatabase } from "../../model/dataSource"
 // import { InOutInfo } from "../../entity/inOutInfo"
 
 // const router = express.Router()
@@ -31,7 +31,7 @@
 //       inOutInfo.position = data.position
 //       inOutInfo.howToMove = data.howToMove
 
-//       await attendInfoDatabase.save(inOutInfo)
+//       await inOutInfoDatabase.save(inOutInfo)
 //     }
 
 //     res.send({ result: "success" })
@@ -45,7 +45,7 @@
 //   const inOutInfo: InOutInfo = data.inOutInfo
 
 //   try {
-//     await attendInfoDatabase.delete(inOutInfo)
+//     await inOutInfoDatabase.delete(inOutInfo)
 //     res.send({ result: "success" })
 //   } catch (e) {
 //     res.send(e)

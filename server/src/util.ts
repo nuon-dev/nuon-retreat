@@ -1,13 +1,7 @@
 import crypto from "crypto"
 import dotenv from "dotenv"
 import { PermissionType } from "./entity/types"
-import {
-  attendInfoDatabase,
-  groupAssignmentDatabase,
-  permissionDatabase,
-  roomAssignmentDatabase,
-  userDatabase,
-} from "./model/dataSource"
+import { permissionDatabase, userDatabase } from "./model/dataSource"
 import { User } from "./entity/user"
 import express from "express"
 

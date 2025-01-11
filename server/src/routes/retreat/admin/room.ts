@@ -1,7 +1,7 @@
 import express from "express"
 import { PermissionType } from "../../../entity/types"
 import {
-  attendInfoDatabase,
+  inOutInfoDatabase,
   roomAssignmentDatabase,
   userDatabase,
 } from "../../../model/dataSource"
@@ -49,7 +49,7 @@ router.post("/get-user-info", async (req, res) => {
     id: userId,
   })
 
-  const attendInfo = await attendInfoDatabase.find({
+  const attendInfo = await inOutInfoDatabase.find({
     where: {
       user: foundUser,
     },

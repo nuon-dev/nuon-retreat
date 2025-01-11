@@ -1,6 +1,6 @@
 import express from "express"
 import { HowToMove, InOutType } from "../../../entity/types"
-import { attendInfoDatabase, userDatabase } from "../../../model/dataSource"
+import { inOutInfoDatabase, userDatabase } from "../../../model/dataSource"
 import { IsNull, Not } from "typeorm"
 
 const router = express.Router()
@@ -39,7 +39,7 @@ router.get("/get-attendee-status", async (req, res) => {
   })
 
   const allUser = await userDatabase.find()
-  const allInfo = await attendInfoDatabase.find({ relations: { user: true } })
+  const allInfo = await inOutInfoDatabase.find({ relations: { user: true } })
   const busUserList = allUser
     .filter((user) => user.howToGo === HowToMove.together)
     .map((u) => u.id)
@@ -113,7 +113,7 @@ router.get("/get-age-info", async (req, res) => {
 })
 
 router.get("/in-out-info", async (req, res) => {
-  const infoList = await attendInfoDatabase.find()
+  const infoList = await inOutInfoDatabase.find()
   res.send(infoList)
 })
 

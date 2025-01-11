@@ -1,7 +1,7 @@
 import express from "express"
 import { hasPermission } from "../../../../src/util"
 import { PermissionType } from "../../../entity/types"
-import { attendInfoDatabase, userDatabase } from "../../../model/dataSource"
+import { inOutInfoDatabase, userDatabase } from "../../../model/dataSource"
 
 const router = express.Router()
 
@@ -23,7 +23,7 @@ router.get("/get-user-data", async (req, res) => {
     res.send({ result: "false" })
     return
   }
-  const inoutInfoList = await attendInfoDatabase.findBy({
+  const inoutInfoList = await inOutInfoDatabase.findBy({
     user: foundUser,
   })
 

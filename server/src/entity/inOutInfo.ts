@@ -6,15 +6,15 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm"
 import { Days, InOutType, MoveType } from "./types"
-import { User } from "./user"
+import { RetreatAttend } from "./retreatAttend"
 
 @Entity()
 export class InOutInfo {
   @PrimaryGeneratedColumn()
   id: number
 
-  @ManyToOne(() => User, (user) => user.id)
-  user: User
+  @ManyToOne(() => RetreatAttend, (retreatAttend) => retreatAttend.inOutInfo)
+  retreatAttend: RetreatAttend
 
   @Column({})
   day: Days

@@ -39,7 +39,11 @@ router.post("/check-token", async (req, res) => {
   res.send({
     result: "true",
     userData: {
+      id: foundUser.id,
+      gender: foundUser.gender,
       name: foundUser.name,
+      yearOfBirth: foundUser.yearOfBirth,
+      phone: foundUser.phone,
     },
   })
 })

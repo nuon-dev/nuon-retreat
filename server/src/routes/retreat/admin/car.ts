@@ -1,6 +1,6 @@
 import express from "express"
 import { PermissionType } from "../../../entity/types"
-import { attendInfoDatabase, userDatabase } from "../../../model/dataSource"
+import { inOutInfoDatabase, userDatabase } from "../../../model/dataSource"
 import { hasPermission } from "../../../util"
 import { InOutInfo } from "../../../entity/inOutInfo"
 import { IsNull, Not } from "typeorm"
@@ -14,7 +14,7 @@ router.get("/get-car-info", async (req, res) => {
     return
   }
 
-  const infoList = await attendInfoDatabase.find({
+  const infoList = await inOutInfoDatabase.find({
     select: {
       inOutType: true,
       id: true,
@@ -55,7 +55,7 @@ router.post("/set-car", async (req, res) => {
     return
   }
 
-  await attendInfoDatabase.save(inOutInfo)
+  await inOutInfoDatabase.save(inOutInfo)
   res.send({ result: "success" })
   return
 })

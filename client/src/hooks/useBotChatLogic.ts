@@ -1,7 +1,7 @@
 import { ChatContent } from "pages/retreat"
 import { useEffect, useState } from "react"
 import useUserData from "./useUserData"
-import { User } from "@entity/user"
+import { User } from "@server/entity/user"
 
 interface IPops {
   addChat: (chat: ChatContent) => void
@@ -10,8 +10,8 @@ interface IPops {
 export enum EditContent {
   none,
   name,
-  age,
-  sex,
+  yearOfBirth,
+  gender,
   phone,
   etc,
   village,
@@ -108,11 +108,11 @@ export default function useBotChatLogic({ addChat }: IPops) {
       case EditContent.name:
         editUserName()
         break
-      case EditContent.age:
-        editUserAge()
+      case EditContent.yearOfBirth:
+        editUserYearOfBirth()
         break
-      case EditContent.sex:
-        editUserSex()
+      case EditContent.gender:
+        editUserGender()
         break
       case EditContent.phone:
         editUserPhone()
@@ -137,15 +137,15 @@ export default function useBotChatLogic({ addChat }: IPops) {
     setEditContent(EditContent.name)
   }
 
-  function editUserAge() {
+  function editUserYearOfBirth() {
     addChat({
       type: "bot",
       content: `그럼 몇년생이신가요?. 빠른은 동기기준입니다.`,
     })
-    setEditContent(EditContent.age)
+    setEditContent(EditContent.yearOfBirth)
   }
 
-  function editUserSex() {
+  function editUserGender() {
     addChat({
       type: "bot",
       content: `성별은 어떻게 되시나요?`,
@@ -157,7 +157,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: "남자",
             })
-            editUserInformation("sex", "man")
+            editUserInformation("gender", "man")
 
             editUserPhone()
           },
@@ -169,13 +169,13 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: "여자",
             })
-            editUserInformation("sex", "woman")
+            editUserInformation("gender", "woman")
             editUserPhone()
           },
         },
       ],
     })
-    setEditContent(EditContent.sex)
+    setEditContent(EditContent.gender)
   }
 
   function editUserPhone() {
@@ -217,8 +217,8 @@ export default function useBotChatLogic({ addChat }: IPops) {
   return {
     editContent,
     editUserPhone,
-    editUserSex,
-    editUserAge,
+    editUserGender,
+    editUserYearOfBirth,
     savedUserInformation,
   }
 }

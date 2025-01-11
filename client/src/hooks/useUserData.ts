@@ -1,8 +1,8 @@
-import { User } from "@entity/user"
 import useKakaoHook from "kakao"
 import { post } from "pages/api"
 import { atom, useRecoilState, useSetRecoilState } from "recoil"
 import useBotChatLogic, { EditContent } from "./useBotChatLogic"
+import { User } from "@server/entity/user"
 
 export const UserInformationAtom = atom<User>({
   key: "user-information",
@@ -23,6 +23,7 @@ export default function useUserData() {
       token,
     })
     if (result === "true") {
+      console.log(userData)
       setUserInformation(userData)
       return userData
     }
@@ -60,7 +61,7 @@ export default function useUserData() {
   }
 
   async function saveUserInformation() {
-    await post("/auth/edit-user", userInformation)
+    await post("/auth/edit-my-information", userInformation)
   }
 
   function checkMissedUserInformation(userInformation: User) {
@@ -69,16 +70,14 @@ export default function useUserData() {
     }
     if (!userInformation.name) {
       return EditContent.name
-    } else if (!userInformation.age) {
-      return EditContent.age
+    } else if (!userInformation.yearOfBirth) {
+      return EditContent.yearOfBirth
     } else if (!userInformation.phone) {
       return EditContent.phone
-    } else if (!userInformation.sex) {
-      return EditContent.sex
-    } else if (!userInformation.darak) {
+    } else if (!userInformation.gender) {
+      return EditContent.gender
+    } else if (!userInformation.group) {
       return EditContent.darak
-    } else if (!userInformation.village) {
-      return EditContent.village
     }
     return EditContent.none
   }
