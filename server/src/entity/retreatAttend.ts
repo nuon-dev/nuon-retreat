@@ -22,6 +22,9 @@ export class RetreatAttend {
   @Column()
   roomNumber: number
 
+  @Column({ type: "text", nullable: true })
+  memo: string
+
   @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.retreatAttend)
   inOutInfo: InOutInfo[]
 }

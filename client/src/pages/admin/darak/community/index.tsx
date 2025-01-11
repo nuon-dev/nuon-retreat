@@ -98,7 +98,7 @@ export default function CommunityComponent() {
     if (checkCommunity.id === parentId) return false
     const childList = communityList.filter((community) => {
       if (!community.parent) return false
-      community.parent.id === checkCommunity.id
+      return community.parent.id === checkCommunity.id
     })
     return childList.every((child) => checkLoopReference(child, parentId))
   }

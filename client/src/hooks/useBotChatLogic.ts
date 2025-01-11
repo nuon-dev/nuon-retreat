@@ -95,8 +95,16 @@ export default function useBotChatLogic({ addChat }: IPops) {
   }
 
   useEffect(() => {
-    if (userInformation) {
-      setTimeout(checkMissedUserInformationAndEdit)
+    if (!userInformation) {
+      return
+    }
+    setTimeout(checkMissedUserInformationAndEdit)
+    if (editContent !== EditContent.none && !checkMissedUserInformation()) {
+      addChat({
+        type: "bot",
+        content: `정보를 저장했어요!.`,
+      })
+      setEditContent(EditContent.none)
     }
   }, [userInformation])
 
@@ -149,7 +157,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
     setEditContent(EditContent.yearOfBirth)
   }
 
-  async function checkUserData(phone: string) {
+  async function checkUserData() {
     const userData = userInformation
     if (!userData) {
       addChat({
@@ -169,8 +177,9 @@ export default function useBotChatLogic({ addChat }: IPops) {
       content: `${userData.name}님이 입력하신 정보를 정리해볼게요. 
       ${userData.yearOfBirth}년생이고 ${
         userData.gender === "man" ? "남성" : "여성"
-      }이시네요. 
-      연락은 ${phone}로 드릴게요.`,
+      }이시네요.
+      순장님은 ${userData.community?.name}님이에요.
+      연락은 ${userData.phone}로 드릴게요.`,
       buttons: [
         {
           content: "엇.. 틀린게 있어요.",
@@ -234,6 +243,16 @@ export default function useBotChatLogic({ addChat }: IPops) {
             editUserPhone()
           },
         },
+        {
+          content: "순장님",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "순장님",
+            })
+            editDarak()
+          },
+        },
       ],
     })
   }
@@ -251,8 +270,6 @@ export default function useBotChatLogic({ addChat }: IPops) {
               content: "남자",
             })
             editUserInformation("gender", "man")
-
-            editUserPhone()
           },
         },
         {
@@ -263,7 +280,6 @@ export default function useBotChatLogic({ addChat }: IPops) {
               content: "여자",
             })
             editUserInformation("gender", "woman")
-            editUserPhone()
           },
         },
       ],
@@ -307,7 +323,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: "나의 정보  확인",
             })
-            checkUserData("")
+            checkUserData()
           },
         },
         {
@@ -327,7 +343,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: " 수련회 접수 내용 확인",
             })
-            checkUserData("")
+            checkUserData()
           },
         },
         {
