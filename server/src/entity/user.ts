@@ -24,7 +24,7 @@ export class User {
   yearOfBirth: number
 
   @Column({ nullable: true })
-  gender: "man" | "woman"
+  gender: "man" | "woman" | ""
 
   @Column({ nullable: true })
   phone: string

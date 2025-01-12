@@ -74,7 +74,7 @@ router.post("/receipt-record", async (req, res) => {
     const createUser = new User()
     createUser.kakaoId = kakaoId
     createUser.createAt = new Date()
-    createUser.gender = "man"
+    createUser.gender = ""
     createUser.token = hashCode(kakaoId + now.getTime().toString())
     createUser.expire = new Date(now.setDate(now.getDate() + 7))
     await userDatabase.save(createUser)
