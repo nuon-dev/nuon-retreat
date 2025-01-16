@@ -7,7 +7,6 @@ import {
   Stack,
 } from "@mui/material"
 import { InOutInfo } from "@entity/inOutInfo"
-import { User } from "@entity/user"
 import { post } from "../../pages/api"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import InOutFrom from "./InOutForm"
@@ -16,6 +15,7 @@ import { useSetRecoilState } from "recoil"
 import { useRouter } from "next/router"
 import DarakData from "darakData"
 import { HowToMove } from "@server/entity/types"
+import { User } from "@server/entity/user"
 
 interface IProps {
   user: User
@@ -43,10 +43,10 @@ export default function UserInformationForm(props: IProps) {
     if (!userInformation.name) {
       setNotificationMessage("이름을 입력해주세요.")
       return
-    } else if (!userInformation.age) {
+    } else if (!userInformation.yearOfBirth) {
       setNotificationMessage("나이를 입력해주세요.")
       return
-    } else if (!userInformation.sex) {
+    } else if (!userInformation.gender) {
       setNotificationMessage("성별을 선택해주세요.")
       return
     } else if (!userInformation.phone) {

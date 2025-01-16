@@ -22,7 +22,7 @@ export interface ChatContent {
 }
 
 let ChatList: Chat[] = []
-function index() {
+export default function Index() {
   const [chatList, setChatList] = useState<Array<Chat>>([])
   const { editUserInformation } = useUserData()
   const { editContent } = useBotChatLogic({
@@ -102,5 +102,3 @@ function index() {
     </Stack>
   )
 }
-
-export default index

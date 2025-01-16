@@ -1,8 +1,8 @@
 import { InOutInfo } from "@entity/inOutInfo"
 import { MoveType } from "@entity/types"
-import { User } from "@entity/user"
 import { Box, Button, Stack } from "@mui/material"
 import { HowToMove } from "@server/entity/types"
+import { User } from "@server/entity/user"
 import { Dispatch, SetStateAction } from "react"
 
 interface IProps {
@@ -17,19 +17,21 @@ export default function ReceiptResult(props: IProps) {
     <Stack padding="6px" minWidth="340px" gap="16px" color="white">
       <InfoStack title="이름" content={props.user.name} />
       <InfoStack title="전화번호" content={props.user.phone} />
-      <InfoStack title="출생년도" content={props.user.age + " 년생"} />
+      <InfoStack title="출생년도" content={props.user.yearOfBirth + " 년생"} />
       <InfoStack
         title="성별"
-        content={props.user.sex === "man" ? "남" : "여"}
+        content={props.user.gender === "man" ? "남" : "여"}
       />
       <InfoStack
         title="소속 마을 / 다락방"
-        content={props.user.village + " 마을 / " + props.user.darak + " 다락방"}
+        content={
+          props.user.community?.parent?.name +
+          " 마을 / " +
+          props.user.community?.name +
+          " 다락방"
+        }
       />
-      <InfoStack
-        title="수련회장 이동 방법"
-        content={getHowToMoveString(props.user.howToGo)}
-      />
+      <InfoStack title="수련회장 이동 방법" content={"asd"} />
       {props.inOutData.map((inout, index) => {
         return (
           <Stack
@@ -53,11 +55,13 @@ export default function ReceiptResult(props: IProps) {
       })}
       <InfoStack
         title="주일날 교회로 오는 방법"
-        content={getHowToMoveString(props.user.howToLeave)}
+        content=""
+        //content={getHowToMoveString(props.user.howToLeave)}
       />
       <InfoStack
         title="금요일 출근 예정이신가요?"
-        content={props.user.isOutAtThursday === "true" ? "예" : "아니요"}
+        content=""
+        //content={props.user.isOutAtThursday === "true" ? "예" : "아니요"}
       />
       {props.user.etc && (
         <InfoStack title="기타 사항" content={props.user.etc} />

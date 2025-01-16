@@ -35,8 +35,9 @@ export default function BotChat(props: IPops) {
             {props.content}
             {props.buttons && props.buttons.length > 0 && (
               <Stack mt="12px" gap="8px">
-                {props.buttons?.map((button) => (
+                {props.buttons?.map((button, index) => (
                   <Stack
+                    key={index}
                     px="20px"
                     py="16px"
                     fontSize="16px"

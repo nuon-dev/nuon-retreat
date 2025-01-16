@@ -5,9 +5,11 @@ import {
   OneToMany,
   ManyToOne,
   CreateDateColumn,
+  OneToOne,
 } from "typeorm"
 import { Permission } from "./permission"
 import { Community } from "./community"
+import { RetreatAttend } from "./retreatAttend"
 
 @Entity()
 export class User {
@@ -54,4 +56,9 @@ export class User {
 
   @ManyToOne(() => Community, (community) => community.users)
   community: Community | null
+
+  @OneToOne(() => RetreatAttend, (retreatAttend) => retreatAttend.user, {
+    nullable: true,
+  })
+  retreatAttend: RetreatAttend | null
 }

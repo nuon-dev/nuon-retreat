@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import useKakaoHook from "kakao"
 
 //아이콘 주소 https://www.flaticon.com/kr/
-function admin() {
+export default function Admin() {
   const router = useRouter()
   const kakao = useKakaoHook()
 
@@ -176,5 +176,3 @@ function admin() {
 
   return <Stack py="40px">{isLogin ? menu() : loginForm()}</Stack>
 }
-
-export default admin
