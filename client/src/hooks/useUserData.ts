@@ -39,6 +39,7 @@ export default function useUserData() {
       const { result, userData } = await post("/auth/check-token", {
         token,
       })
+
       if (result === "true") {
         setUserInformation(userData)
         return userData
@@ -50,6 +51,7 @@ export default function useUserData() {
   }
 
   type UserKey = keyof User
+
   function editUserInformation(key: UserKey, value: User[UserKey]) {
     if (!userInformation) {
       return

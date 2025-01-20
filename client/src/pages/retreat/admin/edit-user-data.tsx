@@ -1,6 +1,6 @@
 import { get, post } from "../../api"
 import { useEffect, useState } from "react"
-import { User } from "@entity/user"
+import { User } from "@server/entity/user"
 import {
   Box,
   Button,

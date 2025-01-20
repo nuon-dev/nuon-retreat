@@ -1,5 +1,5 @@
 import { Box, Button, Stack } from "@mui/material"
-import { User } from "@entity/user"
+import { User } from "@server/entity/user"
 import { useEffect, useState } from "react"
 import { get, post } from "../../../pages/api"
 import { InOutInfo } from "@entity/inOutInfo"

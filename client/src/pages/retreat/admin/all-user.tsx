@@ -8,7 +8,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material"
-import { User } from "@entity/user"
+import { User } from "@server/entity/user"
 import { get } from "../../../pages/api"
 import { InOutInfo } from "@entity/inOutInfo"
 import { useSetRecoilState } from "recoil"

@@ -2,7 +2,8 @@ import express, { Router } from "express"
 
 import authRouter from "./authRouter"
 import adminRouter from "./admin/adminRouter"
-import RetreatRouter from "./retreat/retreatRouter"
+import retreatRouter from "./retreat/retreatRouter"
+import inOutInfoRouter from "./retreat/inOutInfoRouter"
 import cors from "cors"
 
 const router: Router = express.Router()
@@ -10,6 +11,7 @@ const router: Router = express.Router()
 router.use(cors())
 router.use("/auth", authRouter)
 router.use("/admin", adminRouter)
-router.use("/retreat", RetreatRouter)
+router.use("/retreat", retreatRouter)
+router.use("/in-out-info", inOutInfoRouter)
 
 export default router

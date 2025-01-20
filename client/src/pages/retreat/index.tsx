@@ -10,6 +10,7 @@ import InputText from "components/retreat/InputText"
 import useUserData from "hooks/useUserData"
 import { get } from "pages/api"
 import { Community } from "@server/entity/community"
+import InOutInfoForm from "components/retreat/InOutInfoForm"
 
 export interface Chat extends ChatContent {
   time: string
@@ -99,6 +100,7 @@ export default function Index() {
         }
       })}
       <InputText submit={submit} />
+      <InOutInfoForm />
     </Stack>
   )
 }

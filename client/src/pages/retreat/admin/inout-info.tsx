@@ -10,7 +10,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material"
-import { User } from "@entity/user"
+import { User } from "@server/entity/user"
 import { useRouter } from "next/router"
 import { get } from "pages/api"
 import { NotificationMessage } from "state/notification"

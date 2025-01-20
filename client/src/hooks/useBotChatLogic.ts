@@ -1,9 +1,13 @@
 import { ChatContent } from "pages/retreat"
 import { useEffect, useState } from "react"
 import useUserData, { UserInformationAtom } from "./useUserData"
-import { useRecoilValue } from "recoil"
-import useRetreatData, { RetreatAttendAtom } from "./useRetreatData"
+import { useRecoilValue, useSetRecoilState } from "recoil"
+import useRetreatData, {
+  InOutInformationAtom,
+  RetreatAttendAtom,
+} from "./useRetreatData"
 import { HowToMove } from "@server/entity/types"
+import { ShowInOutInfoComponentAtom } from "components/retreat/InOutInfoForm"
 
 interface IPops {
   addChat: (chat: ChatContent) => void
@@ -16,9 +20,10 @@ export enum EditContent {
   gender,
   phone,
   darak,
-  HowToGo,
-  HowToBack,
+  howToGo,
+  howToBack,
   etc,
+  inOutInfo,
 }
 /*
 1. 어떻게 들어올 것인가?
@@ -48,11 +53,16 @@ export default function useBotChatLogic({ addChat }: IPops) {
     saveUserInformation,
   } = useUserData()
 
-  const { checkMissedRetreatAttendInformation, editRetreatAttendInformation } =
-    useRetreatData()
+  const {
+    checkMissedRetreatAttendInformation,
+    editRetreatAttendInformation,
+    saveRetreatAttendInformation,
+  } = useRetreatData()
 
   const userInformation = useRecoilValue(UserInformationAtom)
   const retreatAttend = useRecoilValue(RetreatAttendAtom)
+  const inOutInfos = useRecoilValue(InOutInformationAtom)
+  const setShowInOutInfoForm = useSetRecoilState(ShowInOutInfoComponentAtom)
 
   useEffect(() => {
     init()
@@ -88,6 +98,11 @@ export default function useBotChatLogic({ addChat }: IPops) {
     }
   }
 
+  async function saveAllInformation() {
+    await saveUserInformation()
+    await saveRetreatAttendInformation()
+  }
+
   async function firstTime() {
     addChat({
       type: "bot",
@@ -109,29 +124,34 @@ export default function useBotChatLogic({ addChat }: IPops) {
       })
       return
     }
-    if (!userData.name) {
-      editUserName()
-      return
+    if (userData.name) {
+      addChat({
+        type: "bot",
+        content: `${userData.name}님 환영합니다!`,
+      })
     }
-    addChat({
-      type: "bot",
-      content: `어! 저는 당신을 알아요! ${userData.name}님이시죠? 환영합니다!`,
-    })
   }
 
   useEffect(() => {
-    if (!userInformation) {
+    if (!userInformation || !retreatAttend || !inOutInfos) {
       return
     }
     setTimeout(checkMissedUserInformationAndEdit)
-    if (editContent !== EditContent.none && !checkMissedUserInformation()) {
+    if (editContent !== EditContent.none) {
+      setEditContent(EditContent.none)
+      saveAllInformation()
+    }
+    if (
+      editContent !== EditContent.none &&
+      !checkMissedUserInformation() &&
+      !checkMissedRetreatAttendInformation()
+    ) {
       addChat({
         type: "bot",
-        content: `정보를 저장했어요!.`,
+        content: `접수가 완료 되었어요!.`,
       })
-      setEditContent(EditContent.none)
     }
-  }, [userInformation, retreatAttend])
+  }, [userInformation, retreatAttend, inOutInfos])
 
   function checkMissedUserInformationAndEdit() {
     const missedContent = checkMissedUserInformation()
@@ -141,7 +161,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
       missedRetreatAttendContent === EditContent.none
     if (allIsOkay) {
       whatDoYouWantToDo()
-      saveUserInformation()
+      saveAllInformation()
       return false
     }
     switch (missedContent) {
@@ -162,11 +182,29 @@ export default function useBotChatLogic({ addChat }: IPops) {
         return true
     }
     switch (missedRetreatAttendContent) {
-      case EditContent.HowToGo:
+      case EditContent.howToGo:
         howToGo()
         return true
-      case EditContent.HowToBack:
+      case EditContent.howToBack:
         howToBack()
+        return true
+      case EditContent.inOutInfo:
+        addChat({
+          type: "bot",
+          content: `출입 정보 등록이 필요해요!`,
+          buttons: [
+            {
+              content: "입력창 열기",
+              onClick: () => {
+                addChat({
+                  type: "my",
+                  content: "입력창 열기",
+                })
+                setShowInOutInfoForm(true)
+              },
+            },
+          ],
+        })
         return true
     }
 
@@ -189,7 +227,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: "버스",
             })
-            editRetreatAttendInformation("HowToGo", HowToMove.together)
+            editRetreatAttendInformation("howToGo", HowToMove.together)
           },
         },
         {
@@ -199,7 +237,10 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: "자가용 (카풀 가능)",
             })
-            editRetreatAttendInformation("HowToGo", HowToMove.driveCarAlone)
+            editRetreatAttendInformation(
+              "howToGo",
+              HowToMove.driveCarWithPerson
+            )
           },
         },
         {
@@ -209,10 +250,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: "자가용 (카풀 불가능)",
             })
-            editRetreatAttendInformation(
-              "HowToGo",
-              HowToMove.driveCarWithPerson
-            )
+            editRetreatAttendInformation("howToGo", HowToMove.driveCarAlone)
           },
         },
         {
@@ -222,7 +260,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: "카풀 필요",
             })
-            editRetreatAttendInformation("HowToGo", HowToMove.rideCar)
+            editRetreatAttendInformation("howToGo", HowToMove.rideCar)
           },
         },
         {
@@ -232,18 +270,10 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: "대중교통",
             })
-            editRetreatAttendInformation("HowToGo", HowToMove.goAlone)
+            editRetreatAttendInformation("howToGo", HowToMove.goAlone)
           },
         },
       ],
-    })
-  }
-
-  function whenToGo() {
-    addChat({
-      type: "bot",
-      content: `언제 출발하실건가요?`,
-      buttons: [],
     })
   }
 
@@ -259,21 +289,55 @@ export default function useBotChatLogic({ addChat }: IPops) {
               type: "my",
               content: "버스",
             })
-            editRetreatAttendInformation("HowToBack", HowToMove.together)
+            editRetreatAttendInformation("howToBack", HowToMove.together)
           },
         },
         {
-          content: "자가용",
+          content: "자가용 (카풀 가능)",
           onClick: () => {
             addChat({
               type: "my",
-              content: "자가용",
+              content: "자가용 (카풀 가능)",
             })
-            editRetreatAttendInformation("HowToBack", HowToMove.driveCarAlone)
+            editRetreatAttendInformation(
+              "howToBack",
+              HowToMove.driveCarWithPerson
+            )
+          },
+        },
+        {
+          content: "자가용 (카풀 불가능)",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "자가용 (카풀 불가능)",
+            })
+            editRetreatAttendInformation("howToBack", HowToMove.driveCarAlone)
+          },
+        },
+        {
+          content: "카풀 필요",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "카풀 필요",
+            })
+            editRetreatAttendInformation("howToBack", HowToMove.rideCar)
+          },
+        },
+        {
+          content: "대중교통",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "대중교통",
+            })
+            editRetreatAttendInformation("howToBack", HowToMove.goAlone)
           },
         },
       ],
     })
+    setEditContent(EditContent.howToBack)
   }
 
   function editUserName() {
@@ -294,16 +358,13 @@ export default function useBotChatLogic({ addChat }: IPops) {
 
   async function checkUserData() {
     const userData = userInformation
-    if (!userData) {
+    if (!retreatAttend || !userData) {
+      return
+    }
+    if (retreatAttend.isCanceled) {
       addChat({
         type: "bot",
-        content: "제가 당신을 기억할 수 있도록 카카오 로그인을 해주세요!",
-        buttons: [
-          {
-            content: "카카오톡 로그인",
-            onClick: login,
-          },
-        ],
+        content: `${userInformation.name}님의 수련회 신청 내역은 취소되었어요.`,
       })
       return
     }
@@ -314,18 +375,32 @@ export default function useBotChatLogic({ addChat }: IPops) {
         userData.gender === "man" ? "남성" : "여성"
       }이시네요.
       순장님은 ${userData.community?.name}님이에요.
-      연락은 ${userData.phone}로 드릴게요.`,
+      연락은 ${userData.phone}로 드릴게요.
+       ${retreatAttend.howToGo}로 수련회장으로 이동 하시고 
+       ${retreatAttend.howToBack}으로 교회로 돌아 오시네요.
+    회비는 입금 ${retreatAttend.isDeposited ? "확인" : "대기중"} 입니다. 😀
+    ${retreatAttend.inOutInfo.map((inOutInfo) => {
+      return `${inOutInfo.day}날에 ${inOutInfo.time}시에 ${inOutInfo.position}에서 ${inOutInfo.inOutType}실 거에요.`
+    })}`,
       buttons: [
         {
           content: "엇.. 틀린게 있어요.",
           onClick: () => {
+            addChat({
+              type: "my",
+              content: "엇.. 틀린게 있어요.",
+            })
             selectEditContent()
           },
         },
         {
           content: "네! 좋아요.",
           onClick: async () => {
-            await saveUserInformation()
+            addChat({
+              type: "my",
+              content: "네! 좋아요.",
+            })
+            await saveAllInformation()
             savedUserInformation()
           },
         },
@@ -388,6 +463,26 @@ export default function useBotChatLogic({ addChat }: IPops) {
             editDarak()
           },
         },
+        {
+          content: "수련회장 가는 방법",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "수련회장 가는 방법",
+            })
+            howToGo()
+          },
+        },
+        {
+          content: "수련회장에서 나오는 방법",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "수련회장에서 나오는 방법",
+            })
+            howToBack()
+          },
+        },
       ],
     })
   }
@@ -433,7 +528,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
   function savedUserInformation() {
     addChat({
       type: "bot",
-      content: `모든 정보를 저장했어요!`,
+      content: `말씀하신 대로 저장했어요!`,
     })
     setEditContent(EditContent.none)
   }
@@ -452,31 +547,11 @@ export default function useBotChatLogic({ addChat }: IPops) {
       content: `무엇을 도와드릴까요?`,
       buttons: [
         {
-          content: "나의 정보 확인",
+          content: "수련회 접수 정보 확인",
           onClick: () => {
             addChat({
               type: "my",
-              content: "나의 정보  확인",
-            })
-            checkUserData()
-          },
-        },
-        {
-          content: "나의 정보 수정",
-          onClick: () => {
-            addChat({
-              type: "my",
-              content: "나의 정보 수정",
-            })
-            selectEditContent()
-          },
-        },
-        {
-          content: "수련회 접수 내용 확인",
-          onClick: () => {
-            addChat({
-              type: "my",
-              content: " 수련회 접수 내용 확인",
+              content: "수련회 접수 정보 확인",
             })
             checkUserData()
           },
@@ -486,9 +561,27 @@ export default function useBotChatLogic({ addChat }: IPops) {
           onClick: () => {
             addChat({
               type: "my",
-              content: " 수련회 접수 내용 수정",
+              content: "수련회 접수 내용 수정",
             })
             selectEditContent()
+          },
+        },
+        {
+          content: "수련회 안내 사항",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "수련회 안내 사항",
+            })
+          },
+        },
+        {
+          content: "수련회 도중에 출입 하고 싶어!",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "수련회 도중에 출입 하고 싶어!",
+            })
           },
         },
       ],

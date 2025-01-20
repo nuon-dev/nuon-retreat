@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react"
 import { get, post } from "../../../pages/api"
-import { User } from "@entity/user"
+import { User } from "@server/entity/user"
 import {
   FormControlLabel,
   FormLabel,

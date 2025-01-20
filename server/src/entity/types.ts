@@ -1,13 +1,5 @@
 export const enum HowToMove {
-  together = "1",
-  driveCarAlone = "2",
-  driveCarWithPerson = "3",
-  rideCar = "4",
-  goAlone = "5",
-  etc = "6",
-}
-
-export const enum MoveType {
+  none = 0,
   together = 1,
   driveCarAlone,
   driveCarWithPerson,
@@ -39,12 +31,13 @@ export enum PermissionType {
 }
 
 export enum Days {
-  firstDay,
+  firstDay = 1,
   secondDay,
   thirdDay,
 }
 
 export enum InOutType {
+  none = "none",
   IN = "in",
   OUT = "out",
 }

@@ -1,0 +1,25 @@
+.in-out-info-show {
+  animation: fade-in 0.5s ease;
+}
+.in-out-info-hide {
+  animation: fade-out 0.5s ease;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-in {
+  from {
+    transform: translateY(90vh);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(90vh);
+  }
+}

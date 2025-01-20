@@ -1,5 +1,5 @@
 import { CurrentStatus } from "@entity/types"
-import { User } from "@entity/user"
+import { User } from "@server/entity/user"
 import { Button, MenuItem, Select, Stack } from "@mui/material"
 import { post } from "pages/api"
 import { useEffect, useRef, useState } from "react"

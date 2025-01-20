@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material"
-import { User } from "@entity/user"
+import { User } from "@server/entity/user"
 import { get, post } from "../../../pages/api"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"

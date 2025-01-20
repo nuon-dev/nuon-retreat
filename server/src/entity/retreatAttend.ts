@@ -19,10 +19,10 @@ export class RetreatAttend {
   @JoinColumn()
   user: User
 
-  @Column()
+  @Column({ nullable: true })
   groupNumber: number
 
-  @Column()
+  @Column({ nullable: true })
   roomNumber: number
 
   @Column({ type: "text", nullable: true })
@@ -31,11 +31,14 @@ export class RetreatAttend {
   @Column({ default: false })
   isDeposited: boolean
 
-  @Column()
-  HowToGo: HowToMove
+  @Column({ nullable: true })
+  howToGo: HowToMove
 
-  @Column()
-  HowToBack: HowToMove
+  @Column({ nullable: true })
+  howToBack: HowToMove
+
+  @Column({ default: true })
+  isCanceled: boolean
 
   @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.retreatAttend)
   inOutInfo: InOutInfo[]

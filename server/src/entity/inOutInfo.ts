@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm"
-import { Days, InOutType, MoveType } from "./types"
+import { Days, InOutType, HowToMove } from "./types"
 import { RetreatAttend } from "./retreatAttend"
 
 @Entity()
@@ -29,7 +29,7 @@ export class InOutInfo {
   position: string
 
   @Column()
-  howToMove: MoveType
+  howToMove: HowToMove
 
   @ManyToOne(() => InOutInfo, (inOutInfo) => inOutInfo.userInTheCar)
   rideCarInfo: InOutInfo | null

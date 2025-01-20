@@ -1,5 +1,5 @@
 import { Days, InOutType, MoveType } from "./types"
-import { User } from "./user"
+import { User } from "@server/entity/user"
 
 export class InOutInfo {
   id: number
