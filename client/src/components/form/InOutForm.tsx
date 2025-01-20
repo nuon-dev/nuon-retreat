@@ -1,8 +1,8 @@
 import { Button, FormControl, MenuItem, Select, Stack } from "@mui/material"
 import { Dispatch, SetStateAction } from "react"
 import { post } from "pages/api"
-import { InOutInfo } from "@entity/inOutInfo"
-import { Days, InOutType, MoveType } from "@entity/types"
+import { InOutInfo } from "@server/entity/inOutInfo"
+import { Days, HowToMove, InOutType } from "@server/entity/types"
 
 interface IProps {
   setInOutData: Dispatch<SetStateAction<InOutInfo[]>>
@@ -16,7 +16,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
     emptyInfo.inOutType = InOutType.IN
     emptyInfo.position = "교회"
     emptyInfo.time = 9
-    emptyInfo.howToMove = MoveType.driveCarWithPerson
+    emptyInfo.howToMove = HowToMove.driveCarWithPerson
     setInOutData([...inOutData, emptyInfo])
   }
 
@@ -113,19 +113,19 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
                 )
               }
             >
-              <MenuItem value={MoveType.driveCarWithPerson}>
+              <MenuItem value={HowToMove.driveCarWithPerson}>
                 자차 이동(카풀 가능)
               </MenuItem>
-              <MenuItem value={MoveType.driveCarAlone}>
+              <MenuItem value={HowToMove.driveCarAlone}>
                 자차 이동(카풀 불가)
               </MenuItem>
-              <MenuItem value={MoveType.rideCar}>카풀 요청</MenuItem>
-              <MenuItem value={MoveType.goAlone}>대중교통 (여주역)</MenuItem>
+              <MenuItem value={HowToMove.rideCar}>카풀 요청</MenuItem>
+              <MenuItem value={HowToMove.goAlone}>대중교통 (여주역)</MenuItem>
             </Select>
           </FormControl>
         </Stack>
-        {(data.howToMove == MoveType.driveCarWithPerson ||
-          data.howToMove == MoveType.rideCar) && (
+        {(data.howToMove == HowToMove.driveCarWithPerson ||
+          data.howToMove == HowToMove.rideCar) && (
           <Stack>
             <Stack fontSize="12px" p="6px">
               장소

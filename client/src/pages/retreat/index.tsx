@@ -11,6 +11,7 @@ import useUserData from "hooks/useUserData"
 import { get } from "pages/api"
 import { Community } from "@server/entity/community"
 import InOutInfoForm from "components/retreat/InOutInfoForm"
+import { atom, useRecoilValue } from "recoil"
 
 export interface Chat extends ChatContent {
   time: string
@@ -22,6 +23,11 @@ export interface ChatContent {
   buttons?: ChatButton[]
 }
 
+export const StopRetreatBodyScrollAtom = atom<boolean>({
+  key: "stop-scroll",
+  default: false,
+})
+
 let ChatList: Chat[] = []
 export default function Index() {
   const [chatList, setChatList] = useState<Array<Chat>>([])
@@ -29,6 +35,7 @@ export default function Index() {
   const { editContent } = useBotChatLogic({
     addChat,
   })
+  const stopScroll = useRecoilValue(StopRetreatBodyScrollAtom)
 
   function addChat(chatContent: ChatContent) {
     const chat = chatContent as Chat
@@ -83,6 +90,7 @@ export default function Index() {
         flex: "1",
         width: "100vw",
         backgroundColor: "rgb(190, 205, 222)",
+        overflowY: stopScroll ? "hidden" : "scroll",
       }}
     >
       {chatList.map((chat, index) => {

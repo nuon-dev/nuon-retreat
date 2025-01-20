@@ -1,9 +1,12 @@
 import { Button, FormControl, MenuItem, Select, Stack } from "@mui/material"
 import styles from "./index.module.css"
-import { atom, useRecoilState } from "recoil"
+import { atom, useRecoilState, useSetRecoilState } from "recoil"
 import useRetreatData from "hooks/useRetreatData"
 import { InOutType, HowToMove, Days } from "@server/entity/types"
 import { InOutInfo } from "@server/entity/inOutInfo"
+import { post } from "pages/api"
+import { useEffect } from "react"
+import { StopRetreatBodyScrollAtom } from "pages/retreat"
 
 export const ShowInOutInfoComponentAtom = atom<boolean>({
   key: "show-in-out-info",
@@ -15,17 +18,25 @@ export default function InOutInfoForm() {
     ShowInOutInfoComponentAtom
   )
   const { addInfo, inOutInfoList, setInOutData } = useRetreatData()
+  const setStopRetreatBodyScroll = useSetRecoilState(StopRetreatBodyScrollAtom)
 
-  function getMoveTypeString(moveType: HowToMove) {
-    switch (moveType) {
-      case HowToMove.goAlone:
-        return "대중교통"
-      case HowToMove.driveCarWithPerson:
-        return "자차 (카풀)"
-      case HowToMove.rideCar:
-        return "카풀 신청"
+  useEffect(() => {
+    if (showInOutInfo) {
+      setStopRetreatBodyScroll(true)
+    } else {
+      setStopRetreatBodyScroll(false)
     }
-    return "오류"
+  }, [showInOutInfo])
+
+  function onClickRemove(targetInfoIndex: number) {
+    const deleteInfo = inOutInfoList[targetInfoIndex]
+    if (deleteInfo && deleteInfo.id) {
+      post("/info/delete-attend-time", {
+        inOutInfo: deleteInfo,
+      })
+    }
+    inOutInfoList.splice(targetInfoIndex, 1)
+    setInOutData([...inOutInfoList])
   }
 
   function onChangeInformation(type: string, data: string, index: number) {
@@ -150,7 +161,7 @@ export default function InOutInfoForm() {
           <Stack marginTop="10px">
             <Button
               variant="contained"
-              //onClick={() => onClickRemove(index)}
+              onClick={() => onClickRemove(index)}
               style={{ backgroundColor: "#3d524a" }}
             >
               이동 방법 삭제
