@@ -29,6 +29,7 @@ export default function InputText({ submit }: IProps) {
   }
 
   useEffect(() => {
+    console.log("global.visualViewport", global.visualViewport)
     if (global.visualViewport) {
       global.visualViewport.addEventListener("resize", () => {
         scrollTo(0, 0)

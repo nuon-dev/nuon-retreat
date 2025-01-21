@@ -6,12 +6,10 @@ import { InOutType, HowToMove, Days } from "@server/entity/types"
 import { InOutInfo } from "@server/entity/inOutInfo"
 import { post } from "pages/api"
 import { useEffect } from "react"
-import { StopRetreatBodyScrollAtom } from "pages/retreat"
-
-export const ShowInOutInfoComponentAtom = atom<boolean>({
-  key: "show-in-out-info",
-  default: false,
-})
+import {
+  ShowInOutInfoComponentAtom,
+  StopRetreatBodyScrollAtom,
+} from "state/retreat"
 
 export default function InOutInfoForm() {
   const [showInOutInfo, setShowInOutInfo] = useRecoilState(
@@ -40,11 +38,12 @@ export default function InOutInfoForm() {
   }
 
   function onChangeInformation(type: string, data: string, index: number) {
-    inOutInfoList[index] = {
-      ...inOutInfoList[index],
+    const newInOutInfoList = [...inOutInfoList]
+    newInOutInfoList[index] = {
+      ...newInOutInfoList[index],
       [type]: data,
     }
-    setInOutData([...inOutInfoList])
+    setInOutData([...newInOutInfoList])
   }
 
   function getRow(data: InOutInfo, index: number) {
@@ -179,30 +178,27 @@ export default function InOutInfoForm() {
       }
       position="fixed"
       bgcolor="white"
-      bottom="0px"
+      bottom="5vh"
       width="95%"
       alignSelf="center"
       height="90vh"
-      padding="20px"
-      style={{
-        borderTopLeftRadius: "20px",
-        borderTopRightRadius: "20px",
-      }}
+      padding="12px"
+      borderRadius="8px"
+      border="1px solid #AAA"
+      boxShadow="0px 0px 10px 0px #AAA"
     >
       <Stack position="static" style={{ overflowY: "scroll" }}>
-        <Stack>출입정보 관리 등록</Stack>
+        <Stack textAlign="center">출입정보 관리 등록</Stack>
 
-        <Button
-          variant="contained"
-          onClick={() => addInfo(InOutType.IN)}
-          style={{ backgroundColor: "#3d524a" }}
-        >
+        <Button variant="contained" onClick={() => addInfo(InOutType.IN)}>
           이동 방법 추가
         </Button>
-        {inOutInfoList.map((inOutInfo, index) => (
-          <Stack key={index}>{getRow(inOutInfo, index)}</Stack>
-        ))}
-        <Button onClick={() => setShowInOutInfo(false)}>저장</Button>
+        <Stack>
+          {inOutInfoList.map((inOutInfo, index) => (
+            <Stack key={index}>{getRow(inOutInfo, index)}</Stack>
+          ))}
+          <Button onClick={() => setShowInOutInfo(false)}>저장</Button>
+        </Stack>
       </Stack>
     </Stack>
   )

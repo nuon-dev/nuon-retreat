@@ -8,7 +8,7 @@
 
 @keyframes fade-in {
   from {
-    transform: translateY(90vh);
+    transform: translateY(95vh);
   }
   to {
     transform: translateY(0);
@@ -20,6 +20,6 @@
     transform: translateY(0);
   }
   to {
-    transform: translateY(90vh);
+    transform: translateY(95vh);
   }
 }

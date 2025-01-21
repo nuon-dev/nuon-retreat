@@ -1,8 +1,8 @@
 "use client"
 
 import { Stack } from "@mui/material"
-import { useEffect, useState } from "react"
-import BotChat, { ChatButton } from "components/retreat/BotChat"
+import { useState } from "react"
+import BotChat from "components/retreat/BotChat"
 import MyChat from "components/retreat/MyChat"
 import dayjs from "dayjs"
 import useBotChatLogic, { EditContent } from "hooks/useBotChatLogic"
@@ -12,21 +12,8 @@ import { get } from "pages/api"
 import { Community } from "@server/entity/community"
 import InOutInfoForm from "components/retreat/InOutInfoForm"
 import { atom, useRecoilValue } from "recoil"
-
-export interface Chat extends ChatContent {
-  time: string
-}
-
-export interface ChatContent {
-  type: "bot" | "my"
-  content: string
-  buttons?: ChatButton[]
-}
-
-export const StopRetreatBodyScrollAtom = atom<boolean>({
-  key: "stop-scroll",
-  default: false,
-})
+import { StopRetreatBodyScrollAtom } from "state/retreat"
+import { Chat, ChatContent } from "types/retreat"
 
 let ChatList: Chat[] = []
 export default function Index() {
@@ -90,7 +77,7 @@ export default function Index() {
         flex: "1",
         width: "100vw",
         backgroundColor: "rgb(190, 205, 222)",
-        overflowY: stopScroll ? "hidden" : "scroll",
+        overflowY: stopScroll ? "hidden" : "visible",
       }}
     >
       {chatList.map((chat, index) => {

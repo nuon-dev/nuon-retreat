@@ -5,6 +5,7 @@ export const enum HowToMove {
   driveCarWithPerson,
   rideCar,
   goAlone,
+  etc,
 }
 
 export const enum CurrentStatus {

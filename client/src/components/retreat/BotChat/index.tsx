@@ -1,10 +1,6 @@
 import { Box, Stack } from "@mui/material"
 import styles from "./index.module.css"
-
-export interface ChatButton {
-  content: string
-  onClick: () => void
-}
+import { ChatButton } from "types/retreat"
 
 interface IPops {
   content: string

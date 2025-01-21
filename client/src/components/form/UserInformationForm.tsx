@@ -6,16 +6,15 @@ import {
   TextField,
   Stack,
 } from "@mui/material"
-import { InOutInfo } from "@entity/inOutInfo"
 import { post } from "../../pages/api"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import InOutFrom from "./InOutForm"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
 import { useRouter } from "next/router"
-import DarakData from "darakData"
 import { HowToMove } from "@server/entity/types"
 import { User } from "@server/entity/user"
+import { InOutInfo } from "@server/entity/inOutInfo"
 
 interface IProps {
   user: User
@@ -40,35 +39,23 @@ export default function UserInformationForm(props: IProps) {
   }
 
   const submit = async () => {
-    if (!userInformation.name) {
-      setNotificationMessage("이름을 입력해주세요.")
+    if (!userInformation.retreatAttend) {
+      setNotificationMessage("수련회 접수 정보 없음.")
       return
-    } else if (!userInformation.yearOfBirth) {
-      setNotificationMessage("나이를 입력해주세요.")
-      return
-    } else if (!userInformation.gender) {
-      setNotificationMessage("성별을 선택해주세요.")
-      return
-    } else if (!userInformation.phone) {
-      setNotificationMessage("전화번호를 입력해주세요.")
-      return
-    } else if (!userInformation.howToGo) {
+    }
+    if (!userInformation.retreatAttend.howToGo) {
       setNotificationMessage("이동 방법을 선택해주세요.")
       return
-    } else if (
-      userInformation.howToGo !== HowToMove.together &&
+    }
+    if (
+      userInformation.retreatAttend.howToGo !== HowToMove.together &&
       inOutData.length === 0
     ) {
       setNotificationMessage("이동 방법을 추가해주세요.")
       return
-    } else if (!userInformation.howToLeave) {
+    }
+    if (!userInformation.retreatAttend.howToBack) {
       setNotificationMessage("이동 방법을 선택해주세요.")
-      return
-    } else if (!userInformation.village) {
-      setNotificationMessage("마을을 선택해주세요.")
-      return
-    } else if (!userInformation.darak) {
-      setNotificationMessage("다락방을 선택해주세요.")
       return
     }
 
@@ -124,7 +111,7 @@ export default function UserInformationForm(props: IProps) {
           className="TextField"
           value={userInformation.name}
           placeholder="이름을 입력하세요."
-          onChange={(e) => changeInformation("name", e.target.value)}
+          disabled
         />
       </Stack>
       {getInputGap()}
@@ -138,7 +125,7 @@ export default function UserInformationForm(props: IProps) {
           className="TextField"
           value={userInformation.phone}
           placeholder="전화번호를 입력하세요."
-          onChange={(e) => changeInformation("phone", e.target.value)}
+          disabled
         />
       </Stack>
       {getInputGap()}
@@ -151,12 +138,10 @@ export default function UserInformationForm(props: IProps) {
           <Select
             fullWidth={true}
             className="Select"
-            key={userInformation.age}
-            value={userInformation.age}
-            defaultValue={userInformation.age}
-            onChange={(e) =>
-              changeInformation("age", e.target.value.toString())
-            }
+            key={userInformation.yearOfBirth}
+            value={userInformation.yearOfBirth}
+            defaultValue={userInformation.yearOfBirth}
+            disabled
           >
             {new Array(45).fill(0).map((_, index) => (
               <MenuItem value={new Date().getFullYear() - index - 19}>
@@ -175,11 +160,11 @@ export default function UserInformationForm(props: IProps) {
         <FormControl fullWidth={true}>
           {userInformation.kakaoId && (
             <Select
-              value={userInformation.sex}
+              value={userInformation.gender}
               className="Select"
-              defaultValue={userInformation.sex}
+              defaultValue={userInformation.gender}
               placeholder="성별을 선택하세요."
-              onChange={(e) => changeInformation("sex", e.target.value)}
+              disabled
             >
               <MenuItem value={"man"}>남</MenuItem>
               <MenuItem value={"woman"}>여</MenuItem>
@@ -188,54 +173,20 @@ export default function UserInformationForm(props: IProps) {
         </FormControl>
       </Stack>
       {getInputGap()}
-      <Stack direction="row" gap="12px">
-        <Stack width="50%">
-          <Stack width="80px" justifyContent="center">
-            마을
-          </Stack>
-          {getLabelGap()}
-          <FormControl fullWidth={true}>
-            {userInformation.kakaoId && (
-              <Select
-                value={userInformation.village}
-                className="Select"
-                defaultValue={userInformation.village}
-                placeholder="마을을 선택하세요."
-                onChange={(e) => changeInformation("village", e.target.value)}
-              >
-                {Object.keys(DarakData).map((village) => (
-                  <MenuItem key={village} value={village}>
-                    {village}
-                  </MenuItem>
-                ))}
-              </Select>
-            )}
-          </FormControl>
+      <Stack width="50%">
+        <Stack width="80px" justifyContent="center">
+          다락방
         </Stack>
-        <Stack width="50%">
-          <Stack width="80px" justifyContent="center">
-            다락방
-          </Stack>
-          {getLabelGap()}
-          <FormControl fullWidth={true}>
-            {userInformation.kakaoId && (
-              <Select
-                value={userInformation.darak}
-                className="Select"
-                defaultValue={userInformation.darak}
-                placeholder="다락방을 선택하세요."
-                onChange={(e) => changeInformation("darak", e.target.value)}
-              >
-                {DarakData[userInformation.village] &&
-                  DarakData[userInformation.village].map((village) => (
-                    <MenuItem key={village} value={village}>
-                      {village}
-                    </MenuItem>
-                  ))}
-              </Select>
-            )}
-          </FormControl>
-        </Stack>
+        {getLabelGap()}
+        {userInformation.kakaoId && (
+          <TextField
+            fullWidth={true}
+            className="TextField"
+            value={userInformation.community?.name}
+            placeholder="전화번호를 입력하세요."
+            disabled
+          />
+        )}
       </Stack>
       {getInputGap()}
       <Stack>
@@ -247,9 +198,9 @@ export default function UserInformationForm(props: IProps) {
         <Select
           fullWidth={true}
           className="Select"
-          key={userInformation.howToGo}
-          defaultValue={userInformation.howToGo}
-          value={userInformation.howToGo}
+          key={userInformation.retreatAttend?.howToGo}
+          defaultValue={userInformation.retreatAttend?.howToGo}
+          value={userInformation.retreatAttend?.howToGo}
           onChange={(e) => {
             if (inOutData.length === 0) {
               setInOutData([])
@@ -282,11 +233,11 @@ export default function UserInformationForm(props: IProps) {
         <Select
           fullWidth={true}
           className="Select"
-          key={userInformation.howToLeave}
-          defaultValue={userInformation.howToLeave}
-          value={userInformation.howToLeave}
+          key={userInformation.retreatAttend?.howToBack}
+          defaultValue={userInformation.retreatAttend?.howToBack}
+          value={userInformation.retreatAttend?.howToBack}
           onChange={(e) =>
-            changeInformation("howToLeave", e.target.value.toString())
+            changeInformation("howToBack", e.target.value.toString())
           }
         >
           <MenuItem value={HowToMove.together.toString()}>교회 버스로</MenuItem>
@@ -294,27 +245,6 @@ export default function UserInformationForm(props: IProps) {
             기타 (자차 및 카풀)
           </MenuItem>
         </Select>
-      </Stack>
-      {getInputGap()}
-      <Stack>
-        <Stack width="200px" justifyContent="center">
-          금요일 출근 예정이신가요?
-        </Stack>
-        {getLabelGap()}
-        {userInformation.kakaoId && (
-          <Select
-            fullWidth={true}
-            className="Select"
-            value={userInformation.isOutAtThursday}
-            defaultValue={userInformation.isOutAtThursday}
-            onChange={(e) =>
-              changeInformation("isOutAtThursday", e.target.value.toString())
-            }
-          >
-            <MenuItem value={"true"}>예</MenuItem>
-            <MenuItem value={"false"}>아니요</MenuItem>
-          </Select>
-        )}
       </Stack>
       {getInputGap()}
       <Stack>

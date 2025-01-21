@@ -21,7 +21,6 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "paths": {
-      "@node_modules/*": ["../node_modules/*"],
       "@entity/*": ["./entity/*"],
       "@server/entity/*": ["../../server/src/entity/*"]
     },

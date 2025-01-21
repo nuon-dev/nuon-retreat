@@ -1,4 +1,3 @@
-import { ChatContent } from "pages/retreat"
 import { useEffect, useState } from "react"
 import useUserData, { UserInformationAtom } from "./useUserData"
 import { useRecoilValue, useSetRecoilState } from "recoil"
@@ -7,7 +6,8 @@ import useRetreatData, {
   RetreatAttendAtom,
 } from "./useRetreatData"
 import { HowToMove } from "@server/entity/types"
-import { ShowInOutInfoComponentAtom } from "components/retreat/InOutInfoForm"
+import { ChatContent } from "types/retreat"
+import { ShowInOutInfoComponentAtom } from "state/retreat"
 
 interface IPops {
   addChat: (chat: ChatContent) => void
@@ -25,23 +25,6 @@ export enum EditContent {
   etc,
   inOutInfo,
 }
-/*
-1. 어떻게 들어올 것인가?
-1.1 버스
-1.2 자가용
-1.3 카풀 필요
-1.4 대중교통
-1.2.1 자가용이면 카풀이 가능한가?
-1.2.1.1 언제 탈 수 있는가?
-1.2.1.2 몇명이 탈 수 있는가?
-1.3.1 카풀이면 언제 탈 수 있는가?
-1.3.2 카풀이면 어디서 탈 수 있는가?
-1.4.1 대중교통이면 언제 도착 하는가?
-2. 어떻게 나갈 것인가?
-2.1 버스
-2.2 자가용
-
-*/
 
 export default function useBotChatLogic({ addChat }: IPops) {
   const [editContent, setEditContent] = useState<EditContent>(EditContent.none)
@@ -69,13 +52,13 @@ export default function useBotChatLogic({ addChat }: IPops) {
   }, [])
 
   async function init() {
-    addChat({
-      type: "bot",
-      content:
-        "안녕하세요! 새벽이입니다. 수련회에 관련하여 당신을 도와줄거에요!",
-    })
     let userData = await getUserDataFromToken()
     if (!userData) {
+      addChat({
+        type: "bot",
+        content:
+          "안녕하세요! 새벽이입니다. 수련회에 관련하여 당신을 도와줄거에요!",
+      })
       addChat({
         type: "bot",
         content: "제가 당신을 기억할 수 있도록 카카오 로그인을 해주세요!",
@@ -89,11 +72,16 @@ export default function useBotChatLogic({ addChat }: IPops) {
       return
     }
     if (!userData.name) {
+      addChat({
+        type: "bot",
+        content:
+          "안녕하세요! 새벽이입니다. 수련회에 관련하여 당신을 도와줄거에요!",
+      })
       firstTime()
     } else {
       addChat({
         type: "bot",
-        content: `또 오셨군요!. ${userData.name}님이 환영합니다!`,
+        content: `${userData.name}님 다시 만나서 반가워요!`,
       })
     }
   }
@@ -148,7 +136,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
     ) {
       addChat({
         type: "bot",
-        content: `접수가 완료 되었어요!.`,
+        content: `접수가 완료 되었어요!`,
       })
     }
   }, [userInformation, retreatAttend, inOutInfos])
@@ -424,11 +412,11 @@ export default function useBotChatLogic({ addChat }: IPops) {
           },
         },
         {
-          content: "생년",
+          content: "출생년도",
           onClick: () => {
             addChat({
               type: "my",
-              content: "생년",
+              content: "출생년도",
             })
             editUserYearOfBirth()
           },
@@ -547,41 +535,42 @@ export default function useBotChatLogic({ addChat }: IPops) {
       content: `무엇을 도와드릴까요?`,
       buttons: [
         {
-          content: "수련회 접수 정보 확인",
+          content: "접수 정보 확인",
           onClick: () => {
             addChat({
               type: "my",
-              content: "수련회 접수 정보 확인",
+              content: "접수 정보 확인",
             })
             checkUserData()
           },
         },
         {
-          content: "수련회 접수 내용 수정",
+          content: "접수 정보 수정",
           onClick: () => {
             addChat({
               type: "my",
-              content: "수련회 접수 내용 수정",
+              content: "접수 정보 수정",
             })
             selectEditContent()
           },
         },
         {
-          content: "수련회 안내 사항",
+          content: "안내 사항",
           onClick: () => {
             addChat({
               type: "my",
-              content: "수련회 안내 사항",
+              content: "안내 사항",
             })
           },
         },
         {
-          content: "수련회 도중에 출입 하고 싶어!",
+          content: "수련회 줄입 정보 수정",
           onClick: () => {
             addChat({
               type: "my",
-              content: "수련회 도중에 출입 하고 싶어!",
+              content: "수련회 줄입 정보 수정",
             })
+            setShowInOutInfoForm(true)
           },
         },
       ],
