@@ -1,14 +1,15 @@
 .in-out-info-show {
   animation: fade-in 0.5s ease;
+  animation-fill-mode: forwards;
 }
 .in-out-info-hide {
-  animation: fade-out 0.5s ease;
+  animation: fade-out 0.5s;
   animation-fill-mode: forwards;
 }
 
 @keyframes fade-in {
   from {
-    transform: translateY(95vh);
+    transform: translateY(100vh);
   }
   to {
     transform: translateY(0);
@@ -20,6 +21,34 @@
     transform: translateY(0);
   }
   to {
-    transform: translateY(95vh);
+    transform: translateY(100vh);
+  }
+}
+
+.in-out-info-hide-bg {
+  animation: fade-out-bg 0.3s;
+  animation-fill-mode: forwards;
+}
+
+.in-out-info-show-bg {
+  animation: fade-in-bg 0.3s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-in-bg {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(190, 205, 222, 0.98);
+  }
+}
+
+@keyframes fade-out-bg {
+  from {
+    background-color: rgba(190, 205, 222, 0.98);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0);
   }
 }

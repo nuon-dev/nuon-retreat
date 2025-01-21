@@ -29,7 +29,6 @@ export default function InputText({ submit }: IProps) {
   }
 
   useEffect(() => {
-    console.log("global.visualViewport", global.visualViewport)
     if (global.visualViewport) {
       global.visualViewport.addEventListener("resize", () => {
         scrollTo(0, 0)
@@ -64,7 +63,15 @@ export default function InputText({ submit }: IProps) {
         />
       </Stack>
       <Stack width="50px">
-        <Button onClick={onClickSend} variant="contained">
+        <Button
+          onClick={onClickSend}
+          variant="contained"
+          style={{
+            backgroundColor: "#FAE54D",
+            color: "black",
+            borderRadius: "200px",
+          }}
+        >
           전송
         </Button>
       </Stack>

@@ -11,7 +11,7 @@ interface IPops {
 export default function BotChat(props: IPops) {
   return (
     <Stack direction="row" gap="12px" mx="12px" className={styles["chat"]}>
-      <Box minWidth="50px" height="50px" bgcolor="blue" borderRadius="16px" />
+      <Box minWidth="40px" height="40px" bgcolor="blue" borderRadius="16px" />
       <Stack>
         <Stack color="#333">새벽이</Stack>
         <Stack
@@ -22,10 +22,10 @@ export default function BotChat(props: IPops) {
           gap="12px"
         >
           <Stack
-            p="12px"
+            p="10px"
             boxShadow="0px 0px 10px 4px rgba(0, 0, 0, 0.1)"
             bgcolor="#fff"
-            borderRadius="8px"
+            borderRadius="12px"
             alignSelf="flex-end"
           >
             {props.content}

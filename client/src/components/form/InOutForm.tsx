@@ -89,11 +89,12 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
               onChangeInformation("time", e.target.value.toString(), index)
             }
           >
-            <MenuItem value={9}>09시</MenuItem>
+            {data.day !== Days.firstDay && <MenuItem value={9}>09시</MenuItem>}
             <MenuItem value={13}>13시</MenuItem>
-            <MenuItem value={15}>15시</MenuItem>
             <MenuItem value={20}>20시</MenuItem>
-            <MenuItem value={24}>집회 후</MenuItem>
+            {data.inOutType === InOutType.OUT && (
+              <MenuItem value={24}>집회 후</MenuItem>
+            )}
           </Select>
         </Stack>
         <Stack>
@@ -145,6 +146,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
               <MenuItem value={"아주대"}>아주대</MenuItem>
               <MenuItem value={"수원역"}>수원역</MenuItem>
               <MenuItem value={"광교"}>광교</MenuItem>
+              <MenuItem value={"수원시청"}>수원시청</MenuItem>
               <MenuItem value={"여주역"}>여주역(수련회장)</MenuItem>
               <MenuItem value={"기타지역"}>기타지역</MenuItem>
             </Select>

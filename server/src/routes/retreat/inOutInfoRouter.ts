@@ -1,6 +1,11 @@
 import express from "express"
-import { inOutInfoDatabase } from "../../model/dataSource"
+import {
+  inOutInfoDatabase,
+  retreatAttendDatabase,
+} from "../../model/dataSource"
 import { getUserFromToken } from "../../util"
+import e from "express"
+import { InOutInfo } from "../../entity/inOutInfo"
 
 const router = express.Router()
 
@@ -26,9 +31,31 @@ router.get("/", async (req, res) => {
 })
 
 router.post("/edit-information", async (req, res) => {
+  const foundUser = await getUserFromToken(req)
+  const inOutInfo = req.body as InOutInfo
+
+  const foundRetreatAttend = await retreatAttendDatabase.findOne({
+    where: {
+      user: {
+        id: foundUser.id,
+      },
+    },
+  })
+
+  if (inOutInfo.id) {
+    await inOutInfoDatabase.save(inOutInfo)
+  } else {
+    const createdInOuInfo = inOutInfoDatabase.create(inOutInfo)
+    createdInOuInfo.retreatAttend = foundRetreatAttend
+    await inOutInfoDatabase.save(createdInOuInfo)
+  }
+  res.send({ result: "success" })
+})
+
+router.post("/delete-attend-time", async (req, res) => {
   const inOutInfo = req.body
 
-  await inOutInfoDatabase.save(inOutInfo)
+  await inOutInfoDatabase.remove(inOutInfo)
   res.send({ result: "success" })
 })
 

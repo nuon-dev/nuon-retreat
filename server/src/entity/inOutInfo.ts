@@ -31,6 +31,9 @@ export class InOutInfo {
   @Column()
   howToMove: HowToMove
 
+  @Column({ default: false })
+  autoCreated: boolean
+
   @ManyToOne(() => InOutInfo, (inOutInfo) => inOutInfo.userInTheCar)
   rideCarInfo: InOutInfo | null
 

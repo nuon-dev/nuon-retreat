@@ -1,4 +1,4 @@
-import { atom, useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 import { RetreatAttend } from "@server/entity/retreatAttend"
 import { useEffect, useState } from "react"
 import { get, post } from "pages/api"
@@ -6,22 +6,12 @@ import { UserInformationAtom } from "./useUserData"
 import { EditContent } from "./useBotChatLogic"
 import { InOutInfo } from "@server/entity/inOutInfo"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
-
-export const RetreatAttendAtom = atom<RetreatAttend | undefined>({
-  key: "retreat-attend",
-  default: undefined,
-})
-export const InOutInformationAtom = atom<InOutInfo[]>({
-  key: "in-out-information",
-  default: [],
-})
+import { InOutInformationAtom, RetreatAttendAtom } from "state/retreat"
 
 export default function useRetreatData() {
   const userInformation = useRecoilValue(UserInformationAtom)
   const [retreatAttend, setRetreatAttend] = useRecoilState(RetreatAttendAtom)
   const [inOutInfoList, setInOutInfo] = useRecoilState(InOutInformationAtom)
-
-  const [currentEditInOutInfo, setCurrentEditInOutInfo] = useState(-1)
 
   useEffect(() => {
     // fetch retreat data
@@ -104,7 +94,6 @@ export default function useRetreatData() {
       return
     }
 
-    console.log(key, value)
     setRetreatAttend({
       ...retreatAttend,
       [key]: value,
@@ -122,13 +111,6 @@ export default function useRetreatData() {
   }
 
   function addInfo(inOutType: InOutType, howToMove?: HowToMove) {
-    const inInfoList = inOutInfoList.filter(
-      (info) => info.inOutType === inOutType
-    )
-    if (inInfoList.length > 0) {
-      return
-    }
-
     setInOutInfo([
       ...inOutInfoList,
       {
@@ -138,6 +120,7 @@ export default function useRetreatData() {
         time: 0,
         position: "",
         howToMove,
+        autoCreated: howToMove !== HowToMove.none,
       } as InOutInfo,
     ])
   }

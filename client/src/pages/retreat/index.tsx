@@ -14,6 +14,7 @@ import InOutInfoForm from "components/retreat/InOutInfoForm"
 import { atom, useRecoilValue } from "recoil"
 import { StopRetreatBodyScrollAtom } from "state/retreat"
 import { Chat, ChatContent } from "types/retreat"
+import Image from "next/image"
 
 let ChatList: Chat[] = []
 export default function Index() {
@@ -77,24 +78,103 @@ export default function Index() {
         flex: "1",
         width: "100vw",
         backgroundColor: "rgb(190, 205, 222)",
-        overflowY: stopScroll ? "hidden" : "visible",
       }}
     >
-      {chatList.map((chat, index) => {
-        if (chat.type === "bot") {
-          return (
-            <BotChat
-              key={index}
-              content={chat.content}
-              time={chat.time}
-              buttons={chat.buttons}
+      <Stack width="100%" position="fixed" top="0" bgcolor="rgb(190, 205, 222)">
+        <Stack
+          top="24px"
+          position="fixed"
+          fontSize="18px"
+          width="100vw"
+          textAlign="center"
+        >
+          2025 겨울 수련회
+        </Stack>
+        <Stack
+          px="12px"
+          pt="18px"
+          fontSize="20px"
+          direction="row"
+          fontWeight="400"
+          textAlign="center"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Image
+            src="/icon/free-icon-arrow-down.png"
+            width="30px"
+            height="30px"
+            style={{
+              transform: "rotate(90deg)",
+            }}
+          />
+          <Stack direction="row" gap="12px">
+            <Image
+              src="/icon/free-icon-magnifier.png"
+              width="30px"
+              height="30px"
             />
-          )
-        } else {
-          return <MyChat key={index} content={chat.content} time={chat.time} />
-        }
-      })}
-      <InputText submit={submit} />
+            <Image
+              src="/icon/free-icon-hamburger.png"
+              width="30px"
+              height="30px"
+            />
+          </Stack>
+        </Stack>
+        <Stack
+          p="8px"
+          mt="12px"
+          mx="8px"
+          mb="0"
+          gap="8px"
+          bgcolor="white"
+          direction="row"
+          borderRadius="16px"
+          alignItems="center"
+          boxShadow="0px 0px 10px 0px #AAA"
+          justifyContent="space-between"
+        >
+          <Image
+            src="/icon/free-icon-megaphone.png"
+            width="20px"
+            height="20px"
+          />
+          <Stack fontSize="15px" flex={1}>
+            안녕하세요. 2025 겨울 수련회 신청 폼 입니다.
+          </Stack>
+          <Image
+            src="/icon/free-icon-arrow-down.png"
+            width="20px"
+            height="20px"
+          />
+        </Stack>
+      </Stack>
+      <Stack height="100px" />
+      <Stack
+        position="static"
+        gap="8px"
+        style={{
+          overflowY: stopScroll ? "hidden" : "visible",
+        }}
+      >
+        {chatList.map((chat, index) => {
+          if (chat.type === "bot") {
+            return (
+              <BotChat
+                key={index}
+                content={chat.content}
+                time={chat.time}
+                buttons={chat.buttons}
+              />
+            )
+          } else {
+            return (
+              <MyChat key={index} content={chat.content} time={chat.time} />
+            )
+          }
+        })}
+        <InputText submit={submit} />
+      </Stack>
       <InOutInfoForm />
     </Stack>
   )

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
 import useUserData, { UserInformationAtom } from "./useUserData"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import useRetreatData, {
-  InOutInformationAtom,
-  RetreatAttendAtom,
-} from "./useRetreatData"
+import useRetreatData from "./useRetreatData"
 import { HowToMove } from "@server/entity/types"
 import { ChatContent } from "types/retreat"
-import { ShowInOutInfoComponentAtom } from "state/retreat"
+import {
+  InOutInformationAtom,
+  RetreatAttendAtom,
+  ShowInOutInfoComponentAtom,
+} from "state/retreat"
 
 interface IPops {
   addChat: (chat: ChatContent) => void

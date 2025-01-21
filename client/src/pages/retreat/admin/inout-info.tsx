@@ -1,27 +1,17 @@
 import { useEffect, useState } from "react"
-import {
-  Box,
-  Button,
-  Stack,
-  StackProps,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@mui/material"
+import { Box, Stack } from "@mui/material"
 import { User } from "@server/entity/user"
 import { useRouter } from "next/router"
 import { get } from "pages/api"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
-import { InOutType } from "@entity/types"
-import { InOutInfo } from "@entity/inOutInfo"
-import { HowToMove } from "@server/entity/types"
+import { Days, HowToMove, InOutType } from "@server/entity/types"
+import { InOutInfo } from "@server/entity/inOutInfo"
+import { RetreatAttend } from "@server/entity/retreatAttend"
 
 function InoutInfo() {
   const router = useRouter()
-  const [allUserList, setAllUserList] = useState<Array<User>>([])
+  const [allUserList, setAllUserList] = useState<Array<RetreatAttend>>([])
   const [allInoutInfo, setAllInoutInfo] = useState([] as InOutInfo[])
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
@@ -55,26 +45,32 @@ function InoutInfo() {
       <Stack direction="row" flexWrap="wrap" gap="12px">
         {allUserList
           .filter((u) => u.howToGo === HowToMove.together)
-          .sort((a, b) => a.age - b.age)
-          .map((user) => (
+          .sort((a, b) => a.user.yearOfBirth - b.user.yearOfBirth)
+          .map((retreatAttend) => (
             <Stack
               gap="24px"
               width="150px"
               padding="12px"
               direction="row"
               borderRadius="12px"
-              bgcolor={user.sex === "man" ? "lightblue" : "pink"}
+              bgcolor={
+                retreatAttend.user.gender === "man" ? "lightblue" : "pink"
+              }
             >
-              <Box>{user.name}</Box>
-              <Box>{user.age}</Box>
+              <Box>{retreatAttend.user.name}</Box>
+              <Box>{retreatAttend.user.gender}</Box>
             </Stack>
           ))}
       </Stack>
       <Box>목요일에 버스가 아닌 이동이 있는 인원</Box>
       <Stack direction="row" flexWrap="wrap" gap="12px">
         {allInoutInfo
-          .filter((info) => info.day === 0)
-          .sort((a, b) => a.user.age - b.user.age)
+          .filter((info) => info.day === Days.firstDay)
+          .sort(
+            (a, b) =>
+              a.retreatAttend.user.yearOfBirth -
+              b.retreatAttend.user.yearOfBirth
+          )
           .sort((a, b) => a.time - b.time)
           .map((info) => (
             <Stack
@@ -83,10 +79,12 @@ function InoutInfo() {
               padding="12px"
               direction="row"
               borderRadius="12px"
-              bgcolor={info.user.sex === "man" ? "lightblue" : "pink"}
+              bgcolor={
+                info.retreatAttend.user.gender === "man" ? "lightblue" : "pink"
+              }
             >
-              <Box>{info.user.name}</Box>
-              <Box>{info.user.age}</Box>
+              <Box>{info.retreatAttend.user.name}</Box>
+              <Box>{info.retreatAttend.user.gender}</Box>
               <Box>{info.time}시에</Box>
               <Box>{info.inOutType === InOutType.IN ? "들어감" : "나감"}</Box>
             </Stack>
@@ -96,7 +94,11 @@ function InoutInfo() {
       <Stack direction="row" flexWrap="wrap" gap="12px">
         {allInoutInfo
           .filter((info) => info.day === 1)
-          .sort((a, b) => a.user.age - b.user.age)
+          .sort(
+            (a, b) =>
+              a.retreatAttend.user.yearOfBirth -
+              b.retreatAttend.user.yearOfBirth
+          )
           .sort((a, b) => a.time - b.time)
           .map((info) => (
             <Stack
@@ -105,10 +107,12 @@ function InoutInfo() {
               padding="12px"
               direction="row"
               borderRadius="12px"
-              bgcolor={info.user.sex === "man" ? "lightblue" : "pink"}
+              bgcolor={
+                info.retreatAttend.user.gender === "man" ? "lightblue" : "pink"
+              }
             >
-              <Box>{info.user.name}</Box>
-              <Box>{info.user.age}</Box>
+              <Box>{info.retreatAttend.user.name}</Box>
+              <Box>{info.retreatAttend.user.yearOfBirth}</Box>
               <Box>{info.time}시에</Box>
               <Box>{info.inOutType === InOutType.IN ? "들어감" : "나감"}</Box>
             </Stack>
@@ -118,7 +122,11 @@ function InoutInfo() {
       <Stack direction="row" flexWrap="wrap" gap="12px">
         {allInoutInfo
           .filter((info) => info.day === 2)
-          .sort((a, b) => a.user.age - b.user.age)
+          .sort(
+            (a, b) =>
+              a.retreatAttend.user.yearOfBirth -
+              b.retreatAttend.user.yearOfBirth
+          )
           .sort((a, b) => a.time - b.time)
           .map((info) => (
             <Stack
@@ -127,10 +135,12 @@ function InoutInfo() {
               padding="12px"
               direction="row"
               borderRadius="12px"
-              bgcolor={info.user.sex === "man" ? "lightblue" : "pink"}
+              bgcolor={
+                info.retreatAttend.user.gender === "man" ? "lightblue" : "pink"
+              }
             >
-              <Box>{info.user.name}</Box>
-              <Box>{info.user.age}</Box>
+              <Box>{info.retreatAttend.user.name}</Box>
+              <Box>{info.retreatAttend.user.yearOfBirth}</Box>
               <Box>{info.time}시에</Box>
               <Box>{info.inOutType === InOutType.IN ? "들어감" : "나감"}</Box>
             </Stack>

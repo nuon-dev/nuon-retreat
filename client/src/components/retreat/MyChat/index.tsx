@@ -19,10 +19,10 @@ export default function MyChat(props: IPops) {
         {props.time}
       </Stack>
       <Stack
-        p="12px"
+        p="10px"
         boxShadow="0px 0px 10px 4px rgba(0, 0, 0, 0.1)"
         bgcolor="#FAE54D"
-        borderRadius="8px"
+        borderRadius="12px"
         alignSelf="flex-end"
       >
         {props.content}
