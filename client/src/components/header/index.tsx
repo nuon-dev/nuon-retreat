@@ -62,7 +62,7 @@ export default function Header() {
       <ListItem disablePadding>
         <ListItemButton onClick={goToPage}>
           <ListItemIcon>
-            <Image src={icon} width="30px" height="30px" />
+            <Image src={icon} width="30" height="30" alt="" />
           </ListItemIcon>
           <ListItemText primary={pageName} />
         </ListItemButton>

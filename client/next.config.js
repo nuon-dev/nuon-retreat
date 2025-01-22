@@ -2,10 +2,16 @@ const path = require("path")
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  distDir: "out",
-  reactStrictMode: false,
-  swcMinify: true,
-  trailingSlash: true,
+  output: "export",
+
+  images: {
+    unoptimized: true,
+  },
+
+  compiler: {
+    styledComponents: true,
+  },
+
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/i,

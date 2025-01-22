@@ -1,5 +1,5 @@
 #var/www/html
-pnpm run out
+pnpm run build
 sftp iubns@112.145.135.65:/var/www/nuon << EOF
 rm -R *
 put -r ./out/* ./

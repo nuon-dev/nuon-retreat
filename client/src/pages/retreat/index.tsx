@@ -102,8 +102,9 @@ export default function Index() {
         >
           <Image
             src="/icon/free-icon-arrow-down.png"
-            width="30px"
-            height="30px"
+            width="30"
+            height="30"
+            alt=""
             style={{
               transform: "rotate(90deg)",
             }}
@@ -111,13 +112,15 @@ export default function Index() {
           <Stack direction="row" gap="12px">
             <Image
               src="/icon/free-icon-magnifier.png"
-              width="30px"
-              height="30px"
+              width="30"
+              height="30"
+              alt=""
             />
             <Image
               src="/icon/free-icon-hamburger.png"
-              width="30px"
-              height="30px"
+              width="30"
+              height="30"
+              alt=""
             />
           </Stack>
         </Stack>
@@ -136,16 +139,18 @@ export default function Index() {
         >
           <Image
             src="/icon/free-icon-megaphone.png"
-            width="20px"
-            height="20px"
+            width="20"
+            height="20"
+            alt=""
           />
           <Stack fontSize="15px" flex={1}>
             안녕하세요. 2025 겨울 수련회 신청 폼 입니다.
           </Stack>
           <Image
             src="/icon/free-icon-arrow-down.png"
-            width="20px"
-            height="20px"
+            width="20"
+            height="20"
+            alt=""
           />
         </Stack>
       </Stack>
