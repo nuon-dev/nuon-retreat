@@ -43,15 +43,17 @@ function DepositCheck() {
     get("/admin/get-all-user")
       .then((data: User[]) => {
         setAllUserCount(data.length)
-        setDepositUserCount(data.filter((user) => user.deposit).length)
+        setDepositUserCount(
+          data.filter((user) => user.retreatAttend?.isDeposited).length
+        )
         if (isShowUnpaid) {
           setAllUserList(data)
           return
         }
-        setAllUserList(data.filter((user) => !user.deposit))
+        setAllUserList(data.filter((user) => !user.retreatAttend?.isDeposited))
       })
       .catch(() => {
-        push("/admin")
+        push("/retreat/admin")
         setNotificationMessage("권한이 없습니다.")
         return
       })
@@ -135,9 +137,13 @@ function DepositCheck() {
                   <Button
                     onClick={() => DepositProcessing(user.id)}
                     variant="contained"
-                    color={user.deposit ? "error" : "success"}
+                    color={
+                      user.retreatAttend?.isDeposited ? "error" : "success"
+                    }
                   >
-                    {user.deposit ? "취소 처리" : "완료 처리"}
+                    {user.retreatAttend?.isDeposited
+                      ? "취소 처리"
+                      : "완료 처리"}
                   </Button>
                 </TableCell>
               </TableRow>

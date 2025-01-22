@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react"
 
-import { InOutInfo } from "@entity/inOutInfo"
-import { get, post } from "pages/api"
+import { post } from "pages/api"
 import UserInformationForm from "components/form/UserInformationForm"
 import ReceiptResult from "components/form/ReceiptResult"
 import CopyToClipboard from "react-copy-to-clipboard"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { Stack } from "@mui/material"
-import { User } from "@server/entity/user"
+import { InOutInfo } from "@server/entity/inOutInfo"
+import { RetreatAttend } from "@server/entity/retreatAttend"
 
 export default function Receipt() {
-  const [userData, setUserData] = useState({} as User)
+  const [retreatAttend, setRetreatAttend] = useState<RetreatAttend | undefined>(
+    undefined
+  )
   const [isEditMode, setEditMode] = useState(true)
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
@@ -35,21 +37,21 @@ export default function Receipt() {
         const id = response.userData.id as number
         const kakaoId = response.userData.kakaoId as string
         const token = response.userData.token as string
-        setUserData({ kakaoId, id, token } as any)
+        setRetreatAttend({ kakaoId, id, token } as any)
         setEditMode(true)
         return
       }
       if (response.userData.name) {
         setEditMode(false)
       }
-      setUserData(response.userData)
+      setRetreatAttend(response.userData)
       setInOutData(response.inoutInfoList)
     })
   }
 
   return (
     <Stack padding="12px" bgcolor="#1d321a" gap="12px" pb="72px">
-      {userData.deposit ? (
+      {retreatAttend?.isDeposited ? (
         <Stack
           px="24px"
           py="12px"
@@ -108,7 +110,7 @@ export default function Receipt() {
       >
         {isEditMode && (
           <UserInformationForm
-            user={userData}
+            retreatAttend={retreatAttend}
             inOutData={inOutData}
             reloadFunction={checkToken}
             setEditMode={setEditMode}
@@ -116,7 +118,7 @@ export default function Receipt() {
         )}
         {!isEditMode && (
           <ReceiptResult
-            user={userData}
+            retreatAttend={retreatAttend}
             inOutData={inOutData}
             reloadFunction={checkToken}
             setEditMode={setEditMode}

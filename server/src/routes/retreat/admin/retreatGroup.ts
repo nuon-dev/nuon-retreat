@@ -1,9 +1,6 @@
 import express from "express"
 import { PermissionType } from "../../../entity/types"
-import {
-  groupAssignmentDatabase,
-  userDatabase,
-} from "../../../model/dataSource"
+import { retreatAttendDatabase, userDatabase } from "../../../model/dataSource"
 import { hasPermission } from "../../../util"
 import { IsNull, Not } from "typeorm"
 
@@ -18,31 +15,28 @@ router.get("/get-retreat-group-formation", async (req, res) => {
     return
   }
 
-  const userList = await userDatabase.find({
+  const userList = await retreatAttendDatabase.find({
     select: {
       id: true,
-      name: true,
-      age: true,
-      sex: true,
       etc: true,
       inOutInfos: true,
     },
     relations: {
-      groupAssignment: true,
       inOutInfos: true,
     },
     where: {
-      name: Not(IsNull()),
-      isCancel: false,
+      isCanceled: false,
     },
   })
 
-  res.send(userList.filter((user) => user.name && user.name.length > 0))
+  res.send(userList)
 })
 
 router.post("/set-retreat-group", async (req, res) => {
   const token = req.header("token")
-  if (false === (await hasPermission(token, PermissionType.groupManage))) {
+  if (
+    false === (await hasPermission(token, PermissionType.showGroupAssignment))
+  ) {
     res.sendStatus(401)
     return
   }
@@ -50,7 +44,6 @@ router.post("/set-retreat-group", async (req, res) => {
   const data = req.body
   const groupAssignment = data.groupAssignment
 
-  await groupAssignmentDatabase.save(groupAssignment)
   res.send({ result: "success" })
   return
 })

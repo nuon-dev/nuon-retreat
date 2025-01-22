@@ -1,10 +1,10 @@
-import { CurrentStatus } from "@entity/types"
 import { User } from "@server/entity/user"
 import { Button, MenuItem, Select, Stack } from "@mui/material"
 import { post } from "pages/api"
 import { useEffect, useRef, useState } from "react"
 //@ts-ignore
 import Quagga from "quagga"
+import { CurrentStatus } from "@server/entity/types"
 
 export default function CheckStatus(props: any) {
   const [selectState, setSelectState] = useState(CurrentStatus.null)
@@ -171,7 +171,7 @@ export default function CheckStatus(props: any) {
       <span>Barcode: {barcode}</span>
       {user.name && (
         <Stack>
-          {user.name}[{user.age}]
+          {user.name}[{user.yearOfBirth}]
         </Stack>
       )}
     </Stack>

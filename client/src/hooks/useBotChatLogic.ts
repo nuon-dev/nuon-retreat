@@ -368,7 +368,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
        ${retreatAttend.howToGo}로 수련회장으로 이동 하시고 
        ${retreatAttend.howToBack}으로 교회로 돌아 오시네요.
     회비는 입금 ${retreatAttend.isDeposited ? "확인" : "대기중"} 입니다. 😀
-    ${retreatAttend.inOutInfo.map((inOutInfo) => {
+    ${retreatAttend.inOutInfos.map((inOutInfo) => {
       return `${inOutInfo.day}날에 ${inOutInfo.time}시에 ${inOutInfo.position}에서 ${inOutInfo.inOutType}실 거에요.`
     })}`,
       buttons: [

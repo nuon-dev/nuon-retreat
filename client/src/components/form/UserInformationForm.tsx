@@ -15,9 +15,10 @@ import { useRouter } from "next/router"
 import { HowToMove } from "@server/entity/types"
 import { User } from "@server/entity/user"
 import { InOutInfo } from "@server/entity/inOutInfo"
+import { RetreatAttend } from "@server/entity/retreatAttend"
 
 interface IProps {
-  user: User
+  retreatAttend: RetreatAttend | undefined
   inOutData: Array<InOutInfo>
   reloadFunction: () => void
   setEditMode: Dispatch<SetStateAction<boolean>>
@@ -25,43 +26,48 @@ interface IProps {
 
 export default function UserInformationForm(props: IProps) {
   const router = useRouter()
-  const [userInformation, setUserInformation] = useState(new User())
+  const [retreatAttend, setRetreatAttend] = useState<RetreatAttend | undefined>(
+    undefined
+  )
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
-    setUserInformation(props.user || ({} as User))
+    setRetreatAttend(props.retreatAttend)
     setInOutData(props.inOutData || ({} as Array<InOutInfo>))
-  }, [props.user])
+  }, [props.retreatAttend])
 
   const changeInformation = (type: string, data: string) => {
-    setUserInformation({ ...userInformation, [type]: data })
+    if (!retreatAttend) {
+      return
+    }
+    setRetreatAttend({ ...retreatAttend, [type]: data })
   }
 
   const submit = async () => {
-    if (!userInformation.retreatAttend) {
+    if (!retreatAttend) {
       setNotificationMessage("수련회 접수 정보 없음.")
       return
     }
-    if (!userInformation.retreatAttend.howToGo) {
+    if (!retreatAttend.howToGo) {
       setNotificationMessage("이동 방법을 선택해주세요.")
       return
     }
     if (
-      userInformation.retreatAttend.howToGo !== HowToMove.together &&
+      retreatAttend.howToGo !== HowToMove.together &&
       inOutData.length === 0
     ) {
       setNotificationMessage("이동 방법을 추가해주세요.")
       return
     }
-    if (!userInformation.retreatAttend.howToBack) {
+    if (!retreatAttend.howToBack) {
       setNotificationMessage("이동 방법을 선택해주세요.")
       return
     }
 
     const url = "/auth/edit-user"
 
-    const saveResult = await post(url, userInformation)
+    const saveResult = await post(url, retreatAttend)
     let attendTimeResult
     if (inOutData.length > 0) {
       attendTimeResult = await post("/info/save-attend-time", {
@@ -109,7 +115,7 @@ export default function UserInformationForm(props: IProps) {
         <TextField
           fullWidth={true}
           className="TextField"
-          value={userInformation.name}
+          value={retreatAttend?.user.name}
           placeholder="이름을 입력하세요."
           disabled
         />
@@ -123,7 +129,7 @@ export default function UserInformationForm(props: IProps) {
         <TextField
           fullWidth={true}
           className="TextField"
-          value={userInformation.phone}
+          value={retreatAttend?.user.phone}
           placeholder="전화번호를 입력하세요."
           disabled
         />
@@ -134,13 +140,13 @@ export default function UserInformationForm(props: IProps) {
           출생년도 (빠른은 기수 기준)
         </Stack>
         {getLabelGap()}
-        {userInformation && (
+        {retreatAttend && (
           <Select
             fullWidth={true}
             className="Select"
-            key={userInformation.yearOfBirth}
-            value={userInformation.yearOfBirth}
-            defaultValue={userInformation.yearOfBirth}
+            key={retreatAttend.user.yearOfBirth}
+            value={retreatAttend.user.yearOfBirth}
+            defaultValue={retreatAttend.user.yearOfBirth}
             disabled
           >
             {new Array(45).fill(0).map((_, index) => (
@@ -158,11 +164,11 @@ export default function UserInformationForm(props: IProps) {
         </Stack>
         {getLabelGap()}
         <FormControl fullWidth={true}>
-          {userInformation.kakaoId && (
+          {retreatAttend?.user.kakaoId && (
             <Select
-              value={userInformation.gender}
+              value={retreatAttend.user.gender}
               className="Select"
-              defaultValue={userInformation.gender}
+              defaultValue={retreatAttend.user.gender}
               placeholder="성별을 선택하세요."
               disabled
             >
@@ -178,11 +184,11 @@ export default function UserInformationForm(props: IProps) {
           다락방
         </Stack>
         {getLabelGap()}
-        {userInformation.kakaoId && (
+        {retreatAttend?.user.kakaoId && (
           <TextField
             fullWidth={true}
             className="TextField"
-            value={userInformation.community?.name}
+            value={retreatAttend.user.community?.name}
             placeholder="전화번호를 입력하세요."
             disabled
           />
@@ -198,9 +204,9 @@ export default function UserInformationForm(props: IProps) {
         <Select
           fullWidth={true}
           className="Select"
-          key={userInformation.retreatAttend?.howToGo}
-          defaultValue={userInformation.retreatAttend?.howToGo}
-          value={userInformation.retreatAttend?.howToGo}
+          key={retreatAttend?.howToGo}
+          defaultValue={retreatAttend?.howToGo}
+          value={retreatAttend?.howToGo}
           onChange={(e) => {
             if (inOutData.length === 0) {
               setInOutData([])
@@ -233,9 +239,9 @@ export default function UserInformationForm(props: IProps) {
         <Select
           fullWidth={true}
           className="Select"
-          key={userInformation.retreatAttend?.howToBack}
-          defaultValue={userInformation.retreatAttend?.howToBack}
-          value={userInformation.retreatAttend?.howToBack}
+          key={retreatAttend?.howToBack}
+          defaultValue={retreatAttend?.howToBack}
+          value={retreatAttend?.howToBack}
           onChange={(e) =>
             changeInformation("howToBack", e.target.value.toString())
           }
@@ -255,8 +261,8 @@ export default function UserInformationForm(props: IProps) {
         <TextField
           fullWidth={true}
           className="TextField"
-          key={userInformation.kakaoId}
-          value={userInformation.etc}
+          key={retreatAttend?.user.kakaoId}
+          value={retreatAttend?.user.etc}
           placeholder="기타사항이 있을 경우 입력하세요."
           onChange={(e) => changeInformation("etc", e.target.value)}
         />

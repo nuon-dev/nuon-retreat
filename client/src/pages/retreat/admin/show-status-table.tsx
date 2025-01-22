@@ -1,17 +1,17 @@
-import { CurrentStatus } from "@entity/types"
 import { User } from "@server/entity/user"
 import { Box, MenuItem, Select, Stack } from "@mui/material"
-import { HowToMove } from "@server/entity/types"
+import { CurrentStatus, HowToMove } from "@server/entity/types"
 import { useRouter } from "next/router"
 import { get } from "pages/api"
 import { useEffect, useState } from "react"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
+import { RetreatAttend } from "@server/entity/retreatAttend"
 
 export default function ShowStatusTable() {
   const router = useRouter()
   const [statusFilter, setStatusFilter] = useState(CurrentStatus.arriveChurch)
-  const [allUserList, setAllUserList] = useState<Array<User>>([])
+  const [allUserList, setAllUserList] = useState<Array<RetreatAttend>>([])
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
@@ -21,12 +21,14 @@ export default function ShowStatusTable() {
 
   async function fetchUserData() {
     try {
-      const list: User[] = await get("/admin/get-all-user")
+      const list: RetreatAttend[] = await get("/admin/get-all-user")
       if (list) {
-        setAllUserList(list.sort((a, b) => a.age - b.age))
+        setAllUserList(
+          list.sort((a, b) => a.user.yearOfBirth - b.user.yearOfBirth)
+        )
       }
     } catch {
-      router.push("/admin")
+      router.push("/retreat/admin")
       setNotificationMessage("권한이 없습니다.")
       return
     }
@@ -46,25 +48,27 @@ export default function ShowStatusTable() {
       <Stack gap="24px">
         도착해야 하는 인원 ({notArriveUser.length}명)
         <Stack direction="row" flexWrap="wrap" gap="12px">
-          {notArriveUser.map((user) => (
+          {notArriveUser.map((retreatAttend) => (
             <Stack
               gap="24px"
               width="300px"
               padding="12px"
               direction="row"
               borderRadius="12px"
-              bgcolor={user.sex === "man" ? "lightblue" : "pink"}
+              bgcolor={
+                retreatAttend.user.gender === "man" ? "lightblue" : "pink"
+              }
             >
-              <Box>{user.name}</Box>
-              <Box>{user.age}</Box>
-              <Box>{user.phone}</Box>
+              <Box>{retreatAttend.user.name}</Box>
+              <Box>{retreatAttend.user.yearOfBirth}</Box>
+              <Box>{retreatAttend.user.phone}</Box>
             </Stack>
           ))}
         </Stack>
         도착한 인원 ({arriveUser.length}명)
         <Stack direction="row" flexWrap="wrap" gap="12px">
-          {arriveUser.map((user) => (
-            <NotArriveComponent user={user} />
+          {arriveUser.map((retreatAttend) => (
+            <NotArriveComponent retreatAttend={retreatAttend} />
           ))}
         </Stack>
       </Stack>
@@ -84,32 +88,38 @@ export default function ShowStatusTable() {
       <Stack gap="24px">
         도착해야 하는 인원 ({notArriveUser.length}명)
         <Stack direction="row" flexWrap="wrap" gap="12px">
-          {notArriveUser.map((user) => (
+          {notArriveUser.map((retreatAttend) => (
             <Stack
               gap="24px"
               width="400px"
               padding="12px"
               direction="row"
               borderRadius="12px"
-              bgcolor={user.sex === "man" ? "lightblue" : "pink"}
+              bgcolor={
+                retreatAttend.user.gender === "man" ? "lightblue" : "pink"
+              }
             >
-              <Box>{user.name}</Box>
-              <Box>{user.age}</Box>
-              <Box>{user.phone}</Box>
+              <Box>{retreatAttend.user.name}</Box>
+              <Box>{retreatAttend.user.yearOfBirth}</Box>
+              <Box>{retreatAttend.user.phone}</Box>
             </Stack>
           ))}
         </Stack>
         도착한 인원 ({arriveUser.length}명)
         <Stack direction="row" flexWrap="wrap" gap="12px">
-          {arriveUser.map((user) => (
-            <NotArriveComponent user={user} />
+          {arriveUser.map((retreatAttend) => (
+            <NotArriveComponent retreatAttend={retreatAttend} />
           ))}
         </Stack>
       </Stack>
     )
   }
 
-  function NotArriveComponent({ user }: { user: User }) {
+  function NotArriveComponent({
+    retreatAttend,
+  }: {
+    retreatAttend: RetreatAttend
+  }) {
     return (
       <Stack
         gap="24px"
@@ -117,10 +127,10 @@ export default function ShowStatusTable() {
         padding="12px"
         direction="row"
         borderRadius="12px"
-        bgcolor={user.sex === "man" ? "lightblue" : "pink"}
+        bgcolor={retreatAttend.user.gender === "man" ? "lightblue" : "pink"}
       >
-        <Box>{user.name}</Box>
-        <Box>{user.age}</Box>
+        <Box>{retreatAttend.user.name}</Box>
+        <Box>{retreatAttend.user.gender}</Box>
       </Stack>
     )
   }

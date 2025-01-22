@@ -1,6 +1,7 @@
 import express from "express"
 import { retreatAttendDatabase } from "../../model/dataSource"
 import { getUserFromToken } from "../../util"
+import adminRouter from "./adminRouter"
 
 const router = express.Router()
 
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
   var retreatAttend = await retreatAttendDatabase.findOne({
     where: {},
     relations: {
-      inOutInfo: true,
+      inOutInfos: true,
       user: true,
     },
   })
@@ -48,4 +49,7 @@ router.post("/edit-information", async (req, res) => {
   await retreatAttendDatabase.save(retreatAttend)
   res.send({ result: "success" })
 })
+
+router.use("/admin", adminRouter)
+
 export default router

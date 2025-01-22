@@ -2,10 +2,10 @@ import { Box, Button, Stack } from "@mui/material"
 import { User } from "@server/entity/user"
 import { useEffect, useState } from "react"
 import { get, post } from "../../../pages/api"
-import { InOutInfo } from "@entity/inOutInfo"
 import { useRouter } from "next/router"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
+import { InOutInfo } from "@server/entity/inOutInfo"
 
 function RoomAssingment() {
   const { push } = useRouter()
@@ -73,7 +73,7 @@ function RoomAssingment() {
         setMaxRoomNumber(maxNumer)
       })
       .catch(() => {
-        push("/admin")
+        push("/retreat/admin")
         setNotificationMessage("권한이 없습니다.")
         return
       })

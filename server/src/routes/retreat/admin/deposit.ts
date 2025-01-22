@@ -1,7 +1,7 @@
 import express from "express"
 import { hasPermission } from "../../../util"
 import { PermissionType } from "../../../entity/types"
-import { userDatabase } from "../../../model/dataSource"
+import { retreatAttendDatabase, userDatabase } from "../../../model/dataSource"
 const router = express.Router()
 
 router.post("/deposit-processing", async (req, res) => {
@@ -14,7 +14,7 @@ router.post("/deposit-processing", async (req, res) => {
   const data = req.body
   const userId = data.userId
 
-  const foundUser = await userDatabase.findOneBy({
+  const foundUser = await retreatAttendDatabase.findOneBy({
     id: userId,
   })
 
@@ -23,7 +23,7 @@ router.post("/deposit-processing", async (req, res) => {
     return
   }
 
-  foundUser.deposit = !foundUser.deposit
+  foundUser.isDeposited = !foundUser.isDeposited
   await userDatabase.save(foundUser)
   res.send({ result: "success" })
 })

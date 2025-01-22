@@ -2,10 +2,11 @@ import { Box, Stack } from "@mui/material"
 import { User } from "@server/entity/user"
 import { useEffect, useState } from "react"
 import { get, post } from "../../../pages/api"
-import { InOutInfo } from "@entity/inOutInfo"
 import { useRouter } from "next/router"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
+import { InOutInfo } from "@server/entity/inOutInfo"
+import { RetreatAttend } from "@server/entity/retreatAttend"
 
 function GroupFormation() {
   const { push } = useRouter()
@@ -39,10 +40,10 @@ function GroupFormation() {
 
   function fetchData() {
     get("/admin/get-retreat-group-formation")
-      .then((response: Array<User>) => {
+      .then((response: Array<RetreatAttend>) => {
         const unassignedUserList = response
-          .filter((user) => user.groupAssignment.groupNumber === 0)
-          .sort((a, b) => a.age - b.age)
+          .filter((user) => user.groupNumber === 0)
+          .sort((a, b) => a.user.yearOfBirth - b.user.yearOfBirth)
         setUnassignedUserList(unassignedUserList)
 
         const group = [] as Array<Array<User>>
@@ -64,7 +65,7 @@ function GroupFormation() {
         setMaxGroupNumber(maxNumber)
       })
       .catch(() => {
-        push("/admin")
+        push("/retreat/admin")
         setNotificationMessage("권한이 없습니다.")
         return
       })

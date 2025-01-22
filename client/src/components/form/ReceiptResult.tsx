@@ -1,33 +1,38 @@
-import { InOutInfo } from "@entity/inOutInfo"
-import { MoveType } from "@entity/types"
 import { Box, Button, Stack } from "@mui/material"
+import { InOutInfo } from "@server/entity/inOutInfo"
+import { RetreatAttend } from "@server/entity/retreatAttend"
 import { HowToMove } from "@server/entity/types"
 import { User } from "@server/entity/user"
 import { Dispatch, SetStateAction } from "react"
 
 interface IProps {
-  user: User
+  retreatAttend: RetreatAttend | undefined
   inOutData: Array<InOutInfo>
   reloadFunction: () => void
   setEditMode: Dispatch<SetStateAction<boolean>>
 }
 
 export default function ReceiptResult(props: IProps) {
+  if (!props.retreatAttend) return <div>로딩중</div>
+
   return (
     <Stack padding="6px" minWidth="340px" gap="16px" color="white">
-      <InfoStack title="이름" content={props.user.name} />
-      <InfoStack title="전화번호" content={props.user.phone} />
-      <InfoStack title="출생년도" content={props.user.yearOfBirth + " 년생"} />
+      <InfoStack title="이름" content={props.retreatAttend.user.name} />
+      <InfoStack title="전화번호" content={props.retreatAttend.user.phone} />
+      <InfoStack
+        title="출생년도"
+        content={props.retreatAttend.user.yearOfBirth + " 년생"}
+      />
       <InfoStack
         title="성별"
-        content={props.user.gender === "man" ? "남" : "여"}
+        content={props.retreatAttend.user.gender === "man" ? "남" : "여"}
       />
       <InfoStack
         title="소속 마을 / 다락방"
         content={
-          props.user.community?.parent?.name +
+          props.retreatAttend.user.community?.parent?.name +
           " 마을 / " +
-          props.user.community?.name +
+          props.retreatAttend.user.community?.name +
           " 다락방"
         }
       />
@@ -63,8 +68,8 @@ export default function ReceiptResult(props: IProps) {
         content=""
         //content={props.user.isOutAtThursday === "true" ? "예" : "아니요"}
       />
-      {props.user.etc && (
-        <InfoStack title="기타 사항" content={props.user.etc} />
+      {props.retreatAttend.user.etc && (
+        <InfoStack title="기타 사항" content={props.retreatAttend.user.etc} />
       )}
       <Button
         variant="contained"
@@ -113,15 +118,15 @@ export function getHowToMoveString(howToMove: HowToMove): string {
   return ""
 }
 
-export function getMoveTypeString(moveType: MoveType) {
+export function getMoveTypeString(moveType: HowToMove) {
   switch (moveType) {
-    case MoveType.driveCarWithPerson:
+    case HowToMove.driveCarWithPerson:
       return "자차 (카풀 가능)"
-    case MoveType.driveCarAlone:
+    case HowToMove.driveCarAlone:
       return "자차 (카풀 불가)"
-    case MoveType.rideCar:
+    case HowToMove.rideCar:
       return "신청한 카풀"
-    case MoveType.goAlone:
+    case HowToMove.goAlone:
       return "대중교통 (여주역)"
   }
 }

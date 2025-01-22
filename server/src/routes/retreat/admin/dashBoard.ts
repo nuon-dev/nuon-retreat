@@ -1,62 +1,84 @@
 import express from "express"
-import { HowToMove, InOutType } from "../../../entity/types"
-import { inOutInfoDatabase, userDatabase } from "../../../model/dataSource"
+import { Days, HowToMove, InOutType } from "../../../entity/types"
+import {
+  inOutInfoDatabase,
+  retreatAttendDatabase,
+  userDatabase,
+} from "../../../model/dataSource"
 import { IsNull, Not } from "typeorm"
 
 const router = express.Router()
 
 router.get("/get-attendee-status", async (req, res) => {
-  const countOfAllUser = await userDatabase.count({
-    where: { name: Not(IsNull()) },
+  const countOfAllUser = await retreatAttendDatabase.count({
+    where: { isCanceled: false },
   })
-  const countOfMan = await userDatabase.count({
-    where: { gender: "man", name: Not(IsNull()) },
+  const countOfMan = await retreatAttendDatabase.count({
+    where: {
+      isCanceled: false,
+      user: {
+        gender: "man",
+      },
+    },
+    relations: {
+      user: true,
+    },
   })
-  const countOfWoman = await userDatabase.count({
-    where: { gender: "woman", name: Not(IsNull()) },
+  const countOfWoman = await retreatAttendDatabase.count({
+    where: {
+      user: {
+        gender: "woman",
+      },
+      isCanceled: false,
+    },
+    relations: {
+      user: true,
+    },
   })
-  const countOfGoTogether = await userDatabase.count({
+  const countOfGoTogether = await retreatAttendDatabase.count({
     where: {
       howToGo: HowToMove.together,
-      name: Not(IsNull()),
-      isCancel: false,
+      isCanceled: false,
     },
   })
-  const countOfLeaveTogether = await userDatabase.count({
+  const countOfLeaveTogether = await retreatAttendDatabase.count({
     where: {
-      howToLeave: HowToMove.together,
-      name: Not(IsNull()),
-      isCancel: false,
+      howToBack: HowToMove.together,
+      isCanceled: false,
     },
   })
 
-  const countOfCompleteDeposit = await userDatabase.count({
-    where: { deposit: true, name: Not(IsNull()), isCancel: false },
+  const countOfCompleteDeposit = await retreatAttendDatabase.count({
+    where: { isDeposited: true, isCanceled: false },
   })
 
-  const countOfIsOutAtThursday = await userDatabase.count({
-    where: { isOutAtThursday: "true", name: Not(IsNull()), isCancel: false },
+  const allUser = await retreatAttendDatabase.find()
+  const allInfo = await inOutInfoDatabase.find({
+    relations: { retreatAttend: { user: true } },
   })
-
-  const allUser = await userDatabase.find()
-  const allInfo = await inOutInfoDatabase.find({ relations: { user: true } })
   const busUserList = allUser
     .filter((user) => user.howToGo === HowToMove.together)
     .map((u) => u.id)
   const aloneAttend = allInfo
     .filter(
       (info) =>
-        info.day === 0 && info.time < 14 && info.inOutType === InOutType.IN
+        info.day === Days.firstDay &&
+        info.time < 14 &&
+        info.inOutType === InOutType.IN
     )
-    .map((info) => info.user.id)
+    .map((info) => info.retreatAttend.user.id)
 
   const firstAttendUser = [...busUserList, ...aloneAttend]
   const lastAttendUser = allInfo
     .filter(
       (info) =>
-        !(info.day === 0 && info.time < 14 && info.inOutType === InOutType.IN)
+        !(
+          info.day === Days.firstDay &&
+          info.time < 14 &&
+          info.inOutType === InOutType.IN
+        )
     )
-    .map((info) => info.user.id)
+    .map((info) => info.retreatAttend.user.id)
 
   const attendUser = allUser.filter((user) =>
     firstAttendUser.find((id) => id === user.id)
@@ -73,41 +95,44 @@ router.get("/get-attendee-status", async (req, res) => {
     goTogether: countOfGoTogether,
     leaveTogether: countOfLeaveTogether,
     completeDeposit: countOfCompleteDeposit,
-    countOfIsOutAtThursday,
     allAttendUserNumber,
   })
 })
 
 router.get("/get-attendance-time", async (req, res) => {
-  const allUser = await userDatabase.find({
+  const allUser = await retreatAttendDatabase.find({
     select: {
       createAt: true,
     },
     where: {
-      name: Not(IsNull()),
-      isCancel: false,
+      isCanceled: false,
     },
   })
   res.send(allUser.map((user) => user.createAt))
 })
 
 router.get("/get-age-info", async (req, res) => {
-  const allUser = await userDatabase.find({
+  const allUser = await retreatAttendDatabase.find({
     select: {
-      age: true,
+      user: {
+        yearOfBirth: true,
+      },
     },
     where: {
-      name: Not(IsNull()),
-      isCancel: false,
+      isCanceled: false,
+    },
+    relations: {
+      user: true,
     },
   })
   const ageMap = {}
-  allUser.map((user) => {
-    if (!ageMap[user.age]) {
-      ageMap[user.age] = 1
+  allUser.map((retreatAttend) => {
+    if (!ageMap[retreatAttend.user.yearOfBirth]) {
+      ageMap[retreatAttend.user.yearOfBirth] = 1
       return
     }
-    ageMap[user.age] = ageMap[user.age] + 1
+    ageMap[retreatAttend.user.yearOfBirth] =
+      ageMap[retreatAttend.user.yearOfBirth] + 1
   })
   res.send(ageMap)
 })

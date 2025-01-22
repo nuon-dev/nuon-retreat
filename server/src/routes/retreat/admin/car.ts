@@ -3,7 +3,6 @@ import { PermissionType } from "../../../entity/types"
 import { inOutInfoDatabase, userDatabase } from "../../../model/dataSource"
 import { hasPermission } from "../../../util"
 import { InOutInfo } from "../../../entity/inOutInfo"
-import { IsNull, Not } from "typeorm"
 
 const router = express.Router()
 
@@ -25,15 +24,19 @@ router.get("/get-car-info", async (req, res) => {
       position: true,
     },
     relations: {
-      user: true,
+      retreatAttend: {
+        user: true,
+      },
       rideCarInfo: true,
       userInTheCar: {
-        user: true,
+        retreatAttend: {
+          user: true,
+        },
       },
     },
     where: {
-      user: {
-        name: Not(IsNull()),
+      retreatAttend: {
+        isCanceled: false,
       },
     },
   })

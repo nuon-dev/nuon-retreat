@@ -1,7 +1,7 @@
 import express from "express"
 import { hasPermission } from "../../../../src/util"
 import { PermissionType } from "../../../entity/types"
-import { inOutInfoDatabase, userDatabase } from "../../../model/dataSource"
+import { retreatAttendDatabase } from "../../../model/dataSource"
 
 const router = express.Router()
 
@@ -13,9 +13,13 @@ router.get("/get-user-data", async (req, res) => {
   }
 
   const { userId } = req.query
-  const foundUser = await userDatabase.findOne({
+  const foundUser = await retreatAttendDatabase.findOne({
     where: {
       id: Number.parseInt(userId as string),
+    },
+    relations: {
+      user: true,
+      inOutInfos: true,
     },
   })
 
@@ -23,14 +27,10 @@ router.get("/get-user-data", async (req, res) => {
     res.send({ result: "false" })
     return
   }
-  const inoutInfoList = await inOutInfoDatabase.findBy({
-    user: foundUser,
-  })
 
   res.send({
     result: "true",
     userData: foundUser,
-    inoutInfoList,
   })
 })
 
@@ -42,19 +42,19 @@ router.post("/delete-user", async (req, res) => {
   }
 
   const { userId } = req.body
-  const foundUser = await userDatabase.findOne({
+  const foundRetreatAttend = await retreatAttendDatabase.findOne({
     where: {
       id: Number.parseInt(userId as string),
     },
   })
 
-  if (!foundUser) {
+  if (!foundRetreatAttend) {
     res.send({ result: "false" })
     return
   }
 
-  foundUser.isCancel = true
-  await userDatabase.save(foundUser)
+  foundRetreatAttend.isCanceled = true
+  await retreatAttendDatabase.save(foundRetreatAttend)
   res.send({ result: "success" })
 })
 

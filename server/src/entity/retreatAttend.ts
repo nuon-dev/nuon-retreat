@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   OneToMany,
@@ -8,7 +9,7 @@ import {
 } from "typeorm"
 import { User } from "./user"
 import { InOutInfo } from "./inOutInfo"
-import { HowToMove } from "./types"
+import { CurrentStatus, HowToMove } from "./types"
 
 @Entity()
 export class RetreatAttend {
@@ -40,6 +41,18 @@ export class RetreatAttend {
   @Column({ default: true })
   isCanceled: boolean
 
+  @Column({ nullable: true })
+  etc: string
+
+  @Column({ default: CurrentStatus.null })
+  currentStatus: CurrentStatus
+
   @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.retreatAttend)
-  inOutInfo: InOutInfo[]
+  inOutInfos: InOutInfo[]
+
+  @CreateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+  })
+  createAt: Date
 }

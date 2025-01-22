@@ -34,7 +34,7 @@ function PermissionManage() {
         }
       })
       .catch(() => {
-        push("/admin")
+        push("/retreat/admin")
         setNotificationMessage("권한이 없습니다.")
         return
       })

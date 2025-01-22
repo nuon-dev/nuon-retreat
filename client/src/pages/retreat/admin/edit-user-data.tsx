@@ -10,17 +10,20 @@ import {
   Stack,
 } from "@mui/material"
 import UserInformationForm from "components/form/UserInformationForm"
-import { InOutInfo } from "@entity/inOutInfo"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { useRouter } from "next/router"
 import { HowToMove } from "@server/entity/types"
+import { InOutInfo } from "@server/entity/inOutInfo"
+import { RetreatAttend } from "@server/entity/retreatAttend"
 
 export default function EditUserData() {
   const { push } = useRouter()
   const [userList, setUserList] = useState([] as Array<User>)
   const [selectedUserId, setSelectedUserId] = useState(0)
-  const [userData, setUserData] = useState({} as User)
+  const [retreatAttend, setRetreatAttend] = useState<RetreatAttend | undefined>(
+    undefined
+  )
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
@@ -33,8 +36,8 @@ export default function EditUserData() {
         }
       })
       .catch(() => {
+        push("/retreat/admin")
         setNotificationMessage("권한이 없습니다.")
-        push("/admin")
         return
       })
   }, [])
@@ -50,7 +53,7 @@ export default function EditUserData() {
 
     get(`/admin/get-user-data?userId=${userIndex}`).then((response) => {
       if (response.result === "true") {
-        setUserData(response.userData)
+        setRetreatAttend(response.userData)
         setInOutData(response.inoutInfoList)
       }
     })
@@ -82,9 +85,10 @@ export default function EditUserData() {
         <Select value={selectedUserId} onChange={onClickUser}>
           {userList.map((user) => (
             <MenuItem key={user.id} value={user.id}>
-              {user.name} ({user.age})
-              {user.howToGo !== HowToMove.together &&
-              (!user.inOutInfos || user.inOutInfos?.length === 0)
+              {user.name} ({user.yearOfBirth})
+              {user.retreatAttend?.howToGo !== HowToMove.together &&
+              (!user.retreatAttend?.inOutInfo ||
+                user.retreatAttend?.inOutInfo.length === 0)
                 ? " (카풀 확인 필요)"
                 : ""}
               {user.etc ? "*" : ""}
@@ -94,7 +98,7 @@ export default function EditUserData() {
       </Stack>
       <Stack p="8x" border="1px solid grey" m="8px" borderRadius="12px">
         <UserInformationForm
-          user={userData}
+          retreatAttend={retreatAttend}
           inOutData={inOutData}
           reloadFunction={loadData}
           setEditMode={() => {}}

@@ -1,130 +1,141 @@
-// import express from "express"
-// import { hasPermission } from "../../util"
-// import { permissionDatabase, userDatabase } from "../../model/dataSource"
-// import { PermissionType } from "../../entity/types"
-// import { Permission } from "../../entity/permission"
+import express from "express"
+import { hasPermissionFromReq } from "../../util"
+import {
+  permissionDatabase,
+  retreatAttendDatabase,
+  userDatabase,
+} from "../../model/dataSource"
+import { PermissionType } from "../../entity/types"
+import { Permission } from "../../entity/permission"
 
-// import RoomRouter from "../admin/room"
-// import GroupRouter from "../admin/retreatGroup"
-// import CarRouter from "../admin/car"
-// import DashBoard from "../admin/dashBoard"
-// import Deposit from "../admin/deposit"
-// import Group from "../admin/group"
-// import EditUserData from "../admin/edit-user-data"
-// import { IsNull, Not } from "typeorm"
+import RoomRouter from "./admin/room"
+import GroupRouter from "./admin/retreatGroup"
+import CarRouter from "./admin/car"
+import DashBoard from "./admin/dashBoard"
+import Deposit from "./admin/deposit"
+import EditUserData from "./admin/edit-user-data"
 
-// const router = express.Router()
+const router = express.Router()
 
-// router.get("/get-all-user-name", async (req, res) => {
-//   const token = req.header("token")
-//   if (false === (await hasPermission(token, PermissionType.userList))) {
-//     res.sendStatus(401)
-//     return
-//   }
+router.get("/get-all-user-name", async (req, res) => {
+  const hasPermission = await hasPermissionFromReq(req, PermissionType.userList)
+  if (!hasPermission) {
+    res.sendStatus(401)
+    return
+  }
 
-//   const userList = await userDatabase.find({
-//     select: {
-//       name: true,
-//       id: true,
-//       gender: true,
-//     },
-//     where: {
-//       name: Not(IsNull()),
-//     },
-//   })
-//   res.send(userList)
-// })
+  const userList = await retreatAttendDatabase.find({
+    select: {
+      user: {
+        name: true,
+        id: true,
+        gender: true,
+      },
+    },
+    where: {
+      isCanceled: false,
+    },
+    relations: {
+      user: true,
+    },
+  })
+  res.send(userList)
+})
 
-// router.post("/get-user-permission-info", async (req, res) => {
-//   const data = req.body
-//   const token = req.header("token")
-//   if (false === (await hasPermission(token, PermissionType.permissionManage))) {
-//     res.sendStatus(401)
-//     return
-//   }
+router.post("/get-user-permission-info", async (req, res) => {
+  const data = req.body
+  const hasPermission = await hasPermissionFromReq(
+    req,
+    PermissionType.permissionManage
+  )
+  if (!hasPermission) {
+    res.sendStatus(401)
+    return
+  }
 
-//   const user = await userDatabase.findOne({
-//     where: {
-//       id: data.userId,
-//     },
-//     relations: {
-//       permissions: true,
-//     },
-//   })
-//   if (user) {
-//     res.send(user.permissions)
-//   } else {
-//     res.send([])
-//   }
-// })
+  const user = await userDatabase.findOne({
+    where: {
+      id: data.userId,
+    },
+    relations: {
+      permissions: true,
+    },
+  })
+  if (user) {
+    res.send(user.permissions)
+  } else {
+    res.send([])
+  }
+})
 
-// router.get("/get-all-user", async (req, res) => {
-//   const token = req.header("token")
+router.get("/get-all-user", async (req, res) => {
+  const token = req.header("token")
+  const hasPermission = await hasPermissionFromReq(req, PermissionType.userList)
 
-//   if (false === (await hasPermission(token, PermissionType.userList))) {
-//     res.sendStatus(401)
-//     return
-//   }
+  if (!hasPermission) {
+    res.sendStatus(401)
+    return
+  }
 
-//   return res.send(
-//     (
-//       await userDatabase.find({
-//         relations: {
-//           inOutInfos: true,
-//         },
-//         where: {
-//           isCancel: false,
-//         },
-//       })
-//     ).filter((user) => user.name && user.name.length > 0)
-//   )
-// })
+  const userList = await retreatAttendDatabase.find({
+    where: {
+      isCanceled: false,
+    },
+    relations: {
+      user: true,
+    },
+  })
 
-// router.post("/set-user-permission", async (req, res) => {
-//   const data = req.body
+  return res.send(userList)
+})
 
-//   const token = req.header("token")
-//   if (false === (await hasPermission(token, PermissionType.permissionManage))) {
-//     res.sendStatus(401)
-//     return
-//   }
+router.post("/set-user-permission", async (req, res) => {
+  const data = req.body
 
-//   const user = await userDatabase.findOne({
-//     where: {
-//       id: data.userId,
-//     },
-//     relations: {
-//       permissions: true,
-//     },
-//   })
+  const hasPermission = await hasPermissionFromReq(
+    req,
+    PermissionType.permissionManage
+  )
+  if (!hasPermission) {
+    res.sendStatus(401)
+    return
+  }
 
-//   if (!user) {
-//     res.sendStatus(500)
-//     return
-//   }
+  const user = await userDatabase.findOne({
+    where: {
+      id: data.userId,
+    },
+    relations: {
+      permissions: true,
+    },
+  })
 
-//   const targetPermission = user.permissions.find(
-//     (permission) => permission.permissionType === data.permissionType
-//   )
-//   if (targetPermission) {
-//     targetPermission.have = data.have
-//     await permissionDatabase.save(targetPermission)
-//   } else {
-//     const permission = new Permission()
-//     permission.have = data.have
-//     permission.permissionType = data.permissionType
-//     permission.user = user
-//     await permissionDatabase.save(permission)
-//   }
-//   res.send({ result: "success" })
-// })
+  if (!user) {
+    res.sendStatus(500)
+    return
+  }
 
-// router.use("/", RoomRouter)
-// router.use("/", GroupRouter)
-// router.use("/", CarRouter)
-// router.use("/", DashBoard)
-// router.use("/", Deposit)
-// router.use("/", EditUserData)
-// router.use("/group", Group)
+  const targetPermission = user.permissions.find(
+    (permission) => permission.permissionType === data.permissionType
+  )
+  if (targetPermission) {
+    targetPermission.have = data.have
+    await permissionDatabase.save(targetPermission)
+  } else {
+    const permission = new Permission()
+    permission.have = data.have
+    permission.permissionType = data.permissionType
+    permission.user = user
+    await permissionDatabase.save(permission)
+  }
+  res.send({ result: "success" })
+})
 
-// export default router
+router.use("/", RoomRouter)
+router.use("/", GroupRouter)
+router.use("/", CarRouter)
+router.use("/", DashBoard)
+router.use("/", Deposit)
+router.use("/", EditUserData)
+
+export default router

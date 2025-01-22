@@ -21,7 +21,6 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "paths": {
-      "@entity/*": ["./entity/*"],
       "@server/entity/*": ["../../server/src/entity/*"]
     },
     "resolveJsonModule": true

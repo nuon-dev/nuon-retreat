@@ -23,7 +23,7 @@ function InoutInfo() {
           setAllUserList(list)
         }
       } catch {
-        router.push("/admin")
+        router.push("/retreat/admin")
         setNotificationMessage("권한이 없습니다.")
         return
       }
@@ -32,7 +32,7 @@ function InoutInfo() {
           setAllInoutInfo(data)
         })
         .catch(() => {
-          router.push("/admin")
+          router.push("/retreat/admin")
           setNotificationMessage("권한이 없습니다.")
           return
         })

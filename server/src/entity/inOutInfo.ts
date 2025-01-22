@@ -13,7 +13,7 @@ export class InOutInfo {
   @PrimaryGeneratedColumn()
   id: number
 
-  @ManyToOne(() => RetreatAttend, (retreatAttend) => retreatAttend.inOutInfo)
+  @ManyToOne(() => RetreatAttend, (retreatAttend) => retreatAttend.inOutInfos)
   retreatAttend: RetreatAttend
 
   @Column({})

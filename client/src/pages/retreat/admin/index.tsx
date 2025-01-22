@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { Button, Stack } from "@mui/material/index"
 import { useRouter } from "next/router"
 import useKakaoHook from "kakao"
+import Header from "components/Header"
 
 //아이콘 주소 https://www.flaticon.com/kr/
 export default function Admin() {
@@ -67,73 +68,7 @@ export default function Admin() {
         alignItems="center"
         width="100%"
         justifyContent="center"
-      >
-        <Stack
-          width="100%"
-          margin="12px"
-          display="flex"
-          flexWrap="wrap"
-          direction="row"
-          justifyContent="center"
-          gap="20px"
-        >
-          {pageButton({
-            pageName: "접수자 전체 조회",
-            pageURL: "/all-user",
-            icon: "/icon/free-icon-bullet-list.png",
-          })}
-          {pageButton({
-            pageName: "카풀 관리",
-            pageURL: "/carpooling",
-            icon: "/icon/free-icon-car.png",
-          })}
-          {pageButton({
-            pageName: "방배정 관리",
-            pageURL: "/room-assignment",
-            icon: "/icon/free-icon-bunk-bed.png",
-          })}
-          {pageButton({
-            pageName: "조배정 관리",
-            pageURL: "/group-formation",
-            icon: "/icon/free-icon-group.png",
-          })}
-          {pageButton({
-            pageName: "권한 관리",
-            pageURL: "/permission-manage",
-            icon: "/icon/free-icon-lock.png",
-          })}
-          {pageButton({
-            pageName: "입금 확인 처리",
-            pageURL: "/deposit-check",
-            icon: "/icon/free-icon-cost.png",
-          })}
-          {pageButton({
-            pageName: "접수 내용 수정",
-            pageURL: "/edit-user-data",
-            icon: "/icon/free-icon-edit-profile.png",
-          })}
-          {pageButton({
-            pageName: "인원 확인 처리",
-            pageURL: "/check-status",
-            icon: "/icon/free-icon-qr-code.png",
-          })}
-          {pageButton({
-            pageName: "인원 관리",
-            pageURL: "/show-status-table",
-            icon: "/icon/free-icon-table.png",
-          })}
-          {pageButton({
-            pageName: "인원 출입 관리",
-            pageURL: "/inout-info",
-            icon: "/icon/free-icon-table.png",
-          })}
-          {pageButton({
-            pageName: "대시보드",
-            pageURL: "/dash-board",
-            icon: "/icon/free-icon-dashboard-interface.png",
-          })}
-        </Stack>
-      </Stack>
+      ></Stack>
     )
   }
 
@@ -174,5 +109,10 @@ export default function Admin() {
     )
   }
 
-  return <Stack py="40px">{isLogin ? menu() : loginForm()}</Stack>
+  return (
+    <Stack py="40px">
+      <Header />
+      {isLogin ? menu() : loginForm()}
+    </Stack>
+  )
 }
