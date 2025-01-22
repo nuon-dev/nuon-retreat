@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import {
-  Button,
   Stack,
   Table,
   TableBody,
@@ -8,7 +7,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material"
-import { get } from "../../../pages/api"
+import { get } from "../../../api"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { useRouter } from "next/router"

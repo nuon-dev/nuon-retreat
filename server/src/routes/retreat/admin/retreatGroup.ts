@@ -42,8 +42,9 @@ router.post("/set-retreat-group", async (req, res) => {
   }
 
   const data = req.body
-  const groupAssignment = data.groupAssignment
+  const selectedUser = data.selectedUser
 
+  await retreatAttendDatabase.save(selectedUser)
   res.send({ result: "success" })
   return
 })

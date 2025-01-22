@@ -1,28 +1,28 @@
 import { Box, Button, Stack } from "@mui/material"
-import { User } from "@server/entity/user"
 import { useEffect, useState } from "react"
 import { get, post } from "../../../pages/api"
 import { useRouter } from "next/router"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { InOutInfo } from "@server/entity/inOutInfo"
+import { RetreatAttend } from "@server/entity/retreatAttend"
 
 function RoomAssingment() {
   const { push } = useRouter()
   const [unassignedUserList, setUnassignedUserList] = useState(
-    [] as Array<User>
+    [] as Array<RetreatAttend>
   )
-  const [roomList, setRoomList] = useState([] as Array<Array<User>>)
-  const [selectedUser, setSelectedUser] = useState<User>()
+  const [roomList, setRoomList] = useState([] as Array<Array<RetreatAttend>>)
+  const [selectedUser, setSelectedUser] = useState<RetreatAttend>()
   const [maxRoomNumber, setMaxRoomNumber] = useState(0)
   const [isShowUserInfo, setIsShowUserInfo] = useState(false)
-  const [showUserInfo, setShowUserInfo] = useState({} as User)
+  const [showUserInfo, setShowUserInfo] = useState({} as RetreatAttend)
   const [userAttendInfo, setUserAttendInfo] = useState([] as Array<InOutInfo>)
   const [userAttendInfoCache, setUserAttendInfoCache] = useState(
     [] as Array<Array<InOutInfo>>
   )
   const [mousePoint, setMousePoint] = useState([0, 0])
-  const [sex, setSex] = useState("man")
+  const [gender, setSex] = useState("man")
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   function onMouseMove(event: MouseEvent) {
@@ -39,38 +39,36 @@ function RoomAssingment() {
   }, [])
 
   function fetchData() {
-    get("/admin/get-room-assignment")
-      .then((response: Array<User>) => {
+    get("/retreat/admin/get-room-assignment")
+      .then((response: Array<RetreatAttend>) => {
         const unassignedUserList = response
           .filter(
-            (user) =>
-              !user.roomAssignment ||
-              user.roomAssignment.isUpdated ||
-              user.roomAssignment.roomNumber === 0
+            (retreatAttend) =>
+              !retreatAttend.roomNumber || retreatAttend.roomNumber === 0
           )
-          .sort((a, b) => a.age - b.age)
+          .sort((a, b) => a.user.yearOfBirth - b.user.yearOfBirth)
         setUnassignedUserList(unassignedUserList)
 
-        const room = [] as Array<Array<User>>
+        const room = [] as Array<Array<RetreatAttend>>
         const assignedUserList = response.filter(
-          (user) => user.roomAssignment && !user.roomAssignment.isUpdated
+          (retreatAttend) => retreatAttend.roomNumber
         )
-        assignedUserList.map((user) => {
-          const roomNumber = user.roomAssignment.roomNumber - 1
+        assignedUserList.map((retreatAttend) => {
+          const roomNumber = retreatAttend.roomNumber - 1
           if (!room[roomNumber]) {
-            room[roomNumber] = [user]
+            room[roomNumber] = [retreatAttend]
           } else {
-            room[roomNumber].push(user)
-            room[roomNumber].sort((a, b) => a.age - b.age)
+            room[roomNumber].push(retreatAttend)
+            room[roomNumber].sort(
+              (a, b) => a.user.yearOfBirth - b.user.yearOfBirth
+            )
           }
           setRoomList(room)
         })
-        const maxNumer = Math.max(
-          ...response.map(
-            (user) => user.roomAssignment && user.roomAssignment.roomNumber
-          )
+        const maxNumber = Math.max(
+          ...response.map((retreatAttend) => retreatAttend.roomNumber)
         )
-        setMaxRoomNumber(maxNumer)
+        setMaxRoomNumber(maxNumber)
       })
       .catch(() => {
         push("/retreat/admin")
@@ -79,31 +77,33 @@ function RoomAssingment() {
       })
   }
 
-  function unassignedUserRow(user: User) {
+  function unassignedUserRow(retreatAttend: RetreatAttend) {
     return (
       <Stack
         direction="row"
-        onMouseDown={() => setSelectedUser(user)}
+        onMouseDown={() => setSelectedUser(retreatAttend)}
         onMouseUp={() => setRoom(0)}
         onMouseEnter={() => {
-          setModal(user)
+          setModal(retreatAttend)
         }}
         onMouseLeave={() => {
           setIsShowUserInfo(false)
         }}
         sx={{
           justifyContent: "space-between",
-          backgroundColor: user.sex === "man" ? "lightblue" : "pink",
+          backgroundColor:
+            retreatAttend.user.gender === "man" ? "lightblue" : "pink",
         }}
         px="4px"
       >
         <Box>
-          {user.name}({user.age})
-          {user.etc || (user.inOutInfos && user.inOutInfos.length) > 0
+          {retreatAttend.user.name}({retreatAttend.user.yearOfBirth})
+          {retreatAttend.etc ||
+          (retreatAttend.inOutInfos && retreatAttend.inOutInfos.length) > 0
             ? "*"
             : ""}
         </Box>
-        <Box>{user.roomAssignment?.roomNumber}</Box>
+        <Box>{retreatAttend.roomNumber}</Box>
       </Stack>
     )
   }
@@ -141,20 +141,20 @@ function RoomAssingment() {
     )
   }
 
-  function setModal(user: User) {
+  function setModal(retreatAttend: RetreatAttend) {
     setIsShowUserInfo(true)
-    setShowUserInfo(user)
-    setUserAttendInfo(user.inOutInfos)
+    setShowUserInfo(retreatAttend)
+    setUserAttendInfo(retreatAttend.inOutInfos)
   }
 
-  function userRoomRow(user: User) {
+  function userRoomRow(retreatAttend: RetreatAttend) {
     return (
       <Stack
         direction="row"
         p="2px"
-        onMouseDown={() => setSelectedUser(user)}
+        onMouseDown={() => setSelectedUser(retreatAttend)}
         onMouseEnter={() => {
-          setModal(user)
+          setModal(retreatAttend)
         }}
         onMouseLeave={() => {
           setIsShowUserInfo(false)
@@ -162,12 +162,14 @@ function RoomAssingment() {
         width="160px"
         sx={{
           justifyContent: "space-between",
-          backgroundColor: user.sex === "man" ? "lightblue" : "pink",
+          backgroundColor:
+            retreatAttend.user.gender === "man" ? "lightblue" : "pink",
         }}
       >
         <Box>
-          {user.name}({user.age})
-          {user.etc || (user.inOutInfos && user.inOutInfos.length) > 0
+          {retreatAttend.user.name}({retreatAttend.user.yearOfBirth})
+          {retreatAttend.etc ||
+          (retreatAttend.inOutInfos && retreatAttend.inOutInfos.length) > 0
             ? "*"
             : ""}
         </Box>
@@ -175,7 +177,7 @@ function RoomAssingment() {
     )
   }
 
-  function Room(roomNumber: number, userList: Array<User>) {
+  function Room(roomNumber: number, userList: Array<RetreatAttend>) {
     return (
       <Stack
         sx={{
@@ -189,11 +191,16 @@ function RoomAssingment() {
       >
         <Stack width="160px" textAlign="center" py="4px">
           {roomNumber}번 방 (
-          {userList.filter((user) => user.sex === sex).length})
+          {
+            userList.filter(
+              (retreatAttend) => retreatAttend.user.gender === gender
+            ).length
+          }
+          )
         </Stack>
         {userList
-          .filter((user) => user.sex === sex)
-          .map((user) => userRoomRow(user))}
+          .filter((retreatAttend) => retreatAttend.user.gender === gender)
+          .map((retreatAttend) => userRoomRow(retreatAttend))}
       </Stack>
     )
   }
@@ -202,10 +209,9 @@ function RoomAssingment() {
     if (!selectedUser) {
       return
     }
-    selectedUser.roomAssignment.roomNumber = roomNumber
-    selectedUser.roomAssignment.isUpdated = false
-    await post("/admin/set-room", {
-      roomAssignment: selectedUser.roomAssignment,
+    selectedUser.roomNumber = roomNumber
+    await post("/retreat/admin/set-room", {
+      selectedUser: selectedUser,
     })
     fetchData()
   }
@@ -221,11 +227,11 @@ function RoomAssingment() {
         <Stack />
         <Stack direction="row">
           <Stack fontWeight="600" fontSize="24px" justifyContent="center">
-            {sex === "man" ? "남자" : "여자"} 방배정
+            {gender === "man" ? "남자" : "여자"} 방배정
           </Stack>
           <Button
             variant="outlined"
-            onClick={() => setSex(sex === "man" ? "woman" : "man")}
+            onClick={() => setSex(gender === "man" ? "woman" : "man")}
             style={{
               margin: "16px",
             }}
@@ -266,11 +272,16 @@ function RoomAssingment() {
         >
           <Box textAlign="center" py="4px">
             미배정(
-            {unassignedUserList.filter((user) => user.sex === sex).length}명)
+            {
+              unassignedUserList.filter(
+                (roomNumber) => roomNumber.user.gender === gender
+              ).length
+            }
+            명)
           </Box>
           {unassignedUserList
-            .filter((user) => user.sex === sex)
-            .map((user) => unassignedUserRow(user))}
+            .filter((roomNumber) => roomNumber.user.gender === gender)
+            .map((roomNumber) => unassignedUserRow(roomNumber))}
         </Stack>
         <Stack
           style={{
@@ -288,7 +299,7 @@ function RoomAssingment() {
             if (!room || room.length === 0) {
               return Room(index + 1, [])
             } else {
-              return Room(room[0].roomAssignment.roomNumber, room)
+              return Room(room[0].roomNumber, room)
             }
           })}
           {Room(maxRoomNumber + 1, [])}

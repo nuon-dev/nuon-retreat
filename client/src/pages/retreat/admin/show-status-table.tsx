@@ -1,4 +1,3 @@
-import { User } from "@server/entity/user"
 import { Box, MenuItem, Select, Stack } from "@mui/material"
 import { CurrentStatus, HowToMove } from "@server/entity/types"
 import { useRouter } from "next/router"

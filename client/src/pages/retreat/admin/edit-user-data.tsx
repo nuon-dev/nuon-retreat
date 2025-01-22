@@ -87,8 +87,8 @@ export default function EditUserData() {
             <MenuItem key={user.id} value={user.id}>
               {user.name} ({user.yearOfBirth})
               {user.retreatAttend?.howToGo !== HowToMove.together &&
-              (!user.retreatAttend?.inOutInfo ||
-                user.retreatAttend?.inOutInfo.length === 0)
+              (!user.retreatAttend?.inOutInfos ||
+                user.retreatAttend?.inOutInfos.length === 0)
                 ? " (카풀 확인 필요)"
                 : ""}
               {user.etc ? "*" : ""}

@@ -1,4 +1,4 @@
-import useKakaoHook from "kakao"
+import useKakaoHook from "../kakao"
 import { post } from "pages/api"
 import { atom, useRecoilState } from "recoil"
 import { EditContent } from "./useBotChatLogic"

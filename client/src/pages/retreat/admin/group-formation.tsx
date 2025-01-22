@@ -1,5 +1,4 @@
 import { Box, Stack } from "@mui/material"
-import { User } from "@server/entity/user"
 import { useEffect, useState } from "react"
 import { get, post } from "../../../pages/api"
 import { useRouter } from "next/router"
@@ -11,14 +10,14 @@ import { RetreatAttend } from "@server/entity/retreatAttend"
 function GroupFormation() {
   const { push } = useRouter()
   const [unassignedUserList, setUnassignedUserList] = useState(
-    [] as Array<User>
+    [] as Array<RetreatAttend>
   )
-  const [groupList, setGroupList] = useState([] as Array<Array<User>>)
-  const [selectedUser, setSelectedUser] = useState<User>()
+  const [groupList, setGroupList] = useState([] as Array<Array<RetreatAttend>>)
+  const [selectedUser, setSelectedUser] = useState<RetreatAttend>()
   const [mousePoint, setMousePoint] = useState([0, 0])
   const [maxGroupNumber, setMaxGroupNumber] = useState(0)
   const [isShowUserInfo, setIsShowUserInfo] = useState(false)
-  const [showUserInfo, setShowUserInfo] = useState({} as User)
+  const [showUserInfo, setShowUserInfo] = useState({} as RetreatAttend)
   const [userAttendInfoCache, setUserAttendInfoCache] = useState(
     [] as Array<Array<InOutInfo>>
   )
@@ -46,21 +45,21 @@ function GroupFormation() {
           .sort((a, b) => a.user.yearOfBirth - b.user.yearOfBirth)
         setUnassignedUserList(unassignedUserList)
 
-        const group = [] as Array<Array<User>>
+        const group = [] as Array<Array<RetreatAttend>>
         const assignedUserList = response.filter(
-          (user) => user.groupAssignment.groupNumber !== 0
+          (retreatAttend) => retreatAttend.groupNumber !== 0
         )
-        assignedUserList.map((user) => {
-          const groupNumber = user.groupAssignment.groupNumber - 1
+        assignedUserList.map((retreatAttend) => {
+          const groupNumber = retreatAttend.groupNumber - 1
           if (!group[groupNumber]) {
-            group[groupNumber] = [user]
+            group[groupNumber] = [retreatAttend]
           } else {
-            group[groupNumber].push(user)
+            group[groupNumber].push(retreatAttend)
           }
           setGroupList(group)
         })
         const maxNumber = Math.max(
-          ...response.map((user) => user.groupAssignment.groupNumber)
+          ...response.map((retreatAttend) => retreatAttend.groupNumber)
         )
         setMaxGroupNumber(maxNumber)
       })
@@ -71,56 +70,60 @@ function GroupFormation() {
       })
   }
 
-  function unassignedUserRow(user: User) {
+  function unassignedUserRow(retreatAttend: RetreatAttend) {
     return (
       <Stack
         direction="row"
-        onMouseDown={() => setSelectedUser(user)}
+        onMouseDown={() => setSelectedUser(retreatAttend)}
         onMouseUp={() => setGroup(0)}
         onMouseEnter={() => {
-          setModal(user)
+          setModal(retreatAttend)
         }}
         onMouseLeave={() => {
           setIsShowUserInfo(false)
         }}
         sx={{
           justifyContent: "space-between",
-          backgroundColor: user.sex === "man" ? "lightblue" : "pink",
+          backgroundColor:
+            retreatAttend.user.gender === "man" ? "lightblue" : "pink",
         }}
         px="4px"
       >
         <Box>
-          {user.name}({user.age})
-          {user.etc || (user.inOutInfos && user.inOutInfos.length) > 0
+          {retreatAttend.user.name}({retreatAttend.user.gender})
+          {retreatAttend.user.etc ||
+          (retreatAttend.inOutInfos && retreatAttend.inOutInfos.length) > 0
             ? "*"
             : ""}
         </Box>
-        <Box>{user.groupAssignment.groupNumber}</Box>
+        <Box>{retreatAttend.groupNumber}</Box>
       </Stack>
     )
   }
 
-  function userGroupRow(user: User) {
+  function userGroupRow(retreatAttend: RetreatAttend) {
     return (
       <Stack
         direction="row"
         p="2px"
-        onMouseDown={() => setSelectedUser(user)}
+        onMouseDown={() => setSelectedUser(retreatAttend)}
         width="160px"
         onMouseEnter={() => {
-          setModal(user)
+          setModal(retreatAttend)
         }}
         onMouseLeave={() => {
           setIsShowUserInfo(false)
         }}
         sx={{
           justifyContent: "space-between",
-          backgroundColor: user.sex === "man" ? "lightblue" : "pink",
+          backgroundColor:
+            retreatAttend.user.gender === "man" ? "lightblue" : "pink",
         }}
       >
         <Box>
-          {user.name}({user.age})
-          {user.etc || (user.inOutInfos && user.inOutInfos.length) > 0
+          {retreatAttend.user.name}({retreatAttend.user.yearOfBirth})
+          {retreatAttend.etc ||
+          (retreatAttend.inOutInfos && retreatAttend.inOutInfos.length) > 0
             ? "*"
             : ""}
         </Box>
@@ -128,13 +131,13 @@ function GroupFormation() {
     )
   }
 
-  function setModal(user: User) {
+  function setModal(retreatAttend: RetreatAttend) {
     setIsShowUserInfo(true)
-    setShowUserInfo(user)
-    setUserAttendInfo(user.inOutInfos)
+    setShowUserInfo(retreatAttend)
+    setUserAttendInfo(retreatAttend.inOutInfos)
   }
 
-  function Group(groupNumber: number, userList: Array<User>) {
+  function Group(groupNumber: number, userList: Array<RetreatAttend>) {
     return (
       <Stack
         sx={{
@@ -158,9 +161,9 @@ function GroupFormation() {
     if (!selectedUser) {
       return
     }
-    selectedUser.groupAssignment.groupNumber = groupNumber
-    await post("/admin/set-retreat-group", {
-      groupAssignment: selectedUser.groupAssignment,
+    selectedUser.groupNumber = groupNumber
+    await post("/retreat/admin/set-retreat-group", {
+      selectedUser: selectedUser,
     })
     fetchData()
   }
@@ -235,8 +238,8 @@ function GroupFormation() {
             return Group(index + 1, [])
           } else {
             return Group(
-              group[0].groupAssignment.groupNumber,
-              group.sort((a, b) => a.age - b.age)
+              group[0].groupNumber,
+              group.sort((a, b) => a.user.yearOfBirth - b.user.yearOfBirth)
             )
           }
         })}

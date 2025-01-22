@@ -11,10 +11,10 @@ import {
   SelectChangeEvent,
   Stack,
 } from "@mui/material"
-import { PermissionType } from "@entity/types"
 import { useRouter } from "next/router"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
+import { PermissionType } from "@server/entity/types"
 
 function PermissionManage() {
   const { push } = useRouter()
@@ -96,7 +96,7 @@ function PermissionManage() {
         <Select value={selectedUserId} onChange={onClickUser}>
           {userList.map((user) => (
             <MenuItem key={user.id} value={user.id}>
-              {user.name} ({user.age})
+              {user.name} ({user.yearOfBirth})
             </MenuItem>
           ))}
         </Select>
