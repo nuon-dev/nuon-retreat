@@ -1,14 +1,14 @@
 "use client"
 
 import { Stack } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import BotChat from "components/retreat/BotChat"
 import MyChat from "components/retreat/MyChat"
 import dayjs from "dayjs"
 import useBotChatLogic, { EditContent } from "hooks/useBotChatLogic"
 import InputText from "components/retreat/InputText"
 import useUserData from "hooks/useUserData"
-import { get } from "pages/api"
+import { get, post } from "pages/api"
 import { Community } from "@server/entity/community"
 import InOutInfoForm from "components/retreat/InOutInfoForm"
 import { atom, useRecoilValue } from "recoil"
@@ -28,6 +28,9 @@ export default function Index() {
   function addChat(chatContent: ChatContent) {
     const chat = chatContent as Chat
     chat.time = dayjs().format("HH:mm")
+    if (chat.type === "my") {
+      post("/retreat/chat", { chat: chat.content, type: editContent })
+    }
     ChatList.push(chat)
     setChatList([...ChatList])
     setTimeout(() => {
@@ -74,13 +77,20 @@ export default function Index() {
     <Stack
       pt="20px"
       pb="60px"
+      height="10000px"
       style={{
         flex: "1",
         width: "100vw",
         backgroundColor: "rgb(190, 205, 222)",
       }}
     >
-      <Stack width="100%" position="fixed" top="0" bgcolor="rgb(190, 205, 222)">
+      <Stack
+        top="0"
+        width="100%"
+        zIndex="100"
+        position="fixed"
+        bgcolor="rgb(190, 205, 222)"
+      >
         <Stack
           top="24px"
           position="fixed"

@@ -27,6 +27,7 @@ export default function BotChat(props: IPops) {
             bgcolor="#fff"
             borderRadius="12px"
             alignSelf="flex-end"
+            whiteSpace="pre-wrap"
           >
             {props.content}
             {props.buttons && props.buttons.length > 0 && (
@@ -34,10 +35,10 @@ export default function BotChat(props: IPops) {
                 {props.buttons?.map((button, index) => (
                   <Stack
                     key={index}
-                    px="20px"
-                    py="16px"
+                    px="16px"
+                    py="14px"
                     fontSize="16px"
-                    bgcolor="#f8f8f8"
+                    bgcolor="#f7f7f7"
                     border="1px solid #ddd"
                     borderRadius="4px"
                     onClick={button.onClick}

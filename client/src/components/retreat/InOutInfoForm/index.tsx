@@ -1,16 +1,16 @@
-import { Button, FormControl, MenuItem, Select, Stack } from "@mui/material"
-import styles from "./index.module.css"
-import { atom, useRecoilState, useSetRecoilState } from "recoil"
-import useRetreatData from "hooks/useRetreatData"
-import { InOutType, HowToMove, Days } from "@server/entity/types"
-import { InOutInfo } from "@server/entity/inOutInfo"
 import { post } from "pages/api"
 import { useEffect } from "react"
+import styles from "./index.module.css"
+import useRetreatData from "hooks/useRetreatData"
+import { InOutInfo } from "@server/entity/inOutInfo"
+import { NotificationMessage } from "state/notification"
+import { useRecoilState, useSetRecoilState } from "recoil"
+import { InOutType, HowToMove, Days } from "@server/entity/types"
+import { Button, FormControl, MenuItem, Select, Stack } from "@mui/material"
 import {
   ShowInOutInfoComponentAtom,
   StopRetreatBodyScrollAtom,
 } from "state/retreat"
-import { NotificationMessage } from "state/notification"
 
 export default function InOutInfoForm() {
   const [showInOutInfo, setShowInOutInfo] = useRecoilState(

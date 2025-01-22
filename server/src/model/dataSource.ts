@@ -4,10 +4,12 @@ import { Permission } from "../entity/permission"
 import { RetreatAttend } from "../entity/retreatAttend"
 import { User } from "../entity/user"
 import { Community } from "../entity/community"
+import { ChatLog } from "../entity/chatLog"
 
 const dataSource = new DataSource(require("../../ormconfig.json"))
 
 export const userDatabase = dataSource.getRepository(User)
+export const chatLogDatabase = dataSource.getRepository(ChatLog)
 export const communityDatabase = dataSource.getRepository(Community)
 export const inOutInfoDatabase = dataSource.getRepository(InOutInfo)
 export const permissionDatabase = dataSource.getRepository(Permission)

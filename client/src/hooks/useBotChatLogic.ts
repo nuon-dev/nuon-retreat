@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import useUserData, { UserInformationAtom } from "./useUserData"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import useRetreatData from "./useRetreatData"
-import { HowToMove } from "@server/entity/types"
+import { Days, HowToMove, InOutType } from "@server/entity/types"
 import { ChatContent } from "types/retreat"
 import {
   InOutInformationAtom,
@@ -26,6 +26,8 @@ export enum EditContent {
   etc,
   inOutInfo,
 }
+
+let sayBotNow = false
 
 export default function useBotChatLogic({ addChat }: IPops) {
   const [editContent, setEditContent] = useState<EditContent>(EditContent.none)
@@ -125,6 +127,11 @@ export default function useBotChatLogic({ addChat }: IPops) {
     if (!userInformation || !retreatAttend || !inOutInfos) {
       return
     }
+    console.log("sayBotNow", sayBotNow)
+    if (sayBotNow) {
+      return
+    }
+    sayBotNow = true
     setTimeout(checkMissedUserInformationAndEdit)
     if (editContent !== EditContent.none) {
       setEditContent(EditContent.none)
@@ -143,6 +150,9 @@ export default function useBotChatLogic({ addChat }: IPops) {
   }, [userInformation, retreatAttend, inOutInfos])
 
   function checkMissedUserInformationAndEdit() {
+    setTimeout(() => {
+      sayBotNow = false
+    }, 500)
     const missedContent = checkMissedUserInformation()
     const missedRetreatAttendContent = checkMissedRetreatAttendInformation()
     const allIsOkay =
@@ -345,11 +355,36 @@ export default function useBotChatLogic({ addChat }: IPops) {
     setEditContent(EditContent.yearOfBirth)
   }
 
+  function getKrFromHowToMove(howToMove: HowToMove) {
+    switch (howToMove) {
+      case HowToMove.together:
+        return "버스"
+      case HowToMove.driveCarWithPerson:
+        return "자가용 (카풀 가능) 으"
+      case HowToMove.driveCarAlone:
+        return "자가용 (카풀 불가능) 으"
+      case HowToMove.rideCar:
+        return "카풀"
+      case HowToMove.goAlone:
+        return "대중교통으"
+    }
+    return ""
+  }
+
   async function checkUserData() {
     const userData = userInformation
     if (!retreatAttend || !userData) {
       return
     }
+
+    function dayToString(day: Days) {
+      if (day === Days.firstDay) {
+        return "금요일"
+      } else {
+        return "토요일"
+      }
+    }
+
     if (retreatAttend.isCanceled) {
       addChat({
         type: "bot",
@@ -359,18 +394,24 @@ export default function useBotChatLogic({ addChat }: IPops) {
     }
     addChat({
       type: "bot",
-      content: `${userData.name}님이 입력하신 정보를 정리해볼게요. 
-      ${userData.yearOfBirth}년생이고 ${
+      content: `${userData.name}님이 입력하신 정보를 정리해볼게요.
+${userData.yearOfBirth}년생이고 ${
         userData.gender === "man" ? "남성" : "여성"
       }이시네요.
-      순장님은 ${userData.community?.name}님이에요.
-      연락은 ${userData.phone}로 드릴게요.
-       ${retreatAttend.howToGo}로 수련회장으로 이동 하시고 
-       ${retreatAttend.howToBack}으로 교회로 돌아 오시네요.
-    회비는 입금 ${retreatAttend.isDeposited ? "확인" : "대기중"} 입니다. 😀
-    ${retreatAttend.inOutInfos.map((inOutInfo) => {
-      return `${inOutInfo.day}날에 ${inOutInfo.time}시에 ${inOutInfo.position}에서 ${inOutInfo.inOutType}실 거에요.`
-    })}`,
+순장님은 ${userData.community?.name}님이에요.
+연락은 ${userData.phone}로 드릴게요.
+${getKrFromHowToMove(retreatAttend.howToGo)}로 수련회장으로 이동 하시고 
+${getKrFromHowToMove(retreatAttend.howToBack)}로 교회로 돌아와요.
+회비는 입금 ${retreatAttend.isDeposited ? "확인" : "대기중"} 입니다. 😀
+${retreatAttend.inOutInfos
+  .map((inOutInfo) => {
+    return `${dayToString(inOutInfo.day)} ${inOutInfo.time}시에 ${
+      inOutInfo.position
+    }${
+      inOutInfo.inOutType === InOutType.IN ? "에서 들어오" : "로 나가"
+    }실 거에요.`
+  })
+  .join("\n")}`,
       buttons: [
         {
           content: "엇.. 틀린게 있어요.",

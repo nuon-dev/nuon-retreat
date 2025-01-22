@@ -1,5 +1,5 @@
 import express from "express"
-import { retreatAttendDatabase } from "../../model/dataSource"
+import { chatLogDatabase, retreatAttendDatabase } from "../../model/dataSource"
 import { getUserFromToken } from "../../util"
 import adminRouter from "./adminRouter"
 
@@ -47,6 +47,27 @@ router.post("/edit-information", async (req, res) => {
   }
 
   await retreatAttendDatabase.save(retreatAttend)
+  res.send({ result: "success" })
+})
+
+router.post("/chat", async (req, res) => {
+  const foundUser = await getUserFromToken(req)
+
+  if (!foundUser) {
+    res.status(401).send({ result: "fail" })
+    return
+  }
+
+  const { chat, type } = req.body
+
+  const newChat = chatLogDatabase.create({
+    user: foundUser,
+    content: chat,
+    type: type,
+  })
+
+  await chatLogDatabase.save(newChat)
+
   res.send({ result: "success" })
 })
 

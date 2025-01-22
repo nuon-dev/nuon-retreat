@@ -1,5 +1,5 @@
 import { Button, Stack } from "@mui/material"
-import { useState, createRef, useEffect } from "react"
+import { useState, createRef } from "react"
 import styles from "./index.module.css"
 
 interface IProps {
@@ -28,24 +28,23 @@ export default function InputText({ submit }: IProps) {
     setText("")
   }
 
-  useEffect(() => {
-    if (global.visualViewport) {
-      global.visualViewport.addEventListener("resize", () => {
-        scrollTo(0, 0)
-      })
-    }
-  })
+  function onFocus() {
+    setTimeout(() => {
+      global.scrollBy(0, global.innerHeight)
+    }, 100)
+  }
 
   return (
     <Stack
-      position="fixed"
-      bottom="0px"
+      p="16px"
+      bottom="0"
       width="100%"
       height="50px"
       bgcolor="white"
       direction="row"
-      p="16px"
+      position="fixed"
       alignItems="center"
+      zIndex="200"
     >
       <Stack
         width="calc(100% - 50px)"
@@ -58,6 +57,7 @@ export default function InputText({ submit }: IProps) {
           className={styles["input"]}
           type="text"
           value={text}
+          onFocus={onFocus}
           onChange={(e) => setText(e.target.value)}
           onSubmit={onClickSend}
         />

@@ -5,10 +5,8 @@ import "./_app.css"
 import Notification from "../components/notification/notification"
 import { Stack } from "@mui/material"
 import Script from "next/script"
-import { useEffect, useState } from "react"
 
 function MyApp({ Component, pageProps }: any) {
-  const [windowHeight, setWindowHeight] = useState("calc(100vh - 50px)")
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
   if (global.location) {
     var useragt = navigator.userAgent.toLowerCase()
@@ -25,14 +23,6 @@ function MyApp({ Component, pageProps }: any) {
   if (global.location?.pathname.includes("retreat")) {
     title = "2025 겨울 수련회"
   }
-
-  useEffect(() => {
-    if (global.visualViewport) {
-      global.visualViewport?.addEventListener("resize", (e) => {
-        setWindowHeight(global.visualViewport?.height + "px")
-      })
-    }
-  }, [])
 
   return (
     <>
@@ -65,7 +55,7 @@ function MyApp({ Component, pageProps }: any) {
           }}
         />
         <Notification />
-        <Stack fontFamily="PretendardVariable" height={windowHeight}>
+        <Stack fontFamily="PretendardVariable">
           <Component {...pageProps} />
         </Stack>
       </RecoilRoot>

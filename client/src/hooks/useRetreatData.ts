@@ -14,7 +14,6 @@ export default function useRetreatData() {
   const [inOutInfoList, setInOutInfo] = useRecoilState(InOutInformationAtom)
 
   useEffect(() => {
-    // fetch retreat data
     if (!userInformation) {
       return
     }
