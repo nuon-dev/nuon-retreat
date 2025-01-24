@@ -140,6 +140,7 @@ export default function CommunityComponent() {
         onMouseDown={(e) => selectCommunity(e, rootCommunity)}
         sx={{
           cursor: "pointer",
+          height: "fit-content",
         }}
       >
         <Stack m="4px">

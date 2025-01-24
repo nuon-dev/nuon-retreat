@@ -40,13 +40,13 @@
     background-color: rgba(0, 0, 0, 0);
   }
   to {
-    background-color: rgba(190, 205, 222, 0.98);
+    background-color: rgba(190, 205, 222, 0.9);
   }
 }
 
 @keyframes fade-out-bg {
   from {
-    background-color: rgba(190, 205, 222, 0.98);
+    background-color: rgba(190, 205, 222, 0.9);
   }
   to {
     background-color: rgba(0, 0, 0, 0);

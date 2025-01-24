@@ -16,7 +16,7 @@ export class InOutInfo {
   @ManyToOne(() => RetreatAttend, (retreatAttend) => retreatAttend.inOutInfos)
   retreatAttend: RetreatAttend
 
-  @Column({})
+  @Column()
   day: Days
 
   @Column()

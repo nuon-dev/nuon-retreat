@@ -1,6 +1,7 @@
 import { Box, Stack } from "@mui/material"
 import styles from "./index.module.css"
 import { ChatButton } from "types/retreat"
+import Image from "next/image"
 
 interface IPops {
   content: string
@@ -11,7 +12,17 @@ interface IPops {
 export default function BotChat(props: IPops) {
   return (
     <Stack direction="row" gap="12px" mx="12px" className={styles["chat"]}>
-      <Box minWidth="40px" height="40px" bgcolor="blue" borderRadius="16px" />
+      <Stack minWidth="40px" height="40px" borderRadius="16px">
+        <Image
+          src="/profile.jpeg"
+          width="40"
+          height="40"
+          alt=""
+          style={{
+            borderRadius: "16px",
+          }}
+        />
+      </Stack>
       <Stack>
         <Stack color="#333">새벽이</Stack>
         <Stack

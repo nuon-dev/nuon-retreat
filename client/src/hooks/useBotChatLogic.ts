@@ -43,6 +43,8 @@ export default function useBotChatLogic({ addChat }: IPops) {
     checkMissedRetreatAttendInformation,
     editRetreatAttendInformation,
     saveRetreatAttendInformation,
+    fetchInOutInfo,
+    fetchRetreatAttendInformation,
   } = useRetreatData()
 
   const userInformation = useRecoilValue(UserInformationAtom)
@@ -127,7 +129,6 @@ export default function useBotChatLogic({ addChat }: IPops) {
     if (!userInformation || !retreatAttend || !inOutInfos) {
       return
     }
-    console.log("sayBotNow", sayBotNow)
     if (sayBotNow) {
       return
     }
@@ -373,7 +374,9 @@ export default function useBotChatLogic({ addChat }: IPops) {
 
   async function checkUserData() {
     const userData = userInformation
-    if (!retreatAttend || !userData) {
+    await fetchRetreatAttendInformation(true)
+    await fetchInOutInfo(true)
+    if (!retreatAttend || !userData || !inOutInfos) {
       return
     }
 
@@ -403,7 +406,7 @@ ${userData.yearOfBirth}년생이고 ${
 ${getKrFromHowToMove(retreatAttend.howToGo)}로 수련회장으로 이동 하시고 
 ${getKrFromHowToMove(retreatAttend.howToBack)}로 교회로 돌아와요.
 회비는 입금 ${retreatAttend.isDeposited ? "확인" : "대기중"} 입니다. 😀
-${retreatAttend.inOutInfos
+${inOutInfos
   .map((inOutInfo) => {
     return `${dayToString(inOutInfo.day)} ${inOutInfo.time}시에 ${
       inOutInfo.position
@@ -606,11 +609,11 @@ ${retreatAttend.inOutInfos
           },
         },
         {
-          content: "수련회 줄입 정보 수정",
+          content: "카풀 정보 수정",
           onClick: () => {
             addChat({
               type: "my",
-              content: "수련회 줄입 정보 수정",
+              content: "카풀 정보 수정",
             })
             setShowInOutInfoForm(true)
           },

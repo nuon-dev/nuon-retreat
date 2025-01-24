@@ -23,18 +23,22 @@ export default function useRetreatData() {
     }
   }, [userInformation])
 
-  async function fetchRetreatAttendInformation() {
-    const retreatAttend = await get("/retreat")
-    setRetreatAttend(retreatAttend)
+  async function fetchRetreatAttendInformation(isForce = false) {
+    const retreatAttendData = await get("/retreat")
+    if (!retreatAttend || isForce) {
+      setRetreatAttend(retreatAttendData)
+    }
   }
 
-  async function fetchInOutInfo() {
+  async function fetchInOutInfo(isForce = false) {
     const inOutInfo = await get("/in-out-info")
-    setInOutInfo(inOutInfo)
+    if (!inOutInfoList || isForce) {
+      setInOutInfo(inOutInfo)
+    }
   }
 
   function checkMissedRetreatAttendInformation() {
-    if (!retreatAttend) {
+    if (!retreatAttend || !inOutInfoList) {
       return EditContent.none
     }
     if (!retreatAttend.howToGo) {
@@ -50,7 +54,13 @@ export default function useRetreatData() {
       )
       if (outInfos.length === 0) {
         addInfo(InOutType.OUT, retreatAttend.howToBack)
+        return EditContent.inOutInfo
       }
+    } else {
+      const inInfos = inOutInfoList.filter(
+        (info) => !(info.inOutType === InOutType.OUT && info.autoCreated)
+      )
+      setInOutData(inInfos)
     }
     if (
       retreatAttend.howToGo === HowToMove.driveCarWithPerson ||
@@ -62,7 +72,13 @@ export default function useRetreatData() {
       )
       if (inInfos.length === 0) {
         addInfo(InOutType.IN, retreatAttend.howToGo)
+        return EditContent.inOutInfo
       }
+    } else {
+      const inInfos = inOutInfoList.filter(
+        (info) => !(info.inOutType === InOutType.IN && info.autoCreated)
+      )
+      setInOutData(inInfos)
     }
     if (!retreatAttend.howToBack) {
       return EditContent.howToBack
@@ -110,6 +126,9 @@ export default function useRetreatData() {
   }
 
   function addInfo(inOutType: InOutType, howToMove?: HowToMove) {
+    if (!inOutInfoList) {
+      return
+    }
     setInOutInfo([
       ...inOutInfoList,
       {
@@ -129,6 +148,8 @@ export default function useRetreatData() {
   }
 
   return {
+    fetchInOutInfo,
+    fetchRetreatAttendInformation,
     checkMissedRetreatAttendInformation,
     editRetreatAttendInformation,
     saveRetreatAttendInformation,

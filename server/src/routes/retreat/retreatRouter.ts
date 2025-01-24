@@ -1,7 +1,13 @@
 import express from "express"
-import { chatLogDatabase, retreatAttendDatabase } from "../../model/dataSource"
+import {
+  chatLogDatabase,
+  inOutInfoDatabase,
+  retreatAttendDatabase,
+} from "../../model/dataSource"
 import { getUserFromToken } from "../../util"
 import adminRouter from "./adminRouter"
+import { RetreatAttend } from "../../entity/retreatAttend"
+import { HowToMove, InOutType } from "../../entity/types"
 
 const router = express.Router()
 
@@ -14,10 +20,26 @@ router.get("/", async (req, res) => {
   }
 
   var retreatAttend = await retreatAttendDatabase.findOne({
-    where: {},
+    where: {
+      user: {
+        id: foundUser.id,
+      },
+    },
     relations: {
-      inOutInfos: true,
       user: true,
+    },
+    select: {
+      id: true,
+      user: {
+        id: true,
+        name: true,
+        phone: true,
+        yearOfBirth: true,
+      },
+      howToGo: true,
+      howToBack: true,
+      isCanceled: true,
+      inOutInfos: true,
     },
   })
 
@@ -39,14 +61,38 @@ router.post("/edit-information", async (req, res) => {
     return
   }
 
-  const retreatAttend = req.body
+  const retreatAttend: RetreatAttend = req.body
 
   if (retreatAttend.user.id !== foundUser.id) {
     res.status(401).send({ result: "fail" })
     return
   }
 
-  await retreatAttendDatabase.save(retreatAttend)
+  const result = await retreatAttendDatabase.save(retreatAttend)
+
+  console.log(result)
+  if (
+    retreatAttend.howToGo === HowToMove.together ||
+    retreatAttend.howToGo === HowToMove.driveCarAlone
+  ) {
+    await inOutInfoDatabase.delete({
+      retreatAttend: retreatAttend,
+      autoCreated: true,
+      inOutType: InOutType.IN,
+    })
+  }
+
+  if (
+    retreatAttend.howToBack === HowToMove.together ||
+    retreatAttend.howToBack === HowToMove.driveCarAlone
+  ) {
+    await inOutInfoDatabase.delete({
+      retreatAttend: retreatAttend,
+      autoCreated: true,
+      inOutType: InOutType.OUT,
+    })
+  }
+
   res.send({ result: "success" })
 })
 

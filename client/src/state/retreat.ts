@@ -17,7 +17,7 @@ export const RetreatAttendAtom = atom<RetreatAttend | undefined>({
   default: undefined,
 })
 
-export const InOutInformationAtom = atom<InOutInfo[]>({
+export const InOutInformationAtom = atom<InOutInfo[] | undefined>({
   key: "in-out-information",
-  default: [],
+  default: undefined,
 })

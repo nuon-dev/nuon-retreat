@@ -29,6 +29,9 @@ export default function InOutInfoForm() {
   }, [showInOutInfo])
 
   function onClickRemove(targetInfoIndex: number) {
+    if (!inOutInfoList) {
+      return
+    }
     const deleteInfo = inOutInfoList[targetInfoIndex]
     if (deleteInfo && deleteInfo.id) {
       post("/in-out-info/delete-attend-time", {
@@ -41,6 +44,9 @@ export default function InOutInfoForm() {
   }
 
   function onChangeInformation(type: string, data: string, index: number) {
+    if (!inOutInfoList) {
+      return
+    }
     const newInOutInfoList = [...inOutInfoList]
     newInOutInfoList[index] = {
       ...newInOutInfoList[index],
@@ -50,6 +56,10 @@ export default function InOutInfoForm() {
   }
 
   async function onSaveInOutInfoToServer() {
+    if (!inOutInfoList) {
+      return
+    }
+
     function dayToString(day: Days) {
       if (day === Days.firstDay) {
         return "금요일"
@@ -86,6 +96,7 @@ export default function InOutInfoForm() {
         gap="12px"
         width="calc(100vw - 30px)"
         style={{
+          boxShadow: "0px 0px 10px 0px #AAA",
           border: "1px solid #AAA",
           borderRadius: "8px",
           padding: "12px",
@@ -220,6 +231,8 @@ export default function InOutInfoForm() {
       bgcolor="white"
       bottom="0"
       width="100%"
+      zIndex="300"
+      height="100vh"
       alignSelf="center"
       className={
         showInOutInfo
@@ -230,13 +243,15 @@ export default function InOutInfoForm() {
         pointerEvents: "none",
       }}
     >
+      <Stack flex={1} />
       <Stack
         gap="12px"
-        mt="5vh"
-        border="1px solid #AAA"
+        bottom="0"
         pt="20px"
         px="12px"
-        height="95vh"
+        height="630px"
+        position="relative"
+        border="1px solid #AAA"
         className={
           showInOutInfo
             ? styles["in-out-info-show"]
@@ -266,18 +281,21 @@ export default function InOutInfoForm() {
           style={{ overflow: "scroll" }}
           width="100%"
         >
-          {inOutInfoList.map((inOutInfo, index) => (
-            <Stack
-              key={index}
-              style={{
-                scrollSnapType: "y mandatory",
-              }}
-            >
-              {getRow(inOutInfo, index)}
-            </Stack>
-          ))}
+          {inOutInfoList &&
+            inOutInfoList.map((inOutInfo, index) => (
+              <Stack
+                key={index}
+                style={{
+                  scrollSnapType: "y mandatory",
+                }}
+              >
+                {getRow(inOutInfo, index)}
+              </Stack>
+            ))}
         </Stack>
-        <Button onClick={onSaveInOutInfoToServer}>저장</Button>
+        <Button variant="outlined" onClick={onSaveInOutInfoToServer}>
+          저장
+        </Button>
       </Stack>
     </Stack>
   )
