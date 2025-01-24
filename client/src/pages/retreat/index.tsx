@@ -11,7 +11,7 @@ import useUserData from "hooks/useUserData"
 import { get, post } from "pages/api"
 import { Community } from "@server/entity/community"
 import InOutInfoForm from "components/retreat/InOutInfoForm"
-import { atom, useRecoilValue } from "recoil"
+import { useRecoilValue } from "recoil"
 import { StopRetreatBodyScrollAtom } from "state/retreat"
 import { Chat, ChatContent } from "types/retreat"
 import Image from "next/image"
@@ -77,19 +77,22 @@ export default function Index() {
     <Stack
       pt="20px"
       pb="60px"
-      height="10000px"
       style={{
         flex: "1",
         width: "100vw",
-        backgroundColor: "rgb(190, 205, 222)",
+        backgroundImage: "url('/retreat_bg.jpg')",
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+        backgroundColor: '#F2E8DE'
       }}
+      minHeight="100vh"
     >
       <Stack
         top="0"
         width="100%"
         zIndex="100"
         position="fixed"
-        bgcolor="rgb(190, 205, 222)"
       >
         <Stack
           top="24px"

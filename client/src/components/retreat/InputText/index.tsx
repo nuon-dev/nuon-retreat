@@ -12,7 +12,8 @@ export default function InputText({ submit }: IProps) {
 
   function textEditor() {
     if (text.length === 0) {
-      return <Stack color="#888">Enter a message</Stack>
+      return <Stack color="#888" borderRadius="24px"
+      py="8px" px="16px" mr="12px" bgcolor="#eee">메시지 입력</Stack>
     }
     return <Stack />
   }

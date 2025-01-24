@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { Button, Stack } from "@mui/material/index"
 import { useRouter } from "next/router"
 import useKakaoHook from "kakao"
-import Header from "components/Header"
+import Header from "../../../components/header"
 
 //아이콘 주소 https://www.flaticon.com/kr/
 export default function Admin() {

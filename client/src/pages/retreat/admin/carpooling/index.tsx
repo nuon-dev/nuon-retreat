@@ -7,7 +7,7 @@ import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { InOutInfo } from "@server/entity/inOutInfo"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
-import Header from "components/Header"
+import Header from "../../../../components/header"
 
 function Carpooling() {
   const router = useRouter()
