@@ -1,5 +1,5 @@
 import { post } from "pages/api"
-import { useEffect, useRef, useState } from "react"
+import { MutableRefObject, useEffect, useRef, useState } from "react"
 import styles from "./index.module.css"
 import useRetreatData from "hooks/useRetreatData"
 import { InOutInfo } from "@server/entity/inOutInfo"
@@ -7,10 +7,7 @@ import { NotificationMessage } from "state/notification"
 import { useRecoilState, useSetRecoilState } from "recoil"
 import { InOutType, HowToMove, Days } from "@server/entity/types"
 import { Button, FormControl, MenuItem, Select, Stack } from "@mui/material"
-import {
-  ShowInOutInfoComponentAtom,
-  StopRetreatBodyScrollAtom,
-} from "state/retreat"
+import { ShowInOutInfoComponentAtom } from "state/retreat"
 import { every } from "lodash"
 import { ChatContent } from "types/retreat"
 import { EditContent } from "hooks/useBotChatLogic"
@@ -26,7 +23,6 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
   )
   const { addInfo, inOutInfoList, setInOutData, fetchInOutInfo } =
     useRetreatData()
-  const setStopRetreatBodyScroll = useSetRecoilState(StopRetreatBodyScrollAtom)
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
@@ -34,9 +30,6 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
       if (inOutInfoList && inOutInfoList.length === 0) {
         addInfo(InOutType.IN, HowToMove.none)
       }
-      setStopRetreatBodyScroll(true)
-    } else {
-      setStopRetreatBodyScroll(false)
     }
   }, [showInOutInfo])
 
@@ -171,7 +164,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
               const time = Math.floor(i / 2) + 9
               const timeNumber = time * 100 + (isOdd ? 30 : 0)
               return (
-                <MenuItem value={`${time}:${isOdd ? "00" : "30"}`}>
+                <MenuItem key={i} value={`${time}:${isOdd ? "00" : "30"}`}>
                   {time}시 {isOdd ? "00" : "30"}분
                 </MenuItem>
               )
@@ -359,11 +352,11 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
           direction="row"
           overflow="auto"
           position="static"
+          onScroll={onScroll}
           style={{
             scrollSnapType: "x mandatory",
             msOverflowStyle: "none",
           }}
-          onScroll={onScroll}
         >
           {inOutInfoList &&
             inOutInfoList.map((inOutInfo, index) => (

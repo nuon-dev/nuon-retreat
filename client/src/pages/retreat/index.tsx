@@ -1,7 +1,7 @@
 "use client"
 
 import { Stack } from "@mui/material"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import BotChat from "components/retreat/BotChat"
 import MyChat from "components/retreat/MyChat"
 import dayjs from "dayjs"
@@ -11,8 +11,7 @@ import useUserData from "hooks/useUserData"
 import { get, post } from "pages/api"
 import { Community } from "@server/entity/community"
 import InOutInfoForm from "components/retreat/InOutInfoForm"
-import { useRecoilValue, useSetRecoilState } from "recoil"
-import { StopRetreatBodyScrollAtom } from "state/retreat"
+import { useSetRecoilState } from "recoil"
 import { Chat, ChatContent } from "types/retreat"
 import Image from "next/image"
 import { NotificationMessage } from "state/notification"
@@ -26,7 +25,7 @@ export default function Index() {
     addChat,
   })
   const { editRetreatAttendInformation } = useRetreatData()
-  const stopScroll = useRecoilValue(StopRetreatBodyScrollAtom)
+  const textAreaRef = useRef<HTMLDivElement>(null)
 
   function addChat(chatContent: ChatContent) {
     if (ChatList.length > 0) {
@@ -51,7 +50,12 @@ export default function Index() {
     ChatList.push(chat)
     setChatList([...ChatList])
     setTimeout(() => {
-      global.scrollBy(0, 1000)
+      if (textAreaRef.current) {
+        textAreaRef.current.scrollTo(
+          textAreaRef.current.scrollHeight,
+          textAreaRef.current.scrollHeight
+        )
+      }
     }, 0)
   }
 
@@ -100,26 +104,11 @@ export default function Index() {
   }
 
   return (
-    <Stack
-      pt="20px"
-      pb="60px"
-      style={{
-        flex: "1",
-        width: "100vw",
-        color: "#5D4431",
-      }}
-      minHeight="100vh"
-    >
-      <Stack
-        top="0"
-        width="100%"
-        zIndex="100"
-        position="fixed"
-        bgcolor="#F2E8DE"
-      >
+    <Stack position="fixed" width="100vw" color="#5D4431" height="100svh">
+      <Stack top="0" width="100%" zIndex="100" bgcolor="#F2E8DE">
         <Stack
-          top="24px"
           position="fixed"
+          top="24px"
           fontSize="18px"
           width="100vw"
           textAlign="center"
@@ -162,14 +151,14 @@ export default function Index() {
         </Stack>
         <TopNotification />
       </Stack>
-      <Stack height="90px" />
       <Stack
+        pt="20px"
+        pb="4px"
         gap="8px"
         zIndex="10"
-        position="static"
-        style={{
-          overflowY: stopScroll ? "hidden" : "visible",
-        }}
+        ref={textAreaRef}
+        overflow="auto"
+        height="calc(100svh - 157px)"
       >
         {chatList.map((chat, index) => {
           if (chat.type === "bot") {
@@ -187,8 +176,8 @@ export default function Index() {
             )
           }
         })}
-        <InputText submit={submit} />
       </Stack>
+      <InputText submit={submit} />
       <Stack
         style={{
           top: 0,

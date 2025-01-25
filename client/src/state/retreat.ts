@@ -2,11 +2,6 @@ import { InOutInfo } from "@server/entity/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreatAttend"
 import { atom } from "recoil"
 
-export const StopRetreatBodyScrollAtom = atom<boolean>({
-  key: "stop-scroll",
-  default: false,
-})
-
 export const ShowInOutInfoComponentAtom = atom<boolean | undefined>({
   key: "show-in-out-info",
   default: undefined,

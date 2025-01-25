@@ -35,6 +35,7 @@ function MyApp({ Component, pageProps }: any) {
           name="viewport"
           content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
         />
+
         <meta name="title" property="og:title" content={title} />
         <meta name="description" property="og:description" content="" />
         <meta name="image" property="og:image" content="/retreat_bg.jpg" />
@@ -54,7 +55,7 @@ function MyApp({ Component, pageProps }: any) {
           }}
         />
         <Notification />
-        <Stack fontFamily="PretendardVariable">
+        <Stack width="100%" height="100%" fontFamily="PretendardVariable">
           <Component {...pageProps} />
         </Stack>
       </RecoilRoot>

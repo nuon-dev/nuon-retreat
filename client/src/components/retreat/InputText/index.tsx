@@ -9,26 +9,12 @@ interface IProps {
 export default function InputText({ submit }: IProps) {
   const [text, setText] = useState("")
   const inputRef = createRef<HTMLInputElement>()
+  const hiddenInputRef = createRef<HTMLInputElement>()
 
-  function textEditor() {
-    return (
-      <Stack
-        color="#888"
-        borderRadius="24px"
-        py="8px"
-        px="16px"
-        mr="12px"
-        height="34px"
-        bgcolor="#eee"
-      >
-        {text.length === 0 && "메시지 입력"}
-      </Stack>
-    )
-    return <Stack />
-  }
-
-  function onClickSend() {
-    if (inputRef.current) {
+  async function onClickSend() {
+    if (inputRef.current && hiddenInputRef.current) {
+      //버퍼 지우기 용
+      hiddenInputRef.current.focus()
       inputRef.current.focus()
     }
     if (text.length === 0) {
@@ -38,41 +24,41 @@ export default function InputText({ submit }: IProps) {
     setText("")
   }
 
-  function onFocus() {
-    setTimeout(() => {
-      global.scrollBy(0, global.innerHeight)
-    }, 100)
-  }
-
   return (
     <Stack
-      p="16px"
+      p="12px"
       bottom="0"
       width="100%"
-      height="50px"
       bgcolor="white"
       direction="row"
-      position="fixed"
       alignItems="center"
       zIndex="200"
     >
-      <Stack
-        width="calc(100% - 50px)"
-        maxWidth="calc(100% - 50px)"
-        justifyContent="center"
-      >
-        {textEditor()}
+      <Stack width="calc(100% - 50px)" justifyContent="center">
         <input
+          color="#5D4431"
           ref={inputRef}
           type="text"
           value={text}
-          onFocus={onFocus}
           onSubmit={onClickSend}
           className={styles["input"]}
+          placeholder="메시지 입력"
           onChange={(e) => setText(e.target.value)}
           style={{
-            marginLeft: "12px",
+            height: "34px",
+            padding: "12px",
+            borderRadius: "24px",
+            backgroundColor: "#eee",
           }}
+        />
+        <input
+          type="text"
+          style={{
+            position: "fixed",
+            opacity: 1,
+            zIndex: 1,
+          }}
+          ref={hiddenInputRef}
         />
       </Stack>
       <Stack width="50px">
