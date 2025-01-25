@@ -39,13 +39,16 @@ router.get("/", async (req, res) => {
       howToGo: true,
       howToBack: true,
       isCanceled: true,
-      inOutInfos: true,
+      etc: true,
+      attendanceNumber: true,
     },
   })
 
   if (!retreatAttend) {
     retreatAttend = retreatAttendDatabase.create({
-      user: foundUser,
+      user: {
+        id: foundUser.id,
+      },
     })
     await retreatAttendDatabase.save(retreatAttend)
   }
@@ -70,6 +73,9 @@ router.post("/edit-information", async (req, res) => {
         id: foundUser.id,
       },
     },
+    relations: {
+      inOutInfos: true,
+    },
   })
 
   if (!foundRetreatAttend) {
@@ -82,17 +88,6 @@ router.post("/edit-information", async (req, res) => {
     return
   }
 
-  if (
-    foundRetreatAttend.isCanceled === false &&
-    !retreatAttend.attendanceNumber
-  ) {
-    retreatAttend.attendanceNumber = await retreatAttendDatabase.count({
-      where: {
-        isCanceled: false,
-      },
-    })
-  }
-
   await retreatAttendDatabase.save({
     id: retreatAttend.id,
     howToGo: retreatAttend.howToGo,
@@ -100,6 +95,7 @@ router.post("/edit-information", async (req, res) => {
     etc: retreatAttend.etc,
   })
 
+  //값은 가거나 오는 것 중 하나만 변경 가눙, 같이 가는 것과, 카풀은 동시에 선택 안됨
   if (
     retreatAttend.howToGo === HowToMove.together ||
     retreatAttend.howToGo === HowToMove.driveCarAlone
@@ -109,9 +105,7 @@ router.post("/edit-information", async (req, res) => {
       autoCreated: true,
       inOutType: InOutType.IN,
     })
-  }
-
-  if (
+  } else if (
     retreatAttend.howToBack === HowToMove.together ||
     retreatAttend.howToBack === HowToMove.driveCarAlone
   ) {
@@ -119,6 +113,18 @@ router.post("/edit-information", async (req, res) => {
       retreatAttend: retreatAttend,
       autoCreated: true,
       inOutType: InOutType.OUT,
+    })
+  } else {
+    foundRetreatAttend.inOutInfos.forEach(async (inOutInfo) => {
+      if (!inOutInfo.autoCreated) {
+        return
+      }
+      if (inOutInfo.inOutType === InOutType.IN) {
+        inOutInfo.howToMove = retreatAttend.howToGo
+      } else {
+        inOutInfo.howToMove = retreatAttend.howToBack
+      }
+      await inOutInfoDatabase.save(inOutInfo)
     })
   }
 
@@ -142,6 +148,48 @@ router.post("/chat", async (req, res) => {
   })
 
   await chatLogDatabase.save(newChat)
+
+  res.send({ result: "success" })
+})
+
+router.post("/complete", async (req, res) => {
+  const foundUser = await getUserFromToken(req)
+
+  if (!foundUser) {
+    res.status(401).send({ result: "fail" })
+    return
+  }
+
+  const foundRetreatAttend = await retreatAttendDatabase.findOne({
+    where: {
+      user: {
+        id: foundUser.id,
+      },
+    },
+    relations: {
+      user: true,
+    },
+  })
+
+  if (!foundRetreatAttend) {
+    res.status(401).send({ result: "fail" })
+    return
+  }
+
+  if (
+    foundRetreatAttend.isCanceled === true &&
+    !foundRetreatAttend.attendanceNumber
+  ) {
+    foundRetreatAttend.attendanceNumber = await retreatAttendDatabase.count({
+      where: {
+        isCanceled: false,
+      },
+    })
+    foundRetreatAttend.attendanceNumber += 1
+  }
+  foundRetreatAttend.isCanceled = false
+
+  await retreatAttendDatabase.save(foundRetreatAttend)
 
   res.send({ result: "success" })
 })

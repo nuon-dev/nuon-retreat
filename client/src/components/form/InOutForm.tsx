@@ -99,7 +99,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
         </Stack>
         <Stack>
           <Stack fontSize="12px" p="6px">
-            이동방법
+            이동 방법
           </Stack>
           <FormControl>
             <Select
@@ -159,7 +159,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
               onClick={() => onClickRemove(index)}
               style={{ backgroundColor: "#3d524a" }}
             >
-              이동 방법 삭제
+              카풀 정보 삭제
             </Button>
           </Stack>
         }
@@ -175,7 +175,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
           onClick={onClickAdd}
           style={{ backgroundColor: "#3d524a" }}
         >
-          이동 방법 추가
+          카풀 정보 추가
         </Button>
       }
       {inOutData.map((data, index) => getRow(data, index))}

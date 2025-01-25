@@ -9,6 +9,7 @@ import {
   RetreatAttendAtom,
   ShowInOutInfoComponentAtom,
 } from "state/retreat"
+import { post } from "pages/api"
 
 interface IPops {
   addChat: (chat: ChatContent) => void
@@ -25,9 +26,11 @@ export enum EditContent {
   howToBack,
   etc,
   inOutInfo,
+  inOutInfoEnd,
 }
 
-let sayBotNow = false
+let sayBotAutoText = false
+let lastUpdateCheckSetTimer: NodeJS.Timeout | undefined = undefined
 
 export default function useBotChatLogic({ addChat }: IPops) {
   const [editContent, setEditContent] = useState<EditContent>(EditContent.none)
@@ -43,7 +46,6 @@ export default function useBotChatLogic({ addChat }: IPops) {
     checkMissedRetreatAttendInformation,
     editRetreatAttendInformation,
     saveRetreatAttendInformation,
-    fetchInOutInfo,
     fetchRetreatAttendInformation,
   } = useRetreatData()
 
@@ -92,7 +94,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
     } else if (userData.yearOfBirth === 1997) {
       addChat({
         type: "bot",
-        content: `최강 제육제육 멤버 ${userData.name}! 반가워~`,
+        content: `최강 제육제육 멤버 ${userData.name}! 반가워요~`,
       })
     } else {
       addChat({
@@ -140,39 +142,58 @@ export default function useBotChatLogic({ addChat }: IPops) {
     if (!userInformation || !retreatAttend || !inOutInfos) {
       return
     }
-    if (sayBotNow) {
+    if (lastUpdateCheckSetTimer) {
+      clearTimeout(lastUpdateCheckSetTimer)
+    }
+    lastUpdateCheckSetTimer = setTimeout(() => {
+      lastUpdateCheckSetTimer = undefined
+      checkAllDataFromUpdate()
+    }, 500)
+  }, [userInformation, retreatAttend, inOutInfos])
+
+  async function checkAllDataFromUpdate() {
+    // 카풀은 정보 수정이 오래 걸림으로 수정중엔 처리하지 안음
+    if (editContent === EditContent.inOutInfo) {
       return
     }
-    sayBotNow = true
+    if (sayBotAutoText) {
+      return
+    }
+    sayBotAutoText = true
+    setTimeout(() => {
+      sayBotAutoText = false
+    }, 1000)
     setTimeout(checkMissedUserInformationAndEdit)
     if (editContent !== EditContent.none) {
       setEditContent(EditContent.none)
-      saveAllInformation()
-    }
-    if (
-      editContent !== EditContent.none &&
-      !checkMissedUserInformation() &&
-      !checkMissedRetreatAttendInformation()
-    ) {
-      addChat({
-        type: "bot",
-        content: `접수가 완료 되었어요!`,
+      saveAllInformation().then(() => {
+        fetchRetreatAttendInformation(true)
       })
     }
-  }, [userInformation, retreatAttend, inOutInfos])
+  }
 
   function checkMissedUserInformationAndEdit() {
-    setTimeout(() => {
-      sayBotNow = false
-    }, 500)
     const missedContent = checkMissedUserInformation()
     const missedRetreatAttendContent = checkMissedRetreatAttendInformation()
     const allIsOkay =
       missedContent === EditContent.none &&
       missedRetreatAttendContent === EditContent.none
     if (allIsOkay) {
+      // 취소가 사실상 없을 것으로 예상, 아직 접수가 완료되지 않았다면으로 사용
+      if (retreatAttend?.isCanceled) {
+        confirmUserData()
+        return
+      }
+      if (editContent !== EditContent.none) {
+        if (editContent !== EditContent.inOutInfoEnd) {
+          saveAllInformation()
+          addChat({
+            type: "bot",
+            content: `내용이 저장 되었어요!`,
+          })
+        }
+      }
       whatDoYouWantToDo()
-      saveAllInformation()
       return false
     }
     switch (missedContent) {
@@ -202,20 +223,24 @@ export default function useBotChatLogic({ addChat }: IPops) {
       case EditContent.inOutInfo:
         addChat({
           type: "bot",
-          content: `출입 정보 등록이 필요해요!`,
+          content: `카풀 정보 등록이 필요해요!`,
           buttons: [
             {
-              content: "입력창 열기",
+              content: "카풀 입력창 열기",
               onClick: () => {
                 addChat({
                   type: "my",
-                  content: "입력창 열기",
+                  content: "카풀 입력창 열기",
                 })
                 setShowInOutInfoForm(true)
+                setEditContent(EditContent.inOutInfo)
               },
             },
           ],
         })
+        return true
+      case EditContent.etc:
+        editEtc()
         return true
     }
 
@@ -226,7 +251,28 @@ export default function useBotChatLogic({ addChat }: IPops) {
     return true
   }
 
+  function editEtc() {
+    addChat({
+      type: "bot",
+      content: `기타 사항을 입력해주세요.`,
+      buttons: [
+        {
+          content: "없어요.",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "없어요.",
+            })
+            editRetreatAttendInformation("etc", "")
+          },
+        },
+      ],
+    })
+    setEditContent(EditContent.etc)
+  }
+
   function howToGo() {
+    setEditContent(EditContent.howToGo)
     addChat({
       type: "bot",
       content: `수련회장으로 어떻게 오실건가요?`,
@@ -289,6 +335,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
   }
 
   function howToBack() {
+    setEditContent(EditContent.howToBack)
     addChat({
       type: "bot",
       content: `수련회장에서 어떻게 교회로 돌아가실건가요?`,
@@ -372,21 +419,19 @@ export default function useBotChatLogic({ addChat }: IPops) {
       case HowToMove.together:
         return "버스"
       case HowToMove.driveCarWithPerson:
-        return "자가용 (카풀 가능) 으"
+        return "자가용 (카풀 가능)"
       case HowToMove.driveCarAlone:
-        return "자가용 (카풀 불가능) 으"
+        return "자가용 (카풀 불가능)"
       case HowToMove.rideCar:
-        return "카풀"
+        return "카풀 요청"
       case HowToMove.goAlone:
-        return "대중교통으"
+        return "대중교통"
     }
     return ""
   }
 
-  async function checkUserData() {
+  async function confirmUserData() {
     const userData = userInformation
-    await fetchRetreatAttendInformation(true)
-    await fetchInOutInfo(true)
     if (!retreatAttend || !userData || !inOutInfos) {
       return
     }
@@ -400,30 +445,43 @@ export default function useBotChatLogic({ addChat }: IPops) {
     }
 
     if (retreatAttend.isCanceled) {
-      addChat({
-        type: "bot",
-        content: `${userInformation.name}님의 수련회 신청 내역은 취소되었어요.`,
-      })
-      return
+      // addChat({
+      //   type: "bot",
+      //   content: `${userInformation.name}님의 수련회 신청 내역은 취소되었어요.`,
+      // })
+      // return
     }
     addChat({
       type: "bot",
-      content: `${userData.name}님이 입력하신 정보를 정리해볼게요.
-${userData.yearOfBirth}년생이고 ${
-        userData.gender === "man" ? "남성" : "여성"
-      }이시네요.
-순장님은 ${userData.community?.name}님이에요.
-연락은 ${userData.phone}로 드릴게요.
-${getKrFromHowToMove(retreatAttend.howToGo)}로 수련회장으로 이동 하시고 
-${getKrFromHowToMove(retreatAttend.howToBack)}로 교회로 돌아와요.
-회비는 입금 ${retreatAttend.isDeposited ? "확인" : "대기중"} 입니다. 😀
+      content: `[2025 겨울 수련회 접수 확인]
+
+${
+  retreatAttend.attendanceNumber
+    ? "■ 접수 번호 : " + retreatAttend.attendanceNumber
+    : ""
+}
+■ 접수자 : ${userData.name}
+■ 출생년도 : ${userData.yearOfBirth}
+■ 성별 : ${userData.gender === "man" ? "남성" : "여성"}
+■ 연락처 : ${userData.phone}
+■ 순장님 : ${userData.community?.name}
+■ 수련회장 가는 방법 : ${getKrFromHowToMove(retreatAttend.howToGo)}
+■ 수련회장에서 나오는 방법 : ${getKrFromHowToMove(retreatAttend.howToBack)}
+■ 회비 : ${retreatAttend.isDeposited ? "입금 확인" : "대기중"}
+■ 기타 사항 : ${retreatAttend.etc ? retreatAttend.etc : "없음"}
+${inOutInfos.length > 0 ? "\n■ 카풀 정보\n\n" : ""}
 ${inOutInfos
   .map((inOutInfo) => {
-    return `${dayToString(inOutInfo.day)} ${inOutInfo.time}시에 ${
-      inOutInfo.position
-    }${
-      inOutInfo.inOutType === InOutType.IN ? "에서 들어오" : "로 나가"
-    }실 거에요.`
+    let position = inOutInfo.position
+
+    if (inOutInfo.howToMove === HowToMove.goAlone) {
+      position = "여주역"
+    }
+    return `${dayToString(inOutInfo.day)} ${inOutInfo.time}시\n${
+      inOutInfo.inOutType === InOutType.IN
+        ? `${position} → 수련회장 `
+        : `수련회장 → ${position}`
+    } / ${getKrFromHowToMove(inOutInfo.howToMove)}\n`
   })
   .join("\n")}`,
       buttons: [
@@ -445,7 +503,9 @@ ${inOutInfos
               content: "네! 좋아요.",
             })
             await saveAllInformation()
+            post("/retreat/complete", {})
             savedUserInformation()
+            whatDoYouWantToDo()
           },
         },
       ],
@@ -505,6 +565,16 @@ ${inOutInfos
               content: "순장님",
             })
             editDarak()
+          },
+        },
+        {
+          content: "기타 사항",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "기타 사항",
+            })
+            editEtc()
           },
         },
         {
@@ -597,7 +667,7 @@ ${inOutInfos
               type: "my",
               content: "접수 정보 확인",
             })
-            checkUserData()
+            confirmUserData()
           },
         },
         {
@@ -619,7 +689,7 @@ ${inOutInfos
             })
             addChat({
               type: "bot",
-              content: `수련회장소는 여주중앙청소년수련원이야!\n2월 21일 금요일부터 2월 23일 주일까지 진행 될거야!\n회비는 3333328233700 카카오뱅크 성은비로 보내주면 돼.`,
+              content: `수련회 장소는 여주 중앙청소년 수련원 입니다.\n2월 21일 금요일부터 2월 23일 주일까지 진행됩니다.\n회비는 3333328233700 카카오뱅크 성은비로 보내주세요~`,
             })
           },
         },
@@ -631,6 +701,7 @@ ${inOutInfos
               content: "카풀 정보 수정",
             })
             setShowInOutInfoForm(true)
+            setEditContent(EditContent.inOutInfo)
           },
         },
       ],
@@ -639,5 +710,6 @@ ${inOutInfos
 
   return {
     editContent,
+    setEditContent,
   }
 }

@@ -89,7 +89,7 @@ export default function UserInformationForm(props: IProps) {
 
     if (attendTimeResult && attendTimeResult.result !== "success") {
       setNotificationMessage(
-        "참가 일정 내역 저장중에 문제가 발생하였습니다.\n시간, 장소. 이동방법을 모두 입력해주세요."
+        "참가 일정 내역 저장중에 문제가 발생하였습니다.\n시간, 장소. 이동 방법을 모두 입력해주세요."
       )
       return
     }
@@ -255,7 +255,7 @@ export default function UserInformationForm(props: IProps) {
       {getInputGap()}
       <Stack>
         <Stack width="80px" justifyContent="center">
-          기타사항
+          기타 사항
         </Stack>
         {getLabelGap()}
         <TextField
@@ -263,7 +263,7 @@ export default function UserInformationForm(props: IProps) {
           className="TextField"
           key={retreatAttend?.user.kakaoId}
           value={retreatAttend?.user.etc}
-          placeholder="기타사항이 있을 경우 입력하세요."
+          placeholder="기타 사항이 있을 경우 입력하세요."
           onChange={(e) => changeInformation("etc", e.target.value)}
         />
       </Stack>

@@ -16,17 +16,33 @@ import { StopRetreatBodyScrollAtom } from "state/retreat"
 import { Chat, ChatContent } from "types/retreat"
 import Image from "next/image"
 import { NotificationMessage } from "state/notification"
+import useRetreatData from "hooks/useRetreatData"
 
 let ChatList: Chat[] = []
 export default function Index() {
   const [chatList, setChatList] = useState<Array<Chat>>([])
   const { editUserInformation } = useUserData()
-  const { editContent } = useBotChatLogic({
+  const { editContent, setEditContent } = useBotChatLogic({
     addChat,
   })
+  const { editRetreatAttendInformation } = useRetreatData()
   const stopScroll = useRecoilValue(StopRetreatBodyScrollAtom)
 
   function addChat(chatContent: ChatContent) {
+    if (ChatList.length > 0) {
+      const lastChat = ChatList[ChatList.length - 1]
+      if (lastChat.type === "bot" && lastChat.content === chatContent.content) {
+        return
+      }
+      if (
+        lastChat.type === "my" &&
+        lastChat.content === "카풀 입력창 열기" &&
+        chatContent.type === "bot" &&
+        chatContent.content === "카풀 정보 등록이 필요해요!"
+      ) {
+        return
+      }
+    }
     const chat = chatContent as Chat
     chat.time = dayjs().format("HH:mm")
     if (chat.type === "my") {
@@ -55,7 +71,7 @@ export default function Index() {
         if (yearOfBirth === 1997) {
           addChat({
             type: "bot",
-            content: "너 제육제육 멤버였구나? 반가워~!!!",
+            content: "너 최강 제육제육 멤버였구나? 반가워~!!!",
           })
         }
         editUserInformation("yearOfBirth", yearOfBirth)
@@ -74,6 +90,9 @@ export default function Index() {
             content: "순장님을 찾지 못했어요 ㅠㅠ 다시 입력해주세요.",
           })
         }
+        break
+      case EditContent.etc:
+        editRetreatAttendInformation("etc", text)
         break
       default:
         break
@@ -184,7 +203,7 @@ export default function Index() {
           backgroundColor: "#F2E8DE",
         }}
       />
-      <InOutInfoForm />
+      <InOutInfoForm addChat={addChat} setEditContent={setEditContent} />
     </Stack>
   )
 }
@@ -206,7 +225,7 @@ function TopNotification() {
       mt="12px"
       mx="8px"
       mb="0"
-      gap="8px"
+      gap="6px"
       bgcolor="white"
       direction="row"
       borderRadius="16px"
@@ -221,9 +240,11 @@ function TopNotification() {
         alt=""
       />
       <Stack fontSize="15px" flex={1}>
-        안녕하세요. 2025 겨울 수련회 신청 폼 입니다.
-        {showDetail && (
-          <Stack>수련회비 계좌 - 3333328233700 카카오뱅크 성은비</Stack>
+        2025 겨울 수련회 신청 폼 입니다.
+        {showDetail ? (
+          <Stack>회비 계좌는 3333328233700 카카오뱅크 성은비 입니다.</Stack>
+        ) : (
+          "회비 계좌는 ...."
         )}
       </Stack>
       <Image

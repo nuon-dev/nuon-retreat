@@ -44,24 +44,13 @@ export default function useRetreatData() {
     if (!retreatAttend.howToGo) {
       return EditContent.howToGo
     }
-    if (
-      retreatAttend.howToBack === HowToMove.driveCarWithPerson ||
-      retreatAttend.howToBack === HowToMove.rideCar ||
-      retreatAttend.howToBack === HowToMove.goAlone
-    ) {
-      const outInfos = inOutInfoList.filter(
-        (info) => info.inOutType === InOutType.OUT
-      )
-      if (outInfos.length === 0) {
-        addInfo(InOutType.OUT, retreatAttend.howToBack)
-        return EditContent.inOutInfo
-      }
-    } else {
-      const inInfos = inOutInfoList.filter(
-        (info) => !(info.inOutType === InOutType.OUT && info.autoCreated)
-      )
-      setInOutData(inInfos)
+
+    if (!retreatAttend.howToBack) {
+      return EditContent.howToBack
     }
+
+    let needEditInOutInfo = false
+
     if (
       retreatAttend.howToGo === HowToMove.driveCarWithPerson ||
       retreatAttend.howToGo === HowToMove.rideCar ||
@@ -72,16 +61,31 @@ export default function useRetreatData() {
       )
       if (inInfos.length === 0) {
         addInfo(InOutType.IN, retreatAttend.howToGo)
-        return EditContent.inOutInfo
+        needEditInOutInfo = true
       }
-    } else {
-      const inInfos = inOutInfoList.filter(
-        (info) => !(info.inOutType === InOutType.IN && info.autoCreated)
-      )
-      setInOutData(inInfos)
     }
-    if (!retreatAttend.howToBack) {
-      return EditContent.howToBack
+
+    if (
+      retreatAttend.howToBack === HowToMove.driveCarWithPerson ||
+      retreatAttend.howToBack === HowToMove.rideCar ||
+      retreatAttend.howToBack === HowToMove.goAlone
+    ) {
+      const outInfos = inOutInfoList.filter(
+        (info) => info.inOutType === InOutType.OUT
+      )
+      if (outInfos.length === 0) {
+        addInfo(InOutType.OUT, retreatAttend.howToBack)
+        needEditInOutInfo = true
+      }
+    }
+
+    if (needEditInOutInfo) {
+      return EditContent.inOutInfo
+    }
+
+    //etc는 빈 값일 수 있음.
+    if (retreatAttend.etc === null) {
+      return EditContent.etc
     }
 
     for (const inOut of inOutInfoList) {
@@ -91,7 +95,7 @@ export default function useRetreatData() {
       if (inOut.howToMove === HowToMove.none) {
         return EditContent.inOutInfo
       }
-      if (!inOut.position) {
+      if (inOut.howToMove !== HowToMove.goAlone && !inOut.position) {
         return EditContent.inOutInfo
       }
       if (!inOut.time) {
@@ -121,7 +125,6 @@ export default function useRetreatData() {
     }
     await post("/retreat/edit-information", {
       ...retreatAttend,
-      isCanceled: false,
     })
   }
 
@@ -129,19 +132,21 @@ export default function useRetreatData() {
     if (!inOutInfoList) {
       return
     }
-    console.log("추가됨")
-    setInOutInfo([
-      ...inOutInfoList,
-      {
-        id: 0,
-        inOutType: inOutType,
-        day: Days.firstDay,
-        time: "",
-        position: "",
-        howToMove,
-        autoCreated: howToMove !== HowToMove.none,
-      } as InOutInfo,
-    ])
+    setInOutInfo((pre) => {
+      if (!pre) return undefined
+      return [
+        ...pre,
+        {
+          id: 0,
+          inOutType: inOutType,
+          day: Days.firstDay,
+          time: "",
+          position: "",
+          howToMove,
+          autoCreated: howToMove !== HowToMove.none,
+        } as InOutInfo,
+      ]
+    })
   }
 
   function setInOutData(data: InOutInfo[]) {

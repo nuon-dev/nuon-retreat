@@ -140,7 +140,7 @@ export default function Soon() {
           </Stack>
           <Stack direction="row" alignItems="center" gap="12px">
             <Box width="80px" textAlign="right">
-              기타사항 :{" "}
+              기타 사항 :{" "}
             </Box>
             <Input
               value={selectedUser.etc}
