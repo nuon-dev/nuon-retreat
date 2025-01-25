@@ -63,12 +63,42 @@ router.post("/edit-information", async (req, res) => {
 
   const retreatAttend: RetreatAttend = req.body
 
-  if (retreatAttend.user.id !== foundUser.id) {
+  const foundRetreatAttend = await retreatAttendDatabase.findOne({
+    where: {
+      id: retreatAttend.id,
+      user: {
+        id: foundUser.id,
+      },
+    },
+  })
+
+  if (!foundRetreatAttend) {
     res.status(401).send({ result: "fail" })
     return
   }
 
-  await retreatAttendDatabase.save(retreatAttend)
+  if (retreatAttend.id !== foundRetreatAttend.id) {
+    res.status(401).send({ result: "fail" })
+    return
+  }
+
+  if (
+    foundRetreatAttend.isCanceled === false &&
+    !retreatAttend.attendanceNumber
+  ) {
+    retreatAttend.attendanceNumber = await retreatAttendDatabase.count({
+      where: {
+        isCanceled: false,
+      },
+    })
+  }
+
+  await retreatAttendDatabase.save({
+    id: retreatAttend.id,
+    howToGo: retreatAttend.howToGo,
+    howToBack: retreatAttend.howToBack,
+    etc: retreatAttend.etc,
+  })
 
   if (
     retreatAttend.howToGo === HowToMove.together ||

@@ -1,10 +1,10 @@
-import { RecoilEnv, RecoilRoot } from "recoil"
-import "../styles/globals.css"
-import Head from "next/head"
 import "./_app.css"
-import Notification from "../components/notification/notification"
-import { Stack } from "@mui/material"
+import Head from "next/head"
+import "../styles/globals.css"
 import Script from "next/script"
+import { Stack } from "@mui/material"
+import { RecoilEnv, RecoilRoot } from "recoil"
+import Notification from "../components/notification/notification"
 
 function MyApp({ Component, pageProps }: any) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
@@ -37,8 +37,9 @@ function MyApp({ Component, pageProps }: any) {
         />
         <meta name="title" property="og:title" content={title} />
         <meta name="description" property="og:description" content="" />
-        <meta name="image" property="og:image" content="/top.jpg" />
-        <meta name="url" property="og:url" content="top.jpg" />
+        <meta name="image" property="og:image" content="/retreat_bg.jpg" />
+        <meta name="url" property="og:url" content="retreat_bg.jpg" />
+        <meta name="format-detection" content="telephone=no" />
       </Head>
       <RecoilRoot>
         <Script

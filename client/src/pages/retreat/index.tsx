@@ -1,7 +1,7 @@
 "use client"
 
 import { Stack } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import BotChat from "components/retreat/BotChat"
 import MyChat from "components/retreat/MyChat"
 import dayjs from "dayjs"
@@ -11,10 +11,11 @@ import useUserData from "hooks/useUserData"
 import { get, post } from "pages/api"
 import { Community } from "@server/entity/community"
 import InOutInfoForm from "components/retreat/InOutInfoForm"
-import { useRecoilValue } from "recoil"
+import { useRecoilValue, useSetRecoilState } from "recoil"
 import { StopRetreatBodyScrollAtom } from "state/retreat"
 import { Chat, ChatContent } from "types/retreat"
 import Image from "next/image"
+import { NotificationMessage } from "state/notification"
 
 let ChatList: Chat[] = []
 export default function Index() {
@@ -86,11 +87,6 @@ export default function Index() {
       style={{
         flex: "1",
         width: "100vw",
-        backgroundImage: "url('/retreat_bg.jpg')",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "contain",
-        backgroundPosition: "center",
-        backgroundColor: "#F2E8DE",
         color: "#5D4431",
       }}
       minHeight="100vh"
@@ -145,40 +141,13 @@ export default function Index() {
             />
           </Stack>
         </Stack>
-        <Stack
-          p="8px"
-          mt="12px"
-          mx="8px"
-          mb="0"
-          gap="8px"
-          bgcolor="white"
-          direction="row"
-          borderRadius="16px"
-          alignItems="center"
-          boxShadow="0px 0px 10px 0px #AAA"
-          justifyContent="space-between"
-        >
-          <Image
-            src="/icon/free-icon-megaphone.png"
-            width="20"
-            height="20"
-            alt=""
-          />
-          <Stack fontSize="15px" flex={1}>
-            안녕하세요. 2025 겨울 수련회 신청 폼 입니다.
-          </Stack>
-          <Image
-            src="/icon/free-icon-arrow-down.png"
-            width="20"
-            height="20"
-            alt=""
-          />
-        </Stack>
+        <TopNotification />
       </Stack>
-      <Stack height="100px" />
+      <Stack height="90px" />
       <Stack
-        position="static"
         gap="8px"
+        zIndex="10"
+        position="static"
         style={{
           overflowY: stopScroll ? "hidden" : "visible",
         }}
@@ -201,7 +170,72 @@ export default function Index() {
         })}
         <InputText submit={submit} />
       </Stack>
+      <Stack
+        style={{
+          top: 0,
+          zIndex: 0,
+          width: "100vw",
+          height: "100vh",
+          position: "fixed",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          backgroundPosition: "center",
+          backgroundImage: "url('/retreat_bg.jpg')",
+          backgroundColor: "#F2E8DE",
+        }}
+      />
       <InOutInfoForm />
+    </Stack>
+  )
+}
+
+function TopNotification() {
+  const [showDetail, setShowDetail] = useState(false)
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
+
+  useEffect(() => {
+    if (showDetail) {
+      setNotificationMessage("계좌번호가 복사 되었습니다.")
+      navigator.clipboard.writeText("3333328233700")
+    }
+  }, [showDetail])
+
+  return (
+    <Stack
+      p="8px"
+      mt="12px"
+      mx="8px"
+      mb="0"
+      gap="8px"
+      bgcolor="white"
+      direction="row"
+      borderRadius="16px"
+      boxShadow="0px 0px 10px 0px #AAA"
+      justifyContent="space-between"
+      onClick={() => setShowDetail(!showDetail)}
+    >
+      <Image
+        src="/icon/free-icon-megaphone.png"
+        width="20"
+        height="20"
+        alt=""
+      />
+      <Stack fontSize="15px" flex={1}>
+        안녕하세요. 2025 겨울 수련회 신청 폼 입니다.
+        {showDetail && (
+          <Stack>수련회비 계좌 - 3333328233700 카카오뱅크 성은비</Stack>
+        )}
+      </Stack>
+      <Image
+        src="/icon/free-icon-arrow-down.png"
+        width="20"
+        height="20"
+        style={{
+          animation: "0.5s",
+          rotate: showDetail ? "180deg" : "0deg",
+        }}
+        alt=""
+      />
     </Stack>
   )
 }

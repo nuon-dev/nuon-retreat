@@ -270,6 +270,10 @@ export default function InOutInfoForm() {
         </Stack>
         <Button
           variant="contained"
+          style={{
+            backgroundColor: "#5D4431",
+            color: "#F2E8DE",
+          }}
           onClick={() => addInfo(InOutType.IN, HowToMove.none)}
         >
           이동 방법 추가
@@ -293,7 +297,14 @@ export default function InOutInfoForm() {
               </Stack>
             ))}
         </Stack>
-        <Button variant="outlined" onClick={onSaveInOutInfoToServer}>
+        <Button
+          variant="outlined"
+          onClick={onSaveInOutInfoToServer}
+          style={{
+            borderColor: "#5D4431",
+            color: "#5D4431",
+          }}
+        >
           저장
         </Button>
       </Stack>

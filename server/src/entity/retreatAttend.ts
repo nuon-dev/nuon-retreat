@@ -47,6 +47,9 @@ export class RetreatAttend {
   @Column({ default: CurrentStatus.null })
   currentStatus: CurrentStatus
 
+  @Column({ default: 0 })
+  attendanceNumber: number
+
   @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.retreatAttend)
   inOutInfos: InOutInfo[]
 

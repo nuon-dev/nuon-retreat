@@ -15,7 +15,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
     emptyInfo.day = Days.firstDay
     emptyInfo.inOutType = InOutType.IN
     emptyInfo.position = "교회"
-    emptyInfo.time = 9
+    emptyInfo.time = ""
     emptyInfo.howToMove = HowToMove.driveCarWithPerson
     setInOutData([...inOutData, emptyInfo])
   }

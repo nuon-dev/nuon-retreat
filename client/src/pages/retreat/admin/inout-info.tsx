@@ -71,7 +71,6 @@ function InoutInfo() {
               a.retreatAttend.user.yearOfBirth -
               b.retreatAttend.user.yearOfBirth
           )
-          .sort((a, b) => a.time - b.time)
           .map((info) => (
             <Stack
               gap="24px"
@@ -99,7 +98,6 @@ function InoutInfo() {
               a.retreatAttend.user.yearOfBirth -
               b.retreatAttend.user.yearOfBirth
           )
-          .sort((a, b) => a.time - b.time)
           .map((info) => (
             <Stack
               gap="24px"
@@ -127,7 +125,6 @@ function InoutInfo() {
               a.retreatAttend.user.yearOfBirth -
               b.retreatAttend.user.yearOfBirth
           )
-          .sort((a, b) => a.time - b.time)
           .map((info) => (
             <Stack
               gap="24px"
