@@ -7,9 +7,9 @@ export const StopRetreatBodyScrollAtom = atom<boolean>({
   default: false,
 })
 
-export const ShowInOutInfoComponentAtom = atom<boolean>({
+export const ShowInOutInfoComponentAtom = atom<boolean | undefined>({
   key: "show-in-out-info",
-  default: false,
+  default: undefined,
 })
 
 export const RetreatAttendAtom = atom<RetreatAttend | undefined>({

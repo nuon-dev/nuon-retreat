@@ -14,7 +14,6 @@ import {
 import { every } from "lodash"
 import { ChatContent } from "types/retreat"
 import { EditContent } from "hooks/useBotChatLogic"
-import { ContactPageSharp } from "@mui/icons-material"
 
 interface IPops {
   addChat: (chat: ChatContent) => void
@@ -302,7 +301,9 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
         position="relative"
         border="1px solid #AAA"
         className={
-          showInOutInfo
+          showInOutInfo === undefined
+            ? styles["in-out-info-start"]
+            : showInOutInfo
             ? styles["in-out-info-show"]
             : styles["in-out-info-hide"]
         }

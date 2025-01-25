@@ -35,6 +35,10 @@
   animation-fill-mode: forwards;
 }
 
+.in-out-info-start {
+  transform: translateY(100vh);
+}
+
 @keyframes fade-in-bg {
   from {
     background-color: rgba(0, 0, 0, 0);
