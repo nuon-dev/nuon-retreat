@@ -1,7 +1,7 @@
 "use client"
 
 import { Stack } from "@mui/material"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import BotChat from "components/retreat/BotChat"
 import MyChat from "components/retreat/MyChat"
 import dayjs from "dayjs"
@@ -51,6 +51,12 @@ export default function Index() {
         } else if (yearOfBirth < 100 && yearOfBirth > 50) {
           yearOfBirth += 1900
         }
+        if (yearOfBirth === 1997) {
+          addChat({
+            type: "bot",
+            content: "너 제육제육 멤버였구나? 반가워~!!!",
+          })
+        }
         editUserInformation("yearOfBirth", yearOfBirth)
         break
       case EditContent.phone:
@@ -81,10 +87,11 @@ export default function Index() {
         flex: "1",
         width: "100vw",
         backgroundImage: "url('/retreat_bg.jpg')",
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'contain',
-        backgroundPosition: 'center',
-        backgroundColor: '#F2E8DE'
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "center",
+        backgroundColor: "#F2E8DE",
+        color: "#5D4431",
       }}
       minHeight="100vh"
     >
@@ -93,6 +100,7 @@ export default function Index() {
         width="100%"
         zIndex="100"
         position="fixed"
+        bgcolor="#F2E8DE"
       >
         <Stack
           top="24px"

@@ -52,42 +52,6 @@ router.get("/get-attendee-status", async (req, res) => {
     where: { isDeposited: true, isCanceled: false },
   })
 
-  const allUser = await retreatAttendDatabase.find()
-  const allInfo = await inOutInfoDatabase.find({
-    relations: { retreatAttend: { user: true } },
-  })
-  const busUserList = allUser
-    .filter((user) => user.howToGo === HowToMove.together)
-    .map((u) => u.id)
-  const aloneAttend = allInfo
-    .filter(
-      (info) =>
-        info.day === Days.firstDay &&
-        info.time < 14 &&
-        info.inOutType === InOutType.IN
-    )
-    .map((info) => info.retreatAttend.user.id)
-
-  const firstAttendUser = [...busUserList, ...aloneAttend]
-  const lastAttendUser = allInfo
-    .filter(
-      (info) =>
-        !(
-          info.day === Days.firstDay &&
-          info.time < 14 &&
-          info.inOutType === InOutType.IN
-        )
-    )
-    .map((info) => info.retreatAttend.user.id)
-
-  const attendUser = allUser.filter((user) =>
-    firstAttendUser.find((id) => id === user.id)
-  )
-
-  const allAttendUserNumber = attendUser.filter(
-    (user) => !lastAttendUser.find((id) => id === user.id)
-  ).length
-
   res.send({
     all: countOfAllUser,
     man: countOfMan,
@@ -95,7 +59,6 @@ router.get("/get-attendee-status", async (req, res) => {
     goTogether: countOfGoTogether,
     leaveTogether: countOfLeaveTogether,
     completeDeposit: countOfCompleteDeposit,
-    allAttendUserNumber,
   })
 })
 

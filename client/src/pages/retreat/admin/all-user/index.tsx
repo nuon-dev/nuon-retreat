@@ -14,7 +14,7 @@ import { useRouter } from "next/router"
 import { HowToMove } from "@server/entity/types"
 import { InOutInfo } from "@server/entity/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreatAttend"
-import Header from "../../../../components/header"
+import Header from "../../../../components/Header"
 
 function AllUser() {
   const router = useRouter()

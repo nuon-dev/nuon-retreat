@@ -147,7 +147,7 @@ export default function InOutInfoForm() {
               const time = Math.floor(i / 2) + 9
               const timeNumber = time * 100 + (isOdd ? 30 : 0)
               return (
-                <MenuItem value={timeNumber}>
+                <MenuItem value={`${time}:${isOdd ? "00" : "30"}`}>
                   {time}시 {isOdd ? "00" : "30"}분
                 </MenuItem>
               )

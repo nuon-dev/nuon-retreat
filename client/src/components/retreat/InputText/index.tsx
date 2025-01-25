@@ -11,10 +11,19 @@ export default function InputText({ submit }: IProps) {
   const inputRef = createRef<HTMLInputElement>()
 
   function textEditor() {
-    if (text.length === 0) {
-      return <Stack color="#888" borderRadius="24px"
-      py="8px" px="16px" mr="12px" bgcolor="#eee">메시지 입력</Stack>
-    }
+    return (
+      <Stack
+        color="#888"
+        borderRadius="24px"
+        py="8px"
+        px="16px"
+        mr="12px"
+        height="34px"
+        bgcolor="#eee"
+      >
+        {text.length === 0 && "메시지 입력"}
+      </Stack>
+    )
     return <Stack />
   }
 
@@ -55,12 +64,15 @@ export default function InputText({ submit }: IProps) {
         {textEditor()}
         <input
           ref={inputRef}
-          className={styles["input"]}
           type="text"
           value={text}
           onFocus={onFocus}
-          onChange={(e) => setText(e.target.value)}
           onSubmit={onClickSend}
+          className={styles["input"]}
+          onChange={(e) => setText(e.target.value)}
+          style={{
+            marginLeft: "12px",
+          }}
         />
       </Stack>
       <Stack width="50px">

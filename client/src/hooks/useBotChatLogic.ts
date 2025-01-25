@@ -83,6 +83,17 @@ export default function useBotChatLogic({ addChat }: IPops) {
           "안녕하세요! 새벽이입니다. 수련회에 관련하여 당신을 도와줄거에요!",
       })
       firstTime()
+    } else if (userData.id.toString() === "2") {
+      //개발자의 이스터에그, 해당 코드를 본다면 웃어 넘겨주세요..ㅎ
+      addChat({
+        type: "bot",
+        content: `세상에서 제일 이쁜 채여니구나!! 반가워!!~~`,
+      })
+    } else if (userData.yearOfBirth === 1997) {
+      addChat({
+        type: "bot",
+        content: `최강 제육제육 멤버 ${userData.name}! 반가워~`,
+      })
     } else {
       addChat({
         type: "bot",

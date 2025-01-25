@@ -20,7 +20,7 @@ export class InOutInfo {
   day: Days
 
   @Column()
-  time: number
+  time: string
 
   @Column()
   inOutType: InOutType

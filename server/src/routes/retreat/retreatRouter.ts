@@ -68,9 +68,8 @@ router.post("/edit-information", async (req, res) => {
     return
   }
 
-  const result = await retreatAttendDatabase.save(retreatAttend)
+  await retreatAttendDatabase.save(retreatAttend)
 
-  console.log(result)
   if (
     retreatAttend.howToGo === HowToMove.together ||
     retreatAttend.howToGo === HowToMove.driveCarAlone

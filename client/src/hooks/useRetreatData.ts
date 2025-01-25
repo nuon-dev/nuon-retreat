@@ -129,13 +129,14 @@ export default function useRetreatData() {
     if (!inOutInfoList) {
       return
     }
+    console.log("추가됨")
     setInOutInfo([
       ...inOutInfoList,
       {
         id: 0,
         inOutType: inOutType,
         day: Days.firstDay,
-        time: 0,
+        time: "",
         position: "",
         howToMove,
         autoCreated: howToMove !== HowToMove.none,
