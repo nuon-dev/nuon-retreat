@@ -133,6 +133,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
           >
             <MenuItem value={Days.firstDay}>금요일</MenuItem>
             <MenuItem value={Days.secondDay}>토요일</MenuItem>
+            <MenuItem value={Days.secondDay}>일요일</MenuItem>
           </Select>
           <Stack fontSize="12px" py="6px" px="12px">
             이동 방향

@@ -56,7 +56,7 @@ export default function Index() {
           textAreaRef.current.scrollHeight
         )
       }
-    }, 0)
+    }, 100)
   }
 
   async function submit(text: string) {
@@ -107,11 +107,13 @@ export default function Index() {
     <Stack position="fixed" width="100vw" color="#5D4431" height="100svh">
       <Stack top="0" width="100%" zIndex="100" bgcolor="#F2E8DE">
         <Stack
-          position="fixed"
           top="24px"
-          fontSize="18px"
           width="100vw"
+          fontSize="18px"
+          position="fixed"
+          fontWeight="500"
           textAlign="center"
+          fontFamily="Cafe24Ohsquare"
         >
           2025 겨울 수련회
         </Stack>
@@ -158,7 +160,7 @@ export default function Index() {
         zIndex="10"
         ref={textAreaRef}
         overflow="auto"
-        height="calc(100svh - 157px)"
+        height="calc(100svh - 148px)"
       >
         {chatList.map((chat, index) => {
           if (chat.type === "bot") {
@@ -198,6 +200,9 @@ export default function Index() {
 }
 
 function TopNotification() {
+  const [showDetailArea, setShowDetailArea] = useState(false)
+  const [showDetailText, setShowDetailText] = useState(false)
+  const [showDetailTextOpacity, setShowDetailTextOpacity] = useState(false)
   const [showDetail, setShowDetail] = useState(false)
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
@@ -205,6 +210,22 @@ function TopNotification() {
     if (showDetail) {
       setNotificationMessage("계좌번호가 복사 되었습니다.")
       navigator.clipboard.writeText("3333328233700")
+    }
+
+    if (showDetail) {
+      setShowDetailText(true)
+      setTimeout(() => {
+        setShowDetailArea(true)
+        setShowDetailTextOpacity(true)
+      }, 250)
+    } else {
+      setShowDetailTextOpacity(false)
+      setTimeout(() => {
+        setShowDetailArea(false)
+        setTimeout(() => {
+          setShowDetailText(false)
+        }, 250)
+      }, 250)
     }
   }, [showDetail])
 
@@ -228,10 +249,26 @@ function TopNotification() {
         height="20"
         alt=""
       />
-      <Stack fontSize="15px" flex={1}>
+      <Stack
+        flex="1"
+        style={{
+          transition: "max-height 0.3s",
+        }}
+        fontSize="15px"
+        fontWeight="500"
+        fontFamily="Cafe24OhsquareAir"
+        maxHeight={showDetailArea ? "100px" : "20px"}
+      >
         2025 겨울 수련회 신청 폼 입니다.
-        {showDetail ? (
-          <Stack>회비 계좌는 3333328233700 카카오뱅크 성은비 입니다.</Stack>
+        {showDetailText ? (
+          <Stack
+            style={{
+              transition: "opacity 0.3s",
+              opacity: showDetailTextOpacity ? 1 : 0,
+            }}
+          >
+            회비 계좌는 3333328233700 카카오뱅크 성은비 입니다.
+          </Stack>
         ) : (
           "회비 계좌는 ...."
         )}
@@ -241,7 +278,7 @@ function TopNotification() {
         width="20"
         height="20"
         style={{
-          animation: "0.5s",
+          transition: "rotate 0.3s",
           rotate: showDetail ? "180deg" : "0deg",
         }}
         alt=""

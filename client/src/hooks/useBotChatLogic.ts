@@ -439,8 +439,10 @@ export default function useBotChatLogic({ addChat }: IPops) {
     function dayToString(day: Days) {
       if (day === Days.firstDay) {
         return "금요일"
-      } else {
+      } else if (day === Days.secondDay) {
         return "토요일"
+      } else {
+        return "일요일"
       }
     }
 

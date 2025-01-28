@@ -24,7 +24,9 @@ export default function BotChat(props: IPops) {
         />
       </Stack>
       <Stack>
-        <Stack color="#333">새벽이</Stack>
+        <Stack color="#5D4431" fontFamily="Cafe24Ohsquare" fontWeight="500">
+          새벽이
+        </Stack>
         <Stack
           my="6px"
           direction="row"
@@ -34,26 +36,29 @@ export default function BotChat(props: IPops) {
         >
           <Stack
             p="10px"
-            boxShadow="0px 0px 10px 4px rgba(0, 0, 0, 0.1)"
             bgcolor="#fff"
+            fontWeight="200"
             borderRadius="12px"
             alignSelf="flex-end"
             whiteSpace="pre-wrap"
+            fontFamily="Cafe24OhsquareAir"
+            boxShadow="0px 0px 10px 4px rgba(0, 0, 0, 0.1)"
           >
             {props.content}
             {props.buttons && props.buttons.length > 0 && (
               <Stack mt="12px" gap="8px">
                 {props.buttons?.map((button, index) => (
                   <Stack
-                    key={index}
                     px="16px"
                     py="14px"
+                    key={index}
                     fontSize="16px"
                     bgcolor="#f7f7f7"
-                    border="1px solid #ddd"
-                    borderRadius="4px"
-                    onClick={button.onClick}
                     textAlign="center"
+                    borderRadius="24px"
+                    border="1px solid #ddd"
+                    onClick={button.onClick}
+                    fontFamily="Cafe24Ohsquare"
                   >
                     {button.content}
                   </Stack>
@@ -61,7 +66,7 @@ export default function BotChat(props: IPops) {
               </Stack>
             )}
           </Stack>
-          <Stack fontSize="12px" color="#333" mb="4px">
+          <Stack fontSize="12px" color="#5D4431" mb="4px">
             {props.time}
           </Stack>
         </Stack>

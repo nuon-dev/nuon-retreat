@@ -26,15 +26,16 @@ export default function InputText({ submit }: IProps) {
 
   return (
     <Stack
-      p="12px"
+      p="8px"
+      px="6px"
       bottom="0"
       width="100%"
-      bgcolor="white"
+      bgcolor="#5D4431"
       direction="row"
       alignItems="center"
       zIndex="200"
     >
-      <Stack width="calc(100% - 50px)" justifyContent="center">
+      <Stack flex={1} justifyContent="center" height="34px">
         <input
           color="#5D4431"
           ref={inputRef}
@@ -45,10 +46,9 @@ export default function InputText({ submit }: IProps) {
           placeholder="메시지 입력"
           onChange={(e) => setText(e.target.value)}
           style={{
-            height: "34px",
             padding: "12px",
             borderRadius: "24px",
-            backgroundColor: "#eee",
+            backgroundColor: "#F2E8DE",
           }}
         />
         <input
@@ -61,14 +61,17 @@ export default function InputText({ submit }: IProps) {
           ref={hiddenInputRef}
         />
       </Stack>
-      <Stack width="50px">
+      <Stack width="64px">
         <Button
           onClick={onClickSend}
           variant="contained"
           style={{
-            backgroundColor: "#FAE54D",
-            color: "black",
+            width: "50px",
+            color: "#5D4431",
+            fontWeight: "200",
             borderRadius: "200px",
+            backgroundColor: "#F2E8DE",
+            fontFamily: "Cafe24Ohsquare",
           }}
         >
           전송
