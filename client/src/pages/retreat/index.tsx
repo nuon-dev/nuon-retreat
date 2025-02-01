@@ -244,6 +244,15 @@ function DrawerContent() {
     pom.remove()
   }
 
+  async function shareLink() {
+    global.navigator.share({
+      title: "2025 새벽이슬 동계 수련회", // 공유될 제목
+      text: "수원제일교회 청년부 - 2025 새벽이슬 동계 수련회에 당신을 초대합니다.", // 공유될 설명
+      url: "https://nuon.iubns.net/retreat/", // 공유될 URL
+      files: [], // 공유할 파일 배열
+    })
+  }
+
   return (
     <Stack
       p="12px"
@@ -310,7 +319,12 @@ function DrawerContent() {
       <Stack gap="12px">
         <Box>대화상대</Box>
         <Stack gap="20px">
-          <Stack direction="row" gap="8px" alignItems="center">
+          <Stack
+            direction="row"
+            gap="8px"
+            alignItems="center"
+            onClick={shareLink}
+          >
             <Stack
               width="40px"
               height="40px"

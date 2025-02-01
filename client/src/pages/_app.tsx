@@ -15,7 +15,6 @@ function MyApp({ Component, pageProps }: any) {
       global.location.href =
         "kakaotalk://web/openExternal?url=" +
         encodeURIComponent(`https://nuon.iubns.net${global.location?.pathname}`)
-      global.close()
       isKakaoBrowser = true
     }
   }

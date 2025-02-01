@@ -472,7 +472,7 @@ ${
 ■ 순장님 : ${userData.community?.name}
 ■ 수련회장 가는 방법 : ${getKrFromHowToMove(retreatAttend.howToGo)}
 ■ 수련회장에서 나오는 방법 : ${getKrFromHowToMove(retreatAttend.howToBack)}
-■ 회비 : ${retreatAttend.isDeposited ? "입금 확인" : "대기중"}
+■ 회비 입금 확인: ${retreatAttend.isDeposited ? "입금 확인 완료" : "대기중"}
 ■ 기타 사항 : ${retreatAttend.etc ? retreatAttend.etc : "없음"}
 ${inOutInfos.length > 0 ? "\n■ 카풀 정보\n\n" : ""}
 ${inOutInfos
@@ -521,14 +521,14 @@ ${inOutInfos
   function ShowPostcard() {
     addChat({
       type: "bot",
-      content: `수련회 접수가 완료되었어요.\n엽서가 한장 도착했네요?`,
+      content: `수련회 접수가 완료되었어요.\n${userInformation?.name}님에게 편지가 한 장 도착했어요!`,
       buttons: [
         {
-          content: "포스트카드 보기",
+          content: "편지 보기",
           onClick: () => {
             addChat({
               type: "my",
-              content: "포스트카드 보기",
+              content: "편지 보기",
             })
             router.push("/retreat/postcard")
           },
