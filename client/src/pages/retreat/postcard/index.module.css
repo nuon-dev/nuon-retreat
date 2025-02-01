@@ -1,0 +1,18 @@
+.postcard {
+  width: fit-content;
+  height: fit-content;
+  transform-style: preserve-3d;
+  border: 1px solid #ddd;
+
+  transition: all 0.5s linear;
+}
+
+.postcard-image {
+  width: calc(100vw - 100px);
+  object-fit: contain;
+  height: auto;
+}
+
+.postcard-back {
+  background-color: white;
+}
