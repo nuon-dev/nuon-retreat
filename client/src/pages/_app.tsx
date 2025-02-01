@@ -8,12 +8,15 @@ import Notification from "../components/notification/notification"
 
 function MyApp({ Component, pageProps }: any) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
+  let isKakaoBrowser = false
   if (global.location) {
     var useragt = navigator.userAgent.toLowerCase()
     if (useragt.includes("kakao")) {
       global.location.href =
         "kakaotalk://web/openExternal?url=" +
         encodeURIComponent(`https://nuon.iubns.net${global.location?.pathname}`)
+      global.close()
+      isKakaoBrowser = true
     }
   }
 
@@ -56,7 +59,11 @@ function MyApp({ Component, pageProps }: any) {
         />
         <Notification />
         <Stack width="100%" height="100%" fontFamily="PretendardVariable">
-          <Component {...pageProps} />
+          {isKakaoBrowser ? (
+            <div>카카오톡 브라우저에서는 사용할 수 없습니다.</div>
+          ) : (
+            <Component {...pageProps} />
+          )}
         </Stack>
       </RecoilRoot>
     </>

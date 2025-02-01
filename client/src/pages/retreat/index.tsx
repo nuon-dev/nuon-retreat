@@ -1,6 +1,6 @@
 "use client"
 
-import { Stack } from "@mui/material"
+import { Box, Drawer, Stack } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
 import BotChat from "components/retreat/BotChat"
 import MyChat from "components/retreat/MyChat"
@@ -26,6 +26,7 @@ export default function Index() {
   })
   const { editRetreatAttendInformation } = useRetreatData()
   const textAreaRef = useRef<HTMLDivElement>(null)
+  const [showDrawer, setShowDrawer] = useState(false)
 
   function addChat(chatContent: ChatContent) {
     if (ChatList.length > 0) {
@@ -105,6 +106,13 @@ export default function Index() {
 
   return (
     <Stack position="fixed" width="100vw" color="#5D4431" height="100svh">
+      <Drawer
+        anchor="right"
+        open={showDrawer}
+        onClose={() => setShowDrawer(false)}
+      >
+        <DrawerContent />
+      </Drawer>
       <Stack top="0" width="100%" zIndex="100" bgcolor="#F2E8DE">
         <Stack
           top="24px"
@@ -114,6 +122,9 @@ export default function Index() {
           fontWeight="500"
           textAlign="center"
           fontFamily="Cafe24Ohsquare"
+          style={{
+            pointerEvents: "none",
+          }}
         >
           2025 겨울 수련회
         </Stack>
@@ -147,6 +158,7 @@ export default function Index() {
               src="/icon/free-icon-hamburger.png"
               width="30"
               height="30"
+              onClick={() => setShowDrawer(!showDrawer)}
               alt=""
             />
           </Stack>
@@ -195,6 +207,160 @@ export default function Index() {
         }}
       />
       <InOutInfoForm addChat={addChat} setEditContent={setEditContent} />
+    </Stack>
+  )
+}
+
+function DrawerContent() {
+  const [userName, setUserName] = useState<string | null>(null)
+  const setNotificationMessage = useSetRecoilState(NotificationMessage)
+
+  useEffect(() => {
+    fetchUserDate()
+  }, [])
+
+  function goToInstagram() {
+    global.open("https://www.instagram.com/suwonjeilch_youngpeople")
+  }
+
+  const { getUserDataFromToken } = useUserData()
+
+  async function fetchUserDate() {
+    const userData = await getUserDataFromToken()
+    if (userData) {
+      setUserName(userData.name)
+    }
+  }
+
+  function onClickImage(imageName: string) {
+    setNotificationMessage("이미지가 다운로드 되었습니다.")
+    var pom = document.createElement("a")
+    // file 폴더의 파일을 다운로드
+    var filePath = "/" + encodeURIComponent(imageName)
+    pom.setAttribute("type", "application/octet-stream;charset=utf-8")
+    pom.setAttribute("href", imageName)
+    pom.setAttribute("download", imageName)
+    pom.click()
+    pom.remove()
+  }
+
+  return (
+    <Stack
+      p="12px"
+      gap="12px"
+      width="80vw"
+      color="#5D4431"
+      bgcolor="#F2E8DE"
+      height="100%"
+      fontFamily="Cafe24OhsquareAir"
+    >
+      <Box fontFamily="Cafe24Ohsquare">채팅방 서랍</Box>
+      <Stack gap="6px" pb="12px" borderBottom="1px solid #5D4431">
+        <Stack direction="row" gap="4px">
+          <Image
+            src="/icon/free-icon-photo-gallery.png"
+            width="20"
+            height="20"
+            alt=""
+          />
+          사진/동영상
+        </Stack>
+        <Stack direction="row" gap="8px">
+          <Image
+            src="/release/bg1.jpeg"
+            width="120"
+            height="120"
+            alt=""
+            onClick={() => onClickImage("/release/bg1.jpeg")}
+            style={{
+              borderRadius: "8px",
+              border: "1px solid #5D4431",
+            }}
+          />
+          <Image
+            src="/release/bg2.jpeg"
+            width="120"
+            height="120"
+            onClick={() => onClickImage("/release/bg1.jpeg")}
+            style={{
+              borderRadius: "8px",
+              border: "1px solid #5D4431",
+            }}
+            alt=""
+          />
+        </Stack>
+      </Stack>
+      <Stack gap="12px" pb="12px" borderBottom="1px solid #5D4431">
+        <Stack direction="row" gap="4px">
+          <Image src="/icon/free-icon-link.png" width="20" height="20" alt="" />
+          링크
+        </Stack>
+        <Stack ml="12px">
+          <Stack onClick={goToInstagram} direction="row" gap="8px">
+            <Image
+              src="/icon/free-icon-instagram.png"
+              width="20"
+              height="20"
+              alt=""
+            />
+            인스타그램
+          </Stack>
+        </Stack>
+      </Stack>
+      <Stack gap="12px">
+        <Box>대화상대</Box>
+        <Stack gap="20px">
+          <Stack direction="row" gap="8px" alignItems="center">
+            <Stack
+              width="40px"
+              height="40px"
+              borderRadius="16px"
+              alignItems="center"
+              justifyContent="center"
+              border="1px solid #5D4431"
+            >
+              <Box width="2px" height="8px" bgcolor="#4D3421" />
+              <Box width="16px" height="2px" bgcolor="#4D3421" />
+              <Box width="2px" height="8px" bgcolor="#4D3421" />
+            </Stack>
+            <Stack color="#4D3421">대화상대 초대</Stack>
+          </Stack>
+          <Stack direction="row" gap="8px" alignItems="center">
+            <Image
+              src="/kakao_default_profile.jpeg"
+              width="40"
+              height="40"
+              style={{
+                borderRadius: "16px",
+              }}
+              alt=""
+            />
+            <Stack
+              p="3px"
+              borderRadius="12px"
+              fontSize="8px"
+              bgcolor="#5D4431"
+              color="#F2E8DE"
+              fontFamily="Cafe24Ohsquare"
+            >
+              나
+            </Stack>
+            <Stack>{userName ?? "손님"}</Stack>
+          </Stack>
+          <Stack direction="row" gap="8px" alignItems="center">
+            <Image
+              src="/profile.jpeg"
+              width="40"
+              height="40"
+              style={{
+                borderRadius: "16px",
+              }}
+              alt=""
+            />
+            새벽이
+          </Stack>
+        </Stack>
+      </Stack>
     </Stack>
   )
 }
@@ -254,7 +420,7 @@ function TopNotification() {
         style={{
           transition: "max-height 0.3s",
         }}
-        fontSize="15px"
+        fontSize="14px"
         fontWeight="500"
         fontFamily="Cafe24OhsquareAir"
         maxHeight={showDetailArea ? "100px" : "20px"}
@@ -270,7 +436,7 @@ function TopNotification() {
             회비 계좌는 3333328233700 카카오뱅크 성은비 입니다.
           </Stack>
         ) : (
-          "회비 계좌는 ...."
+          " 회비 계좌는 ...."
         )}
       </Stack>
       <Image

@@ -1,13 +1,13 @@
 "use client"
 
+import { get } from "pages/api"
+import Image from "next/image"
 import { Stack } from "@mui/material"
 import styles from "./index.module.css"
-import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
 import { useRecoilState } from "recoil"
-import { RetreatAttendAtom } from "state/retreat"
-import { get } from "pages/api"
 import numberToString from "./numberToString"
+import { RetreatAttendAtom } from "state/retreat"
+import { useEffect, useRef, useState } from "react"
 
 let startPositionX = 0
 let startPositionY = 0
@@ -21,6 +21,7 @@ export default function Postcard() {
   const [isMoving, setIsMoving] = useState(false)
   const [backWidth, setBackWidth] = useState(0)
   const [backHeight, setBackHeight] = useState(0)
+  const [isNotMove, setIsNotMove] = useState(true)
   const [retreatAttend, setRetreatAttend] = useRecoilState(RetreatAttendAtom)
 
   const imageRef = useRef<HTMLImageElement>(null)
@@ -31,6 +32,7 @@ export default function Postcard() {
       startPositionY = e.touches[0].clientY + currentRotateX * 2
 
       setIsMoving(true)
+      setIsNotMove(false)
     }
     addEventListener("touchstart", touchStart)
 
@@ -40,6 +42,12 @@ export default function Postcard() {
 
       currentRotateX = diffY * -0.5
       currentRotateY = diffX * 0.5
+
+      const isReverse = Math.floor((currentRotateX + 90) / 180) % 2 !== 0
+      //뒤집혀 있으면 죄우로 긁었을때, 반대로 움직여야 함
+      if (isReverse) {
+        currentRotateY = currentRotateY * -1
+      }
 
       setRotateX(currentRotateX)
       setRotateY(currentRotateY)
@@ -103,7 +111,9 @@ export default function Postcard() {
       <Stack
         justifyContent="center"
         alignItems="center"
-        className={styles.postcard}
+        className={`${styles.postcard} ${
+          isNotMove ? styles["moving-animation"] : ""
+        }`}
         position="relative"
         style={{
           transitionDuration: isMoving ? "0s" : "0.5s",
@@ -116,7 +126,7 @@ export default function Postcard() {
           ref={imageRef}
           className={styles["postcard-image"]}
           alt=""
-          src="/postcard.png"
+          src="/postcard_front.png"
           width="0"
           height="0"
         />
@@ -131,10 +141,10 @@ export default function Postcard() {
           <Stack
             color="#5D4431"
             fontFamily="handFont"
-            fontSize={backHeight / 40}
+            fontSize={backHeight / 27}
             position="absolute"
             right={backHeight / 15}
-            bottom={backWidth / 5.4}
+            bottom={backWidth / 5}
           >
             {retreatAttend?.user?.name}님에게 보내는{" "}
             {numberToString(retreatAttend?.attendanceNumber)}번쨰 편지
@@ -142,13 +152,15 @@ export default function Postcard() {
         </Stack>
       </Stack>
       <Stack
-        p={backHeight / 100}
+        px={backHeight / 100}
+        py={backHeight / 150}
         position="absolute"
         fontFamily="handFont"
         color="#5D4431"
-        bgcolor="#F2E8DE"
         fontSize={backHeight / 15}
-        className={`${styles.postcard} ${styles["postcard-back"]}`}
+        className={`${styles.postcard} 
+          ${styles["postcard-back"]}`}
+        display={isNotMove ? "none" : "block"}
         style={{
           width: backHeight,
           height: backWidth,

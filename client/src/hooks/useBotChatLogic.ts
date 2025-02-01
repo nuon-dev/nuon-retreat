@@ -10,6 +10,7 @@ import {
   ShowInOutInfoComponentAtom,
 } from "state/retreat"
 import { post } from "pages/api"
+import { useRouter } from "next/navigation"
 
 interface IPops {
   addChat: (chat: ChatContent) => void
@@ -53,6 +54,8 @@ export default function useBotChatLogic({ addChat }: IPops) {
   const retreatAttend = useRecoilValue(RetreatAttendAtom)
   const inOutInfos = useRecoilValue(InOutInformationAtom)
   const setShowInOutInfoForm = useSetRecoilState(ShowInOutInfoComponentAtom)
+
+  const router = useRouter()
 
   useEffect(() => {
     init()
@@ -507,7 +510,27 @@ ${inOutInfos
             await saveAllInformation()
             post("/retreat/complete", {})
             savedUserInformation()
+            ShowPostcard()
             whatDoYouWantToDo()
+          },
+        },
+      ],
+    })
+  }
+
+  function ShowPostcard() {
+    addChat({
+      type: "bot",
+      content: `수련회 접수가 완료되었어요.\n엽서가 한장 도착했네요?`,
+      buttons: [
+        {
+          content: "포스트카드 보기",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "포스트카드 보기",
+            })
+            router.push("/retreat/postcard")
           },
         },
       ],
