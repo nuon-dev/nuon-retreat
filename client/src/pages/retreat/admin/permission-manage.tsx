@@ -15,6 +15,7 @@ import { useRouter } from "next/router"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { PermissionType } from "@server/entity/types"
+import { RetreatAttend } from "@server/entity/retreatAttend"
 
 function PermissionManage() {
   const { push } = useRouter()
@@ -26,7 +27,7 @@ function PermissionManage() {
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
-    get("/admin/get-all-user-name")
+    get("/retreat/admin/get-all-user-name")
       .then((response: Array<User>) => {
         setUserList(response.sort((a, b) => (a.name > b.name ? 1 : -1)))
         if (response.length > 0) {
@@ -63,23 +64,23 @@ function PermissionManage() {
   }
 
   function loadUserPermission() {
-    post("/admin/get-user-permission-info", { userId: selectedUserId }).then(
-      (response) => {
-        const data: { [key: number]: boolean } = {}
-        response.map(
-          (permission: { permissionType: number; have: boolean }) =>
-            (data[permission.permissionType] = permission.have)
-        )
-        setUserPermission(data)
-      }
-    )
+    post("/retreat/admin/get-user-permission-info", {
+      userId: selectedUserId,
+    }).then((response) => {
+      const data: { [key: number]: boolean } = {}
+      response.map(
+        (permission: { permissionType: number; have: boolean }) =>
+          (data[permission.permissionType] = permission.have)
+      )
+      setUserPermission(data)
+    })
   }
 
   function onChangePermission(
     event: ChangeEvent<HTMLInputElement>,
     key: number
   ) {
-    post("/admin/set-user-permission", {
+    post("/retreat/admin/set-user-permission", {
       userId: selectedUserId,
       have: event.target.value === "true",
       permissionType: key,

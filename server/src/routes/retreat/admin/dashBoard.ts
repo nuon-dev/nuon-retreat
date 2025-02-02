@@ -1,5 +1,5 @@
 import express from "express"
-import { Days, HowToMove, InOutType } from "../../../entity/types"
+import { Days, Deposit, HowToMove, InOutType } from "../../../entity/types"
 import {
   inOutInfoDatabase,
   retreatAttendDatabase,
@@ -49,7 +49,7 @@ router.get("/get-attendee-status", async (req, res) => {
   })
 
   const countOfCompleteDeposit = await retreatAttendDatabase.count({
-    where: { isDeposited: true, isCanceled: false },
+    where: { isDeposited: Not(Deposit.none), isCanceled: false },
   })
 
   res.send({

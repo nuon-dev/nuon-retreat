@@ -16,7 +16,6 @@ import { useRouter } from "next/router"
 
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import useUserData from "hooks/useUserData"
-import Image from "next/image"
 
 export default function Header() {
   const { getUserDataFromToken } = useUserData()
@@ -44,30 +43,6 @@ export default function Header() {
 
   function goToHome() {
     push("/")
-  }
-
-  function RouterRow({
-    pageURL,
-    pageName,
-    icon,
-  }: {
-    pageURL: string
-    pageName: string
-    icon: string
-  }) {
-    function goToPage() {
-      push("/retreat/admin/" + pageURL)
-    }
-    return (
-      <ListItem disablePadding>
-        <ListItemButton onClick={goToPage}>
-          <ListItemIcon>
-            <Image src={icon} width="30" height="30" alt="" />
-          </ListItemIcon>
-          <ListItemText primary={pageName} />
-        </ListItemButton>
-      </ListItem>
-    )
   }
 
   return (
@@ -106,64 +81,6 @@ export default function Header() {
                 <ListItemText primary={"출석 관리"} />
               </ListItemButton>
             </ListItem>
-          </List>
-          <Divider />
-          <List>
-            {RouterRow({
-              pageName: "접수자 전체 조회",
-              pageURL: "/all-user",
-              icon: "/icon/free-icon-bullet-list.png",
-            })}
-            {RouterRow({
-              pageName: "카풀 관리",
-              pageURL: "/carpooling",
-              icon: "/icon/free-icon-car.png",
-            })}{" "}
-            {RouterRow({
-              pageName: "방배정 관리",
-              pageURL: "/room-assignment",
-              icon: "/icon/free-icon-bunk-bed.png",
-            })}
-            {RouterRow({
-              pageName: "조배정 관리",
-              pageURL: "/group-formation",
-              icon: "/icon/free-icon-group.png",
-            })}
-            {RouterRow({
-              pageName: "권한 관리",
-              pageURL: "/permission-manage",
-              icon: "/icon/free-icon-lock.png",
-            })}
-            {RouterRow({
-              pageName: "입금 확인 처리",
-              pageURL: "/deposit-check",
-              icon: "/icon/free-icon-cost.png",
-            })}
-            {RouterRow({
-              pageName: "접수 내용 수정",
-              pageURL: "/edit-user-data",
-              icon: "/icon/free-icon-edit-profile.png",
-            })}
-            {RouterRow({
-              pageName: "인원 확인 처리",
-              pageURL: "/check-status",
-              icon: "/icon/free-icon-qr-code.png",
-            })}
-            {RouterRow({
-              pageName: "인원 관리",
-              pageURL: "/show-status-table",
-              icon: "/icon/free-icon-table.png",
-            })}
-            {RouterRow({
-              pageName: "인원 출입 관리",
-              pageURL: "/inout-info",
-              icon: "/icon/free-icon-table.png",
-            })}
-            {RouterRow({
-              pageName: "대시보드",
-              pageURL: "/dash-board",
-              icon: "/icon/free-icon-dashboard-interface.png",
-            })}
           </List>
         </Box>
       </Drawer>

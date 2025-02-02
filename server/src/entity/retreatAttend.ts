@@ -9,7 +9,7 @@ import {
 } from "typeorm"
 import { User } from "./user"
 import { InOutInfo } from "./inOutInfo"
-import { CurrentStatus, HowToMove } from "./types"
+import { CurrentStatus, Deposit, HowToMove } from "./types"
 
 @Entity()
 export class RetreatAttend {
@@ -29,8 +29,8 @@ export class RetreatAttend {
   @Column({ type: "text", nullable: true })
   memo: string
 
-  @Column({ default: false })
-  isDeposited: boolean
+  @Column({ default: Deposit.none })
+  isDeposited: Deposit
 
   @Column({ nullable: true })
   howToGo: HowToMove

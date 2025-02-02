@@ -12,19 +12,20 @@ router.post("/deposit-processing", async (req, res) => {
   }
 
   const data = req.body
-  const userId = data.userId
+  const retreatAttendId = data.retreatAttendId
+  const isDeposited = data.isDeposited
 
-  const foundUser = await retreatAttendDatabase.findOneBy({
-    id: userId,
+  const foundRetreatAttend = await retreatAttendDatabase.findOneBy({
+    id: retreatAttendId,
   })
 
-  if (!foundUser) {
+  if (!foundRetreatAttend) {
     res.send({ result: "error!" })
     return
   }
 
-  foundUser.isDeposited = !foundUser.isDeposited
-  await userDatabase.save(foundUser)
+  foundRetreatAttend.isDeposited = isDeposited
+  await retreatAttendDatabase.save(foundRetreatAttend)
   res.send({ result: "success" })
 })
 

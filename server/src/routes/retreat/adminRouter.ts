@@ -14,6 +14,7 @@ import CarRouter from "./admin/car"
 import DashBoard from "./admin/dashBoard"
 import Deposit from "./admin/deposit"
 import EditUserData from "./admin/edit-user-data"
+import { Not } from "typeorm"
 
 const router = express.Router()
 
@@ -24,19 +25,15 @@ router.get("/get-all-user-name", async (req, res) => {
     return
   }
 
-  const userList = await retreatAttendDatabase.find({
+  const userList = await userDatabase.find({
     select: {
-      user: {
-        name: true,
-        id: true,
-        gender: true,
-      },
+      name: true,
+      id: true,
+      gender: true,
+      yearOfBirth: true,
     },
     where: {
-      isCanceled: false,
-    },
-    relations: {
-      user: true,
+      name: Not(""),
     },
   })
   res.send(userList)

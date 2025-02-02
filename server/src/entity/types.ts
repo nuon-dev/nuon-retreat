@@ -43,3 +43,9 @@ export enum InOutType {
   IN = "in",
   OUT = "out",
 }
+
+export enum Deposit {
+  none = "none",
+  student = "student",
+  business = "business",
+}

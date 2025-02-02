@@ -7,28 +7,35 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material"
-import { User } from "@server/entity/user"
 import { get, post } from "../../../pages/api"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
+import { RetreatAttend } from "@server/entity/retreatAttend"
+import { Deposit } from "@server/entity/types"
 
 function DepositCheck() {
   const { push } = useRouter()
   const [allUserCount, setAllUserCount] = useState(0)
   const [isShowUnpaid, setIsShowUnpaid] = useState(false)
-  const [depositUserCount, setDepositUserCount] = useState(0)
-  const [allUserList, setAllUserList] = useState([] as Array<User>)
+  const [depositStudentCount, setDepositStudentCount] = useState(0)
+  const [depositWorkerCount, setDepositWorkerCount] = useState(0)
+  const [allUserList, setAllUserList] = useState([] as Array<RetreatAttend>)
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
     fetchData()
   }, [])
 
-  async function DepositProcessing(userId: number) {
-    const result = await post("/admin/deposit-processing", {
-      userId,
+  async function DepositProcessing(
+    retreatAttendId: number,
+    isDeposited: Deposit
+  ) {
+    console.log(retreatAttendId, isDeposited)
+    const result = await post("/retreat/admin/deposit-processing", {
+      retreatAttendId,
+      isDeposited,
     })
 
     if (result.result === "error") {
@@ -40,17 +47,28 @@ function DepositCheck() {
   }
 
   function fetchData() {
-    get("/admin/get-all-user")
-      .then((data: User[]) => {
+    get("/retreat/admin/get-all-user")
+      .then((data: RetreatAttend[]) => {
         setAllUserCount(data.length)
-        setDepositUserCount(
-          data.filter((user) => user.retreatAttend?.isDeposited).length
+        setDepositStudentCount(
+          data.filter(
+            (retreatAttend) => retreatAttend.isDeposited === Deposit.student
+          ).length
+        )
+        setDepositWorkerCount(
+          data.filter(
+            (retreatAttend) => retreatAttend.isDeposited === Deposit.business
+          ).length
         )
         if (isShowUnpaid) {
           setAllUserList(data)
           return
         }
-        setAllUserList(data.filter((user) => !user.retreatAttend?.isDeposited))
+        setAllUserList(
+          data.filter(
+            (retreatAttend) => retreatAttend.isDeposited === Deposit.none
+          )
+        )
       })
       .catch(() => {
         push("/retreat/admin")
@@ -78,14 +96,15 @@ function DepositCheck() {
         }}
       >
         <Stack fontWeight="600" fontSize="20px">
-          전체 / 납부자 ({allUserCount} / {depositUserCount})
+          전체 / 납부자 ({allUserCount} /{" "}
+          {depositStudentCount + depositWorkerCount})
         </Stack>
         <Stack fontWeight="500" fontSize="18px">
           예상 납부 금액 -{" "}
-          {(depositUserCount * 75000)
+          {(depositStudentCount * 70000 + depositWorkerCount * 100000)
             .toString()
             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          원 ({depositUserCount * 7.5}만원)
+          원 ({depositStudentCount * 7 + depositWorkerCount * 10}만원)
         </Stack>
 
         <Button
@@ -100,7 +119,7 @@ function DepositCheck() {
       </Stack>
       <Table
         style={{
-          maxWidth: "500px",
+          maxWidth: "800px",
           border: "1px solid #ccc",
         }}
       >
@@ -113,10 +132,10 @@ function DepositCheck() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {allUserList.map((user) => {
-            const createDate = new Date(user.createAt.toString())
+          {allUserList.map((retreatAttend) => {
+            const createDate = new Date(retreatAttend.createAt.toString())
             return (
-              <TableRow>
+              <TableRow key={retreatAttend.id}>
                 <TableCell
                   style={{
                     padding: 0,
@@ -124,7 +143,7 @@ function DepositCheck() {
                     paddingBottom: "24px",
                   }}
                 >
-                  {user.name}
+                  {retreatAttend.user.name}
                 </TableCell>
                 <TableCell style={{ padding: 0 }}>
                   {`${createDate.getFullYear() - 2000}.${
@@ -132,19 +151,46 @@ function DepositCheck() {
                   }.${createDate.getDate()} 
                   ${createDate.getHours()}:${createDate.getMinutes()}`}
                 </TableCell>
-                <TableCell style={{ padding: 0 }}>{user.phone}</TableCell>
                 <TableCell style={{ padding: 0 }}>
-                  <Button
-                    onClick={() => DepositProcessing(user.id)}
-                    variant="contained"
-                    color={
-                      user.retreatAttend?.isDeposited ? "error" : "success"
-                    }
-                  >
-                    {user.retreatAttend?.isDeposited
-                      ? "취소 처리"
-                      : "완료 처리"}
-                  </Button>
+                  {retreatAttend.user.phone}
+                </TableCell>
+                <TableCell style={{ padding: "12px" }}>
+                  {retreatAttend.isDeposited === Deposit.none ? (
+                    <Stack gap="8px">
+                      <Button
+                        onClick={() =>
+                          DepositProcessing(retreatAttend.id, Deposit.student)
+                        }
+                        variant="contained"
+                        color="success"
+                      >
+                        학생
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          DepositProcessing(retreatAttend.id, Deposit.business)
+                        }
+                        variant="contained"
+                        color="success"
+                      >
+                        직장인
+                      </Button>
+                    </Stack>
+                  ) : (
+                    <Button
+                      onClick={() =>
+                        DepositProcessing(retreatAttend.id, Deposit.none)
+                      }
+                      variant="contained"
+                      color="error"
+                    >
+                      {retreatAttend.isDeposited === Deposit.student
+                        ? "학생"
+                        : "직장인"}
+                      <br />
+                      취소 처리
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             )

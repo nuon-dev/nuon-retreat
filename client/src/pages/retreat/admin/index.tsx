@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { Button, Stack } from "@mui/material/index"
 import { useRouter } from "next/router"
 import useKakaoHook from "kakao"
-import Header from "../../../components/Header"
+import Header from "../../../components/retreat/admin/Header"
 
 //아이콘 주소 https://www.flaticon.com/kr/
 export default function Admin() {
@@ -110,7 +110,7 @@ export default function Admin() {
   }
 
   return (
-    <Stack py="40px">
+    <Stack>
       <Header />
       {isLogin ? menu() : loginForm()}
     </Stack>
