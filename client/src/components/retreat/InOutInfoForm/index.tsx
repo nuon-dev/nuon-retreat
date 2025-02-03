@@ -133,7 +133,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
           >
             <MenuItem value={Days.firstDay}>금요일</MenuItem>
             <MenuItem value={Days.secondDay}>토요일</MenuItem>
-            <MenuItem value={Days.secondDay}>일요일</MenuItem>
+            <MenuItem value={Days.thirdDay}>일요일</MenuItem>
           </Select>
           <Stack fontSize="12px" py="6px" px="12px">
             이동 방향
@@ -160,9 +160,9 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
               onChangeInformation("time", e.target.value.toString(), index)
             }
           >
-            {new Array((24 - 9) * 2).fill(0).map((_, i) => {
+            {new Array((24 - 7) * 2).fill(0).map((_, i) => {
               const isOdd = i % 2 === 0
-              const time = Math.floor(i / 2) + 9
+              const time = Math.floor(i / 2) + 7
               const timeNumber = time * 100 + (isOdd ? 30 : 0)
               return (
                 <MenuItem key={i} value={`${time}:${isOdd ? "00" : "30"}`}>
@@ -310,7 +310,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
         boxShadow="0px 0px 10px 0px #AAA"
       >
         <Stack borderRadius="24px" bgcolor="grey.200" p="12px" px="16px">
-          # 출입정보 관리 등록
+          # 카풀 정보 관리 등록
         </Stack>
         <Button
           variant="contained"

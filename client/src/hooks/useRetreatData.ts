@@ -30,11 +30,14 @@ export default function useRetreatData() {
     }
   }
 
-  async function fetchInOutInfo(isForce = false) {
+  async function fetchInOutInfo(
+    isForce = false
+  ): Promise<InOutInfo[] | undefined> {
     const inOutInfo = await get("/in-out-info")
     if (!inOutInfoList || isForce) {
       setInOutInfo(inOutInfo)
     }
+    return inOutInfo
   }
 
   function checkMissedRetreatAttendInformation() {
@@ -48,6 +51,8 @@ export default function useRetreatData() {
     if (!retreatAttend.howToBack) {
       return EditContent.howToBack
     }
+
+    console.log(inOutInfoList)
 
     let needEditInOutInfo = false
 

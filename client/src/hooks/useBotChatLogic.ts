@@ -48,6 +48,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
     editRetreatAttendInformation,
     saveRetreatAttendInformation,
     fetchRetreatAttendInformation,
+    fetchInOutInfo,
   } = useRetreatData()
 
   const userInformation = useRecoilValue(UserInformationAtom)
@@ -166,7 +167,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
     setTimeout(() => {
       sayBotAutoText = false
     }, 1000)
-    setTimeout(checkMissedUserInformationAndEdit)
+    setTimeout(checkMissedUserInformationAndEdit, 100)
     if (editContent !== EditContent.none) {
       setEditContent(EditContent.none)
       saveAllInformation().then(() => {
@@ -175,7 +176,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
     }
   }
 
-  function checkMissedUserInformationAndEdit() {
+  async function checkMissedUserInformationAndEdit() {
     const missedContent = checkMissedUserInformation()
     const missedRetreatAttendContent = checkMissedRetreatAttendInformation()
     const allIsOkay =
@@ -184,12 +185,12 @@ export default function useBotChatLogic({ addChat }: IPops) {
     if (allIsOkay) {
       // 취소가 사실상 없을 것으로 예상, 아직 접수가 완료되지 않았다면으로 사용
       if (retreatAttend?.isCanceled) {
-        confirmUserData()
+        await confirmUserData()
         return
       }
       if (editContent !== EditContent.none) {
         if (editContent !== EditContent.inOutInfoEnd) {
-          saveAllInformation()
+          await saveAllInformation()
           addChat({
             type: "bot",
             content: `내용이 저장 되었어요!`,
@@ -281,11 +282,11 @@ export default function useBotChatLogic({ addChat }: IPops) {
       content: `수련회장으로 어떻게 오실건가요?`,
       buttons: [
         {
-          content: "버스",
+          content: "교회 버스",
           onClick: () => {
             addChat({
               type: "my",
-              content: "버스",
+              content: "교회 버스",
             })
             editRetreatAttendInformation("howToGo", HowToMove.together)
           },
@@ -344,11 +345,11 @@ export default function useBotChatLogic({ addChat }: IPops) {
       content: `수련회장에서 어떻게 교회로 돌아가실건가요?`,
       buttons: [
         {
-          content: "버스",
+          content: "교회 버스",
           onClick: () => {
             addChat({
               type: "my",
-              content: "버스",
+              content: "교회 버스",
             })
             editRetreatAttendInformation("howToBack", HowToMove.together)
           },
@@ -420,7 +421,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
   function getKrFromHowToMove(howToMove: HowToMove) {
     switch (howToMove) {
       case HowToMove.together:
-        return "버스"
+        return "교회 버스"
       case HowToMove.driveCarWithPerson:
         return "자가용 (카풀 가능)"
       case HowToMove.driveCarAlone:
@@ -434,6 +435,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
   }
 
   async function confirmUserData() {
+    const inOutInfos = await fetchInOutInfo(true)
     const userData = userInformation
     if (!retreatAttend || !userData || !inOutInfos) {
       return
@@ -474,7 +476,7 @@ ${
 ■ 수련회장에서 나오는 방법 : ${getKrFromHowToMove(retreatAttend.howToBack)}
 ■ 회비 입금 확인: ${retreatAttend.isDeposited ? "입금 확인 완료" : "대기중"}
 ■ 기타 사항 : ${retreatAttend.etc ? retreatAttend.etc : "없음"}
-${inOutInfos.length > 0 ? "\n■ 카풀 정보\n\n" : ""}
+${inOutInfos.length > 0 ? "\n■ 카풀 정보\n" : ""}
 ${inOutInfos
   .map((inOutInfo) => {
     let position = inOutInfo.position
@@ -482,7 +484,7 @@ ${inOutInfos
     if (inOutInfo.howToMove === HowToMove.goAlone) {
       position = "여주역"
     }
-    return `${dayToString(inOutInfo.day)} ${inOutInfo.time}시\n${
+    return `${dayToString(inOutInfo.day)} ${inOutInfo.time} 시\n${
       inOutInfo.inOutType === InOutType.IN
         ? `${position} → 수련회장 `
         : `수련회장 → ${position}`
@@ -714,7 +716,7 @@ ${inOutInfos
             })
             addChat({
               type: "bot",
-              content: `수련회 장소는 여주 중앙청소년 수련원 입니다.\n2월 21일 금요일부터 2월 23일 주일까지 진행됩니다.\n회비는 3333328233700 카카오뱅크 성은비로 보내주세요~`,
+              content: `수련회 장소는 여주 중앙청소년 수련원 입니다.\n2월 21일 금요일부터 2월 23일 주일까지 진행됩니다.\n회비 : 10만원 (직장인), 7만원 (대학생)`,
             })
           },
         },

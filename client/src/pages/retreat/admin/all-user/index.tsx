@@ -111,11 +111,13 @@ function AllUser() {
               </TableCell>
               <TableCell>{retreatAttend.user.yearOfBirth}</TableCell>
               <TableCell>
-                {retreatAttend.howToGo === HowToMove.together ? "버스" : "기타"}
+                {retreatAttend.howToGo === HowToMove.together
+                  ? "교회 버스"
+                  : "기타"}
               </TableCell>
               <TableCell>
                 {retreatAttend.howToBack === HowToMove.together
-                  ? "버스"
+                  ? "교회 버스"
                   : "기타"}
               </TableCell>
             </TableRow>

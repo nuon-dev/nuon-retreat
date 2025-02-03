@@ -55,6 +55,7 @@ export default function Notification() {
       <div
         style={{
           textAlign: "right",
+          fontFamily: "HandFont",
         }}
       >
         {isUpdate}

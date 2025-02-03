@@ -95,7 +95,7 @@ router.post("/edit-information", async (req, res) => {
     etc: retreatAttend.etc,
   })
 
-  //값은 가거나 오는 것 중 하나만 변경 가눙, 같이 가는 것과, 카풀은 동시에 선택 안됨
+  //카풀이 불가능한 선택하면 자동으로 생성된 카풀 정보 제거
   if (
     retreatAttend.howToGo === HowToMove.together ||
     retreatAttend.howToGo === HowToMove.driveCarAlone
@@ -105,7 +105,19 @@ router.post("/edit-information", async (req, res) => {
       autoCreated: true,
       inOutType: InOutType.IN,
     })
-  } else if (
+  } else {
+    foundRetreatAttend.inOutInfos.forEach(async (inOutInfo) => {
+      if (!inOutInfo.autoCreated) {
+        return
+      }
+      if (inOutInfo.inOutType === InOutType.IN) {
+        inOutInfo.howToMove = retreatAttend.howToGo
+        await inOutInfoDatabase.save(inOutInfo)
+      }
+    })
+  }
+
+  if (
     retreatAttend.howToBack === HowToMove.together ||
     retreatAttend.howToBack === HowToMove.driveCarAlone
   ) {
@@ -119,12 +131,10 @@ router.post("/edit-information", async (req, res) => {
       if (!inOutInfo.autoCreated) {
         return
       }
-      if (inOutInfo.inOutType === InOutType.IN) {
-        inOutInfo.howToMove = retreatAttend.howToGo
-      } else {
+      if (inOutInfo.inOutType === InOutType.OUT) {
         inOutInfo.howToMove = retreatAttend.howToBack
+        await inOutInfoDatabase.save(inOutInfo)
       }
-      await inOutInfoDatabase.save(inOutInfo)
     })
   }
 
