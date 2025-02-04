@@ -8,6 +8,7 @@ import { NotificationMessage } from "state/notification"
 import { InOutInfo } from "@server/entity/inOutInfo"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
 import Header from "../../../../components/retreat/admin/Header"
+import { RetreatAttend } from "@server/entity/retreatAttend"
 
 function Carpooling() {
   const router = useRouter()
@@ -20,7 +21,9 @@ function Carpooling() {
   const [selectedInOut, setSelectedInOut] = useState<string>(InOutType.IN)
   const [mousePoint, setMousePoint] = useState([0, 0])
   const [isShowUserInfo, setIsShowUserInfo] = useState(false)
-  const [showUserInfo, setShowUserInfo] = useState({} as User)
+  const [showRetreatAttendInfo, setShowRetreatAttendInfo] = useState(
+    {} as RetreatAttend
+  )
 
   function onMouseMove(event: MouseEvent) {
     setMousePoint([event.pageX, event.pageY])
@@ -51,16 +54,16 @@ function Carpooling() {
           backgroundColor: "white",
         }}
       >
-        {showUserInfo.etc}
+        {showRetreatAttendInfo.etc}
         <Stack height="1px" bgcolor="#DDD" my="4px" />
-        {showUserInfo.phone}
+        {showRetreatAttendInfo.user.phone}
       </Stack>
     )
   }
 
   async function setCar(car: InOutInfo) {
     selectedInfo.rideCarInfo = car
-    await post("/admin/set-car", {
+    await post("/retreat/admin/set-car", {
       inOutInfo: selectedInfo,
     })
     fetchData()
@@ -68,7 +71,7 @@ function Carpooling() {
 
   async function setEmptyCar() {
     selectedInfo.rideCarInfo = null
-    await post("/admin/set-car", {
+    await post("/retreat/admin/set-car", {
       inOutInfo: selectedInfo,
     })
     fetchData()
@@ -95,9 +98,9 @@ function Carpooling() {
       })
   }
 
-  function setModal(user: User) {
+  function setModal(retreatAttend: RetreatAttend) {
     setIsShowUserInfo(true)
-    setShowUserInfo(user)
+    setShowRetreatAttendInfo(retreatAttend)
   }
 
   function getRowOfInfo(info: InOutInfo) {
@@ -107,7 +110,7 @@ function Carpooling() {
         direction="column"
         border="1px solid #ACACAC"
         onMouseEnter={() => {
-          setModal(info.retreatAttend.user)
+          setModal(info.retreatAttend)
         }}
         onMouseLeave={() => {
           setIsShowUserInfo(false)
@@ -168,6 +171,7 @@ function Carpooling() {
             border: "1px solid #ACACAC",
             boxShadow: "2px 2px 5px 3px #ACACAC;",
           }}
+          gap="4px"
           onMouseUp={setEmptyCar}
         >
           <Stack textAlign="center">탑승 예정자</Stack>
@@ -209,7 +213,7 @@ function Carpooling() {
                   justifyContent="space-evenly"
                   textAlign="center"
                   onMouseEnter={() => {
-                    setModal(car.retreatAttend.user)
+                    setModal(car.retreatAttend)
                   }}
                   onMouseLeave={() => {
                     setIsShowUserInfo(false)

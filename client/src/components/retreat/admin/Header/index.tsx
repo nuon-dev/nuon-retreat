@@ -52,7 +52,7 @@ export default function Header() {
     icon: string
   }) {
     function goToPage() {
-      push("/retreat/admin/" + pageURL)
+      push("/retreat/admin" + pageURL)
     }
     return (
       <ListItem disablePadding>

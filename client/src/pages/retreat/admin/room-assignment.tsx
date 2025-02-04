@@ -6,6 +6,7 @@ import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { InOutInfo } from "@server/entity/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreatAttend"
+import Header from "components/retreat/admin/Header"
 
 function RoomAssingment() {
   const { push } = useRouter()
@@ -103,7 +104,6 @@ function RoomAssingment() {
             ? "*"
             : ""}
         </Box>
-        <Box>{retreatAttend.roomNumber}</Box>
       </Stack>
     )
   }
@@ -217,92 +217,95 @@ function RoomAssingment() {
   }
 
   return (
-    <Stack ml="12px">
-      <Stack
-        direction="row"
-        mb="12px"
-        justifyContent="space-between"
-        alignContent="center"
-      >
-        <Stack />
-        <Stack direction="row">
-          <Stack fontWeight="600" fontSize="24px" justifyContent="center">
-            {gender === "man" ? "남자" : "여자"} 방배정
+    <Stack>
+      <Header />
+      <Stack ml="12px">
+        <Stack
+          direction="row"
+          mb="12px"
+          justifyContent="space-between"
+          alignContent="center"
+        >
+          <Stack />
+          <Stack direction="row">
+            <Stack fontWeight="600" fontSize="24px" justifyContent="center">
+              {gender === "man" ? "남자" : "여자"} 방배정
+            </Stack>
+            <Button
+              variant="outlined"
+              onClick={() => setSex(gender === "man" ? "woman" : "man")}
+              style={{
+                margin: "16px",
+              }}
+            >
+              성별 변경 하기
+            </Button>
           </Stack>
-          <Button
-            variant="outlined"
-            onClick={() => setSex(gender === "man" ? "woman" : "man")}
+          <Stack
             style={{
-              margin: "16px",
+              backgroundColor: "#FAFAFA",
+            }}
+            margin="8px"
+            padding="8px"
+            borderRadius="8px"
+            justifyContent="center"
+            border="1px solid #ACACAC"
+          >
+            사람의 이름을 눌러 드래그 드롭으로 또는 사람 후 방을 클릭하여 넣으면
+            됩니다.
+            <br />
+            마우스 오버시 사용자의 정보가 나옵니다.
+            <br />
+          </Stack>
+        </Stack>
+        {modal()}
+        <Stack mb="40px" direction="row">
+          <Stack
+            style={{
+              margin: "6px",
+              minHeight: "20px",
+              borderRadius: "8px",
+              boxShadow: "2px 2px 5px 3px #ACACAC;",
+              border: "1px solid #ACACAC",
+              paddingBottom: "20px",
+            }}
+            onMouseUp={() => setRoom(0)}
+            width="160px"
+          >
+            <Box textAlign="center" py="4px">
+              미배정(
+              {
+                unassignedUserList.filter(
+                  (roomNumber) => roomNumber.user.gender === gender
+                ).length
+              }
+              명)
+            </Box>
+            {unassignedUserList
+              .filter((roomNumber) => roomNumber.user.gender === gender)
+              .map((roomNumber) => unassignedUserRow(roomNumber))}
+          </Stack>
+          <Stack
+            style={{
+              padding: "4px",
+              flexWrap: "wrap",
+              margin: "4px",
+              width: "calc(100% - 200px)",
+              overflowWrap: "inherit",
+              display: "flex",
+              flexDirection: "row",
             }}
           >
-            성별 변경 하기
-          </Button>
-        </Stack>
-        <Stack
-          style={{
-            backgroundColor: "#FAFAFA",
-          }}
-          margin="8px"
-          padding="8px"
-          borderRadius="8px"
-          justifyContent="center"
-          border="1px solid #ACACAC"
-        >
-          사람의 이름을 눌러 드래그 드롭으로 또는 사람 후 방을 클릭하여 넣으면
-          됩니다.
-          <br />
-          마우스 오버시 사용자의 정보가 나옵니다.
-          <br />
-        </Stack>
-      </Stack>
-      {modal()}
-      <Stack mb="40px" direction="row">
-        <Stack
-          style={{
-            margin: "6px",
-            minHeight: "20px",
-            borderRadius: "8px",
-            boxShadow: "2px 2px 5px 3px #ACACAC;",
-            border: "1px solid #ACACAC",
-            paddingBottom: "20px",
-          }}
-          onMouseUp={() => setRoom(0)}
-          width="160px"
-        >
-          <Box textAlign="center" py="4px">
-            미배정(
-            {
-              unassignedUserList.filter(
-                (roomNumber) => roomNumber.user.gender === gender
-              ).length
-            }
-            명)
-          </Box>
-          {unassignedUserList
-            .filter((roomNumber) => roomNumber.user.gender === gender)
-            .map((roomNumber) => unassignedUserRow(roomNumber))}
-        </Stack>
-        <Stack
-          style={{
-            padding: "4px",
-            flexWrap: "wrap",
-            margin: "4px",
-            width: "calc(100% - 200px)",
-            overflowWrap: "inherit",
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          {new Array(maxRoomNumber).fill(0).map((_, index) => {
-            const room = roomList[index]
-            if (!room || room.length === 0) {
-              return Room(index + 1, [])
-            } else {
-              return Room(room[0].roomNumber, room)
-            }
-          })}
-          {Room(maxRoomNumber + 1, [])}
+            {new Array(maxRoomNumber).fill(0).map((_, index) => {
+              const room = roomList[index]
+              if (!room || room.length === 0) {
+                return Room(index + 1, [])
+              } else {
+                return Room(room[0].roomNumber, room)
+              }
+            })}
+            {Room(maxRoomNumber + 1, [])}
+          </Stack>
         </Stack>
       </Stack>
     </Stack>

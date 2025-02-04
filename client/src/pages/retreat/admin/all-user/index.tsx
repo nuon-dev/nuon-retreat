@@ -24,9 +24,11 @@ function AllUser() {
   useEffect(() => {
     ;(async () => {
       try {
-        const list = await get("/retreat/admin/get-all-user")
+        const list: RetreatAttend[] = await get("/retreat/admin/get-all-user")
         if (list) {
-          setAllUserList(list)
+          setAllUserList(
+            list.sort((a, b) => a.attendanceNumber - b.attendanceNumber)
+          )
         }
       } catch {
         router.push("/retreat/admin")
@@ -79,7 +81,7 @@ function AllUser() {
           textAlign="center"
           width="100%"
         >
-          전체 사용자 목록
+          전체 접수자 목록
         </Stack>
 
         {/* <Button
@@ -95,6 +97,7 @@ function AllUser() {
       <Table>
         <TableHead>
           <TableRow>
+            <TableCell>접수 번호</TableCell>
             <TableCell>이름</TableCell>
             <TableCell>성별</TableCell>
             <TableCell>나이</TableCell>
@@ -105,6 +108,7 @@ function AllUser() {
         <TableBody>
           {allUserList.map((retreatAttend) => (
             <TableRow>
+              <TableCell>{retreatAttend.attendanceNumber}</TableCell>
               <TableCell>{retreatAttend.user.name}</TableCell>
               <TableCell>
                 {retreatAttend.user.gender === "man" ? "남" : "여"}

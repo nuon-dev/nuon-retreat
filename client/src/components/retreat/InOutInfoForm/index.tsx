@@ -205,7 +205,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
           data.howToMove == HowToMove.rideCar) && (
           <Stack>
             <Stack fontSize="12px" pb="3px" px="12px">
-              출발 장소
+              {data.inOutType === InOutType.IN ? "출발 장소" : "도착 장소"}
             </Stack>
             <Select
               value={data.position}

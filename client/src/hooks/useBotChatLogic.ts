@@ -532,7 +532,7 @@ ${inOutInfos
               type: "my",
               content: "편지 보기",
             })
-            router.push("/retreat/postcard")
+            global.open("/retreat/postcard", "_blank")
           },
         },
       ],

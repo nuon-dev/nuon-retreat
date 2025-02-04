@@ -19,10 +19,18 @@ router.get("/get-retreat-group-formation", async (req, res) => {
     select: {
       id: true,
       etc: true,
+      groupNumber: true,
       inOutInfos: true,
+      user: {
+        id: true,
+        name: true,
+        yearOfBirth: true,
+        gender: true,
+      },
     },
     relations: {
       inOutInfos: true,
+      user: true,
     },
     where: {
       isCanceled: false,

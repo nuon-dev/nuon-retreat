@@ -3,6 +3,7 @@ import { get } from "../../../pages/api"
 import { useEffect, useState } from "react"
 import { InOutInfo } from "@server/entity/inOutInfo"
 import { InOutType } from "@server/entity/types"
+import Header from "components/retreat/admin/Header"
 
 function DashBoard() {
   const [getAttendeeStatus, setAttendeeStatus] = useState(
@@ -23,14 +24,14 @@ function DashBoard() {
   }, [])
 
   async function fetchData() {
-    setAttendeeStatus(await get("/admin/get-attendee-status"))
-    setAttendanceTimeList(await get("/admin/get-attendance-time"))
-    setAgeInfoList(await get("/admin/get-age-info"))
-    setInfoList(await get("/admin/in-out-info"))
+    setAttendeeStatus(await get("/retreat/admin/get-attendee-status"))
+    setAttendanceTimeList(await get("/retreat/admin/get-attendance-time"))
+    setAgeInfoList(await get("/retreat/admin/get-age-info"))
+    setInfoList(await get("/retreat/admin/in-out-info"))
   }
 
   function attendeeStatus() {
-    const targetCount = 350
+    const targetCount = 400
     return (
       <Stack>
         <Box
@@ -107,53 +108,6 @@ function DashBoard() {
               border: "1px solid #ACACAC",
               boxShadow: "2px 2px 5px 3px #ACACAC;",
             }}
-            display="flex"
-            direction="row"
-            justifyContent="center"
-            alignContent="end"
-          >
-            <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">
-              전참
-            </Box>{" "}
-            <Box fontSize="28px" alignSelf="end">
-              {getAttendeeStatus.allAttendUserNumber}명
-            </Box>{" "}
-          </Stack>
-          <Stack
-            margin="8px"
-            fontSize="24px"
-            style={{
-              padding: "20px",
-              borderRadius: "8px",
-              border: "1px solid #ACACAC",
-              boxShadow: "2px 2px 5px 3px #ACACAC;",
-            }}
-            direction="row"
-          >
-            <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">
-              전참율
-            </Box>
-            <Box fontSize="28px" alignSelf="end">
-              {(
-                (getAttendeeStatus.allAttendUserNumber /
-                  getAttendeeStatus.all) *
-                100
-              ).toFixed(1)}
-            </Box>{" "}
-            <Box pb="2px" pl="3px" alignSelf="end" fontSize="20px">
-              {" "}
-              % {}
-            </Box>
-          </Stack>
-          <Stack
-            margin="8px"
-            fontSize="24px"
-            style={{
-              padding: "20px",
-              borderRadius: "8px",
-              border: "1px solid #ACACAC",
-              boxShadow: "2px 2px 5px 3px #ACACAC;",
-            }}
             direction="row"
           >
             <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">
@@ -203,7 +157,7 @@ function DashBoard() {
             }}
           >
             <Box fontSize="12px" mr="4px">
-              주일 수련회장 출발 인원
+              주일 수련회장 버스 출발 인원
             </Box>{" "}
             {getAttendeeStatus.leaveTogether}명
           </Stack>{" "}
@@ -219,7 +173,7 @@ function DashBoard() {
             }}
           >
             <Box fontSize="12px" mr="4px">
-              목요일 교회 출발 인원
+              금요일 교회 버스 출발 인원
             </Box>{" "}
             {getAttendeeStatus.goTogether}명
           </Stack>
@@ -243,28 +197,13 @@ function DashBoard() {
             ).toFixed(1)}
             %
           </Stack>{" "}
-          <Stack
-            margin="8px"
-            fontSize="24px"
-            direction="row"
-            style={{
-              padding: "20px",
-              borderRadius: "8px",
-              border: "1px solid #ACACAC",
-              boxShadow: "2px 2px 5px 3px #ACACAC;",
-            }}
-          >
-            <Box fontSize="12px" mr="4px">
-              금요일 출근 예정자{" "}
-            </Box>{" "}
-            {getAttendeeStatus.countOfIsOutAtThursday}명
-          </Stack>
         </Box>
       </Stack>
     )
   }
 
   function attendanceTime() {
+    if (!windowSize.width || !windowSize.height) return null
     const format = (time: Date) => `${time.getMonth() + 1}.${time.getDate()}`
 
     const elementSize = {
@@ -306,6 +245,7 @@ function DashBoard() {
           />
           {xAxis.map((xValue, index) => (
             <text
+              key={index}
               x={(elementSize.width / xAxis.length) * index}
               y={elementSize.height - STEP}
               fontSize="12px"
@@ -313,29 +253,38 @@ function DashBoard() {
               {xValue}
             </text>
           ))}
-          {xAxis.map((xValue, index) => (
-            <rect
-              x={(elementSize.width / xAxis.length) * index + 3}
-              y={elementSize.height - timeData[xValue] * WEIGHT - 20}
-              width="10"
-              height={timeData[xValue] * WEIGHT}
-            />
-          ))}
-          {xAxis.map((xValue, index) => (
-            <text
-              x={(elementSize.width / xAxis.length) * index + 5}
-              y={elementSize.height - timeData[xValue] * WEIGHT - 25}
-              fontSize="12px"
-            >
-              {timeData[xValue]}
-            </text>
-          ))}
+          {xAxis.map(
+            (xValue, index) =>
+              timeData[xValue] && (
+                <rect
+                  key={index}
+                  x={(elementSize.width / xAxis.length) * index + 3}
+                  y={elementSize.height - timeData[xValue] * WEIGHT - 20}
+                  width="10"
+                  height={timeData[xValue] * WEIGHT}
+                />
+              )
+          )}
+          {xAxis.map(
+            (xValue, index) =>
+              timeData[xValue] && (
+                <text
+                  key={index}
+                  x={(elementSize.width / xAxis.length) * index + 5}
+                  y={elementSize.height - timeData[xValue] * WEIGHT - 25}
+                  fontSize="12px"
+                >
+                  {timeData[xValue]}
+                </text>
+              )
+          )}
         </svg>
       </Stack>
     )
   }
 
   function ageInfo() {
+    if (!windowSize.width || !windowSize.height) return null
     const elementSize = {
       width: windowSize.width - 32,
       height: windowSize.height / 2 - 20,
@@ -360,6 +309,7 @@ function DashBoard() {
           />
           {xAxis.map((xValue, index) => (
             <text
+              key={index}
               x={(elementSize.width / xAxis.length) * index}
               y={elementSize.height - STEP}
               fontSize="12px"
@@ -369,6 +319,7 @@ function DashBoard() {
           ))}
           {xAxis.map((xValue, index) => (
             <rect
+              key={index}
               x={(elementSize.width / xAxis.length) * index + 3}
               y={elementSize.height - getAgeInfoList[xValue] * WEIGHT - 20}
               width="10"
@@ -377,6 +328,7 @@ function DashBoard() {
           ))}
           {xAxis.map((xValue, index) => (
             <text
+              key={index}
               x={(elementSize.width / xAxis.length) * index + 5}
               y={elementSize.height - getAgeInfoList[xValue] * WEIGHT - 25}
               fontSize="12px"
@@ -435,7 +387,7 @@ function DashBoard() {
     const timeList = [12, 15, 20, 24]
     return (
       <Stack>
-        시간별 참석자 수
+        시간별 참석자 수 (교회버스 + 카풀 정보 기반, 카풀 불가 자차 제외)
         <Stack>
           {timeList.map((time) => {
             const inCount = getInfoCount(
@@ -450,8 +402,8 @@ function DashBoard() {
                 Number.parseInt(info.time.toString()) <= time
             )
             return (
-              <Stack>
-                첫째날 (목요일) {time}시 예상 참석자 수 :{" "}
+              <Stack key={time}>
+                첫째날 (금요일) {time}시 예상 참석자 수 :{" "}
                 {getAttendeeStatus.goTogether + inCount - outCount}
               </Stack>
             )
@@ -471,30 +423,9 @@ function DashBoard() {
                 Number.parseInt(info.time.toString()) <= time
             )
             return (
-              <Stack>
-                둘째날 (금요일) {time}시 예상 참석자 수 :{" "}
+              <Stack key={time}>
+                둘째날 (토요일) {time}시 예상 참석자 수 :{" "}
                 {firstDayAttendResult + inCount - outCount}
-              </Stack>
-            )
-          })}
-        </Stack>{" "}
-        <Stack>
-          {timeList.map((time) => {
-            const inCount = getInfoCount(
-              (info) =>
-                conditionFilter(info, 2, InOutType.IN) &&
-                Number.parseInt(info.time.toString()) <= time
-            )
-
-            const outCount = getInfoCount(
-              (info) =>
-                conditionFilter(info, 2, InOutType.OUT) &&
-                Number.parseInt(info.time.toString()) <= time
-            )
-            return (
-              <Stack>
-                셋째날 (토요일) {time}시 예상 참석자 수 :{" "}
-                {secondDayAttendResult + inCount - outCount}
               </Stack>
             )
           })}
@@ -505,19 +436,20 @@ function DashBoard() {
   }
 
   return (
-    <Stack
-      width="100%"
-      height="100%"
-      style={{
-        padding: "12px",
-      }}
-    >
-      <Stack direction="row" height="50%">
-        <Stack>{attendeeStatus()}</Stack>
+    <Stack width="100%" height="100%">
+      <Header />
+      <Stack
+        style={{
+          padding: "12px",
+        }}
+      >
+        <Stack direction="row" height="50%">
+          <Stack>{attendeeStatus()}</Stack>
+        </Stack>
+        <Stack mt="12px">{attendTimeStatus()}</Stack>
+        <Stack mt="12px">{attendanceTime()}</Stack>
+        <Stack mt="12px">{ageInfo()}</Stack>
       </Stack>
-      <Stack mt="12px">{attendTimeStatus()}</Stack>
-      <Stack mt="12px">{attendanceTime()}</Stack>
-      <Stack mt="12px">{ageInfo()}</Stack>
     </Stack>
   )
 }

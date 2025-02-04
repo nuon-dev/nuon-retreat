@@ -18,7 +18,7 @@ function InoutInfo() {
   useEffect(() => {
     ;(async () => {
       try {
-        const list = await get("/admin/get-all-user")
+        const list = await get("/retreat/admin/get-all-user")
         if (list) {
           setAllUserList(list)
         }
@@ -27,7 +27,7 @@ function InoutInfo() {
         setNotificationMessage("권한이 없습니다.")
         return
       }
-      get("/admin/get-car-info")
+      get("/retreat/admin/get-car-info")
         .then((data: InOutInfo[]) => {
           setAllInoutInfo(data)
         })

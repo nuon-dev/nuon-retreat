@@ -20,7 +20,7 @@ export class RetreatAttend {
   @JoinColumn()
   user: User
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   groupNumber: number
 
   @Column({ nullable: true })

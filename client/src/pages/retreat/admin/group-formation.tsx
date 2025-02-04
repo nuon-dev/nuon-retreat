@@ -6,6 +6,7 @@ import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
 import { InOutInfo } from "@server/entity/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreatAttend"
+import Header from "components/retreat/admin/Header"
 
 function GroupFormation() {
   const { push } = useRouter()
@@ -38,7 +39,7 @@ function GroupFormation() {
   }, [])
 
   function fetchData() {
-    get("/admin/get-retreat-group-formation")
+    get("/retreat/admin/get-retreat-group-formation")
       .then((response: Array<RetreatAttend>) => {
         const unassignedUserList = response
           .filter((user) => user.groupNumber === 0)
@@ -61,6 +62,7 @@ function GroupFormation() {
         const maxNumber = Math.max(
           ...response.map((retreatAttend) => retreatAttend.groupNumber)
         )
+        console.log(maxNumber)
         setMaxGroupNumber(maxNumber)
       })
       .catch(() => {
@@ -90,13 +92,12 @@ function GroupFormation() {
         px="4px"
       >
         <Box>
-          {retreatAttend.user.name}({retreatAttend.user.gender})
+          {retreatAttend.user.name}({retreatAttend.user.yearOfBirth})
           {retreatAttend.user.etc ||
           (retreatAttend.inOutInfos && retreatAttend.inOutInfos.length) > 0
             ? "*"
             : ""}
         </Box>
-        <Box>{retreatAttend.groupNumber}</Box>
       </Stack>
     )
   }
@@ -204,46 +205,49 @@ function GroupFormation() {
   }
 
   return (
-    <Stack direction="row">
-      {modal()}
-      <Stack
-        style={{
-          margin: "6px",
-          minHeight: "20px",
-          borderRadius: "8px",
-          paddingBottom: "20px",
-          boxShadow: "2px 2px 5px 3px #ACACAC;",
-          border: "1px solid #ACACAC",
-        }}
-        onMouseUp={() => setGroup(0)}
-        width="160px"
-      >
-        <Box textAlign="center" py="4px">
-          미배정({unassignedUserList.length}명)
-        </Box>
-        {unassignedUserList.map((user) => unassignedUserRow(user))}
-      </Stack>
-      <Stack
-        style={{
-          flexWrap: "wrap",
-          margin: "4px",
-          width: "calc(100% - 200px)",
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        {new Array(maxGroupNumber).fill(0).map((_, index) => {
-          const group = groupList[index]
-          if (!group || group.length === 0) {
-            return Group(index + 1, [])
-          } else {
-            return Group(
-              group[0].groupNumber,
-              group.sort((a, b) => a.user.yearOfBirth - b.user.yearOfBirth)
-            )
-          }
-        })}
-        {Group(maxGroupNumber + 1, [])}
+    <Stack>
+      <Header />
+      <Stack direction="row">
+        {modal()}
+        <Stack
+          style={{
+            margin: "6px",
+            minHeight: "20px",
+            borderRadius: "8px",
+            paddingBottom: "20px",
+            boxShadow: "2px 2px 5px 3px #ACACAC;",
+            border: "1px solid #ACACAC",
+          }}
+          onMouseUp={() => setGroup(0)}
+          width="160px"
+        >
+          <Box textAlign="center" py="4px">
+            미배정({unassignedUserList.length}명)
+          </Box>
+          {unassignedUserList.map((user) => unassignedUserRow(user))}
+        </Stack>
+        <Stack
+          style={{
+            flexWrap: "wrap",
+            margin: "4px",
+            width: "calc(100% - 200px)",
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          {new Array(maxGroupNumber).fill(0).map((_, index) => {
+            const group = groupList[index]
+            if (!group || group.length === 0) {
+              return Group(index + 1, [])
+            } else {
+              return Group(
+                group[0].groupNumber,
+                group.sort((a, b) => a.user.yearOfBirth - b.user.yearOfBirth)
+              )
+            }
+          })}
+          {Group(maxGroupNumber + 1, [])}
+        </Stack>
       </Stack>
     </Stack>
   )

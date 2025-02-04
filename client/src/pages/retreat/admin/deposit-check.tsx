@@ -14,6 +14,7 @@ import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
 import { RetreatAttend } from "@server/entity/retreatAttend"
 import { Deposit } from "@server/entity/types"
+import Header from "components/retreat/admin/Header"
 
 function DepositCheck() {
   const { push } = useRouter()
@@ -86,7 +87,8 @@ function DepositCheck() {
   }, [isShowUnpaid])
 
   return (
-    <Stack padding="4px" alignItems="center">
+    <Stack alignItems="center">
+      <Header />
       <Stack
         alignItems="center"
         justifyContent="space-between"

@@ -30,7 +30,7 @@ function MyApp({ Component, pageProps }: any) {
         <title>{title}</title>
         <meta name="referrer" content="same-origin" />
         <meta
-          http-equiv="Content-Security-Policy"
+          httpEquiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
         />
         <meta
@@ -57,7 +57,11 @@ function MyApp({ Component, pageProps }: any) {
           }}
         />
         <Notification />
-        <Stack width="100%" height="100%" fontFamily="PretendardVariable">
+        <Stack
+          width="100%"
+          height="100%"
+          //fontFamily="PretendardVariable" // 편지 로딩 시간 줄이기 위해, 사용하지 않는 폰트 임시 주석
+        >
           {isKakaoBrowser ? (
             <div>카카오톡 브라우저에서는 사용할 수 없습니다.</div>
           ) : (
