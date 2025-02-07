@@ -143,6 +143,9 @@ export default function Index() {
             width="30"
             height="30"
             alt=""
+            onClick={() =>
+              (global.location.href = "https://linktr.ee/SWJICH_YOUNG")
+            }
             style={{
               transform: "rotate(90deg)",
             }}
@@ -221,6 +224,22 @@ function DrawerContent() {
 
   function goToInstagram() {
     global.open("https://www.instagram.com/suwonjeilch_youngpeople")
+  }
+
+  function goToNounYoutube() {
+    global.open("https://www.youtube.com/@SWJICH_YOUNG")
+  }
+
+  function goToPlaylist1() {
+    global.open(
+      "https://www.youtube.com/watch?v=7-ApZ-STrYA&list=PLdxGTKLutWR4BLQ5IAUT1RAgbtsNCrS-b"
+    )
+  }
+
+  function goToPlaylist2() {
+    global.open(
+      "https://www.youtube.com/watch?v=nOsis5-QZq4&list=PLdxGTKLutWR7_VquIoHI18P_JJutBe7tP"
+    )
   }
 
   const { getUserDataFromToken } = useUserData()
@@ -304,7 +323,7 @@ function DrawerContent() {
           <Image src="/icon/free-icon-link.png" width="20" height="20" alt="" />
           링크
         </Stack>
-        <Stack ml="12px">
+        <Stack ml="12px" gap="8px">
           <Stack onClick={goToInstagram} direction="row" gap="8px">
             <Image
               src="/icon/free-icon-instagram.png"
@@ -313,6 +332,33 @@ function DrawerContent() {
               alt=""
             />
             인스타그램
+          </Stack>
+          <Stack onClick={goToNounYoutube} direction="row" gap="8px">
+            <Image
+              src="/icon/free-icon-youtube-logo.png"
+              width="20"
+              height="20"
+              alt=""
+            />
+            새벽이슬 유튜브
+          </Stack>
+          <Stack onClick={goToPlaylist1} direction="row" gap="8px">
+            <Image
+              src="/icon/free-icon-music-note-quaver.png"
+              width="20"
+              height="20"
+              alt=""
+            />
+            2025 겨울수련회 플리_day1
+          </Stack>
+          <Stack onClick={goToPlaylist2} direction="row" gap="8px">
+            <Image
+              src="/icon/free-icon-music-note-quaver.png"
+              width="20"
+              height="20"
+              alt=""
+            />
+            2025 겨울수련회 플리_day2
           </Stack>
         </Stack>
       </Stack>
