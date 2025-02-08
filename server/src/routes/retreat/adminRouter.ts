@@ -66,7 +66,6 @@ router.post("/get-user-permission-info", async (req, res) => {
 })
 
 router.get("/get-all-user", async (req, res) => {
-  const token = req.header("token")
   const hasPermission = await hasPermissionFromReq(req, PermissionType.userList)
 
   if (!hasPermission) {
@@ -75,6 +74,20 @@ router.get("/get-all-user", async (req, res) => {
   }
 
   const userList = await retreatAttendDatabase.find({
+    select: {
+      id: true,
+      howToBack: true,
+      howToGo: true,
+      memo: true,
+      etc: true,
+      inOutInfos: true,
+      user: {
+        name: true,
+        phone: true,
+        yearOfBirth: true,
+        gender: true,
+      },
+    },
     where: {
       isCanceled: false,
     },

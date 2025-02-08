@@ -19,7 +19,6 @@ import { RetreatAttend } from "@server/entity/retreatAttend"
 
 interface IProps {
   retreatAttend: RetreatAttend | undefined
-  inOutData: Array<InOutInfo>
   reloadFunction: () => void
   setEditMode: Dispatch<SetStateAction<boolean>>
 }
@@ -34,7 +33,7 @@ export default function UserInformationForm(props: IProps) {
 
   useEffect(() => {
     setRetreatAttend(props.retreatAttend)
-    setInOutData(props.inOutData || ({} as Array<InOutInfo>))
+    setInOutData(props.retreatAttend?.inOutInfos || [])
   }, [props.retreatAttend])
 
   const changeInformation = (type: string, data: string) => {
@@ -53,26 +52,15 @@ export default function UserInformationForm(props: IProps) {
       setNotificationMessage("이동 방법을 선택해주세요.")
       return
     }
-    if (
-      retreatAttend.howToGo !== HowToMove.together &&
-      inOutData.length === 0
-    ) {
-      setNotificationMessage("이동 방법을 추가해주세요.")
-      return
-    }
-    if (!retreatAttend.howToBack) {
-      setNotificationMessage("이동 방법을 선택해주세요.")
-      return
-    }
 
-    const url = "/auth/edit-user"
+    const url = "/retreat/admin/edit-retreat-attend"
 
     const saveResult = await post(url, retreatAttend)
     let attendTimeResult
     if (inOutData.length > 0) {
-      attendTimeResult = await post("/info/save-attend-time", {
-        userId: saveResult.userId,
-        inOutData,
+      attendTimeResult = await post("/retreat/admin/edit-in-out-info", {
+        retreatAttendId: retreatAttend.id,
+        inOutInfos: inOutData,
       })
     }
 
@@ -83,13 +71,9 @@ export default function UserInformationForm(props: IProps) {
       return
     }
 
-    if (router.pathname !== "/admin/edit-user-data") {
-      localStorage.setItem("token", saveResult.token)
-    }
-
     if (attendTimeResult && attendTimeResult.result !== "success") {
       setNotificationMessage(
-        "참가 일정 내역 저장중에 문제가 발생하였습니다.\n시간, 장소. 이동 방법을 모두 입력해주세요."
+        "카풀 정보 저장중에 문제가 발생하였습니다.\n시간, 장소. 이동 방법을 모두 입력해주세요."
       )
       return
     }
@@ -106,97 +90,67 @@ export default function UserInformationForm(props: IProps) {
     return <Stack margin="2px" />
   }
 
+  if (!retreatAttend) {
+    return <Stack p="12px">위에서 수정할 사람을 선택해 주세요.</Stack>
+  }
+
   return (
-    <Stack padding="6px" minWidth="340px" gap="4px" color="white">
-      <Stack>
-        {getInputGap()}
-        <Stack>이름</Stack>
-        {getLabelGap()}
-        <TextField
-          fullWidth={true}
-          className="TextField"
-          value={retreatAttend?.user.name}
-          placeholder="이름을 입력하세요."
-          disabled
-        />
+    <Stack padding="6px" minWidth="340px" gap="12px">
+      <Stack direction="row" gap="12px">
+        <Stack width="200px">이름</Stack>
+        <Stack>{retreatAttend?.user.name}</Stack>
       </Stack>
-      {getInputGap()}
-      <Stack>
-        <Stack width="80px" justifyContent="center">
+      <Stack direction="row" gap="12px">
+        <Stack width="200px" justifyContent="center">
           전화번호
         </Stack>
-        {getLabelGap()}
-        <TextField
-          fullWidth={true}
-          className="TextField"
-          value={retreatAttend?.user.phone}
-          placeholder="전화번호를 입력하세요."
-          disabled
-        />
+        <Stack>{retreatAttend?.user.phone}</Stack>
       </Stack>
-      {getInputGap()}
-      <Stack>
+      <Stack direction="row" gap="12px">
         <Stack width="200px" justifyContent="center">
           출생년도 (빠른은 기수 기준)
         </Stack>
-        {getLabelGap()}
-        {retreatAttend && (
-          <Select
-            fullWidth={true}
-            className="Select"
-            key={retreatAttend.user.yearOfBirth}
-            value={retreatAttend.user.yearOfBirth}
-            defaultValue={retreatAttend.user.yearOfBirth}
-            disabled
-          >
-            {new Array(45).fill(0).map((_, index) => (
-              <MenuItem value={new Date().getFullYear() - index - 19}>
-                {new Date().getFullYear() - index - 19}
-              </MenuItem>
-            ))}
-          </Select>
-        )}
+        <Stack>{retreatAttend?.user.yearOfBirth}</Stack>
       </Stack>
-      {getInputGap()}
-      <Stack>
-        <Stack width="80px" justifyContent="center">
+      <Stack direction="row" gap="12px">
+        <Stack width="200px" justifyContent="center">
           성별
         </Stack>
-        {getLabelGap()}
-        <FormControl fullWidth={true}>
-          {retreatAttend?.user.kakaoId && (
-            <Select
-              value={retreatAttend.user.gender}
-              className="Select"
-              defaultValue={retreatAttend.user.gender}
-              placeholder="성별을 선택하세요."
-              disabled
-            >
-              <MenuItem value={"man"}>남</MenuItem>
-              <MenuItem value={"woman"}>여</MenuItem>
-            </Select>
-          )}
-        </FormControl>
+        <Stack>{retreatAttend?.user.gender === "man" ? "남" : "여"}</Stack>
       </Stack>
-      {getInputGap()}
-      <Stack width="50%">
-        <Stack width="80px" justifyContent="center">
-          다락방
+      <Stack direction="row" gap="12px">
+        <Stack width="200px" justifyContent="center">
+          기타 사항
         </Stack>
-        {getLabelGap()}
-        {retreatAttend?.user.kakaoId && (
-          <TextField
-            fullWidth={true}
-            className="TextField"
-            value={retreatAttend.user.community?.name}
-            placeholder="전화번호를 입력하세요."
-            disabled
-          />
-        )}
+        <Stack>{retreatAttend?.etc}</Stack>
       </Stack>
       {getInputGap()}
       <Stack>
-        {getInputGap()}
+        <Stack minWidth="100px" justifyContent="center">
+          주일날 교회로 오는 방법
+        </Stack>
+        {getLabelGap()}
+        <Select
+          fullWidth={true}
+          className="Select"
+          key={retreatAttend?.howToBack}
+          defaultValue={retreatAttend?.howToBack}
+          value={retreatAttend?.howToBack}
+          onChange={(e) =>
+            changeInformation("howToBack", e.target.value.toString())
+          }
+        >
+          <MenuItem value={HowToMove.together}>교회 버스로</MenuItem>
+          <MenuItem value={HowToMove.driveCarWithPerson}>
+            자차 (카풀 가능)
+          </MenuItem>
+          <MenuItem value={HowToMove.rideCar}>카풀 신청</MenuItem>
+          <MenuItem value={HowToMove.goAlone}>대중교통 (여주역)</MenuItem>
+          <MenuItem value={HowToMove.driveCarAlone}>자차 (카풀 불가)</MenuItem>
+          <MenuItem value={HowToMove.etc}>기타</MenuItem>
+        </Select>
+      </Stack>
+      <Stack>
         <Stack minWidth="100px" justifyContent="center">
           수련회장 이동 방법
         </Stack>
@@ -216,11 +170,9 @@ export default function UserInformationForm(props: IProps) {
         >
           <MenuItem value={HowToMove.together}>교회 버스로</MenuItem>
           <MenuItem value={HowToMove.driveCarWithPerson}>
-            자차 (카풀 가능, 이동 방법을 추가해주세요)
+            자차 (카풀 가능)
           </MenuItem>
-          <MenuItem value={HowToMove.rideCar}>
-            카풀 신청 (이동 방법을 추가해주세요)
-          </MenuItem>
+          <MenuItem value={HowToMove.rideCar}>카풀 신청</MenuItem>
           <MenuItem value={HowToMove.goAlone}>대중교통 (여주역)</MenuItem>
           <MenuItem value={HowToMove.driveCarAlone}>자차 (카풀 불가)</MenuItem>
           <MenuItem value={HowToMove.etc}>기타 (하단에 메모)</MenuItem>
@@ -229,57 +181,29 @@ export default function UserInformationForm(props: IProps) {
           <InOutFrom setInOutData={setInOutData} inOutData={inOutData} />
         </Stack>
       </Stack>
-      {getInputGap()}
       <Stack>
-        {getInputGap()}
-        <Stack minWidth="100px" justifyContent="center">
-          주일날 교회로 오는 방법
-        </Stack>
-        {getLabelGap()}
-        <Select
-          fullWidth={true}
-          className="Select"
-          key={retreatAttend?.howToBack}
-          defaultValue={retreatAttend?.howToBack}
-          value={retreatAttend?.howToBack}
-          onChange={(e) =>
-            changeInformation("howToBack", e.target.value.toString())
-          }
-        >
-          <MenuItem value={HowToMove.together.toString()}>교회 버스로</MenuItem>
-          <MenuItem value={HowToMove.etc.toString()}>
-            기타 (자차 및 카풀)
-          </MenuItem>
-        </Select>
-      </Stack>
-      {getInputGap()}
-      <Stack>
-        <Stack width="80px" justifyContent="center">
-          기타 사항
+        <Stack width="200px" justifyContent="center">
+          메모 (준비팀 전용)
         </Stack>
         {getLabelGap()}
         <TextField
           fullWidth={true}
           className="TextField"
-          key={retreatAttend?.user.kakaoId}
-          value={retreatAttend?.user.etc}
-          placeholder="기타 사항이 있을 경우 입력하세요."
-          onChange={(e) => changeInformation("etc", e.target.value)}
+          key={retreatAttend?.id}
+          value={retreatAttend?.memo}
+          placeholder="메모 사항이 있을 경우 입력하세요."
+          onChange={(e) => changeInformation("memo", e.target.value)}
         />
       </Stack>
-      {getInputGap()}
-
       <Stack marginTop="10px">
         <Button
           variant="contained"
           onClick={submit}
           style={{
             fontSize: "18px",
-            backgroundColor: "white",
-            color: "#1d321a",
           }}
         >
-          신청 완료하기
+          접수 내용 수정하기
         </Button>
       </Stack>
     </Stack>

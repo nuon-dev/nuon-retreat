@@ -89,11 +89,18 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
               onChangeInformation("time", e.target.value.toString(), index)
             }
           >
-            {data.day !== Days.firstDay && <MenuItem value={9}>09시</MenuItem>}
-            <MenuItem value={13}>13시</MenuItem>
-            <MenuItem value={20}>20시</MenuItem>
+            {new Array((24 - 7) * 2).fill(0).map((_, i) => {
+              const isOdd = i % 2 === 0
+              const time = Math.floor(i / 2) + 7
+              const timeNumber = time * 100 + (isOdd ? 30 : 0)
+              return (
+                <MenuItem key={i} value={`${time}:${isOdd ? "00" : "30"}`}>
+                  {time}시 {isOdd ? "00" : "30"}분
+                </MenuItem>
+              )
+            })}
             {data.inOutType === InOutType.OUT && (
-              <MenuItem value={24}>집회 후</MenuItem>
+              <MenuItem value={"24:00"}>집회 후</MenuItem>
             )}
           </Select>
         </Stack>

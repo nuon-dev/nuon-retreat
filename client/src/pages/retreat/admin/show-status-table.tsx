@@ -20,7 +20,7 @@ export default function ShowStatusTable() {
 
   async function fetchUserData() {
     try {
-      const list: RetreatAttend[] = await get("/admin/get-all-user")
+      const list: RetreatAttend[] = await get("/retreat/admin/get-all-user")
       if (list) {
         setAllUserList(
           list.sort((a, b) => a.user.yearOfBirth - b.user.yearOfBirth)

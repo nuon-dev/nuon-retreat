@@ -1,4 +1,4 @@
-import { get, post } from "../../../../pages/api"
+import { get, post } from "../../api"
 import { useEffect, useState } from "react"
 import { Box, MenuItem, Select, Stack } from "@mui/material"
 import { User } from "@server/entity/user"
@@ -7,7 +7,7 @@ import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { InOutInfo } from "@server/entity/inOutInfo"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
-import Header from "../../../../components/retreat/admin/Header"
+import Header from "../../../components/retreat/admin/Header"
 import { RetreatAttend } from "@server/entity/retreatAttend"
 
 function Carpooling() {
@@ -54,7 +54,9 @@ function Carpooling() {
           backgroundColor: "white",
         }}
       >
-        {showRetreatAttendInfo.etc}
+        접수자: {showRetreatAttendInfo.etc}
+        <Stack height="1px" bgcolor="#DDD" my="4px" />
+        준비팀: {showRetreatAttendInfo.memo}
         <Stack height="1px" bgcolor="#DDD" my="4px" />
         {showRetreatAttendInfo.user.phone}
       </Stack>
@@ -109,6 +111,7 @@ function Carpooling() {
         borderRadius="4px"
         direction="column"
         border="1px solid #ACACAC"
+        key={info.id}
         onMouseEnter={() => {
           setModal(info.retreatAttend)
         }}
@@ -207,18 +210,19 @@ function Carpooling() {
                   border: "1px solid #ACACAC",
                   boxShadow: "2px 2px 5px 3px #ACACAC;",
                 }}
+                key={car.id}
                 onMouseUp={() => setCar(car)}
               >
                 <Stack
-                  justifyContent="space-evenly"
                   textAlign="center"
+                  direction="column"
+                  justifyContent="space-evenly"
                   onMouseEnter={() => {
                     setModal(car.retreatAttend)
                   }}
                   onMouseLeave={() => {
                     setIsShowUserInfo(false)
                   }}
-                  direction="column"
                 >
                   <Stack direction="row" justifyContent="space-evenly">
                     <Box>{car.retreatAttend.user.name}의 차</Box>
@@ -227,7 +231,9 @@ function Carpooling() {
                   </Stack>
                 </Stack>
                 <Box height="1px" bgcolor="#DDD" my="4px" />
-                {car.userInTheCar.map((info) => getRowOfInfo(info))}
+                <Stack gap="4px">
+                  {car.userInTheCar.map((info) => getRowOfInfo(info))}
+                </Stack>
               </Stack>
             ))}
         </Stack>

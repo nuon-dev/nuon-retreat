@@ -7,14 +7,14 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material"
-import { get } from "../../../api"
+import { get } from "../../api"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { useRouter } from "next/router"
 import { HowToMove } from "@server/entity/types"
 import { InOutInfo } from "@server/entity/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreatAttend"
-import Header from "../../../../components/retreat/admin/Header"
+import Header from "../../../components/retreat/admin/Header"
 
 function AllUser() {
   const router = useRouter()
