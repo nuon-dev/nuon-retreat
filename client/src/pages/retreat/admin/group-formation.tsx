@@ -62,7 +62,6 @@ function GroupFormation() {
         const maxNumber = Math.max(
           ...response.map((retreatAttend) => retreatAttend.groupNumber)
         )
-        console.log(maxNumber)
         setMaxGroupNumber(maxNumber)
       })
       .catch(() => {

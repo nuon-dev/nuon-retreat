@@ -33,7 +33,6 @@ function DepositCheck() {
     retreatAttendId: number,
     isDeposited: Deposit
   ) {
-    console.log(retreatAttendId, isDeposited)
     const result = await post("/retreat/admin/deposit-processing", {
       retreatAttendId,
       isDeposited,

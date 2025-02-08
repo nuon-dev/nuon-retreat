@@ -52,8 +52,6 @@ export default function useRetreatData() {
       return EditContent.howToBack
     }
 
-    console.log(inOutInfoList)
-
     let needEditInOutInfo = false
 
     if (
