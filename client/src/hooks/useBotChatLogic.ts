@@ -458,6 +458,10 @@ export default function useBotChatLogic({ addChat }: IPops) {
       // })
       // return
     }
+    sayBotAutoText = true
+    setTimeout(() => {
+      sayBotAutoText = false
+    }, 2000)
     addChat({
       type: "bot",
       content: `[2025 겨울 수련회 접수 확인]
@@ -513,7 +517,6 @@ ${inOutInfos
             post("/retreat/complete", {})
             savedUserInformation()
             ShowPostcard()
-            whatDoYouWantToDo()
           },
         },
       ],
@@ -532,6 +535,7 @@ ${inOutInfos
               type: "my",
               content: "편지 보기",
             })
+            whatDoYouWantToDo()
             global.open("/retreat/postcard", "_blank")
           },
         },

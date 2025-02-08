@@ -23,9 +23,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
   function onClickRemove(targetInfoIndex: number) {
     const deleteInfo = inOutData[targetInfoIndex]
     if (deleteInfo && deleteInfo.id) {
-      post("/info/delete-attend-time", {
-        inOutInfo: deleteInfo,
-      })
+      post("/retreat/admin/delete-in-out-info", deleteInfo)
     }
     inOutData.splice(targetInfoIndex, 1)
     setInOutData([...inOutData])

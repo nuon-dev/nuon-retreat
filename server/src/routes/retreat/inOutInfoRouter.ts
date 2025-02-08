@@ -52,7 +52,34 @@ router.post("/edit-information", async (req, res) => {
 })
 
 router.post("/delete-attend-time", async (req, res) => {
-  const inOutInfo = req.body
+  const inOutInfo = req.body as InOutInfo
+  const foundUser = await getUserFromToken(req)
+
+  const foundInoutInfo = await inOutInfoDatabase.findOne({
+    where: {
+      id: inOutInfo.id,
+    },
+    relations: {
+      retreatAttend: {
+        user: true,
+      },
+      userInTheCar: true,
+    },
+  })
+
+  if (foundUser.id !== foundInoutInfo.retreatAttend.user.id) {
+    res.status(401).send({ result: "fail" })
+    return
+  }
+
+  const deleteUserInTheCar = foundInoutInfo.userInTheCar.map(
+    async (userInTheCar) => {
+      userInTheCar.rideCarInfo = null
+      return await inOutInfoDatabase.save(userInTheCar)
+    }
+  )
+
+  await Promise.all(deleteUserInTheCar)
 
   await inOutInfoDatabase.remove(inOutInfo)
   res.send({ result: "success" })

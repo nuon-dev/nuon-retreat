@@ -129,4 +129,48 @@ router.post("/delete-user", async (req, res) => {
   res.send({ result: "success" })
 })
 
+router.post("/delete-in-out-info", async (req, res) => {
+  const hasPermission = await hasPermissionFromReq(
+    req,
+    PermissionType.editUserData
+  )
+  if (!hasPermission) {
+    res.sendStatus(401)
+    return
+  }
+
+  const inOutInfo = req.body as InOutInfo
+
+  if (!inOutInfo.id) {
+    res.send({ result: "fail" })
+    return
+  }
+
+  const foundInoutInfo = await inOutInfoDatabase.findOne({
+    where: {
+      id: inOutInfo.id,
+    },
+    relations: {
+      userInTheCar: true,
+    },
+  })
+
+  if (!foundInoutInfo) {
+    res.send({ result: "fail" })
+    return
+  }
+
+  const updateUserInTheCar = foundInoutInfo.userInTheCar.map(
+    async (userInTheCar) => {
+      userInTheCar.rideCarInfo = null
+      await inOutInfoDatabase.save(userInTheCar)
+    }
+  )
+
+  await Promise.all(updateUserInTheCar)
+
+  await inOutInfoDatabase.remove(inOutInfo)
+  res.send({ result: "success" })
+})
+
 export default router

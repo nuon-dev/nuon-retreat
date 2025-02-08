@@ -100,11 +100,26 @@ router.post("/edit-information", async (req, res) => {
     retreatAttend.howToGo === HowToMove.together ||
     retreatAttend.howToGo === HowToMove.driveCarAlone
   ) {
-    await inOutInfoDatabase.delete({
-      retreatAttend: retreatAttend,
-      autoCreated: true,
-      inOutType: InOutType.IN,
+    const autoCreatedInOutInfo = await inOutInfoDatabase.findOne({
+      where: {
+        retreatAttend: retreatAttend,
+        autoCreated: true,
+        inOutType: InOutType.IN,
+      },
+      relations: {
+        userInTheCar: true,
+      },
     })
+    if (autoCreatedInOutInfo) {
+      const deleteUserInTheCar = autoCreatedInOutInfo.userInTheCar.map(
+        async (userInTheCar) => {
+          userInTheCar.rideCarInfo = null
+          await inOutInfoDatabase.save(userInTheCar)
+        }
+      )
+      await Promise.all(deleteUserInTheCar)
+      await inOutInfoDatabase.remove(autoCreatedInOutInfo)
+    }
   } else {
     foundRetreatAttend.inOutInfos.forEach(async (inOutInfo) => {
       if (!inOutInfo.autoCreated) {
@@ -121,11 +136,26 @@ router.post("/edit-information", async (req, res) => {
     retreatAttend.howToBack === HowToMove.together ||
     retreatAttend.howToBack === HowToMove.driveCarAlone
   ) {
-    await inOutInfoDatabase.delete({
-      retreatAttend: retreatAttend,
-      autoCreated: true,
-      inOutType: InOutType.OUT,
+    const autoCreatedInOutInfo = await inOutInfoDatabase.findOne({
+      where: {
+        retreatAttend: retreatAttend,
+        autoCreated: true,
+        inOutType: InOutType.OUT,
+      },
+      relations: {
+        userInTheCar: true,
+      },
     })
+    if (autoCreatedInOutInfo) {
+      const deleteUserInTheCar = autoCreatedInOutInfo.userInTheCar.map(
+        async (userInTheCar) => {
+          userInTheCar.rideCarInfo = null
+          await inOutInfoDatabase.save(userInTheCar)
+        }
+      )
+      await Promise.all(deleteUserInTheCar)
+      await inOutInfoDatabase.remove(autoCreatedInOutInfo)
+    }
   } else {
     foundRetreatAttend.inOutInfos.forEach(async (inOutInfo) => {
       if (!inOutInfo.autoCreated) {

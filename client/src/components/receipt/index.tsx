@@ -111,7 +111,6 @@ export default function Receipt() {
         {isEditMode && (
           <UserInformationForm
             retreatAttend={retreatAttend}
-            inOutData={inOutData}
             reloadFunction={checkToken}
             setEditMode={setEditMode}
           />
