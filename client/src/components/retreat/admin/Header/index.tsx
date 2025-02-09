@@ -103,7 +103,12 @@ export default function Header() {
               pageName: "카풀 관리",
               pageURL: "/carpooling",
               icon: "/icon/free-icon-car.png",
-            })}{" "}
+            })}
+            {RouterRow({
+              pageName: "카풀 명단 조회",
+              pageURL: "/carpooling-list",
+              icon: "/icon/free-icon-car-list.png",
+            })}
             {RouterRow({
               pageName: "방배정 관리",
               pageURL: "/room-assignment",

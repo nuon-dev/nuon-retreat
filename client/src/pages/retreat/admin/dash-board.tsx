@@ -2,7 +2,7 @@ import { Box, Stack } from "@mui/material"
 import { get } from "../../../pages/api"
 import { useEffect, useState } from "react"
 import { InOutInfo } from "@server/entity/inOutInfo"
-import { InOutType } from "@server/entity/types"
+import { Days, InOutType } from "@server/entity/types"
 import Header from "components/retreat/admin/Header"
 
 function DashBoard() {
@@ -353,33 +353,33 @@ function DashBoard() {
     ) => info.day === day && info.inOutType === inOutType
 
     const firstDayIn = getInfoCount((info) =>
-      conditionFilter(info, 0, InOutType.IN)
+      conditionFilter(info, Days.firstDay, InOutType.IN)
     )
 
     const firstDayOut = getInfoCount((info) =>
-      conditionFilter(info, 0, InOutType.OUT)
+      conditionFilter(info, Days.firstDay, InOutType.OUT)
     )
 
     const firstDayAttendResult =
       getAttendeeStatus.goTogether + firstDayIn - firstDayOut
 
     const secondDayIn = getInfoCount((info) =>
-      conditionFilter(info, 1, InOutType.IN)
+      conditionFilter(info, Days.secondDay, InOutType.IN)
     )
 
     const secondDayOut = getInfoCount((info) =>
-      conditionFilter(info, 1, InOutType.OUT)
+      conditionFilter(info, Days.secondDay, InOutType.OUT)
     )
 
     const secondDayAttendResult =
       firstDayAttendResult + secondDayIn - secondDayOut
 
     const thirdDayDayIn = getInfoCount((info) =>
-      conditionFilter(info, 2, InOutType.IN)
+      conditionFilter(info, Days.thirdDay, InOutType.IN)
     )
 
     const thirdDayDayOut = getInfoCount((info) =>
-      conditionFilter(info, 2, InOutType.OUT)
+      conditionFilter(info, Days.thirdDay, InOutType.OUT)
     )
     const thirdDayAttendResult =
       secondDayAttendResult + thirdDayDayIn - thirdDayDayOut
@@ -387,23 +387,24 @@ function DashBoard() {
     const timeList = [12, 15, 20, 24]
     return (
       <Stack>
-        시간별 참석자 수 (교회버스 + 카풀 정보 기반, 카풀 불가 자차 제외)
+        시간별 참석자 수<br />
+        (교회버스 + 카풀 정보 기반, 카풀 불가 및 자차 제외)
         <Stack>
           {timeList.map((time) => {
             const inCount = getInfoCount(
               (info) =>
-                conditionFilter(info, 0, InOutType.IN) &&
+                conditionFilter(info, Days.firstDay, InOutType.IN) &&
                 Number.parseInt(info.time.toString()) <= time
             )
 
             const outCount = getInfoCount(
               (info) =>
-                conditionFilter(info, 0, InOutType.OUT) &&
+                conditionFilter(info, Days.firstDay, InOutType.OUT) &&
                 Number.parseInt(info.time.toString()) <= time
             )
             return (
               <Stack key={time}>
-                첫째날 (금요일) {time}시 예상 참석자 수 :{" "}
+                첫날 {time}시 예상 참석자 수 :{" "}
                 {getAttendeeStatus.goTogether + inCount - outCount}
               </Stack>
             )
@@ -413,18 +414,18 @@ function DashBoard() {
           {timeList.map((time) => {
             const inCount = getInfoCount(
               (info) =>
-                conditionFilter(info, 1, InOutType.IN) &&
+                conditionFilter(info, Days.secondDay, InOutType.IN) &&
                 Number.parseInt(info.time.toString()) <= time
             )
 
             const outCount = getInfoCount(
               (info) =>
-                conditionFilter(info, 1, InOutType.OUT) &&
+                conditionFilter(info, Days.secondDay, InOutType.OUT) &&
                 Number.parseInt(info.time.toString()) <= time
             )
             return (
               <Stack key={time}>
-                둘째날 (토요일) {time}시 예상 참석자 수 :{" "}
+                둘째날 {time}시 예상 참석자 수 :{" "}
                 {firstDayAttendResult + inCount - outCount}
               </Stack>
             )

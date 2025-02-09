@@ -133,7 +133,7 @@ function RoomAssingment() {
         )}
         {userAttendInfo.map((info) => (
           <Stack>
-            {["첫", "둘", "셋"][info.day]}째 날 / {info.time} /{" "}
+            {[, "첫", "둘", "셋"][info.day]}째 날 / {info.time} /{" "}
             {info.inOutType === "in" ? "들어옴" : "나감"}
           </Stack>
         ))}
