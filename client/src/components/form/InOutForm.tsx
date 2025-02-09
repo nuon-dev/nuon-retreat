@@ -59,9 +59,9 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
               onChangeInformation("day", e.target.value.toString(), index)
             }
           >
-            <MenuItem value={Days.firstDay}>15(목)</MenuItem>
-            <MenuItem value={Days.secondDay}>16(금)</MenuItem>
-            <MenuItem value={Days.thirdDay}>17(토)</MenuItem>
+            <MenuItem value={Days.firstDay}>금요일</MenuItem>
+            <MenuItem value={Days.secondDay}>토요일</MenuItem>
+            <MenuItem value={Days.thirdDay}>일요일</MenuItem>
           </Select>
           <Stack fontSize="12px" p="6px">
             이동방향

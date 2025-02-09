@@ -33,9 +33,13 @@ export default function EditUserData() {
         setUserList(
           response.sort((a, b) => (a.user.name > b.user.name ? 1 : -1))
         )
-        if (response.length > 0) {
+        if (global.location.search) {
+          const retreadAttendId = new URLSearchParams(
+            global.location.search
+          ).get("retreadAttendId")
+          setSelectedUserId(retreadAttendId ? Number(retreadAttendId) : 0)
+        } else if (response.length > 0) {
           setSelectedUserId(response[0].id)
-          loadData(response[0].id)
         }
       })
       .catch(() => {
@@ -45,10 +49,12 @@ export default function EditUserData() {
       })
   }, [])
 
+  useEffect(() => {
+    loadData(selectedUserId)
+  }, [selectedUserId])
+
   function onClickUser(event: SelectChangeEvent<number>) {
     setSelectedUserId(Number(event.target.value))
-    const userId = event.target.value as number
-    loadData(userId)
   }
 
   function loadData(targetUserId: number = 0) {

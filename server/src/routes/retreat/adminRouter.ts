@@ -81,6 +81,9 @@ router.get("/get-all-user", async (req, res) => {
       memo: true,
       etc: true,
       inOutInfos: true,
+      isDeposited: true,
+      createAt: true,
+      attendanceNumber: true,
       user: {
         name: true,
         phone: true,

@@ -82,6 +82,11 @@ function Carpooling() {
   function fetchData() {
     get("/retreat/admin/get-car-info")
       .then((data: InOutInfo[]) => {
+        data.sort(
+          (a, b) =>
+            Number.parseFloat(a.time.replace(":", ".")) -
+            Number.parseFloat(b.time.replace(":", "."))
+        )
         const cars = data.filter(
           (info) => info.howToMove === HowToMove.driveCarWithPerson
         )
@@ -119,6 +124,11 @@ function Carpooling() {
           setIsShowUserInfo(false)
         }}
         onMouseDown={() => setSelectedInfo(info)}
+        onDoubleClick={() => {
+          router.push(
+            `/retreat/admin/edit-user-data?retreadAttendId=${info.retreatAttend.id}`
+          )
+        }}
       >
         <Stack
           direction="row"
@@ -224,7 +234,15 @@ function Carpooling() {
                     setIsShowUserInfo(false)
                   }}
                 >
-                  <Stack direction="row" justifyContent="space-evenly">
+                  <Stack
+                    direction="row"
+                    justifyContent="space-evenly"
+                    onDoubleClick={() => {
+                      router.push(
+                        `/retreat/admin/edit-user-data?retreadAttendId=${car.retreatAttend.id}`
+                      )
+                    }}
+                  >
                     <Box>{car.retreatAttend.user.name}의 차</Box>
                     <Box>{car.time}시</Box>
                     <Box>{car.position}</Box>
