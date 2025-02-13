@@ -19,11 +19,11 @@ function RoomAssingment() {
   const [isShowUserInfo, setIsShowUserInfo] = useState(false)
   const [showUserInfo, setShowUserInfo] = useState({} as RetreatAttend)
   const [userAttendInfo, setUserAttendInfo] = useState([] as Array<InOutInfo>)
-  const [userAttendInfoCache, setUserAttendInfoCache] = useState(
-    [] as Array<Array<InOutInfo>>
-  )
+
   const [mousePoint, setMousePoint] = useState([0, 0])
-  const [gender, setSex] = useState("man")
+  const [shiftPosition, setShiftPosition] = useState({ x: 0, y: 0 })
+
+  const [gender, setGender] = useState("man")
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   function onMouseMove(event: MouseEvent) {
@@ -82,8 +82,17 @@ function RoomAssingment() {
     return (
       <Stack
         direction="row"
-        onMouseDown={() => setSelectedUser(retreatAttend)}
-        onMouseUp={() => setRoom(0)}
+        onMouseDown={(e) => {
+          setSelectedUser(retreatAttend)
+          const target = e.target as HTMLElement
+          const shiftX = e.clientX - target.getBoundingClientRect().left
+          const shiftY = e.clientY - target.getBoundingClientRect().top
+          setShiftPosition({ x: shiftX, y: shiftY })
+        }}
+        onMouseUp={() => {
+          setRoom(0)
+          setSelectedUser(undefined)
+        }}
         onMouseEnter={() => {
           setModal(retreatAttend)
         }}
@@ -152,7 +161,13 @@ function RoomAssingment() {
       <Stack
         direction="row"
         p="2px"
-        onMouseDown={() => setSelectedUser(retreatAttend)}
+        onMouseDown={(e) => {
+          setSelectedUser(retreatAttend)
+          const target = e.target as HTMLElement
+          const shiftX = e.clientX - target.getBoundingClientRect().left
+          const shiftY = e.clientY - target.getBoundingClientRect().top
+          setShiftPosition({ x: shiftX, y: shiftY })
+        }}
         onMouseEnter={() => {
           setModal(retreatAttend)
         }}
@@ -187,7 +202,10 @@ function RoomAssingment() {
           boxShadow: "2px 2px 5px 3px #ACACAC;",
           border: "1px solid #ACACAC",
         }}
-        onMouseUp={() => setRoom(roomNumber)}
+        onMouseUp={() => {
+          setRoom(roomNumber)
+          setSelectedUser(undefined)
+        }}
       >
         <Stack width="160px" textAlign="center" py="4px">
           {roomNumber}번 방 (
@@ -233,7 +251,7 @@ function RoomAssingment() {
             </Stack>
             <Button
               variant="outlined"
-              onClick={() => setSex(gender === "man" ? "woman" : "man")}
+              onClick={() => setGender(gender === "man" ? "woman" : "man")}
               style={{
                 margin: "16px",
               }}
@@ -269,7 +287,10 @@ function RoomAssingment() {
               border: "1px solid #ACACAC",
               paddingBottom: "20px",
             }}
-            onMouseUp={() => setRoom(0)}
+            onMouseUp={() => {
+              setRoom(0)
+              setSelectedUser(undefined)
+            }}
             width="160px"
           >
             <Box textAlign="center" py="4px">
@@ -307,6 +328,16 @@ function RoomAssingment() {
             {Room(maxRoomNumber + 1, [])}
           </Stack>
         </Stack>
+        {selectedUser && selectedUser.id && (
+          <Stack
+            position="absolute"
+            top={mousePoint[1] - shiftPosition.y}
+            left={mousePoint[0] - shiftPosition.x}
+            style={{ pointerEvents: "none" }}
+          >
+            {userRoomRow(selectedUser)}
+          </Stack>
+        )}
       </Stack>
     </Stack>
   )

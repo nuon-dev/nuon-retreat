@@ -1,7 +1,6 @@
 import { get, post } from "../../api"
 import { useEffect, useState } from "react"
 import { Box, MenuItem, Select, Stack } from "@mui/material"
-import { User } from "@server/entity/user"
 import { useRouter } from "next/router"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
@@ -15,11 +14,12 @@ function Carpooling() {
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
   const [carList, setCarList] = useState([] as InOutInfo[])
   const [rideUserList, setRideUserList] = useState([] as InOutInfo[])
-  const [selectedInfo, setSelectedInfo] = useState({} as InOutInfo)
+  const [selectedInfo, setSelectedInfo] = useState<InOutInfo>()
 
   const [selectedDay, setSelectedDay] = useState<Number>(Days.firstDay)
   const [selectedInOut, setSelectedInOut] = useState<string>(InOutType.IN)
   const [mousePoint, setMousePoint] = useState([0, 0])
+  const [shiftPosition, setShiftPosition] = useState({ x: 0, y: 0 })
   const [isShowUserInfo, setIsShowUserInfo] = useState(false)
   const [showRetreatAttendInfo, setShowRetreatAttendInfo] = useState(
     {} as RetreatAttend
@@ -64,18 +64,22 @@ function Carpooling() {
   }
 
   async function setCar(car: InOutInfo) {
+    if (!selectedInfo) return
     selectedInfo.rideCarInfo = car
     await post("/retreat/admin/set-car", {
       inOutInfo: selectedInfo,
     })
+    setSelectedInfo(undefined)
     fetchData()
   }
 
   async function setEmptyCar() {
+    if (!selectedInfo) return
     selectedInfo.rideCarInfo = null
     await post("/retreat/admin/set-car", {
       inOutInfo: selectedInfo,
     })
+    setSelectedInfo(undefined)
     fetchData()
   }
 
@@ -113,6 +117,8 @@ function Carpooling() {
   function getRowOfInfo(info: InOutInfo) {
     return (
       <Stack
+        bgcolor="white"
+        minWidth="230px"
         borderRadius="4px"
         direction="column"
         border="1px solid #ACACAC"
@@ -123,7 +129,14 @@ function Carpooling() {
         onMouseLeave={() => {
           setIsShowUserInfo(false)
         }}
-        onMouseDown={() => setSelectedInfo(info)}
+        onMouseDown={(e) => {
+          const target = e.target as HTMLElement
+          const shiftX = e.clientX - target.getBoundingClientRect().left
+          const shiftY = e.clientY - target.getBoundingClientRect().top
+          console.log(e)
+          setSelectedInfo(info)
+          setShiftPosition({ x: shiftX, y: shiftY })
+        }}
         onDoubleClick={() => {
           router.push(
             `/retreat/admin/edit-user-data?retreadAttendId=${info.retreatAttend.id}`
@@ -135,7 +148,7 @@ function Carpooling() {
           alignItems="center"
           justifyContent="space-evenly"
         >
-          <Box>{info.retreatAttend.user?.name}</Box>{" "}
+          <Box>{info.retreatAttend?.user?.name}</Box>{" "}
           <Box textAlign="center">{info.time}시</Box>{" "}
           <Box>
             {info.howToMove === HowToMove.goAlone ? "여주역" : info.position}

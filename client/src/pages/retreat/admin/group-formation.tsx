@@ -16,12 +16,11 @@ function GroupFormation() {
   const [groupList, setGroupList] = useState([] as Array<Array<RetreatAttend>>)
   const [selectedUser, setSelectedUser] = useState<RetreatAttend>()
   const [mousePoint, setMousePoint] = useState([0, 0])
+  const [shiftPosition, setShiftPosition] = useState({ x: 0, y: 0 })
   const [maxGroupNumber, setMaxGroupNumber] = useState(0)
   const [isShowUserInfo, setIsShowUserInfo] = useState(false)
   const [showUserInfo, setShowUserInfo] = useState({} as RetreatAttend)
-  const [userAttendInfoCache, setUserAttendInfoCache] = useState(
-    [] as Array<Array<InOutInfo>>
-  )
+
   const [userAttendInfo, setUserAttendInfo] = useState([] as Array<InOutInfo>)
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
@@ -76,7 +75,10 @@ function GroupFormation() {
       <Stack
         direction="row"
         onMouseDown={() => setSelectedUser(retreatAttend)}
-        onMouseUp={() => setGroup(0)}
+        onMouseUp={() => {
+          setGroup(0)
+          setSelectedUser(undefined)
+        }}
         onMouseEnter={() => {
           setModal(retreatAttend)
         }}
@@ -106,7 +108,13 @@ function GroupFormation() {
       <Stack
         direction="row"
         p="2px"
-        onMouseDown={() => setSelectedUser(retreatAttend)}
+        onMouseDown={(e) => {
+          setSelectedUser(retreatAttend)
+          const target = e.target as HTMLElement
+          const shiftX = e.clientX - target.getBoundingClientRect().left
+          const shiftY = e.clientY - target.getBoundingClientRect().top
+          setShiftPosition({ x: shiftX, y: shiftY })
+        }}
         width="160px"
         onMouseEnter={() => {
           setModal(retreatAttend)
@@ -147,7 +155,10 @@ function GroupFormation() {
           border: "1px solid #ACACAC",
           boxShadow: "2px 2px 5px 3px #ACACAC;",
         }}
-        onMouseUp={() => setGroup(groupNumber)}
+        onMouseUp={() => {
+          setGroup(groupNumber)
+          setSelectedUser(undefined)
+        }}
       >
         <Stack width="160px" textAlign="center" py="4px">
           {groupNumber}조 ({userList.length})
@@ -217,7 +228,10 @@ function GroupFormation() {
             boxShadow: "2px 2px 5px 3px #ACACAC;",
             border: "1px solid #ACACAC",
           }}
-          onMouseUp={() => setGroup(0)}
+          onMouseUp={() => {
+            setGroup(0)
+            setSelectedUser(undefined)
+          }}
           width="160px"
         >
           <Box textAlign="center" py="4px">
@@ -247,6 +261,16 @@ function GroupFormation() {
           })}
           {Group(maxGroupNumber + 1, [])}
         </Stack>
+        {selectedUser && selectedUser.id && (
+          <Stack
+            position="absolute"
+            top={mousePoint[1] - shiftPosition.y}
+            left={mousePoint[0] - shiftPosition.x}
+            style={{ pointerEvents: "none" }}
+          >
+            {userGroupRow(selectedUser)}
+          </Stack>
+        )}
       </Stack>
     </Stack>
   )
