@@ -148,7 +148,10 @@ function Carpooling() {
           alignItems="center"
           justifyContent="space-evenly"
         >
-          <Box>{info.retreatAttend?.user?.name}</Box>{" "}
+          <Box>
+            {info.retreatAttend?.user?.name}(
+            {info.retreatAttend.user.yearOfBirth})
+          </Box>{" "}
           <Box textAlign="center">{info.time}시</Box>{" "}
           <Box>
             {info.howToMove === HowToMove.goAlone ? "여주역" : info.position}
@@ -256,7 +259,10 @@ function Carpooling() {
                       )
                     }}
                   >
-                    <Box>{car.retreatAttend.user.name}의 차</Box>
+                    <Box>
+                      {car.retreatAttend.user.name}(
+                      {car.retreatAttend.user.yearOfBirth})의 차
+                    </Box>
                     <Box>{car.time}시</Box>
                     <Box>{car.position}</Box>
                   </Stack>

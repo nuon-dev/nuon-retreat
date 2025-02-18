@@ -22,6 +22,7 @@ router.get("/", async (req, res) => {
         user: {
           id: foundUser.id,
         },
+        isCanceled: false,
       },
     },
   })

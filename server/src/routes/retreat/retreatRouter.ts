@@ -36,6 +36,7 @@ router.get("/", async (req, res) => {
         phone: true,
         yearOfBirth: true,
       },
+      isDeposited: true,
       howToGo: true,
       howToBack: true,
       isCanceled: true,

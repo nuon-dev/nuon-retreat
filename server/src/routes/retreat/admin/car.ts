@@ -22,6 +22,17 @@ router.get("/get-car-info", async (req, res) => {
       userInTheCar: true,
       day: true,
       position: true,
+      retreatAttend: {
+        id: true,
+        memo: true,
+        etc: true,
+        user: {
+          name: true,
+          phone: true,
+          yearOfBirth: true,
+          gender: true,
+        },
+      },
     },
     relations: {
       retreatAttend: {
