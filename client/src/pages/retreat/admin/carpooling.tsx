@@ -269,7 +269,9 @@ function Carpooling() {
                 </Stack>
                 <Box height="1px" bgcolor="#DDD" my="4px" />
                 <Stack gap="4px">
-                  {car.userInTheCar.map((info) => getRowOfInfo(info))}
+                  {car.userInTheCar
+                    .filter((user) => !user.retreatAttend.isCanceled)
+                    .map((info) => getRowOfInfo(info))}
                 </Stack>
               </Stack>
             ))}
