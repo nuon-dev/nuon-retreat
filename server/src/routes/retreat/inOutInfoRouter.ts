@@ -17,17 +17,33 @@ router.get("/", async (req, res) => {
   }
 
   const inOutInfo = await inOutInfoDatabase.find({
+    relations: {
+      retreatAttend: {
+        user: true,
+      },
+    },
     where: {
       retreatAttend: {
         user: {
           id: foundUser.id,
         },
-        isCanceled: false,
       },
     },
   })
 
-  res.send(inOutInfo)
+  res.send(
+    inOutInfo.map((info) => {
+      return {
+        id: info.id,
+        time: info.time,
+        howToMove: info.howToMove,
+        day: info.day,
+        position: info.position,
+        autoCreated: info.autoCreated,
+        inOutType: info.inOutType,
+      }
+    })
+  )
 })
 
 router.post("/edit-information", async (req, res) => {

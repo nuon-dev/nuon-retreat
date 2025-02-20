@@ -1,7 +1,7 @@
 import express from "express"
 import bodyParser from "body-parser"
 import apiRouter from "./routes"
-import dataSource, { userDatabase } from "./model/dataSource"
+import dataSource from "./model/dataSource"
 import fs from "fs"
 import https from "https"
 import cors from "cors"

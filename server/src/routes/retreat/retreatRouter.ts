@@ -6,6 +6,7 @@ import {
 } from "../../model/dataSource"
 import { getUserFromToken } from "../../util"
 import adminRouter from "./adminRouter"
+import sharingRouter from "./sharingRouter"
 import { RetreatAttend } from "../../entity/retreatAttend"
 import { HowToMove, InOutType } from "../../entity/types"
 
@@ -235,6 +236,7 @@ router.post("/complete", async (req, res) => {
   res.send({ result: "success" })
 })
 
+router.use("/sharing", sharingRouter)
 router.use("/admin", adminRouter)
 
 export default router
