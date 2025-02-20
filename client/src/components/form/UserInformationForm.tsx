@@ -13,7 +13,6 @@ import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
 import { useRouter } from "next/router"
 import { HowToMove } from "@server/entity/types"
-import { User } from "@server/entity/user"
 import { InOutInfo } from "@server/entity/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreatAttend"
 

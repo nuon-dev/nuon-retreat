@@ -17,10 +17,14 @@ router.get("/", async (req, res) => {
       visible: true,
       writer: {
         name: true,
+        id: true,
       },
     },
     relations: {
       writer: true,
+    },
+    where: {
+      visible: true,
     },
     order: {
       createAt: "DESC",
@@ -34,6 +38,11 @@ router.post("/", async (req, res) => {
   const { content } = req.body
   const user = await getUserFromToken(req)
 
+  if (!user) {
+    res.status(400).send({ result: "fail" })
+    return
+  }
+
   const newSharingText = sharingTextDatabase.create({
     content,
     writer: user,
@@ -43,9 +52,40 @@ router.post("/", async (req, res) => {
   res.send({ result: "success" })
 })
 
-router.get("/images", async (req, res) => {
+router.post("/delete", async (req, res) => {
   const user = await getUserFromToken(req)
+  const { id } = req.body
 
+  if (!user) {
+    res.status(400).send({ result: "fail" })
+    return
+  }
+
+  const foundSharingText = await sharingTextDatabase.findOne({
+    where: {
+      id,
+    },
+    relations: {
+      writer: true,
+    },
+  })
+
+  if (!foundSharingText) {
+    res.status(400).send({ result: "fail" })
+    return
+  }
+
+  if (foundSharingText.writer.id !== user.id) {
+    res.status(400).send({ result: "fail" })
+    return
+  }
+
+  foundSharingText.visible = false
+  await sharingTextDatabase.save(foundSharingText)
+  res.send({ result: "success" })
+})
+
+router.get("/images", async (req, res) => {
   const foundSharingImage = await sharingImageDatabase.find({
     select: {
       id: true,
@@ -55,6 +95,7 @@ router.get("/images", async (req, res) => {
       visible: true,
       writer: {
         name: true,
+        id: true,
       },
     },
     where: {
@@ -62,6 +103,9 @@ router.get("/images", async (req, res) => {
     },
     relations: {
       writer: true,
+    },
+    order: {
+      createAt: "DESC",
     },
   })
 
@@ -78,12 +122,56 @@ router.put("/image", uploadFiles.single("image"), async (req, res) => {
   const user = await getUserFromToken(req)
   const { file } = req
 
+  if (!file) {
+    res.status(400).send({ result: "fail" })
+    return
+  }
+
+  if (!user) {
+    res.status(400).send({ result: "fail" })
+    return
+  }
+
   const newSharingImage = sharingImageDatabase.create({
     url: file.filename,
     writer: user,
+    tags: req.body.tags,
   })
 
   await sharingImageDatabase.save(newSharingImage)
+  res.send({ result: "success" })
+})
+
+router.post("/image-delete", async (req, res) => {
+  const user = await getUserFromToken(req)
+  const { id } = req.body
+
+  if (!user) {
+    res.status(400).send({ result: "fail" })
+    return
+  }
+
+  const foundSharingImage = await sharingImageDatabase.findOne({
+    where: {
+      id,
+    },
+    relations: {
+      writer: true,
+    },
+  })
+
+  if (!foundSharingImage) {
+    res.status(400).send({ result: "fail" })
+    return
+  }
+
+  if (foundSharingImage.writer.id !== user.id) {
+    res.status(400).send({ result: "fail" })
+    return
+  }
+
+  foundSharingImage.visible = false
+  await sharingImageDatabase.save(foundSharingImage)
   res.send({ result: "success" })
 })
 
