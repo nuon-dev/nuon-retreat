@@ -2,6 +2,7 @@
 
 import { Button, Stack } from "@mui/material"
 import { SharingImage } from "@server/entity/sharing"
+import { useRouter } from "next/navigation"
 import { get, put, SERVER_FULL_PATH } from "pages/api"
 import { useEffect, useState } from "react"
 
@@ -9,6 +10,7 @@ export default function Images() {
   const [openUploadModal, setOpenUploadModal] = useState(false)
   const [image, setImage] = useState<File | null>(null)
   const [sharingImageList, setSharingImageList] = useState<SharingImage[]>([])
+  const { push } = useRouter()
 
   useEffect(() => {
     getImages()
@@ -51,16 +53,30 @@ export default function Images() {
     setSharingImageList(data)
   }
 
+  function goToSharing() {
+    push("/retreat/sharing")
+  }
+
   return (
     <Stack width="100%">
-      <img
-        src="/retreat/sharing_bg.jpeg"
+      <Stack
+        px="12px"
         width="100%"
-        style={{
-          zIndex: 1,
-          position: "absolute",
-        }}
-      />
+        height="60px"
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <img
+          src="/icon/free-icon-arrow-down.png"
+          width="30px"
+          onClick={goToSharing}
+          style={{
+            transform: "rotate(90deg)",
+          }}
+        />
+        <img src="/retreat/logo.png" width="50%" />
+      </Stack>
       <Stack
         p="10px"
         width="40px"
@@ -97,6 +113,7 @@ export default function Images() {
             height="400px"
             bgcolor="white"
             borderRadius="10px"
+            border="1px solid #ccc"
             onClick={(e) => {
               e.stopPropagation()
             }}
@@ -150,17 +167,30 @@ export default function Images() {
         </Stack>
       )}
       <Stack
+        gap="12px"
         width="100%"
         zIndex="10"
-        mt="60%"
         direction="row"
         flexWrap="wrap"
-        padding="10px"
         alignItems="center"
         justifyContent="start"
       >
         {sharingImageList.map((image) => (
-          <Stack key={image.id} width="80%" margin="10%">
+          <Stack key={image.id} width="100%" gap="12px">
+            <Stack width="100%" direction="row" alignItems="center" gap="12px">
+              <Stack>
+                <img
+                  src="/profile.jpeg"
+                  width="24px"
+                  height="24px"
+                  style={{
+                    borderRadius: "50%",
+                  }}
+                />
+              </Stack>
+
+              {image.writer.name}
+            </Stack>
             <img
               width="100%"
               src={`${SERVER_FULL_PATH}/sharing/image/${image.url}`}

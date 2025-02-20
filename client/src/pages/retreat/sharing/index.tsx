@@ -26,6 +26,8 @@ export default function Sharing() {
 
   async function registerSharing() {
     await post("/retreat/sharing", { content: sharingMessage })
+    setSharingMessage("")
+    getSharing()
   }
 
   async function getSharing() {
@@ -36,7 +38,7 @@ export default function Sharing() {
   return (
     <Stack alignItems="center" gap="24px" mb="40px">
       <img
-        src="/retreat/sharing_bg.jpeg"
+        src="/retreat/sharing_bg.png"
         width="100%"
         style={{
           zIndex: 1,
@@ -65,20 +67,21 @@ export default function Sharing() {
       </Stack>
 
       <Stack
-        bgcolor="white"
         p="24px"
-        borderRadius="2px"
-        width="80%"
+        px="12px"
+        borderRadius="12px"
+        width="90%"
         gap="12px"
         zIndex="10"
+        bgcolor="white"
       >
-        <Stack fontWeight="600">
-          "이번 수련회를 통해 받은 은혜를 나눠주세요!"
+        <Stack fontWeight="600" fontSize="16px">
+          어떤 은혜를 받으셨나요?
         </Stack>
         <Stack gap="12px">
           <textarea
             rows={4}
-            placeholder="받은 은혜를 나눠주세요!"
+            placeholder="이번 수련회를 통해 받은 은혜를 나눠주세요"
             value={sharingMessage}
             onChange={(e) => setSharingMessage(e.target.value)}
             style={{
@@ -95,6 +98,7 @@ export default function Sharing() {
             onClick={registerSharing}
             sx={{
               borderRadius: "4px",
+              bgcolor: "#5D4431",
             }}
           >
             등록하기
@@ -102,14 +106,22 @@ export default function Sharing() {
         </Stack>
       </Stack>
       <Stack
-        width="80%"
+        width="90%"
         bgcolor="white"
         border="1px solid #ccc"
-        borderRadius="2px"
+        borderRadius="12px"
         zIndex="10"
       >
-        <Stack fontSize="18px" fontWeight="500" width="100%" p="12px">
-          {sharingTextList.length} 은혜
+        <Stack
+          p="12px"
+          width="100%"
+          direction="row"
+          fontSize="18px"
+          fontWeight="500"
+          justifyContent="space-between"
+        >
+          <Stack>은혜 나눔 계시판</Stack>
+          <Stack>{sharingTextList.length}</Stack>
         </Stack>
         <Stack
           p="4px"

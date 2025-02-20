@@ -43,6 +43,9 @@ export class SharingImage {
   @Column({ default: true })
   visible: boolean
 
+  @Column({ type: "text", nullable: true })
+  tags: string
+
   @CreateDateColumn({
     type: "timestamp",
     default: () => "CURRENT_TIMESTAMP(6)",

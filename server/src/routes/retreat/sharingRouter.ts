@@ -22,6 +22,9 @@ router.get("/", async (req, res) => {
     relations: {
       writer: true,
     },
+    order: {
+      createAt: "DESC",
+    },
   })
 
   res.send(foundSharingText)
@@ -44,8 +47,21 @@ router.get("/images", async (req, res) => {
   const user = await getUserFromToken(req)
 
   const foundSharingImage = await sharingImageDatabase.find({
+    select: {
+      id: true,
+      url: true,
+      createAt: true,
+      tags: true,
+      visible: true,
+      writer: {
+        name: true,
+      },
+    },
     where: {
       visible: true,
+    },
+    relations: {
+      writer: true,
     },
   })
 

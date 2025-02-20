@@ -50,6 +50,9 @@ export class RetreatAttend {
   @Column({ default: 0 })
   attendanceNumber: number
 
+  @Column({ default: 0 })
+  profile: number
+
   @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.retreatAttend)
   inOutInfos: InOutInfo[]
 
