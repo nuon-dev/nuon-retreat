@@ -61,6 +61,7 @@ function PermissionManage() {
     [PermissionType.deposit]: "입금 처리",
     [PermissionType.editUserData]: "정보 수정",
     [PermissionType.deleteUser]: "접수 삭제",
+    [PermissionType.mediaManage]: "미디어 관리",
   }
 
   function loadUserPermission() {

@@ -45,6 +45,7 @@ router.post("/check-token", async (req, res) => {
       yearOfBirth: foundUser.yearOfBirth,
       phone: foundUser.phone,
       community: foundUser.community,
+      profile: foundUser.profile,
     },
   })
 })

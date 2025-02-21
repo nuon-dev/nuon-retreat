@@ -30,6 +30,7 @@ export enum PermissionType {
   editUserData,
   editTeamScore,
   deleteUser,
+  mediaManage,
 }
 
 export enum Days {

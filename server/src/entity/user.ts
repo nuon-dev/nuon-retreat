@@ -54,6 +54,9 @@ export class User {
   @OneToMany(() => Permission, (permission) => permission.user)
   permissions: Permission[]
 
+  @Column({ default: 0 })
+  profile: number
+
   @ManyToOne(() => Community, (community) => community.users)
   community: Community | null
 

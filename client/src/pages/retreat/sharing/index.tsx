@@ -6,21 +6,20 @@ import { get, post } from "pages/api"
 import { useEffect, useState } from "react"
 import { SharingText } from "@server/entity/sharing"
 import dayjs from "dayjs"
-import { useRecoilValue, useSetRecoilState } from "recoil"
+import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import useUserData from "hooks/useUserData"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { RetreatAttendAtom } from "state/retreat"
 import { User } from "@server/entity/user"
 
 export default function Sharing() {
   const { push } = useRouter()
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
-  const retreatData = useRecoilValue(RetreatAttendAtom)
   const [sharingMessage, setSharingMessage] = useState("")
   const [sharingTextList, setSharingTextList] = useState<SharingText[]>([])
   const { getUserDataFromToken, getUserDataFromKakaoLogin } = useUserData()
   const [userData, setUserData] = useState<User>()
+  const [isManager, setIsManager] = useState(false)
 
   useEffect(() => {
     getSharing()
@@ -28,26 +27,45 @@ export default function Sharing() {
   }, [])
 
   async function checkUserLogin() {
-    let userData = await getUserDataFromToken()
-    if (!userData) {
-      userData = await getUserDataFromKakaoLogin()
-      if (!userData) {
+    if (userData) {
+      return
+    }
+    let userDataResponse = await getUserDataFromToken()
+    if (!userDataResponse) {
+      userDataResponse = await getUserDataFromKakaoLogin()
+      if (!userDataResponse) {
         setNotificationMessage("등록을 하기 위해선 로그인이 필요합니다.")
         return
       }
     }
-    setUserData(userData)
+    const { result } = await get("/retreat/sharing/is-manager")
+    setIsManager(result)
+    setUserData(userDataResponse)
   }
 
   function goToImagesPage() {
     push("/retreat/sharing/images")
   }
 
-  function goToVideosPage() {
-    push("/retreat/sharing/videos")
+  function goToYoutube() {
+    globalThis.open("https://www.youtube.com/@SWJICH_YOUNG")
+  }
+
+  function goToVInstagram() {
+    globalThis.open("https://www.instagram.com/suwonjeilch_youngpeople/")
+  }
+
+  function goToNotion() {
+    globalThis.open(
+      "https://past-carver-5b9.notion.site/2025-OVERFLOW-19137c3d354c80e983c7fe353f9cd3b6"
+    )
   }
 
   async function registerSharing() {
+    if (!sharingMessage) {
+      setNotificationMessage("내용을 입력해주세요.")
+      return
+    }
     setNotificationMessage("등록 되었습니다.")
     await post("/retreat/sharing", { content: sharingMessage })
     setSharingMessage("")
@@ -65,6 +83,64 @@ export default function Sharing() {
     setNotificationMessage("삭제 되었습니다.")
   }
 
+  function SelectProfile() {
+    if (!userData) {
+      return null
+    }
+
+    if (userData.profile) {
+      return null
+    }
+
+    async function setProfile(profile: number) {
+      await post("/retreat/sharing/set-profile", { profile })
+      location.reload()
+    }
+
+    return (
+      <Stack
+        width="100vw"
+        height="100vh"
+        zIndex="1000"
+        position="fixed"
+        alignItems="center"
+        justifyContent="center"
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        }}
+      >
+        <Stack gap="60px">
+          <Stack width="100%" color="white" fontWeight="600" fontSize="20px">
+            프로필을 선택해 주세요!
+          </Stack>
+
+          <Stack direction="row" gap="12px">
+            <img
+              onClick={() => setProfile(1)}
+              src="/retreat/profile1.png"
+              width="40px"
+            />
+            <img
+              onClick={() => setProfile(2)}
+              src="/retreat/profile2.png"
+              width="40px"
+            />
+            <img
+              onClick={() => setProfile(3)}
+              src="/retreat/profile3.png"
+              width="40px"
+            />
+            <img
+              onClick={() => setProfile(4)}
+              src="/retreat/profile4.png"
+              width="40px"
+            />
+          </Stack>
+        </Stack>
+      </Stack>
+    )
+  }
+
   return (
     <Stack alignItems="center" gap="24px" mb="40px">
       <img
@@ -77,7 +153,7 @@ export default function Sharing() {
       />
       <Stack direction="row" gap="24px" mt="60%" zIndex="10">
         <Box
-          onClick={goToVideosPage}
+          onClick={goToYoutube}
           style={{
             backgroundImage: "url(/retreat/youtube.png)",
             backgroundSize: "cover",
@@ -95,7 +171,7 @@ export default function Sharing() {
           }}
         />
         <Box
-          onClick={goToImagesPage}
+          onClick={goToNotion}
           style={{
             backgroundImage: "url(/retreat/notion.png)",
             backgroundSize: "cover",
@@ -104,7 +180,7 @@ export default function Sharing() {
           }}
         />
         <Box
-          onClick={goToImagesPage}
+          onClick={goToVInstagram}
           style={{
             backgroundImage: "url(/retreat/insta.png)",
             backgroundSize: "cover",
@@ -133,6 +209,7 @@ export default function Sharing() {
             rows={4}
             placeholder="이번 수련회를 통해 받은 은혜를 나눠주세요"
             value={sharingMessage}
+            onFocus={checkUserLogin}
             onChange={(e) => setSharingMessage(e.target.value)}
             style={{
               width: "100%",
@@ -149,7 +226,6 @@ export default function Sharing() {
             onClick={registerSharing}
             sx={{
               borderRadius: "4px",
-              bgcolor: "#5D4431",
             }}
           >
             등록하기
@@ -187,7 +263,7 @@ export default function Sharing() {
             {sharingTextList.map((sharingText) => (
               <Stack direction="row" alignItems="center" gap="12px" pb="12px">
                 <img
-                  src="/profile.jpeg"
+                  src={`/retreat/profile${sharingText.writer.profile}.png`}
                   width="40px"
                   height="40px"
                   style={{
@@ -206,7 +282,7 @@ export default function Sharing() {
                   <Stack>{sharingText.content}</Stack>
                 </Stack>
                 <Stack flex="1" />
-                {userData?.id === sharingText.writer.id && (
+                {(userData?.id === sharingText.writer.id || isManager) && (
                   <DeleteIcon
                     fontSize="small"
                     onClick={() => deleteSharingText(sharingText.id)}
@@ -217,6 +293,7 @@ export default function Sharing() {
           </Stack>
         </Stack>
       </Stack>
+      <SelectProfile />
     </Stack>
   )
 }

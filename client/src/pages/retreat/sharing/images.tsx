@@ -34,6 +34,7 @@ export default function Images() {
   const [selectedTag, setSelectedTag] = useState<string[]>([])
   const { getUserDataFromToken, getUserDataFromKakaoLogin } = useUserData()
   const [userData, setUserData] = useState<User>()
+  const [isManager, setIsManager] = useState(false)
 
   useEffect(() => {
     getImages()
@@ -41,18 +42,27 @@ export default function Images() {
   }, [])
 
   async function checkUserLogin() {
-    let userData = await getUserDataFromToken()
-    if (!userData) {
-      userData = await getUserDataFromKakaoLogin()
-      if (!userData) {
+    if (userData) {
+      return
+    }
+    let userDataResponse = await getUserDataFromToken()
+    if (!userDataResponse) {
+      userDataResponse = await getUserDataFromKakaoLogin()
+      if (!userDataResponse) {
         setNotificationMessage("등록을 하기 위해선 로그인이 필요합니다.")
         return
       }
     }
-    setUserData(userData)
+    const { result } = await get("/retreat/sharing/is-manager")
+    setIsManager(result)
+    setUserData(userDataResponse)
   }
 
   useEffect(() => {
+    if (openUploadModal) {
+      checkUserLogin()
+      return
+    }
     if (!openUploadModal) {
       setImage(null)
       setSelectedTag([])
@@ -124,7 +134,7 @@ export default function Images() {
             transform: "rotate(90deg)",
           }}
         />
-        <img src="/retreat/logo.jpeg" height="60px" />
+        <img src="/retreat/logo.jpeg" height="50spx" />
       </Stack>
       <Stack
         p="10px"
@@ -151,7 +161,7 @@ export default function Images() {
         <Stack
           width="100%"
           height="100%"
-          zIndex="50"
+          zIndex="5000"
           position="fixed"
           alignItems="center"
           justifyContent="center"
@@ -273,7 +283,7 @@ export default function Images() {
             >
               <Stack>
                 <img
-                  src="/profile.jpeg"
+                  src={`/retreat/profile${image.writer.profile}.png`}
                   width="30px"
                   height="30px"
                   style={{
@@ -286,7 +296,7 @@ export default function Images() {
                 {dayjs(image.writer.createAt).format("YY.MM.DD hh:mm")}
               </Stack>
               <Stack flex="1" />
-              {userData?.id === image.writer.id && (
+              {(userData?.id === image.writer.id || isManager) && (
                 <DeleteIcon
                   fontSize="small"
                   onClick={() => deleteImage(image.id)}

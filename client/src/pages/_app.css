@@ -23,3 +23,7 @@ body {
   margin-bottom: calc(env(safe-area-inset-bottom) + 15px);
   margin-top: calc(env(safe-area-inset-top) + 15px);
 }
+
+.MuiButton-root {
+  background-color: #5d4431 !important;
+}

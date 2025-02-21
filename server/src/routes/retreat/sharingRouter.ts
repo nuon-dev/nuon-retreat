@@ -1,10 +1,17 @@
 import express from "express"
 import {
+  permissionDatabase,
   sharingImageDatabase,
   sharingTextDatabase,
+  userDatabase,
 } from "../../model/dataSource"
 import multer from "multer"
-import { getUserFromToken } from "../../util"
+import {
+  getUserFromToken,
+  hasPermission,
+  hasPermissionFromReq,
+} from "../../util"
+import { PermissionType } from "../../entity/types"
 
 const router = express.Router()
 
@@ -18,6 +25,7 @@ router.get("/", async (req, res) => {
       writer: {
         name: true,
         id: true,
+        profile: true,
       },
     },
     relations: {
@@ -32,6 +40,20 @@ router.get("/", async (req, res) => {
   })
 
   res.send(foundSharingText)
+})
+
+router.post("/set-profile", async (req, res) => {
+  const user = await getUserFromToken(req)
+  const { profile } = req.body
+
+  if (!user) {
+    res.status(400).send({ result: "fail" })
+    return
+  }
+
+  user.profile = profile
+  await userDatabase.save(user)
+  res.send({ result: "success" })
 })
 
 router.post("/", async (req, res) => {
@@ -75,7 +97,9 @@ router.post("/delete", async (req, res) => {
     return
   }
 
-  if (foundSharingText.writer.id !== user.id) {
+  const isManager = await hasPermissionFromReq(req, PermissionType.mediaManage)
+
+  if (!isManager && foundSharingText.writer.id !== user.id) {
     res.status(400).send({ result: "fail" })
     return
   }
@@ -96,6 +120,7 @@ router.get("/images", async (req, res) => {
       writer: {
         name: true,
         id: true,
+        profile: true,
       },
     },
     where: {
@@ -165,7 +190,9 @@ router.post("/image-delete", async (req, res) => {
     return
   }
 
-  if (foundSharingImage.writer.id !== user.id) {
+  const isManager = await hasPermissionFromReq(req, PermissionType.mediaManage)
+
+  if (!isManager && foundSharingImage.writer.id !== user.id) {
     res.status(400).send({ result: "fail" })
     return
   }
@@ -173,6 +200,29 @@ router.post("/image-delete", async (req, res) => {
   foundSharingImage.visible = false
   await sharingImageDatabase.save(foundSharingImage)
   res.send({ result: "success" })
+})
+
+router.get("/is-manager", async (req, res) => {
+  const user = await getUserFromToken(req)
+
+  if (!user) {
+    res.send({ result: false })
+    return
+  }
+
+  const isManager = await permissionDatabase.find({
+    where: {
+      user: {
+        id: user.id,
+      },
+      permissionType: PermissionType.mediaManage,
+    },
+    relations: {
+      user: true,
+    },
+  })
+
+  res.send({ result: user.isSuperUser || isManager })
 })
 
 export default router
