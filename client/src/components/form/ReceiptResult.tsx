@@ -1,6 +1,6 @@
 import { Box, Button, Stack } from "@mui/material"
-import { InOutInfo } from "@server/entity/inOutInfo"
-import { RetreatAttend } from "@server/entity/retreatAttend"
+import { InOutInfo } from "@server/entity/retreat/inOutInfo"
+import { RetreatAttend } from "@server//entity/retreat/retreatAttend"
 import { HowToMove } from "@server/entity/types"
 import { User } from "@server/entity/user"
 import { Dispatch, SetStateAction } from "react"

@@ -4,10 +4,10 @@ import { Box, MenuItem, Select, Stack } from "@mui/material"
 import { useRouter } from "next/router"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
-import { InOutInfo } from "@server/entity/inOutInfo"
+import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
 import Header from "../../../components/retreat/admin/Header"
-import { RetreatAttend } from "@server/entity/retreatAttend"
+import { RetreatAttend } from "@server//entity/retreat/retreatAttend"
 
 function Carpooling() {
   const router = useRouter()

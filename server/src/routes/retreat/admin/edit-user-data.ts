@@ -5,7 +5,7 @@ import {
   inOutInfoDatabase,
   retreatAttendDatabase,
 } from "../../../model/dataSource"
-import { InOutInfo } from "../../../entity/inOutInfo"
+import { InOutInfo } from "../../../entity/retreat/inOutInfo"
 
 const router = express.Router()
 

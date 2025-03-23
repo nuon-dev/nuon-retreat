@@ -4,8 +4,8 @@ import { get, post } from "../../../pages/api"
 import { useRouter } from "next/router"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
-import { InOutInfo } from "@server/entity/inOutInfo"
-import { RetreatAttend } from "@server/entity/retreatAttend"
+import { InOutInfo } from "@server/entity/retreat/inOutInfo"
+import { RetreatAttend } from "@server//entity/retreat/retreatAttend"
 import Header from "components/retreat/admin/Header"
 
 function GroupFormation() {

@@ -1,10 +1,10 @@
 import { useRecoilState, useRecoilValue } from "recoil"
-import { RetreatAttend } from "@server/entity/retreatAttend"
+import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 import { useEffect, useState } from "react"
 import { get, post } from "pages/api"
 import { UserInformationAtom } from "./useUserData"
 import { EditContent } from "./useBotChatLogic"
-import { InOutInfo } from "@server/entity/inOutInfo"
+import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
 import { InOutInformationAtom, RetreatAttendAtom } from "state/retreat"
 

@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm"
-import { User } from "./user"
+import { User } from "../user"
 
 @Entity()
 export class SharingText {

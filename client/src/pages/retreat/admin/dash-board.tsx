@@ -1,7 +1,7 @@
 import { Box, Stack } from "@mui/material"
 import { get } from "../../../pages/api"
 import { useEffect, useState } from "react"
-import { InOutInfo } from "@server/entity/inOutInfo"
+import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { Days, InOutType } from "@server/entity/types"
 import Header from "components/retreat/admin/Header"
 

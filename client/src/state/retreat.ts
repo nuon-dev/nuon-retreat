@@ -1,5 +1,5 @@
-import { InOutInfo } from "@server/entity/inOutInfo"
-import { RetreatAttend } from "@server/entity/retreatAttend"
+import { InOutInfo } from "@server/entity/retreat/inOutInfo"
+import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 import { atom } from "recoil"
 
 export const ShowInOutInfoComponentAtom = atom<boolean | undefined>({

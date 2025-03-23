@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm"
-import { Days, InOutType, HowToMove } from "./types"
+import { Days, InOutType, HowToMove } from "../types"
 import { RetreatAttend } from "./retreatAttend"
 
 @Entity()

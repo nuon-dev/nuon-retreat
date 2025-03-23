@@ -7,9 +7,9 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm"
-import { User } from "./user"
+import { User } from "../user"
 import { InOutInfo } from "./inOutInfo"
-import { CurrentStatus, Deposit, HowToMove } from "./types"
+import { CurrentStatus, Deposit, HowToMove } from "../types"
 
 @Entity()
 export class RetreatAttend {

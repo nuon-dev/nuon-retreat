@@ -24,6 +24,8 @@ body {
   margin-top: calc(env(safe-area-inset-top) + 15px);
 }
 
+/*
 .MuiButton-root {
   background-color: #5d4431 !important;
 }
+*/

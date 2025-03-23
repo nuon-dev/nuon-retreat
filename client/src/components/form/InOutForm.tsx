@@ -1,7 +1,7 @@
 import { Button, FormControl, MenuItem, Select, Stack } from "@mui/material"
 import { Dispatch, SetStateAction } from "react"
 import { post } from "pages/api"
-import { InOutInfo } from "@server/entity/inOutInfo"
+import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
 
 interface IProps {

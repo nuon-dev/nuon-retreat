@@ -7,7 +7,7 @@ import {
 import { getUserFromToken } from "../../util"
 import adminRouter from "./adminRouter"
 import sharingRouter from "./sharingRouter"
-import { RetreatAttend } from "../../entity/retreatAttend"
+import { RetreatAttend } from "../../entity/retreat/retreatAttend"
 import { HowToMove, InOutType } from "../../entity/types"
 
 const router = express.Router()

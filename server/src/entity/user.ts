@@ -9,7 +9,7 @@ import {
 } from "typeorm"
 import { Permission } from "./permission"
 import { Community } from "./community"
-import { RetreatAttend } from "./retreatAttend"
+import { RetreatAttend } from "./retreat/retreatAttend"
 
 @Entity()
 export class User {

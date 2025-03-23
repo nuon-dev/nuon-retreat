@@ -1,11 +1,15 @@
 import { DataSource } from "typeorm"
-import { InOutInfo } from "../entity/inOutInfo"
+import { InOutInfo } from "../entity/retreat/inOutInfo"
 import { Permission } from "../entity/permission"
-import { RetreatAttend } from "../entity/retreatAttend"
+import { RetreatAttend } from "../entity/retreat/retreatAttend"
 import { User } from "../entity/user"
 import { Community } from "../entity/community"
-import { ChatLog } from "../entity/chatLog"
-import { SharingImage, SharingText, SharingVideo } from "../entity/sharing"
+import { ChatLog } from "../entity/retreat/chatLog"
+import {
+  SharingImage,
+  SharingText,
+  SharingVideo,
+} from "../entity/retreat/sharing"
 
 const dataSource = new DataSource(require("../../ormconfig.json"))
 

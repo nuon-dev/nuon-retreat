@@ -7,8 +7,8 @@ import CopyToClipboard from "react-copy-to-clipboard"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { Stack } from "@mui/material"
-import { InOutInfo } from "@server/entity/inOutInfo"
-import { RetreatAttend } from "@server/entity/retreatAttend"
+import { InOutInfo } from "@server/entity/retreat/inOutInfo"
+import { RetreatAttend } from "@server//entity/retreat/retreatAttend"
 
 export default function Receipt() {
   const [retreatAttend, setRetreatAttend] = useState<RetreatAttend | undefined>(
