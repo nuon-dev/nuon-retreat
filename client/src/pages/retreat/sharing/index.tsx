@@ -261,13 +261,14 @@ export default function Sharing() {
         >
           <Stack px="12px" gap="12px" height="100px" borderRadius="4px">
             {sharingTextList.map((sharingText) => (
-              <Stack direction="row" alignItems="center" gap="12px" pb="12px">
+              <Stack pb="12px" gap="12px" direction="row" alignItems="start">
                 <img
                   src={`/retreat/profile${sharingText.writer.profile}.png`}
                   width="40px"
                   height="40px"
                   style={{
                     borderRadius: "50%",
+                    marginTop: "4px",
                   }}
                 />
                 <Stack direction="column" gap="4px">
@@ -275,16 +276,28 @@ export default function Sharing() {
                     <Stack fontWeight="600">{sharingText.writer.name}</Stack>
                     <Stack fontSize="12px" color="grey">
                       {dayjs(sharingText.createAt).format(
-                        "YYYY-MM-DD hh:mm:ss"
+                        "YYYY-MM-DD HH:mm:ss"
                       )}
                     </Stack>
                   </Stack>
-                  <Stack>{sharingText.content}</Stack>
+                  <Stack
+                    style={{
+                      wordBreak: "break-all",
+                    }}
+                    width="100%"
+                    flexWrap="wrap"
+                    whiteSpace="pre-wrap"
+                  >
+                    {sharingText.content}
+                  </Stack>
                 </Stack>
                 <Stack flex="1" />
                 {(userData?.id === sharingText.writer.id || isManager) && (
                   <DeleteIcon
                     fontSize="small"
+                    style={{
+                      marginTop: "4px",
+                    }}
                     onClick={() => deleteSharingText(sharingText.id)}
                   />
                 )}

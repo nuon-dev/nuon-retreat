@@ -222,7 +222,7 @@ router.get("/is-manager", async (req, res) => {
     },
   })
 
-  res.send({ result: user.isSuperUser || isManager })
+  res.send({ result: user.isSuperUser || isManager.length > 0 })
 })
 
 export default router

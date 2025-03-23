@@ -293,7 +293,7 @@ export default function Images() {
               </Stack>
               <Stack>{image.writer.name}</Stack>
               <Stack fontSize="12px" color="#888">
-                {dayjs(image.writer.createAt).format("YY.MM.DD hh:mm")}
+                {dayjs(image.writer.createAt).format("YY.MM.DD HH:mm")}
               </Stack>
               <Stack flex="1" />
               {(userData?.id === image.writer.id || isManager) && (
