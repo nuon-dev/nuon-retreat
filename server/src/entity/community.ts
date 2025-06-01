@@ -2,8 +2,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm"
@@ -40,6 +42,14 @@ export class Community {
     onUpdate: "CURRENT_TIMESTAMP(6)",
   })
   lastModifiedAt: string
+
+  @OneToOne(() => User, { nullable: true })
+  @JoinColumn({ name: "leaderId" })
+  leader: User | null
+
+  @OneToOne(() => User, { nullable: true })
+  @JoinColumn({ name: "deputyLeaderId" })
+  deputyLeader: User | null
 
   @Column({ default: 0 })
   x: number

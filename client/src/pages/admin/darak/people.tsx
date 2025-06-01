@@ -1,6 +1,6 @@
-import { type Community } from "@server/entity/community"
+import { Community } from "@server/entity/community"
 import { type User } from "@server/entity/user"
-import { Box, Button, Stack } from "@mui/material"
+import { Box, Button, MenuItem, Select, Stack } from "@mui/material"
 import Header from "components/AdminHeader"
 import { get, put } from "pages/api"
 import { MouseEvent, useEffect, useState } from "react"
@@ -25,10 +25,15 @@ export default function People() {
   useEffect(() => {
     if (selectedRootCommunity) {
       fetchCommunityUserList(selectedRootCommunity.id)
+    } else {
+      fetchCommunityUserList(0)
     }
   }, [selectedRootCommunity])
 
   function mousemoveListener(e: any) {
+    if (!selectedUser) {
+      return
+    }
     const event = e as MouseEvent
     setMousePosition({ x: event.pageX, y: event.pageY })
   }
@@ -90,6 +95,30 @@ export default function People() {
     await put("/admin/soon/update-user", user)
   }
 
+  async function saveCommunityLeader(
+    community: Community,
+    leaderId: number | null
+  ) {
+    await put("/admin/community/save-leader", {
+      groupId: community.id,
+      leaderId,
+    })
+    await fetchData()
+    await fetchCommunityUserList(community.id)
+  }
+
+  async function saveCommunityDeputyLeader(
+    community: Community,
+    deputyLeaderId: number | null
+  ) {
+    await put("/admin/community/save-deputy-leader", {
+      groupId: community.id,
+      deputyLeaderId,
+    })
+    await fetchData()
+    await fetchCommunityUserList(community.id)
+  }
+
   function selectUser(e: MouseEvent, user: User) {
     e.stopPropagation()
     const target = e.target as HTMLElement
@@ -104,6 +133,7 @@ export default function People() {
       <Box
         p="4px"
         width="100px"
+        key={user.id}
         borderRadius="4px"
         border="1px solid #ccc"
         onMouseDown={(e) => selectUser(e, user)}
@@ -118,20 +148,34 @@ export default function People() {
     )
   }
 
-  function CommunityBox(displayCommunity: Community) {
+  function CommunityBox({ displayCommunity }: { displayCommunity: Community }) {
     const myCommunity = childCommunityList.find(
       (community) => community.id === displayCommunity.id
     )
+
+    function onClickCommunity(e: MouseEvent) {
+      e.stopPropagation()
+      setSelectedRootCommunity(displayCommunity)
+    }
 
     if (!myCommunity) {
       return (
         <Box
           p="4px"
+          gap="12px"
+          display="flex"
+          flexDirection="column"
           borderRadius="4px"
           border="1px solid #ccc"
-          onClick={() => setSelectedRootCommunity(displayCommunity)}
+          onClick={onClickCommunity}
         >
-          {displayCommunity.name}
+          {displayCommunity.name}?
+          {displayCommunity.children?.map((child) => (
+            <CommunityBox
+              displayCommunity={child}
+              key={`${displayCommunity.id}_${child.id}`}
+            />
+          ))}
         </Box>
       )
     }
@@ -139,15 +183,60 @@ export default function People() {
     return (
       <Stack
         p="4px"
+        gap="12px"
         borderRadius="4px"
         border="1px solid #ccc"
-        onClick={() => setSelectedRootCommunity(displayCommunity)}
+        onClick={onClickCommunity}
         onMouseUp={(e) => setUser(e, displayCommunity)}
-        gap="4px"
       >
         {displayCommunity.name}
+        <Box fontWeight="bold">
+          순장:
+          <Select
+            value={displayCommunity.leader?.id || 0}
+            sx={{ height: "30px" }}
+            onChange={(e) => {
+              e.stopPropagation()
+              saveCommunityLeader(displayCommunity, e.target.value as number)
+            }}
+          >
+            <MenuItem value={0}>없음</MenuItem>
+            {myCommunity.users.map((user) => (
+              <MenuItem key={user.id} value={user.id}>
+                {user.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
+        <Box fontWeight="bold">
+          부순장:
+          <Select
+            value={displayCommunity.deputyLeader?.id || 0}
+            sx={{ height: "30px" }}
+            onChange={(e) => {
+              e.stopPropagation()
+              saveCommunityDeputyLeader(
+                displayCommunity,
+                e.target.value as number
+              )
+            }}
+          >
+            <MenuItem value={0}>없음</MenuItem>
+            {myCommunity.users.map((user) => (
+              <MenuItem key={user.id} value={user.id}>
+                {user.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
         {myCommunity.users.map((user) => (
           <UserBox key={user.id} user={user} />
+        ))}
+        {displayCommunity.children?.map((child) => (
+          <CommunityBox
+            displayCommunity={child}
+            key={`${displayCommunity.id}_${child.id}`}
+          />
         ))}
       </Stack>
     )
@@ -173,7 +262,7 @@ export default function People() {
         onMouseUp={() => setSelectedUser(null)}
       >
         <Stack
-          flex="1"
+          width="200px"
           display="flex"
           flexWrap="wrap"
           border="1px solid #ccc"
@@ -183,7 +272,7 @@ export default function People() {
         >
           {noCommunityUser.map((user) => UserBox({ user }))}
         </Stack>
-        <Stack width="200px" gap="12px">
+        <Stack flex="1" gap="12px">
           <Stack direction="row" gap="12px">
             <Button
               onClick={() => setSelectedRootCommunity(null)}
@@ -206,9 +295,11 @@ export default function People() {
           {communityList.filter(communityFilter).length === 0 && (
             <Box>하위 그룹 없음</Box>
           )}
-          {communityList
-            .filter(communityFilter)
-            .map((community) => CommunityBox(community))}
+          <Stack gap="12px" direction="row" flexWrap="wrap">
+            {communityList.filter(communityFilter).map((community) => (
+              <CommunityBox displayCommunity={community} key={community.id} />
+            ))}
+          </Stack>
         </Stack>
         {selectedUser && selectedUser.id && (
           <Stack
