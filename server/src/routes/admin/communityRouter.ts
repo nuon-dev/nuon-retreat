@@ -54,6 +54,13 @@ router.get("/user-list/:groupId", async (req, res) => {
   const { groupId } = req.params
 
   const groupList = await communityDatabase.find({
+    select: {
+      users: {
+        name: true,
+        yearOfBirth: true,
+        id: true,
+      },
+    },
     where: {
       parent: {
         id: groupId === "0" ? IsNull() : parseInt(groupId),
@@ -62,6 +69,10 @@ router.get("/user-list/:groupId", async (req, res) => {
     relations: {
       users: {
         community: true,
+      },
+      children: {
+        leader: true,
+        deputyLeader: true,
       },
     },
   })

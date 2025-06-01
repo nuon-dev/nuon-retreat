@@ -104,7 +104,6 @@ export default function People() {
       leaderId,
     })
     await fetchData()
-    await fetchCommunityUserList(community.id)
   }
 
   async function saveCommunityDeputyLeader(
@@ -116,7 +115,6 @@ export default function People() {
       deputyLeaderId,
     })
     await fetchData()
-    await fetchCommunityUserList(community.id)
   }
 
   function selectUser(e: MouseEvent, user: User) {
@@ -180,6 +178,11 @@ export default function People() {
       )
     }
 
+    const leaderList = [
+      ...myCommunity.users,
+      ...myCommunity.children.map((child) => child.leader).filter(Boolean),
+    ]
+
     return (
       <Stack
         p="4px"
@@ -190,31 +193,29 @@ export default function People() {
         onMouseUp={(e) => setUser(e, displayCommunity)}
       >
         {displayCommunity.name}
-        <Box fontWeight="bold">
+        <Box fontWeight="bold" onClick={(e) => e.stopPropagation()}>
           순장:
           <Select
             value={displayCommunity.leader?.id || 0}
             sx={{ height: "30px" }}
             onChange={(e) => {
-              e.stopPropagation()
               saveCommunityLeader(displayCommunity, e.target.value as number)
             }}
           >
             <MenuItem value={0}>없음</MenuItem>
-            {myCommunity.users.map((user) => (
-              <MenuItem key={user.id} value={user.id}>
-                {user.name}
+            {leaderList.map((user) => (
+              <MenuItem key={user?.id} value={user?.id}>
+                {user?.name}
               </MenuItem>
             ))}
           </Select>
         </Box>
-        <Box fontWeight="bold">
+        <Box fontWeight="bold" onClick={(e) => e.stopPropagation()}>
           부순장:
           <Select
             value={displayCommunity.deputyLeader?.id || 0}
             sx={{ height: "30px" }}
             onChange={(e) => {
-              e.stopPropagation()
               saveCommunityDeputyLeader(
                 displayCommunity,
                 e.target.value as number
@@ -222,9 +223,9 @@ export default function People() {
             }}
           >
             <MenuItem value={0}>없음</MenuItem>
-            {myCommunity.users.map((user) => (
-              <MenuItem key={user.id} value={user.id}>
-                {user.name}
+            {leaderList.map((user) => (
+              <MenuItem key={user?.id} value={user?.id}>
+                {user?.name}
               </MenuItem>
             ))}
           </Select>

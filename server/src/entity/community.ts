@@ -43,11 +43,11 @@ export class Community {
   })
   lastModifiedAt: string
 
-  @OneToOne(() => User, { nullable: true })
+  @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: "leaderId" })
   leader: User | null
 
-  @OneToOne(() => User, { nullable: true })
+  @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: "deputyLeaderId" })
   deputyLeader: User | null
 
