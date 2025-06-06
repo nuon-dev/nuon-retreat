@@ -167,7 +167,7 @@ export default function People() {
           border="1px solid #ccc"
           onClick={onClickCommunity}
         >
-          {displayCommunity.name}?
+          {displayCommunity.name}
           {displayCommunity.children?.map((child) => (
             <CommunityBox
               displayCommunity={child}
