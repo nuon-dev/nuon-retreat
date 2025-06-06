@@ -37,6 +37,10 @@ export default function Header() {
     setOpen(value)
   }
 
+  function goToSoonManage() {
+    push("/soon/management")
+  }
+
   function goToEditMyData() {
     push("/remove/user/me")
   }
@@ -73,6 +77,14 @@ export default function Header() {
           onClick={() => toggleDrawer(false)}
         >
           <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={goToSoonManage}>
+                <ListItemIcon>
+                  <PermIdentityOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary={"순원 관리"} />
+              </ListItemButton>
+            </ListItem>
             <ListItem disablePadding>
               <ListItemButton onClick={goToEditMyData}>
                 <ListItemIcon>
