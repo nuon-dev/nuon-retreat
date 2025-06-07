@@ -16,11 +16,13 @@ import { useRouter } from "next/router"
 
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import useUserData from "hooks/useUserData"
+import { User } from "@server/entity/user"
 
 export default function Header() {
-  const { getUserDataFromToken } = useUserData()
   const { push } = useRouter()
   const [isOpen, setOpen] = useState(false)
+  const [userInfo, setUserInfo] = useState<User | undefined>(undefined) // Assuming User type is defined somewhere
+  const { getUserDataFromToken } = useUserData()
 
   useEffect(() => {
     fetchData()
@@ -31,6 +33,7 @@ export default function Header() {
     if (!myRole) {
       return
     }
+    setUserInfo(myRole)
   }
 
   function toggleDrawer(value: boolean) {
@@ -47,6 +50,20 @@ export default function Header() {
 
   function goToHome() {
     push("/")
+  }
+
+  function UserInfo() {
+    if (!userInfo) {
+      return null
+    }
+    return (
+      <Stack>
+        <Stack p="24px">
+          {userInfo.name} ({userInfo.yearOfBirth})
+        </Stack>
+        <Divider />
+      </Stack>
+    )
   }
 
   return (
@@ -76,6 +93,7 @@ export default function Header() {
           role="presentation"
           onClick={() => toggleDrawer(false)}
         >
+          <UserInfo />
           <List>
             <ListItem disablePadding>
               <ListItemButton onClick={goToSoonManage}>

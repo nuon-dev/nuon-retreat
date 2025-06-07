@@ -10,14 +10,19 @@ import {
   SharingText,
   SharingVideo,
 } from "../entity/retreat/sharing"
+import { WorshipSchedule } from "../entity/worshipSchedule"
+import { AttendData } from "../entity/attendData"
 
 const dataSource = new DataSource(require("../../ormconfig.json"))
 
 export const userDatabase = dataSource.getRepository(User)
-export const chatLogDatabase = dataSource.getRepository(ChatLog)
 export const communityDatabase = dataSource.getRepository(Community)
-export const inOutInfoDatabase = dataSource.getRepository(InOutInfo)
 export const permissionDatabase = dataSource.getRepository(Permission)
+export const attendDataDatabase = dataSource.getRepository(AttendData)
+export const worshipScheduleDatabase = dataSource.getRepository(WorshipSchedule)
+
+export const chatLogDatabase = dataSource.getRepository(ChatLog)
+export const inOutInfoDatabase = dataSource.getRepository(InOutInfo)
 export const retreatAttendDatabase = dataSource.getRepository(RetreatAttend)
 
 export const sharingTextDatabase = dataSource.getRepository(SharingText)
