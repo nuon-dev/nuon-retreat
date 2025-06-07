@@ -4,7 +4,7 @@ import { User } from "./user"
 
 @Entity()
 export class AttendData {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: number
 
   @ManyToOne(() => WorshipSchedule, (worshipSchedule) => worshipSchedule.id)
@@ -16,6 +16,6 @@ export class AttendData {
   @Column()
   isAttend: boolean
 
-  @Column()
+  @Column({ default: "" })
   memo: string
 }

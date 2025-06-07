@@ -44,8 +44,8 @@ export default function Header() {
     push("/soon/management")
   }
 
-  function goToEditMyData() {
-    push("/remove/user/me")
+  function goToSoonAttendance() {
+    push("/soon/attendance")
   }
 
   function goToHome() {
@@ -104,7 +104,7 @@ export default function Header() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton onClick={goToEditMyData}>
+              <ListItemButton onClick={goToSoonAttendance}>
                 <ListItemIcon>
                   <PermIdentityOutlinedIcon fontSize="small" />
                 </ListItemIcon>

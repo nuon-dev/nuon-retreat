@@ -16,9 +16,10 @@ import {
 import AdminHeader from "components/AdminHeader"
 import { useEffect, useState } from "react"
 import { WorshipKind, WorshipSchedule } from "@server/entity/worshipSchedule"
-import { get, post, put } from "pages/api"
+import { dele, get, post, put } from "pages/api"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
+import { worshipKr } from "util/worship"
 
 export default function WorshipSchedulePage() {
   const setNotificationMessage = useSetRecoilState(NotificationMessage)
@@ -60,20 +61,30 @@ export default function WorshipSchedulePage() {
     await fetchWorshipSchedules()
   }
 
-  function worshipKr(kind: WorshipKind): string {
-    switch (kind) {
-      case WorshipKind.SundayService:
-        return "주일예배"
-      default:
-        return "알 수 없는 종류"
-    }
+  function resetSelectedWorship() {
+    setSelectedWorship({
+      date: "",
+      kind: WorshipKind.SundayService,
+    } as WorshipSchedule)
+  }
+
+  function deleteWorshipSchedule() {
+    if (!selectedWorship.id) return
+    dele(`/admin/worship-schedule/${selectedWorship.id}`, {})
+    setNotificationMessage("예배 일정이 삭제되었습니다.")
+    fetchWorshipSchedules()
   }
 
   return (
     <Stack>
       <AdminHeader />
       <Stack p="12px" gap="12px" direction="row">
-        <Stack width="60%">
+        <Stack
+          width="60%"
+          border="1px solid #ccc"
+          borderRadius="12px"
+          minHeight="calc(100vh - 100px)"
+        >
           <Table>
             <TableHead>
               <TableRow>
@@ -105,8 +116,14 @@ export default function WorshipSchedulePage() {
         </Stack>
         <Stack width="40%">
           <Stack direction="row" justifyContent="space-between">
-            <Button variant="outlined">새로 추가하기</Button>
-            {selectedWorship?.id && <Button variant="outlined">삭제</Button>}
+            <Button variant="outlined" onClick={resetSelectedWorship}>
+              새로 추가하기
+            </Button>
+            {selectedWorship?.id && (
+              <Button variant="outlined" onClick={deleteWorshipSchedule}>
+                삭제
+              </Button>
+            )}
           </Stack>
           <Stack>
             <Stack
