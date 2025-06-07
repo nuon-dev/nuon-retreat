@@ -62,6 +62,10 @@ export default function AdminHeader() {
     push("/admin/darak/people")
   }
 
+  function goToWorshipSchedule() {
+    push("/admin/worshipSchedule")
+  }
+
   return (
     <Stack
       width="100%"
@@ -112,6 +116,14 @@ export default function AdminHeader() {
                   <LibraryAddCheckOutlinedIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={"다락방 인원 관리"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={goToWorshipSchedule}>
+                <ListItemIcon>
+                  <LibraryAddCheckOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary={"예배 관리"} />
               </ListItemButton>
             </ListItem>
           </List>

@@ -6,8 +6,8 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 
-enum WorshipKind {
-  SundayService,
+export enum WorshipKind {
+  SundayService = 1,
 }
 
 @Entity()
