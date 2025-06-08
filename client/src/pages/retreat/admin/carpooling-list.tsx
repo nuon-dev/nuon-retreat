@@ -16,7 +16,7 @@ import { NotificationMessage } from "state/notification"
 import { useRouter } from "next/router"
 import { Days, HowToMove } from "@server/entity/types"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
-import { RetreatAttend } from "@server//entity/retreat/retreatAttend"
+import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 import Header from "../../../components/retreat/admin/Header"
 
 let allInoutInfoList: InOutInfo[] = []

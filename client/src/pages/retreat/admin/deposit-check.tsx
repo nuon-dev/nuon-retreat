@@ -12,7 +12,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
-import { RetreatAttend } from "@server//entity/retreat/retreatAttend"
+import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 import { Deposit } from "@server/entity/types"
 import Header from "components/retreat/admin/Header"
 

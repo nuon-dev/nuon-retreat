@@ -7,7 +7,7 @@ import { NotificationMessage } from "state/notification"
 import { useSetRecoilState } from "recoil"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
-import { RetreatAttend } from "@server//entity/retreat/retreatAttend"
+import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 
 function InoutInfo() {
   const router = useRouter()

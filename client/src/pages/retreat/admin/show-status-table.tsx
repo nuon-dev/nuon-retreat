@@ -5,7 +5,7 @@ import { get } from "pages/api"
 import { useEffect, useState } from "react"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
-import { RetreatAttend } from "@server//entity/retreat/retreatAttend"
+import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 
 export default function ShowStatusTable() {
   const router = useRouter()

@@ -15,7 +15,7 @@ import { useRouter } from "next/router"
 import { useSetRecoilState } from "recoil"
 import { NotificationMessage } from "state/notification"
 import { PermissionType } from "@server/entity/types"
-import { RetreatAttend } from "@server//entity/retreat/retreatAttend"
+import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 
 function PermissionManage() {
   const { push } = useRouter()
