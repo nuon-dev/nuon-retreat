@@ -18,26 +18,27 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: npm install
-        working-directory: client
-        run: npm install
-      - name: client build
-        env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-        working-directory: client
-        run: npm run build
 
-      - name: deploy-client
-        uses: milanmk/actions-file-deployer@master
-        with:
-          remote-protocol: sftp
-          remote-host: ${{ secrets.SERVER_HOST }}
-          remote-user: ${{ secrets.SERVER_USER }}
-          remote-password: ${{ secrets.SERVER_PASSWORD }}
-          remote-path: /var/www/html
-          remote-port: 22
-          local-path: client/out
-          sync: full
+      #- name: npm install
+      #  working-directory: client
+      #  run: npm install
+      #- name: client build
+      #  env:
+      #    NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+      #  working-directory: client
+      #  run: npm run build
+      #
+      #- name: deploy-client
+      #  uses: milanmk/actions-file-deployer@master
+      #  with:
+      #    remote-protocol: sftp
+      #    remote-host: ${{ secrets.SERVER_HOST }}
+      #    remote-user: ${{ secrets.SERVER_USER }}
+      #    remote-password: ${{ secrets.SERVER_PASSWORD }}
+      #    remote-path: /var/www/html
+      #    remote-port: 22
+      #    local-path: client/out
+      #    sync: full
 
       - name: deploy-server
         uses: milanmk/actions-file-deployer@master
