@@ -12,7 +12,7 @@ import {
 } from "@mui/material"
 import { useEffect, useState } from "react"
 import MenuIcon from "@mui/icons-material/Menu"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import useUserData from "hooks/useUserData"

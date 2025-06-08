@@ -1,7 +1,7 @@
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useAtom, useAtomValue } from "jotai"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 import { useEffect, useState } from "react"
-import { get, post } from "pages/api"
+import { get, post } from "config/api"
 import { UserInformationAtom } from "./useUserData"
 import { EditContent } from "./useBotChatLogic"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
@@ -9,9 +9,9 @@ import { Days, HowToMove, InOutType } from "@server/entity/types"
 import { InOutInformationAtom, RetreatAttendAtom } from "state/retreat"
 
 export default function useRetreatData() {
-  const userInformation = useRecoilValue(UserInformationAtom)
-  const [retreatAttend, setRetreatAttend] = useRecoilState(RetreatAttendAtom)
-  const [inOutInfoList, setInOutInfo] = useRecoilState(InOutInformationAtom)
+  const userInformation = useAtomValue(UserInformationAtom)
+  const [retreatAttend, setRetreatAttend] = useAtom(RetreatAttendAtom)
+  const [inOutInfoList, setInOutInfo] = useAtom(InOutInformationAtom)
 
   useEffect(() => {
     if (!userInformation) {

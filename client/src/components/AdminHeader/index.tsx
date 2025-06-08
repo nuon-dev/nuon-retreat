@@ -15,7 +15,7 @@ import {
 } from "@mui/material"
 import { useEffect, useState } from "react"
 import MenuIcon from "@mui/icons-material/Menu"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 
 import CommunitysIcon from "@mui/icons-material/Groups"
 import ApartmentIcon from "@mui/icons-material/Apartment"

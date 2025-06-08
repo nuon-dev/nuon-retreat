@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react"
 
-import { post } from "pages/api"
+import { post } from "config/api"
 import UserInformationForm from "components/form/UserInformationForm"
 import ReceiptResult from "components/form/ReceiptResult"
-import CopyToClipboard from "react-copy-to-clipboard"
-import { useSetRecoilState } from "recoil"
-import { NotificationMessage } from "state/notification"
 import { Stack } from "@mui/material"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
@@ -16,7 +13,6 @@ export default function Receipt() {
   )
   const [isEditMode, setEditMode] = useState(true)
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
-  const setNotificationMessage = useSetRecoilState(NotificationMessage)
 
   useEffect(() => {
     checkToken()
@@ -85,18 +81,13 @@ export default function Receipt() {
             }}
           >
             {" "}
-            <CopyToClipboard
-              text="3333246704805 카카오뱅크"
-              onCopy={() => {
-                setNotificationMessage("계좌 번호가 복사 되었습니다.")
-              }}
-            >
+            <Stack>
               <span>
                 3333246704805 카카오뱅크 (조영래)
                 <br />
                 회비 : 10만원 (직장인), 7만원 (대학생)
               </span>
-            </CopyToClipboard>
+            </Stack>
           </Stack>
         </Stack>
       )}

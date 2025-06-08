@@ -1,7 +1,3 @@
-import { atom } from "recoil";
+import { atom } from "jotai"
 
-export const NotificationMessage = atom({
-    key: "notification-message",
-    default: "",
-})
-
+export const NotificationMessage = atom<string>("")

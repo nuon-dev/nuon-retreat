@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import styles from "./notification.module.css"
-import { useRecoilState } from "recoil"
+import { useAtom } from "jotai"
 import { NotificationMessage } from "state/notification"
 import { Alert } from "@mui/material"
 
@@ -8,7 +8,7 @@ export default function Notification() {
   const [lastMessageNumber, setLastMessageNumber] = useState(0)
   const [isUpdate, setIsUpdate] = useState(0)
   const [notificationMessage, setNotificationMessage] =
-    useRecoilState(NotificationMessage)
+    useAtom(NotificationMessage)
   const [messageList, setMessageList] = useState<
     Array<{ content: string; show: boolean; messageNumber: number }>
   >([])

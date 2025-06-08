@@ -6,12 +6,12 @@ import {
   TextField,
   Stack,
 } from "@mui/material"
-import { post } from "../../pages/api"
+import { post } from "../../config/api"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import InOutFrom from "./InOutForm"
 import { NotificationMessage } from "state/notification"
-import { useSetRecoilState } from "recoil"
-import { useRouter } from "next/router"
+import { useSetAtom } from "jotai"
+import { useRouter } from "next/navigation"
 import { HowToMove } from "@server/entity/types"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
@@ -28,7 +28,7 @@ export default function UserInformationForm(props: IProps) {
     undefined
   )
   const [inOutData, setInOutData] = useState<Array<InOutInfo>>([])
-  const setNotificationMessage = useSetRecoilState(NotificationMessage)
+  const setNotificationMessage = useSetAtom(NotificationMessage)
 
   useEffect(() => {
     setRetreatAttend(props.retreatAttend)

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import useUserData, { UserInformationAtom } from "./useUserData"
-import { useRecoilValue, useSetRecoilState } from "recoil"
+import { useAtomValue, useSetAtom } from "jotai"
 import useRetreatData from "./useRetreatData"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
 import { ChatContent } from "types/retreat"
@@ -9,7 +9,7 @@ import {
   RetreatAttendAtom,
   ShowInOutInfoComponentAtom,
 } from "state/retreat"
-import { post } from "pages/api"
+import { post } from "config/api"
 import { useRouter } from "next/navigation"
 
 interface IPops {
@@ -51,10 +51,10 @@ export default function useBotChatLogic({ addChat }: IPops) {
     fetchInOutInfo,
   } = useRetreatData()
 
-  const userInformation = useRecoilValue(UserInformationAtom)
-  const retreatAttend = useRecoilValue(RetreatAttendAtom)
-  const inOutInfos = useRecoilValue(InOutInformationAtom)
-  const setShowInOutInfoForm = useSetRecoilState(ShowInOutInfoComponentAtom)
+  const userInformation = useAtomValue(UserInformationAtom)
+  const retreatAttend = useAtomValue(RetreatAttendAtom)
+  const inOutInfos = useAtomValue(InOutInformationAtom)
+  const setShowInOutInfoForm = useSetAtom(ShowInOutInfoComponentAtom)
 
   const router = useRouter()
 

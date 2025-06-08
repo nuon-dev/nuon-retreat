@@ -1,18 +1,16 @@
+"use client"
+
 import useKakaoHook from "../kakao"
-import { post } from "pages/api"
-import { atom, useRecoilState } from "recoil"
+import { post } from "config/api"
+import { atom, useAtom } from "jotai"
 import { EditContent } from "./useBotChatLogic"
 import { User } from "@server/entity/user"
 
-export const UserInformationAtom = atom<User | undefined>({
-  key: "user-information",
-  default: undefined,
-})
+export const UserInformationAtom = atom<User | undefined>(undefined)
 
 export default function useUserData() {
   const { getKakaoToken } = useKakaoHook()
-  const [userInformation, setUserInformation] =
-    useRecoilState(UserInformationAtom)
+  const [userInformation, setUserInformation] = useAtom(UserInformationAtom)
 
   async function getUserDataFromToken(): Promise<User | undefined> {
     const token = localStorage.getItem("token")

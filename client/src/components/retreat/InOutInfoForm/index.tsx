@@ -1,10 +1,10 @@
-import { post } from "pages/api"
-import { MutableRefObject, useEffect, useRef, useState } from "react"
+import { post } from "config/api"
+import { Ref, useEffect, useRef, useState } from "react"
 import styles from "./index.module.css"
 import useRetreatData from "hooks/useRetreatData"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { NotificationMessage } from "state/notification"
-import { useRecoilState, useSetRecoilState } from "recoil"
+import { useAtom, useSetAtom } from "jotai"
 import { InOutType, HowToMove, Days } from "@server/entity/types"
 import { Button, FormControl, MenuItem, Select, Stack } from "@mui/material"
 import { ShowInOutInfoComponentAtom } from "state/retreat"
@@ -18,12 +18,10 @@ interface IPops {
 }
 
 export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
-  const [showInOutInfo, setShowInOutInfo] = useRecoilState(
-    ShowInOutInfoComponentAtom
-  )
+  const [showInOutInfo, setShowInOutInfo] = useAtom(ShowInOutInfoComponentAtom)
   const { addInfo, inOutInfoList, setInOutData, fetchInOutInfo } =
     useRetreatData()
-  const setNotificationMessage = useSetRecoilState(NotificationMessage)
+  const setNotificationMessage = useSetAtom(NotificationMessage)
 
   useEffect(() => {
     if (showInOutInfo) {
@@ -362,9 +360,12 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
             inOutInfoList.map((inOutInfo, index) => (
               <Stack
                 key={index}
-                ref={(el: HTMLDivElement) =>
-                  (infoListsElementRef.current[index] = el)
+                component="div"
+                /*Todo: Fix this ref assignment
+                ref={(el: HTMLDivElement | undefined) =>
+                  (infoListsElementRef.current[index] = el as HTMLDivElement)
                 }
+                */
                 m="0"
                 style={{
                   scrollSnapAlign: "start",

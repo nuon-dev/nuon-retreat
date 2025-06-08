@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -26,11 +30,22 @@
       }
     ],
     "paths": {
-      "@server/entity/*": ["../../server/src/entity/*"],
-      "@components/*": ["./src/components/*"]
+      "@server/entity/*": [
+        "../../server/src/entity/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ]
     },
     "resolveJsonModule": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
