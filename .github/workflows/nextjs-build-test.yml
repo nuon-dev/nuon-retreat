@@ -16,9 +16,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: npm install
+      - name: npm install client
         working-directory: client
         run: npm install
+
+      - name: npm install server
+        working-directory: server
+        run: npm install
+
       - name: build test
         working-directory: client
         run: npm run build
