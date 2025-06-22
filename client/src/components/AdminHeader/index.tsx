@@ -66,6 +66,10 @@ export default function AdminHeader() {
     push("/admin/worshipSchedule")
   }
 
+  function goToWorshipAttendance() {
+    push("/admin/soon/attendance")
+  }
+
   return (
     <Stack
       width="100%"
@@ -124,6 +128,14 @@ export default function AdminHeader() {
                   <LibraryAddCheckOutlinedIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={"예배 관리"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={goToWorshipAttendance}>
+                <ListItemIcon>
+                  <LibraryAddCheckOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary={"출석 관리"} />
               </ListItemButton>
             </ListItem>
           </List>
