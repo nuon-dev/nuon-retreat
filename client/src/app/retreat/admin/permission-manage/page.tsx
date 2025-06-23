@@ -15,7 +15,7 @@ import {
 } from "@mui/material"
 import { useRouter } from "next/navigation"
 import { useSetAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import { PermissionType } from "@server/entity/types"
 
 function PermissionManage() {

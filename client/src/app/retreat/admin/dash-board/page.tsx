@@ -5,7 +5,7 @@ import { get } from "../../../../config/api"
 import { useEffect, useState } from "react"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { Days, InOutType } from "@server/entity/types"
-import Header from "components/retreat/admin/Header"
+import Header from "@/components/retreat/admin/Header"
 
 function DashBoard() {
   const [getAttendeeStatus, setAttendeeStatus] = useState(

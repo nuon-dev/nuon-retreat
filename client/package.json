@@ -17,7 +17,9 @@
     "@mui/material": "7.1.1",
     "@mui/types": "7.4.3",
     "@svgr/webpack": "^8.1.0",
+    "axios": "^1.10.0",
     "dayjs": "^1.11.13",
+    "jotai": "2.12.5",
     "jsbarcode": "^3.11.6",
     "lodash": "^4.17.21",
     "mui": "^1.0.0",
@@ -25,8 +27,7 @@
     "quagga": "0.12.1",
     "react": "^19.1.0",
     "react-dom": "19.1.0",
-    "react-transition-group": "^4.4.5",
-    "jotai": "2.12.5"
+    "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.12",

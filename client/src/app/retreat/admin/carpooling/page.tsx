@@ -1,14 +1,14 @@
 "use client"
 
-import { get, post } from "config/api"
+import { get, post } from "@/config/api"
 import { useEffect, useState } from "react"
 import { Box, MenuItem, Select, Stack } from "@mui/material"
 import { useRouter } from "next/navigation"
 import { useSetAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
-import Header from "components/retreat/admin/Header"
+import Header from "@/components/retreat/admin/Header"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 
 function Carpooling() {

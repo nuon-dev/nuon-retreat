@@ -22,7 +22,7 @@ import ApartmentIcon from "@mui/icons-material/Apartment"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined"
 import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined"
-import useUserData from "hooks/useUserData"
+import useUserData from "@/hooks/useUserData"
 
 export default function AdminHeader() {
   const { getUserDataFromToken } = useUserData()
@@ -64,6 +64,10 @@ export default function AdminHeader() {
 
   function goToWorshipSchedule() {
     push("/admin/worshipSchedule")
+  }
+
+  function goToWorshipAttendance() {
+    push("/admin/soon/attendance")
   }
 
   return (
@@ -124,6 +128,14 @@ export default function AdminHeader() {
                   <LibraryAddCheckOutlinedIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={"예배 관리"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={goToWorshipAttendance}>
+                <ListItemIcon>
+                  <LibraryAddCheckOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary={"출석 관리"} />
               </ListItemButton>
             </ListItem>
           </List>

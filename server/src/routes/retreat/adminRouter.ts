@@ -99,7 +99,7 @@ router.get("/get-all-user", async (req, res) => {
     },
   })
 
-  return res.send(userList)
+  res.send(userList)
 })
 
 router.post("/set-user-permission", async (req, res) => {

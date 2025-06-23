@@ -8,7 +8,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material"
-import { post } from "config/api"
+import { post } from "@/config/api"
 import { useState } from "react"
 
 interface AddUserProps {

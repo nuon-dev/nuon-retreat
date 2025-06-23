@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import styles from "./notification.module.css"
 import { useAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import { Alert } from "@mui/material"
 
 export default function Notification() {

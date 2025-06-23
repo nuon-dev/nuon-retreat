@@ -14,7 +14,8 @@ const router = express.Router()
 router.get("/my-group-info", async (req, res) => {
   const user = await getUserFromToken(req)
   if (!user) {
-    return res.status(401).send({ error: "Unauthorized" })
+    res.status(401).send({ error: "Unauthorized" })
+    return
   }
   const group = await communityDatabase.findOne({
     select: {
@@ -53,7 +54,8 @@ router.get("/my-group-info", async (req, res) => {
     },
   })
   if (!group) {
-    return res.status(404).send({ error: "Group not found" })
+    res.status(404).send({ error: "Group not found" })
+    return
   }
   group.users = group.users.map(
     (user) =>
@@ -73,11 +75,13 @@ router.get("/my-group-info", async (req, res) => {
 router.post("/add-user", async (req, res) => {
   const user = await getUserFromToken(req)
   if (!user) {
-    return res.status(401).send({ error: "Unauthorized" })
+    res.status(401).send({ error: "Unauthorized" })
+    return
   }
   const { userName, yearOfBirth, gender, phone } = req.body
   if (!userName || !yearOfBirth || !gender || !phone) {
-    return res.status(400).send({ error: "Missing required fields" })
+    res.status(400).send({ error: "Missing required fields" })
+    return
   }
 
   const newSoon = userDatabase.create({
@@ -104,7 +108,8 @@ router.get("/worship-schedule", async (req, res) => {
     },
   })
   if (!schedules) {
-    return res.status(404).send({ error: "No worship schedules found" })
+    res.status(404).send({ error: "No worship schedules found" })
+    return
   }
   res.status(200).send(schedules)
 })
@@ -112,11 +117,13 @@ router.get("/worship-schedule", async (req, res) => {
 router.get("/attendance", async (req, res) => {
   const user = await getUserFromToken(req)
   if (!user) {
-    return res.status(401).send({ error: "Unauthorized" })
+    res.status(401).send({ error: "Unauthorized" })
+    return
   }
   const scheduleId = parseInt(req.query.scheduleId as string, 10)
   if (isNaN(scheduleId)) {
-    return res.status(400).send({ error: "Invalid schedule ID" })
+    res.status(400).send({ error: "Invalid schedule ID" })
+    return
   }
 
   const attendDataList = await attendDataDatabase.find({
@@ -144,18 +151,21 @@ router.get("/attendance", async (req, res) => {
 router.post("/attendance", async (req, res) => {
   const user = await getUserFromToken(req)
   if (!user) {
-    return res.status(401).send({ error: "Unauthorized" })
+    res.status(401).send({ error: "Unauthorized" })
+    return
   }
   const { scheduleId, attendData } = req.body
   if (!scheduleId || !attendData) {
-    return res.status(400).send({ error: "Missing required fields" })
+    res.status(400).send({ error: "Missing required fields" })
+    return
   }
 
   const worshipSchedule = await worshipScheduleDatabase.findOne({
     where: { id: scheduleId },
   })
   if (!worshipSchedule) {
-    return res.status(404).send({ error: "Worship schedule not found" })
+    res.status(404).send({ error: "Worship schedule not found" })
+    return
   }
 
   const attendDataList = attendData.map(async (data: any) => {

@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation"
 import { Stack } from "@mui/material"
 import { useEffect } from "react"
-import Header from "components/AdminHeader"
+import Header from "@/components/AdminHeader"
 import { useSetAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
-import useUserData from "hooks/useUserData"
+import { NotificationMessage } from "@/state/notification"
+import useUserData from "@/hooks/useUserData"
 
 function index() {
   const router = useRouter()

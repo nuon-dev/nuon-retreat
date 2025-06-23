@@ -1,8 +1,8 @@
 "use client"
 
 import { Stack } from "@mui/material"
-import Header from "../components/Header"
-import useUserData from "hooks/useUserData"
+import Header from "@/components/Header"
+import useUserData from "@/hooks/useUserData"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 

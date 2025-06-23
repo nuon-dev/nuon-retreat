@@ -101,18 +101,21 @@ router.put("/save-leader", async (req, res) => {
     relations: ["leader"],
   })
   if (!group) {
-    return res.status(404).send({ error: "Group not found" })
+    res.status(404).send({ error: "Group not found" })
+    return
   }
 
   if (!leaderId) {
     group.leader = null
     await communityDatabase.save(group)
-    return res.send({ result: "success" })
+    res.send({ result: "success" })
+    return
   }
 
   const leader = await userDatabase.findOne({ where: { id: leaderId } })
   if (!leader) {
-    return res.status(404).send({ error: "Leader not found" })
+    res.status(404).send({ error: "Leader not found" })
+    return
   }
   group.leader = leader
   await communityDatabase.save(group)
@@ -127,20 +130,23 @@ router.put("/save-deputy-leader", async (req, res) => {
     relations: ["deputyLeader"],
   })
   if (!group) {
-    return res.status(404).send({ error: "Group not found" })
+    res.status(404).send({ error: "Group not found" })
+    return
   }
 
   if (!deputyLeaderId) {
     group.deputyLeader = null
     await communityDatabase.save(group)
-    return res.send({ result: "success" })
+    res.send({ result: "success" })
+    return
   }
 
   const deputyLeader = await userDatabase.findOne({
     where: { id: deputyLeaderId },
   })
   if (!deputyLeader) {
-    return res.status(404).send({ error: "Deputy leader not found" })
+    res.status(404).send({ error: "Deputy leader not found" })
+    return
   }
   group.deputyLeader = deputyLeader
   await communityDatabase.save(group)

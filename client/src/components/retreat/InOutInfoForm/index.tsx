@@ -1,16 +1,16 @@
-import { post } from "config/api"
+import { post } from "@/config/api"
 import { Ref, useEffect, useRef, useState } from "react"
 import styles from "./index.module.css"
-import useRetreatData from "hooks/useRetreatData"
+import useRetreatData from "@/hooks/useRetreatData"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import { useAtom, useSetAtom } from "jotai"
 import { InOutType, HowToMove, Days } from "@server/entity/types"
 import { Button, FormControl, MenuItem, Select, Stack } from "@mui/material"
-import { ShowInOutInfoComponentAtom } from "state/retreat"
+import { ShowInOutInfoComponentAtom } from "@/state/retreat"
 import { every } from "lodash"
-import { ChatContent } from "types/retreat"
-import { EditContent } from "hooks/useBotChatLogic"
+import { ChatContent } from "@/types/retreat"
+import { EditContent } from "@/hooks/useBotChatLogic"
 
 interface IPops {
   addChat: (chat: ChatContent) => void

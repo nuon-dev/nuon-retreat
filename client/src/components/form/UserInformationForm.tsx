@@ -1,20 +1,15 @@
-import {
-  Button,
-  MenuItem,
-  Select,
-  FormControl,
-  TextField,
-  Stack,
-} from "@mui/material"
-import { post } from "../../config/api"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+"use client"
+
+import { post } from "@/config/api"
 import InOutFrom from "./InOutForm"
-import { NotificationMessage } from "state/notification"
 import { useSetAtom } from "jotai"
 import { useRouter } from "next/navigation"
 import { HowToMove } from "@server/entity/types"
+import { NotificationMessage } from "@/state/notification"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Button, MenuItem, Select, TextField, Stack } from "@mui/material"
 
 interface IProps {
   retreatAttend: RetreatAttend | undefined

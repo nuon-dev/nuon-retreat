@@ -1,11 +1,11 @@
 "use client"
 
-import { post } from "config/api"
+import { post } from "@/config/api"
 import { useEffect, useState } from "react"
 import { Button, Stack } from "@mui/material"
 import { useRouter } from "next/navigation"
-import useKakaoHook from "kakao"
-import Header from "components/retreat/admin/Header"
+import useKakaoHook from "@/kakao"
+import Header from "@/components/retreat/admin/Header"
 
 //아이콘 주소 https://www.flaticon.com/kr/
 export default function Admin() {

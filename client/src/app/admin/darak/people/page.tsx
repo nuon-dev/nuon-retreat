@@ -3,8 +3,8 @@
 import { Community } from "@server/entity/community"
 import { type User } from "@server/entity/user"
 import { Box, Button, MenuItem, Select, Stack } from "@mui/material"
-import Header from "components/AdminHeader"
-import { get, put } from "config/api"
+import Header from "@/components/AdminHeader"
+import { get, put } from "@/config/api"
 import { MouseEvent, useEffect, useState } from "react"
 
 export default function People() {

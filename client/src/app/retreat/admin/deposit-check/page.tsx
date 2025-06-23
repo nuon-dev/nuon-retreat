@@ -9,14 +9,14 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material"
-import { get, post } from "config/api"
+import { get, post } from "@/config/api"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import { useSetAtom } from "jotai"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 import { Deposit } from "@server/entity/types"
-import Header from "components/retreat/admin/Header"
+import Header from "@/components/retreat/admin/Header"
 
 function DepositCheck() {
   const { push } = useRouter()
@@ -32,7 +32,7 @@ function DepositCheck() {
   }, [])
 
   async function DepositProcessing(
-    retreatAttendId: number,
+    retreatAttendId: string,
     isDeposited: Deposit
   ) {
     const result = await post("/retreat/admin/deposit-processing", {

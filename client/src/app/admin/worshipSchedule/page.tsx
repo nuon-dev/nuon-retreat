@@ -13,13 +13,13 @@ import {
   TableRow,
   TextField,
 } from "@mui/material"
-import AdminHeader from "components/AdminHeader"
+import AdminHeader from "@/components/AdminHeader"
 import { useEffect, useState } from "react"
 import { WorshipKind, WorshipSchedule } from "@server/entity/worshipSchedule"
-import { dele, get, post, put } from "config/api"
+import { dele, get, post, put } from "@/config/api"
 import { useSetAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
-import { worshipKr } from "util/worship"
+import { NotificationMessage } from "@/state/notification"
+import { worshipKr } from "@/util/worship"
 
 export default function WorshipSchedulePage() {
   const setNotificationMessage = useSetAtom(NotificationMessage)

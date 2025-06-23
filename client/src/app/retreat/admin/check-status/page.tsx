@@ -2,7 +2,7 @@
 
 import { User } from "@server/entity/user"
 import { MenuItem, Select, Stack } from "@mui/material"
-import { post } from "config/api"
+import { post } from "@/config/api"
 import { useEffect, useRef, useState } from "react"
 //@ts-ignore
 import Quagga from "quagga"

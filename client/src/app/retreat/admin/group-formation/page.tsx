@@ -2,13 +2,13 @@
 
 import { Box, Stack } from "@mui/material"
 import { useEffect, useState } from "react"
-import { get, post } from "config/api"
+import { get, post } from "@/config/api"
 import { useRouter } from "next/navigation"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import { useSetAtom } from "jotai"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
-import Header from "components/retreat/admin/Header"
+import Header from "@/components/retreat/admin/Header"
 
 function GroupFormation() {
   const { push } = useRouter()

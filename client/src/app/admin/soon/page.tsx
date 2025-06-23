@@ -16,8 +16,8 @@ import {
 } from "@mui/material"
 import { useEffect, useState } from "react"
 import { User } from "@server/entity/user"
-import Header from "components/AdminHeader"
-import { get, post, put } from "config/api"
+import Header from "@/components/AdminHeader"
+import { get, post, put } from "@/config/api"
 
 const emptyUser = {
   id: 0,

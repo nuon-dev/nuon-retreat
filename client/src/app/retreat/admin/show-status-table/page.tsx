@@ -3,10 +3,10 @@
 import { Box, MenuItem, Select, Stack } from "@mui/material"
 import { CurrentStatus, HowToMove } from "@server/entity/types"
 import { useRouter } from "next/navigation"
-import { get } from "config/api"
+import { get } from "@/config/api"
 import { useEffect, useState } from "react"
 import { useSetAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 
 export default function ShowStatusTable() {
