@@ -1,22 +1,9 @@
 "use client"
 
-import {
-  Box,
-  Button,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  TextField,
-} from "@mui/material"
-import { Community } from "@server/entity/community"
-import { WorshipSchedule } from "@server/entity/worshipSchedule"
-import Header from "components/Header"
-import { get, post } from "config/api"
-import { useEffect, useState } from "react"
-import { worshipKr } from "util/worship"
-import { AttendData } from "@server/entity/attendData"
-import { User } from "@server/entity/user"
+import { Button, MenuItem, Select, Stack } from "@mui/material"
+import Header from "@/components/Header"
+import { post } from "@/config/api"
+import { worshipKr } from "@/util/worship"
 import useAttendance from "./useAttendance"
 import AttendRow from "./AttendRow"
 

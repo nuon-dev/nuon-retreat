@@ -1,11 +1,11 @@
 "use client"
 
 import { Button, Stack } from "@mui/material"
-import Header from "components/Header"
-import useUserData from "hooks/useUserData"
+import Header from "@/components/Header"
+import useUserData from "@/hooks/useUserData"
 import { useRouter } from "next/navigation"
 import { useSetAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 
 export default function Login() {
   const { push } = useRouter()

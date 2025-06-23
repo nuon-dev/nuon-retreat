@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 
-import { post } from "config/api"
-import UserInformationForm from "components/form/UserInformationForm"
-import ReceiptResult from "components/form/ReceiptResult"
+import { post } from "@/config/api"
+import UserInformationForm from "@/components/form/UserInformationForm"
+import ReceiptResult from "@/components/form/ReceiptResult"
 import { Stack } from "@mui/material"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"

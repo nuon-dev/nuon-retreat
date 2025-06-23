@@ -2,8 +2,8 @@
 
 import { Button } from "@mui/material"
 import { useRouter } from "next/navigation"
-import useKakaoHook from "kakao"
-import { post } from "config/api"
+import useKakaoHook from "@/kakao"
+import { post } from "@/config/api"
 
 export default function AdminLoginPage() {
   const kakao = useKakaoHook()

@@ -1,6 +1,6 @@
-import { Box, Stack } from "@mui/material"
+import { Stack } from "@mui/material"
 import styles from "./index.module.css"
-import { ChatButton } from "types/retreat"
+import { ChatButton } from "@/types/retreat"
 import Image from "next/image"
 
 interface IPops {

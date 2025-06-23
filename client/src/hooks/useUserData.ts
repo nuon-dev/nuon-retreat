@@ -1,7 +1,7 @@
 "use client"
 
 import useKakaoHook from "../kakao"
-import { post } from "config/api"
+import { post } from "@/config/api"
 import { atom, useAtom } from "jotai"
 import { EditContent } from "./useBotChatLogic"
 import { User } from "@server/entity/user"

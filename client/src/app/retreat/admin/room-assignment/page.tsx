@@ -5,10 +5,10 @@ import { useEffect, useState } from "react"
 import { get, post } from "../../../../config/api"
 import { useRouter } from "next/navigation"
 import { useSetAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
-import Header from "components/retreat/admin/Header"
+import Header from "@/components/retreat/admin/Header"
 
 function RoomAssingment() {
   const { push } = useRouter()

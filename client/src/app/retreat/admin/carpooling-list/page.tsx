@@ -12,14 +12,13 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material"
-import { get } from "../../../../config/api"
+import { get } from "@/config/api"
 import { useSetAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import { useRouter } from "next/navigation"
 import { Days, HowToMove } from "@server/entity/types"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
-import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
-import Header from "../../../../components/retreat/admin/Header"
+import Header from "@/components/retreat/admin/Header"
 
 let allInoutInfoList: InOutInfo[] = []
 

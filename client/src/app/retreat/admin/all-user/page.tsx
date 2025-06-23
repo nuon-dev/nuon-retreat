@@ -10,13 +10,13 @@ import {
   TableRow,
 } from "@mui/material"
 import { useSetAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import { useRouter } from "next/navigation"
 import { HowToMove } from "@server/entity/types"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
-import { get } from "config/api"
-import Header from "components/retreat/admin/Header"
+import { get } from "@/config/api"
+import Header from "@/components/retreat/admin/Header"
 
 function AllUser() {
   const router = useRouter()

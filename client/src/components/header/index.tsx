@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu"
 import { useRouter } from "next/navigation"
 
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
-import useUserData from "hooks/useUserData"
+import useUserData from "@/hooks/useUserData"
 import { User } from "@server/entity/user"
 
 export default function Header() {

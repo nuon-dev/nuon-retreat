@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -10,7 +10,6 @@
     "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "baseUrl": "./src",
     "moduleResolution": "Node",
     "jsx": "preserve",
     "isolatedModules": true,
@@ -26,9 +25,10 @@
       }
     ],
     "paths": {
-      "@server/entity/*": ["../../server/src/entity/*"],
-      "@axios": ["config/axios.ts"],
-      "components/*": ["components/*"]
+      "@/*": ["./src/*"],
+      "@test": ["../*"],
+      "@axios": ["./config/axios.ts"],
+      "@server/*": ["../server/src/*"]
     },
     "resolveJsonModule": true
   },

@@ -1,6 +1,6 @@
 "use client"
 
-import { get, post } from "../../../../config/api"
+import { get, post } from "@/config/api"
 import { useEffect, useState } from "react"
 import {
   Box,
@@ -10,12 +10,12 @@ import {
   SelectChangeEvent,
   Stack,
 } from "@mui/material"
-import UserInformationForm from "components/form/UserInformationForm"
+import UserInformationForm from "@/components/form/UserInformationForm"
 import { useSetAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import { useRouter } from "next/navigation"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
-import Header from "components/retreat/admin/Header"
+import Header from "@/components/retreat/admin/Header"
 
 export default function EditUserData() {
   const { push } = useRouter()
@@ -33,10 +33,10 @@ export default function EditUserData() {
           response.sort((a, b) => (a.user.name > b.user.name ? 1 : -1))
         )
         if (global.location.search) {
-          const retreadAttendId = new URLSearchParams(
+          const retreatAttendId = new URLSearchParams(
             global.location.search
-          ).get("retreadAttendId")
-          setSelectedUserId(retreadAttendId ? retreadAttendId : "")
+          ).get("retreatAttendId")
+          setSelectedUserId(retreatAttendId ? retreatAttendId : "")
         } else if (response.length > 0) {
           setSelectedUserId(response[0].id)
         }

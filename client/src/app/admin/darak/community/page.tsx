@@ -2,12 +2,12 @@
 
 import { type Community } from "@server/entity/community"
 import { Button, Card, Input, Stack } from "@mui/material"
-import Header from "components/AdminHeader"
+import Header from "@/components/AdminHeader"
 import { MouseEvent, useEffect, useState } from "react"
 import { useSetAtom } from "jotai"
-import { NotificationMessage } from "state/notification"
+import { NotificationMessage } from "@/state/notification"
 import styles from "./page.module.css"
-import { dele, get, post, put } from "config/api"
+import { dele, get, post, put } from "@/config/api"
 
 enum EditMode {
   All,

@@ -3,13 +3,13 @@ import useUserData, { UserInformationAtom } from "./useUserData"
 import { useAtomValue, useSetAtom } from "jotai"
 import useRetreatData from "./useRetreatData"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
-import { ChatContent } from "types/retreat"
+import { ChatContent } from "@/types/retreat"
 import {
   InOutInformationAtom,
   RetreatAttendAtom,
   ShowInOutInfoComponentAtom,
-} from "state/retreat"
-import { post } from "config/api"
+} from "@/state/retreat"
+import { post } from "@/config/api"
 import { useRouter } from "next/navigation"
 
 interface IPops {

@@ -1,6 +1,6 @@
 "use client"
 
-import Notification from "components/notification/notification"
+import Notification from "@/components/notification/notification"
 import "./globals.css"
 import { Provider } from "jotai"
 import Head from "next/head"

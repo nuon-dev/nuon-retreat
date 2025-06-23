@@ -1,10 +1,10 @@
 "use client"
 
-import axios from "@axios"
-import { get } from "config/api"
+import axios from "@/config/axios"
+import { get } from "@/config/api"
 import CommunityBox from "./CommunityBox"
 import { User } from "@server/entity/user"
-import AdminHeader from "components/AdminHeader"
+import AdminHeader from "@/components/AdminHeader"
 import { Box, Button, Stack } from "@mui/material"
 import { Community } from "@server/entity/community"
 import { useEffect, useMemo, useState } from "react"

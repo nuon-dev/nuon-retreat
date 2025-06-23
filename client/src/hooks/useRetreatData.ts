@@ -1,12 +1,12 @@
 import { useAtom, useAtomValue } from "jotai"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 import { useEffect, useState } from "react"
-import { get, post } from "config/api"
+import { get, post } from "@/config/api"
 import { UserInformationAtom } from "./useUserData"
 import { EditContent } from "./useBotChatLogic"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
-import { InOutInformationAtom, RetreatAttendAtom } from "state/retreat"
+import { InOutInformationAtom, RetreatAttendAtom } from "@/state/retreat"
 
 export default function useRetreatData() {
   const userInformation = useAtomValue(UserInformationAtom)

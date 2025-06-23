@@ -1,12 +1,12 @@
 "use client"
 
-import { get } from "config/api"
+import { get } from "@/config/api"
 import Image from "next/image"
 import { Box, Stack } from "@mui/material"
 import styles from "./page.module.css"
 import { useAtom } from "jotai"
 import numberToString from "./numberToString"
-import { RetreatAttendAtom } from "state/retreat"
+import { RetreatAttendAtom } from "@/state/retreat"
 import { useEffect, useRef, useState } from "react"
 
 let startPositionX = 0

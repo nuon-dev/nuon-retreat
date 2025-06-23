@@ -3,7 +3,7 @@
 import { AttendData } from "@server/entity/attendData"
 import { Community } from "@server/entity/community"
 import { WorshipSchedule } from "@server/entity/worshipSchedule"
-import { get } from "config/api"
+import { get } from "@/config/api"
 import { useEffect } from "react"
 import { atom, useAtom } from "jotai"
 

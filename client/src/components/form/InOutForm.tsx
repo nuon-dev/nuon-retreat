@@ -1,8 +1,10 @@
-import { Button, FormControl, MenuItem, Select, Stack } from "@mui/material"
+"use client"
+
 import { Dispatch, SetStateAction } from "react"
-import { post } from "config/api"
+import { post } from "@/config/api"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { Days, HowToMove, InOutType } from "@server/entity/types"
+import { Button, FormControl, MenuItem, Select, Stack } from "@mui/material"
 
 interface IProps {
   setInOutData: Dispatch<SetStateAction<InOutInfo[]>>
@@ -11,7 +13,7 @@ interface IProps {
 
 export default function InOutFrom({ inOutData, setInOutData }: IProps) {
   function onClickAdd() {
-    const emptyInfo = new InOutInfo()
+    const emptyInfo = {} as InOutInfo
     emptyInfo.day = Days.firstDay
     emptyInfo.inOutType = InOutType.IN
     emptyInfo.position = "교회"
@@ -157,32 +159,28 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
             </Select>
           </Stack>
         )}
-        {
-          <Stack marginTop="10px">
-            <Button
-              variant="contained"
-              onClick={() => onClickRemove(index)}
-              style={{ backgroundColor: "#3d524a" }}
-            >
-              카풀 정보 삭제
-            </Button>
-          </Stack>
-        }
+        <Stack marginTop="10px">
+          <Button
+            variant="contained"
+            onClick={() => onClickRemove(index)}
+            style={{ backgroundColor: "#3d524a" }}
+          >
+            카풀 정보 삭제
+          </Button>
+        </Stack>
       </Stack>
     )
   }
 
   return (
     <Stack marginTop="10px">
-      {
-        <Button
-          variant="contained"
-          onClick={onClickAdd}
-          style={{ backgroundColor: "#3d524a" }}
-        >
-          카풀 정보 추가
-        </Button>
-      }
+      <Button
+        variant="contained"
+        onClick={onClickAdd}
+        style={{ backgroundColor: "#3d524a" }}
+      >
+        카풀 정보 추가
+      </Button>
       {inOutData.map((data, index) => getRow(data, index))}
     </Stack>
   )
