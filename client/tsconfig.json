@@ -26,7 +26,6 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@test": ["../*"],
       "@axios": ["./config/axios.ts"],
       "@server/*": ["../server/src/*"]
     },
