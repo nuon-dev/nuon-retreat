@@ -50,6 +50,9 @@ export class RetreatAttend {
   @Column({ default: 0 })
   attendanceNumber: number
 
+  @Column({ type: "text", nullable: true })
+  postcardContent: string
+
   @OneToMany(() => InOutInfo, (inOutInfo) => inOutInfo.retreatAttend)
   inOutInfos: InOutInfo[]
 

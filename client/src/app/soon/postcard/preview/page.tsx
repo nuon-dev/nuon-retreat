@@ -1,12 +1,8 @@
 "use client"
 
-import { get } from "config/api"
 import Image from "next/image"
 import { Box, Stack } from "@mui/material"
 import styles from "./page.module.css"
-import { useAtom } from "jotai"
-import numberToString from "./numberToString"
-import { RetreatAttendAtom } from "state/retreat"
 import { useEffect, useRef, useState } from "react"
 
 let startPositionX = 0
@@ -22,7 +18,7 @@ export default function Postcard() {
   const [backWidth, setBackWidth] = useState(0)
   const [backHeight, setBackHeight] = useState(0)
   const [isNotMove, setIsNotMove] = useState(true)
-  const [retreatAttend, setRetreatAttend] = useAtom(RetreatAttendAtom)
+  const [postContent, setPostContent] = useState("")
 
   const imageRef = useRef<HTMLImageElement>(null)
 
@@ -86,27 +82,27 @@ export default function Postcard() {
     })()
   }, [imageRef.current])
 
-  function CardContent() {
-    return (
-      <>
-        {retreatAttend?.user?.name}님 수련회 신청이 완료되었습니다~! <br />
-        수련회를 기대하고 기도하는 마음으로 <br />
-        같이 준비하면 좋을 거 같아요.
-        <br />
-        기도로 준비하는 수련회에 <br />
-        더 큰 은혜가 있는 건 확실하니까요 :)
-        <br /> 새벽이슬도 당신을 위해 기도하겠습니다!
-        <br /> 수련회 때 만나요 ♥︎
-      </>
-    )
-  }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const data = localStorage.getItem("postcardData")
+
+      const localStorageData = localStorage.getItem("postcardData")
+      if (!localStorageData) {
+        return
+      }
+      const parsedData = JSON.parse(localStorageData)
+      if (!parsedData || !parsedData.text) {
+        return
+      }
+      setPostContent(parsedData.text)
+    }
+  }, [])
 
   return (
     <Stack
       justifyContent="center"
       alignItems="center"
       position="fixed"
-      p="50px"
       bgcolor="grey.200"
       width="100svw"
       height="100svh"
@@ -151,15 +147,10 @@ export default function Postcard() {
             position="absolute"
             right={backHeight / 15}
             bottom={backWidth / 5}
-          >
-            {retreatAttend?.user?.name}님에게 보내는{" "}
-            {numberToString(retreatAttend?.attendanceNumber)}번째 편지
-          </Stack>
+          ></Stack>
         </Stack>
       </Stack>
       <Stack
-        px={backHeight / 100}
-        py={backHeight / 150}
         position="absolute"
         fontFamily="handFont"
         color="#5D4431"
@@ -176,7 +167,7 @@ export default function Postcard() {
           }deg) rotate(90deg)`,
         }}
       >
-        <CardContent />
+        <Stack p="24px">{postContent}</Stack>
       </Stack>
     </Stack>
   )

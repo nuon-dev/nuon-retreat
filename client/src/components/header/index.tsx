@@ -50,6 +50,10 @@ export default function Header() {
     push("/soon/attendance")
   }
 
+  function goToPostcard() {
+    push("/soon/postcard")
+  }
+
   function goToHome() {
     push("/")
   }
@@ -111,6 +115,14 @@ export default function Header() {
                   <PermIdentityOutlinedIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={"출석 관리"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={goToPostcard}>
+                <ListItemIcon>
+                  <PermIdentityOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary={"수련회 편지 작성"} />
               </ListItemButton>
             </ListItem>
           </List>

@@ -56,6 +56,7 @@ export default function InputText({ submit }: IProps) {
           style={{
             position: "fixed",
             opacity: 1,
+            display: "none",
             zIndex: 1,
           }}
           ref={hiddenInputRef}
