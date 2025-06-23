@@ -19,8 +19,10 @@ export default function Postcard() {
   const [backHeight, setBackHeight] = useState(0)
   const [isNotMove, setIsNotMove] = useState(true)
   const [postContent, setPostContent] = useState("")
+  const [fontSize, setFontSize] = useState(0)
 
   const imageRef = useRef<HTMLImageElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     function touchStart(e: TouchEvent) {
@@ -76,11 +78,33 @@ export default function Postcard() {
         while (imageRef.current.clientHeight === 0) {
           await new Promise((resolve) => setTimeout(resolve, 100))
         }
+        setFontSize(backHeight / 40)
         setBackWidth(imageRef.current.clientWidth)
         setBackHeight(imageRef.current.clientHeight)
       }
     })()
   }, [imageRef.current])
+
+  useEffect(() => {
+    ;(async () => {
+      if (!contentRef.current) {
+        return
+      }
+      // 컨텐츠가 로드되면 뒷면의 크기를 설정
+      while (
+        contentRef.current.clientHeight === 0 ||
+        backWidth === 0 ||
+        backHeight === 0
+      ) {
+        await new Promise((resolve) => setTimeout(resolve, 100))
+      }
+
+      while (contentRef.current.clientHeight <= backWidth * 0.9) {
+        await new Promise((resolve) => setTimeout(resolve, 1))
+        setFontSize((pre) => pre * 1.015)
+      }
+    })()
+  }, [contentRef.current])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -154,7 +178,7 @@ export default function Postcard() {
         position="absolute"
         fontFamily="handFont"
         color="#5D4431"
-        fontSize={backHeight / 15}
+        fontSize={fontSize}
         className={`${styles.postcard} 
           ${styles["postcard-back"]}`}
         display={isNotMove ? "none" : "block"}
@@ -167,7 +191,9 @@ export default function Postcard() {
           }deg) rotate(90deg)`,
         }}
       >
-        <Stack p="24px">{postContent}</Stack>
+        <Stack p="24px" pb="0px" whiteSpace="pre" ref={contentRef}>
+          {postContent}
+        </Stack>
       </Stack>
     </Stack>
   )

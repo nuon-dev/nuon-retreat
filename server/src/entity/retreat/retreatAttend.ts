@@ -13,8 +13,8 @@ import { CurrentStatus, Deposit, HowToMove } from "../types"
 
 @Entity()
 export class RetreatAttend {
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryGeneratedColumn("uuid")
+  id: string
 
   @OneToOne(() => User, (user) => user.retreatAttend)
   @JoinColumn()

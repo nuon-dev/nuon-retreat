@@ -19,7 +19,7 @@ router.get("/get-user-data", async (req, res) => {
   const { userId } = req.query
   const foundUser = await retreatAttendDatabase.findOne({
     where: {
-      id: Number.parseInt(userId as string),
+      id: userId as string,
     },
     relations: {
       user: true,
@@ -115,7 +115,7 @@ router.post("/delete-user", async (req, res) => {
   const { userId } = req.body
   const foundRetreatAttend = await retreatAttendDatabase.findOne({
     where: {
-      id: Number.parseInt(userId as string),
+      id: userId,
     },
   })
 
