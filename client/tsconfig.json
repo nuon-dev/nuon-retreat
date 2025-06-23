@@ -28,7 +28,7 @@
     "paths": {
       "@server/entity/*": ["../../server/src/entity/*"],
       "@axios": ["config/axios.ts"],
-      "@components/*": ["components/*"]
+      "components/*": ["components/*"]
     },
     "resolveJsonModule": true
   },

@@ -6,7 +6,7 @@ import { User } from "@server/entity/user"
 import { get } from "config/api"
 import { useEffect, useState } from "react"
 import AddUser from "./AddUser"
-import Header from "@components/Header"
+import Header from "components/Header"
 
 export default function SoonManagement() {
   const [groupName, setGroupName] = useState("")

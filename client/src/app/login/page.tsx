@@ -1,7 +1,7 @@
 "use client"
 
 import { Button, Stack } from "@mui/material"
-import Header from "@components/Header"
+import Header from "components/Header"
 import useUserData from "hooks/useUserData"
 import { useRouter } from "next/navigation"
 import { useSetAtom } from "jotai"

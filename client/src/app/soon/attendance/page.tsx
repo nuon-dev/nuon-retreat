@@ -11,7 +11,7 @@ import {
 } from "@mui/material"
 import { Community } from "@server/entity/community"
 import { WorshipSchedule } from "@server/entity/worshipSchedule"
-import Header from "@components/Header"
+import Header from "components/Header"
 import { get, post } from "config/api"
 import { useEffect, useState } from "react"
 import { worshipKr } from "util/worship"
