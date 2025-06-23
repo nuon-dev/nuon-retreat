@@ -5,7 +5,7 @@ import { Community } from "@server/entity/community"
 import { User } from "@server/entity/user"
 import { get } from "config/api"
 import { useEffect, useState } from "react"
-import Header from "@components/Header/index"
+import Header from "@components/Header"
 import { useRouter } from "next/navigation"
 
 export default function PostcardPage() {

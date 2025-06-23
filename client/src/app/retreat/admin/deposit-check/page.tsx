@@ -32,7 +32,7 @@ function DepositCheck() {
   }, [])
 
   async function DepositProcessing(
-    retreatAttendId: number,
+    retreatAttendId: string,
     isDeposited: Deposit
   ) {
     const result = await post("/retreat/admin/deposit-processing", {

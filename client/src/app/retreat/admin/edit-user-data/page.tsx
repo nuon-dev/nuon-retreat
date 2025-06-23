@@ -14,15 +14,13 @@ import UserInformationForm from "components/form/UserInformationForm"
 import { useSetAtom } from "jotai"
 import { NotificationMessage } from "state/notification"
 import { useRouter } from "next/navigation"
-import { HowToMove } from "@server/entity/types"
-import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
 import Header from "components/retreat/admin/Header"
 
 export default function EditUserData() {
   const { push } = useRouter()
   const [userList, setUserList] = useState([] as Array<RetreatAttend>)
-  const [selectedUserId, setSelectedUserId] = useState(0)
+  const [selectedUserId, setSelectedUserId] = useState("")
   const [retreatAttend, setRetreatAttend] = useState<RetreatAttend | undefined>(
     undefined
   )
@@ -38,7 +36,7 @@ export default function EditUserData() {
           const retreadAttendId = new URLSearchParams(
             global.location.search
           ).get("retreadAttendId")
-          setSelectedUserId(retreadAttendId ? Number(retreadAttendId) : 0)
+          setSelectedUserId(retreadAttendId ? retreadAttendId : "")
         } else if (response.length > 0) {
           setSelectedUserId(response[0].id)
         }
@@ -54,12 +52,12 @@ export default function EditUserData() {
     loadData(selectedUserId)
   }, [selectedUserId])
 
-  function onClickUser(event: SelectChangeEvent<number>) {
-    setSelectedUserId(Number(event.target.value))
+  function onClickUser(event: SelectChangeEvent<string>) {
+    setSelectedUserId(event.target.value)
   }
 
-  function loadData(targetUserId: number = 0) {
-    const userId = targetUserId === 0 ? selectedUserId : targetUserId
+  function loadData(targetUserId: string = "") {
+    const userId = !targetUserId ? selectedUserId : targetUserId
 
     get(`/retreat/admin/get-user-data?userId=${userId}`).then((response) => {
       if (response.result === "true") {
