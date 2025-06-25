@@ -36,8 +36,8 @@ export default function BotChat(props: IPops) {
         >
           <Stack
             p="10px"
-            bgcolor="#fff"
-            color="black"
+            bgcolor="rgba(145, 22, 27, 0.48)"
+            color="white"
             fontWeight="200"
             borderRadius="12px"
             alignSelf="flex-end"
@@ -54,8 +54,7 @@ export default function BotChat(props: IPops) {
                     py="14px"
                     key={index}
                     fontSize="16px"
-                    color="#fffbc8"
-                    bgcolor="#91161b"
+                    bgcolor="rgb(113 22 26)"
                     textAlign="center"
                     borderRadius="24px"
                     onClick={button.onClick}

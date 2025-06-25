@@ -27,6 +27,8 @@ export default function Index() {
   const { editRetreatAttendInformation } = useRetreatData()
   const textAreaRef = useRef<HTMLDivElement>(null)
   const [showDrawer, setShowDrawer] = useState(false)
+  const [isEven] = useState(new Date().getTime() % 2 === 0)
+  console.log("isEven", isEven)
 
   function addChat(chatContent: ChatContent) {
     if (ChatList.length > 0) {
@@ -105,7 +107,7 @@ export default function Index() {
   }
 
   return (
-    <Stack position="fixed" width="100vw" color="#ec6c41" height="100svh">
+    <Stack position="fixed" width="100vw" color="white" height="100svh">
       <Drawer
         anchor="right"
         open={showDrawer}
@@ -205,7 +207,9 @@ export default function Index() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
           backgroundPosition: "center",
-          backgroundImage: "url('/retreat_bg.png')",
+          backgroundImage: isEven
+            ? "url('/retreat_bg_2.jpeg')"
+            : "url('/retreat_bg.png')",
           backgroundColor: "black",
         }}
       />
@@ -463,9 +467,9 @@ function TopNotification() {
       mb="0"
       gap="6px"
       direction="row"
-      bgcolor="#d52c1f"
+      bgcolor="#91161b"
       borderRadius="16px"
-      boxShadow="0px 0px 10px 0px #AAA"
+      boxShadow="0px 0px 10px 0px #b91c23"
       justifyContent="space-between"
       onClick={() => setShowDetail(!showDetail)}
     >

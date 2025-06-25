@@ -30,14 +30,13 @@ export default function InputText({ submit }: IProps) {
       px="6px"
       bottom="0"
       width="100%"
-      bgcolor="#d52c1f"
+      bgcolor="rgb(145, 22, 27)"
       direction="row"
       alignItems="center"
       zIndex="200"
     >
       <Stack flex={1} justifyContent="center" height="34px">
         <input
-          color="#d52c1f"
           ref={inputRef}
           type="text"
           value={text}
@@ -67,10 +66,10 @@ export default function InputText({ submit }: IProps) {
           variant="contained"
           style={{
             width: "50px",
-            color: "#fffbc8",
+            color: "white",
             fontWeight: "200",
             borderRadius: "200px",
-            backgroundColor: "#91161b",
+            backgroundColor: "#71161a",
             fontFamily: "Cafe24Ohsquare",
           }}
         >
