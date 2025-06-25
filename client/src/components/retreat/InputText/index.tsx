@@ -30,14 +30,14 @@ export default function InputText({ submit }: IProps) {
       px="6px"
       bottom="0"
       width="100%"
-      bgcolor="#5D4431"
+      bgcolor="#d52c1f"
       direction="row"
       alignItems="center"
       zIndex="200"
     >
       <Stack flex={1} justifyContent="center" height="34px">
         <input
-          color="#5D4431"
+          color="#d52c1f"
           ref={inputRef}
           type="text"
           value={text}
@@ -46,9 +46,8 @@ export default function InputText({ submit }: IProps) {
           placeholder="메시지 입력"
           onChange={(e) => setText(e.target.value)}
           style={{
-            padding: "12px",
             borderRadius: "24px",
-            backgroundColor: "#F2E8DE",
+            backgroundColor: "white",
           }}
         />
         <input
@@ -62,16 +61,16 @@ export default function InputText({ submit }: IProps) {
           ref={hiddenInputRef}
         />
       </Stack>
-      <Stack width="64px">
+      <Stack width="64px" mr="8px">
         <Button
           onClick={onClickSend}
           variant="contained"
           style={{
             width: "50px",
-            color: "#5D4431",
+            color: "#fffbc8",
             fontWeight: "200",
             borderRadius: "200px",
-            backgroundColor: "#F2E8DE",
+            backgroundColor: "#91161b",
             fontFamily: "Cafe24Ohsquare",
           }}
         >

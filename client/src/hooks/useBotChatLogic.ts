@@ -67,8 +67,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
     if (!userData) {
       addChat({
         type: "bot",
-        content:
-          "안녕하세요! 새벽이입니다. 수련회에 관련하여 당신을 도와줄거에요!",
+        content: "안녕하세요! 수련회에 관련하여 당신을 도와줄거에요!",
       })
       addChat({
         type: "bot",
@@ -85,8 +84,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
     if (!userData.name) {
       addChat({
         type: "bot",
-        content:
-          "안녕하세요! 새벽이입니다. 수련회에 관련하여 당신을 도와줄거에요!",
+        content: "안녕하세요! 수련회에 관련하여 당신을 도와줄거에요!",
       })
       firstTime()
     } else if (userData.yearOfBirth === 1997) {

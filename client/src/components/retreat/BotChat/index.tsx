@@ -14,7 +14,7 @@ export default function BotChat(props: IPops) {
     <Stack direction="row" gap="12px" mx="12px" className={styles["chat"]}>
       <Stack minWidth="40px" height="40px" borderRadius="16px">
         <Image
-          src="/profile.jpeg"
+          src="/profile.png"
           width="40"
           height="40"
           alt=""
@@ -24,8 +24,8 @@ export default function BotChat(props: IPops) {
         />
       </Stack>
       <Stack>
-        <Stack color="#5D4431" fontFamily="Cafe24Ohsquare" fontWeight="500">
-          새벽이
+        <Stack fontFamily="Cafe24Ohsquare" fontWeight="500">
+          새벽이슬 대학청년부
         </Stack>
         <Stack
           my="6px"
@@ -37,6 +37,7 @@ export default function BotChat(props: IPops) {
           <Stack
             p="10px"
             bgcolor="#fff"
+            color="black"
             fontWeight="200"
             borderRadius="12px"
             alignSelf="flex-end"
@@ -53,10 +54,10 @@ export default function BotChat(props: IPops) {
                     py="14px"
                     key={index}
                     fontSize="16px"
-                    bgcolor="#f7f7f7"
+                    color="#fffbc8"
+                    bgcolor="#91161b"
                     textAlign="center"
                     borderRadius="24px"
-                    border="1px solid #ddd"
                     onClick={button.onClick}
                     fontFamily="Cafe24Ohsquare"
                   >

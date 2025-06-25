@@ -105,7 +105,7 @@ export default function Index() {
   }
 
   return (
-    <Stack position="fixed" width="100vw" color="#5D4431" height="100svh">
+    <Stack position="fixed" width="100vw" color="#ec6c41" height="100svh">
       <Drawer
         anchor="right"
         open={showDrawer}
@@ -113,7 +113,7 @@ export default function Index() {
       >
         <DrawerContent />
       </Drawer>
-      <Stack top="0" width="100%" zIndex="100" bgcolor="#F2E8DE">
+      <Stack top="0" width="100%" zIndex="100" bgcolor="black">
         <Stack
           top="24px"
           width="100vw"
@@ -126,7 +126,7 @@ export default function Index() {
             pointerEvents: "none",
           }}
         >
-          2025 겨울 수련회
+          2025 여름 수련회
         </Stack>
         <Stack
           px="12px"
@@ -205,8 +205,8 @@ export default function Index() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
           backgroundPosition: "center",
-          backgroundImage: "url('/retreat_bg.jpg')",
-          backgroundColor: "#F2E8DE",
+          backgroundImage: "url('/retreat_bg.png')",
+          backgroundColor: "black",
         }}
       />
       <InOutInfoForm addChat={addChat} setEditContent={setEditContent} />
@@ -409,7 +409,7 @@ function DrawerContent() {
           </Stack>
           <Stack direction="row" gap="8px" alignItems="center">
             <Image
-              src="/profile.jpeg"
+              src="/profile.png"
               width="40"
               height="40"
               style={{
@@ -417,7 +417,7 @@ function DrawerContent() {
               }}
               alt=""
             />
-            새벽이
+            새벽이슬 대학청년부
           </Stack>
         </Stack>
       </Stack>
@@ -462,8 +462,8 @@ function TopNotification() {
       mx="8px"
       mb="0"
       gap="6px"
-      bgcolor="white"
       direction="row"
+      bgcolor="#d52c1f"
       borderRadius="16px"
       boxShadow="0px 0px 10px 0px #AAA"
       justifyContent="space-between"
@@ -480,12 +480,13 @@ function TopNotification() {
         style={{
           transition: "max-height 0.3s",
         }}
+        color="#fffbc8"
         fontSize="14px"
         fontWeight="500"
         fontFamily="Cafe24OhsquareAir"
         maxHeight={showDetailArea ? "100px" : "20px"}
       >
-        2025 겨울 수련회 신청 폼 입니다.
+        2025 여름 수련회 신청 폼 입니다.
         {showDetailText ? (
           <Stack
             style={{

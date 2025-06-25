@@ -42,8 +42,8 @@ export default function RootLayout({
 
         <meta name="title" property="og:title" content={title} />
         <meta name="description" property="og:description" content="" />
-        <meta name="image" property="og:image" content="/retreat_bg.jpg" />
-        <meta name="url" property="og:url" content="retreat_bg.jpg" />
+        <meta name="image" property="og:image" content="/retreat_bg.png" />
+        <meta name="url" property="og:url" content="retreat_bg.png" />
         <meta name="format-detection" content="telephone=no" />
       </Head>
       <Provider>
@@ -51,13 +51,6 @@ export default function RootLayout({
           <Script
             src="https://developers.kakao.com/sdk/js/kakao.js"
             strategy="beforeInteractive"
-            onReady={() => {
-              const globalValue: any = global
-              var Kakao: any = globalValue.Kakao
-              if (Kakao && !Kakao.isInitialized()) {
-                Kakao.init("24c68e47fc07af3735433d60a3c4f4b3") //발급받은 키 중 javascript키를 사용해준다.
-              }
-            }}
           />
           <Notification />
           {isKakaoBrowser ? (

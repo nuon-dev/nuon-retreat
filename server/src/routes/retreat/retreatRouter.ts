@@ -1,6 +1,7 @@
 import express from "express"
 import {
   chatLogDatabase,
+  communityDatabase,
   inOutInfoDatabase,
   retreatAttendDatabase,
 } from "../../model/dataSource"
@@ -233,6 +234,70 @@ router.post("/complete", async (req, res) => {
 
   await retreatAttendDatabase.save(foundRetreatAttend)
 
+  res.send({ result: "success" })
+})
+
+router.post("/set-postcard-content", async (req, res) => {
+  const foundUser = await getUserFromToken(req)
+
+  if (!foundUser) {
+    res.status(401).send({ result: "fail" })
+    return
+  }
+
+  const { content, targetUserId } = req.body
+
+  const foundRetreatAttend = await retreatAttendDatabase.findOne({
+    where: {
+      user: {
+        id: targetUserId,
+      },
+    },
+    relations: {
+      user: true,
+    },
+  })
+
+  if (foundRetreatAttend) {
+    foundRetreatAttend.postcardContent = content
+    await retreatAttendDatabase.save(foundRetreatAttend)
+    res.send({ result: "success" })
+    return
+  }
+
+  const community = await communityDatabase.findOne({
+    where: {
+      users: {
+        id: targetUserId,
+      },
+    },
+    relations: {
+      users: true,
+      leader: true,
+      deputyLeader: true,
+    },
+  })
+
+  if (!community) {
+    res.status(404).send({ result: "fail", message: "Community not found" })
+    return
+  }
+
+  if (
+    community.leader.id !== foundUser.id &&
+    community.deputyLeader.id !== foundUser.id
+  ) {
+    res.status(403).send({ result: "fail", message: "Permission denied" })
+    return
+  }
+  const newRetreatAttendData = retreatAttendDatabase.create({
+    user: {
+      id: targetUserId,
+    },
+    postcardContent: content,
+  })
+
+  await retreatAttendDatabase.save(newRetreatAttendData)
   res.send({ result: "success" })
 })
 
