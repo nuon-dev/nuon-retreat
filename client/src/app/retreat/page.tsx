@@ -11,11 +11,12 @@ import useUserData from "@/hooks/useUserData"
 import { get, post } from "@/config/api"
 import { Community } from "@server/entity/community"
 import InOutInfoForm from "@/components/retreat/InOutInfoForm"
-import { useSetAtom } from "jotai"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { Chat, ChatContent } from "@/types/retreat"
 import Image from "next/image"
 import { NotificationMessage } from "@/state/notification"
 import useRetreatData from "@/hooks/useRetreatData"
+import { isEvenAtom } from "@/state/retreat"
 
 let ChatList: Chat[] = []
 export default function Index() {
@@ -27,8 +28,11 @@ export default function Index() {
   const { editRetreatAttendInformation } = useRetreatData()
   const textAreaRef = useRef<HTMLDivElement>(null)
   const [showDrawer, setShowDrawer] = useState(false)
-  const [isEven] = useState(new Date().getTime() % 2 === 0)
-  console.log("isEven", isEven)
+  const [isEven, setIsEven] = useAtom(isEvenAtom)
+
+  useEffect(() => {
+    setIsEven(Math.random() < 0.5)
+  }, [])
 
   function addChat(chatContent: ChatContent) {
     if (ChatList.length > 0) {
@@ -115,7 +119,12 @@ export default function Index() {
       >
         <DrawerContent />
       </Drawer>
-      <Stack top="0" width="100%" zIndex="100" bgcolor="black">
+      <Stack
+        top="0"
+        width="100%"
+        zIndex="100"
+        bgcolor={isEven ? " #AF3E3E" : "black"}
+      >
         <Stack
           top="24px"
           width="100vw"
@@ -123,7 +132,7 @@ export default function Index() {
           position="fixed"
           fontWeight="500"
           textAlign="center"
-          fontFamily="Cafe24Ohsquare"
+          fontFamily="SCDream"
           style={{
             pointerEvents: "none",
           }}
@@ -221,6 +230,7 @@ export default function Index() {
 function DrawerContent() {
   const [userName, setUserName] = useState<string | null>(null)
   const setNotificationMessage = useSetAtom(NotificationMessage)
+  const isEven = useAtomValue(isEvenAtom)
 
   useEffect(() => {
     fetchUserDate()
@@ -284,9 +294,9 @@ function DrawerContent() {
       color="#5D4431"
       bgcolor="#F2E8DE"
       height="100%"
-      fontFamily="Cafe24OhsquareAir"
+      fontFamily="SCDream"
     >
-      <Box fontFamily="Cafe24Ohsquare">채팅방 서랍</Box>
+      <Box fontFamily="SCDream">채팅방 서랍</Box>
       <Stack gap="6px" pb="12px" borderBottom="1px solid #5D4431">
         <Stack direction="row" gap="4px">
           <Image
@@ -405,7 +415,7 @@ function DrawerContent() {
               fontSize="8px"
               bgcolor="#5D4431"
               color="#F2E8DE"
-              fontFamily="Cafe24Ohsquare"
+              fontFamily="SCDream"
             >
               나
             </Stack>
@@ -413,7 +423,7 @@ function DrawerContent() {
           </Stack>
           <Stack direction="row" gap="8px" alignItems="center">
             <Image
-              src="/profile.png"
+              src={isEven ? "/profile_2.png" : "/profile.png"}
               width="40"
               height="40"
               style={{
@@ -435,11 +445,12 @@ function TopNotification() {
   const [showDetailTextOpacity, setShowDetailTextOpacity] = useState(false)
   const [showDetail, setShowDetail] = useState(false)
   const setNotificationMessage = useSetAtom(NotificationMessage)
+  const isEven = useAtomValue(isEvenAtom)
 
   useEffect(() => {
     if (showDetail) {
       setNotificationMessage("계좌번호가 복사 되었습니다.")
-      navigator.clipboard.writeText("3333328233700")
+      navigator.clipboard.writeText("3333342703455")
     }
 
     if (showDetail) {
@@ -467,7 +478,7 @@ function TopNotification() {
       mb="0"
       gap="6px"
       direction="row"
-      bgcolor="#91161b"
+      bgcolor={isEven ? "#DA6C6C" : "#91161b"}
       borderRadius="16px"
       boxShadow="0px 0px 10px 0px #b91c23"
       justifyContent="space-between"
@@ -484,10 +495,10 @@ function TopNotification() {
         style={{
           transition: "max-height 0.3s",
         }}
-        color="#fffbc8"
+        color={isEven ? " #EAEBD0" : "#fffbc8"}
         fontSize="14px"
         fontWeight="500"
-        fontFamily="Cafe24OhsquareAir"
+        fontFamily="SCDream"
         maxHeight={showDetailArea ? "100px" : "20px"}
       >
         2025 여름 수련회 신청 폼 입니다.
@@ -498,10 +509,10 @@ function TopNotification() {
               opacity: showDetailTextOpacity ? 1 : 0,
             }}
           >
-            회비 계좌는 3333328233700 카카오뱅크 성은비 입니다.
+            회비 계좌는 3333342703455 카카오뱅크 성은비
           </Stack>
         ) : (
-          " 회비 계좌는 ...."
+          " 회비 ...."
         )}
       </Stack>
       <Image

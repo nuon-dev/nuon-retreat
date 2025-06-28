@@ -11,10 +11,10 @@
   border: none;
   background-color: transparent;
   font-size: 16px;
-  font-family: Cafe24OhsquareAir;
+  font-family: SCDream;
 }
 
 .input::placeholder {
   color: #5d4431;
-  font-family: Cafe24OhsquareAir;
+  font-family: SCDream;
 }

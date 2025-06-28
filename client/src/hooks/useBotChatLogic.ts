@@ -283,6 +283,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
             editRetreatAttendInformation("howToGo", HowToMove.together)
           },
         },
+        /*
         {
           content: "자가용 (카풀 가능)",
           onClick: () => {
@@ -295,7 +296,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
               HowToMove.driveCarWithPerson
             )
           },
-        },
+        },*/
         {
           content: "자가용 (카풀 불가능)",
           onClick: () => {
@@ -346,6 +347,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
             editRetreatAttendInformation("howToBack", HowToMove.together)
           },
         },
+        /*
         {
           content: "자가용 (카풀 가능)",
           onClick: () => {
@@ -359,6 +361,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
             )
           },
         },
+        */
         {
           content: "자가용 (카풀 불가능)",
           onClick: () => {

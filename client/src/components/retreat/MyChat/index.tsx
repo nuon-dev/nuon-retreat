@@ -25,7 +25,7 @@ export default function MyChat(props: IPops) {
         bgcolor="#ec6c41"
         borderRadius="12px"
         alignSelf="flex-end"
-        fontFamily="Cafe24OhsquareAir"
+        fontFamily="SCDream"
       >
         {props.content}
       </Stack>

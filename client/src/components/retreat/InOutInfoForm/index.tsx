@@ -129,9 +129,9 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
               onChangeInformation("day", e.target.value.toString(), index)
             }
           >
-            <MenuItem value={Days.firstDay}>금요일</MenuItem>
-            <MenuItem value={Days.secondDay}>토요일</MenuItem>
-            <MenuItem value={Days.thirdDay}>일요일</MenuItem>
+            <MenuItem value={Days.firstDay}>목요일</MenuItem>
+            <MenuItem value={Days.secondDay}>금요일</MenuItem>
+            <MenuItem value={Days.thirdDay}>토요일</MenuItem>
           </Select>
           <Stack fontSize="12px" py="6px" px="12px">
             이동 방향
@@ -158,17 +158,8 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
               onChangeInformation("time", e.target.value.toString(), index)
             }
           >
-            {new Array((24 - 7) * 2).fill(0).map((_, i) => {
-              const isOdd = i % 2 === 0
-              const time = Math.floor(i / 2) + 7
-              return (
-                <MenuItem key={i} value={`${time}:${isOdd ? "00" : "30"}`}>
-                  {time}시 {isOdd ? "00" : "30"}분
-                </MenuItem>
-              )
-            })}
-            {data.inOutType === InOutType.OUT && (
-              <MenuItem value={"24:00"}>집회 후</MenuItem>
+            {data.day === Days.secondDay && (
+              <MenuItem value={`07:00`}>오전 07시 00분</MenuItem>
             )}
           </Select>
         </Stack>
@@ -190,11 +181,15 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
                 )
               }
             >
+              {/*
               <MenuItem value={HowToMove.driveCarWithPerson}>
                 자차 이동(카풀 가능)
               </MenuItem>
-              <MenuItem value={HowToMove.rideCar}>카풀 요청</MenuItem>
               <MenuItem value={HowToMove.goAlone}>대중교통 (여주역)</MenuItem>
+              */}
+              <MenuItem value={HowToMove.rideCar}>
+                카풀 요청 (교회 버스)
+              </MenuItem>
             </Select>
           </FormControl>
         </Stack>
@@ -216,12 +211,6 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
               }
             >
               <MenuItem value={"교회"}>교회</MenuItem>
-              <MenuItem value={"아주대"}>아주대</MenuItem>
-              <MenuItem value={"수원역"}>수원역</MenuItem>
-              <MenuItem value={"광교"}>광교</MenuItem>
-              <MenuItem value={"수원시청"}>수원시청</MenuItem>
-              <MenuItem value={"여주역"}>여주역(수련회장)</MenuItem>
-              <MenuItem value={"기타지역"}>기타지역</MenuItem>
             </Select>
           </Stack>
         )}

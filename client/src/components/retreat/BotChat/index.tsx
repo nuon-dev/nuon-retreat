@@ -2,6 +2,8 @@ import { Stack } from "@mui/material"
 import styles from "./index.module.css"
 import { ChatButton } from "@/types/retreat"
 import Image from "next/image"
+import { useAtomValue } from "jotai"
+import { isEvenAtom } from "@/state/retreat"
 
 interface IPops {
   content: string
@@ -10,11 +12,13 @@ interface IPops {
 }
 
 export default function BotChat(props: IPops) {
+  const isEven = useAtomValue(isEvenAtom)
+
   return (
     <Stack direction="row" gap="12px" mx="12px" className={styles["chat"]}>
       <Stack minWidth="40px" height="40px" borderRadius="16px">
         <Image
-          src="/profile.png"
+          src={isEven ? "/profile_2.png" : "/profile.png"}
           width="40"
           height="40"
           alt=""
@@ -24,7 +28,7 @@ export default function BotChat(props: IPops) {
         />
       </Stack>
       <Stack>
-        <Stack fontFamily="Cafe24Ohsquare" fontWeight="500">
+        <Stack fontFamily="SCDream" fontWeight="500">
           새벽이슬 대학청년부
         </Stack>
         <Stack
@@ -42,7 +46,7 @@ export default function BotChat(props: IPops) {
             borderRadius="12px"
             alignSelf="flex-end"
             whiteSpace="pre-wrap"
-            fontFamily="Cafe24OhsquareAir"
+            fontFamily="SCDream"
             boxShadow="0px 0px 10px 4px rgba(0, 0, 0, 0.1)"
           >
             {props.content}
@@ -58,7 +62,7 @@ export default function BotChat(props: IPops) {
                     textAlign="center"
                     borderRadius="24px"
                     onClick={button.onClick}
-                    fontFamily="Cafe24Ohsquare"
+                    fontFamily="SCDream"
                   >
                     {button.content}
                   </Stack>
