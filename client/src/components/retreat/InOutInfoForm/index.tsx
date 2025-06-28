@@ -98,7 +98,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
     setShowInOutInfo(false)
     addChat({
       type: "bot",
-      content: "카풀 정보가 저장되었어요.",
+      content: "이동 정보가 저장되었어요.",
     })
     setEditContent(EditContent.inOutInfoEnd)
     fetchInOutInfo(true)
@@ -110,6 +110,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
         gap="8px"
         marginTop="10px"
         width="calc(100vw - 30px)"
+        color="black"
         style={{
           boxShadow: "0px 0px 10px 0px #AAA",
           border: "1px solid #AAA",
@@ -129,9 +130,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
               onChangeInformation("day", e.target.value.toString(), index)
             }
           >
-            <MenuItem value={Days.firstDay}>목요일</MenuItem>
             <MenuItem value={Days.secondDay}>금요일</MenuItem>
-            <MenuItem value={Days.thirdDay}>토요일</MenuItem>
           </Select>
           <Stack fontSize="12px" py="6px" px="12px">
             이동 방향
@@ -148,7 +147,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
             <MenuItem value={InOutType.OUT}>수련회장에서 나오기</MenuItem>
           </Select>
           <Stack fontSize="12px" py="6px" px="12px">
-            예상 출발 시간
+            출발 시간
           </Stack>
           <Select
             fullWidth={true}
@@ -158,9 +157,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
               onChangeInformation("time", e.target.value.toString(), index)
             }
           >
-            {data.day === Days.secondDay && (
-              <MenuItem value={`07:00`}>오전 07시 00분</MenuItem>
-            )}
+            <MenuItem value={`07:00`}>오전 07시 00분</MenuItem>
           </Select>
         </Stack>
         <Stack>
@@ -221,7 +218,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
               onClick={() => onClickRemove(index)}
               style={{ backgroundColor: "#3d524a" }}
             >
-              카풀 정보 삭제
+              이동 정보 삭제
             </Button>
           </Stack>
         )}
@@ -296,7 +293,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
         boxShadow="0px 0px 10px 0px #AAA"
       >
         <Stack borderRadius="24px" bgcolor="grey.200" p="12px" px="16px">
-          # 카풀 정보 관리 등록
+          # 이동 정보 관리 등록
         </Stack>
         <Button
           variant="contained"
@@ -306,7 +303,7 @@ export default function InOutInfoForm({ addChat, setEditContent }: IPops) {
           }}
           onClick={() => addInfo(InOutType.IN, HowToMove.none)}
         >
-          카풀 정보 추가
+          이동 정보 추가
         </Button>
         <Stack direction="row" gap="12px">
           {inOutInfoList &&

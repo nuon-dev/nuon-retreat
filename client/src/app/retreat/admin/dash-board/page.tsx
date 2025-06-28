@@ -390,7 +390,7 @@ function DashBoard() {
     return (
       <Stack>
         시간별 참석자 수<br />
-        (교회버스 + 카풀 정보 기반, 카풀 불가 및 자차 제외)
+        (교회버스 + 이동 정보 기반, 카풀 불가 및 자차 제외)
         <Stack>
           {timeList.map((time) => {
             const inCount = getInfoCount(

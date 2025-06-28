@@ -67,7 +67,7 @@ export default function UserInformationForm(props: IProps) {
 
     if (attendTimeResult && attendTimeResult.result !== "success") {
       setNotificationMessage(
-        "카풀 정보 저장중에 문제가 발생하였습니다.\n시간, 장소. 이동 방법을 모두 입력해주세요."
+        "이동 정보 저장중에 문제가 발생하였습니다.\n시간, 장소. 이동 방법을 모두 입력해주세요."
       )
       return
     }

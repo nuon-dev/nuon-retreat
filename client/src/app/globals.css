@@ -13,10 +13,12 @@
   src: url("../font/Cafe24Ohsquare-v2.0.woff2");
 }
 
+/*
 @font-face {
   font-family: "HandFont";
   src: url("../font/hand-font.woff2");
 }
+*/
 
 @font-face {
   font-family: "SCDream";
@@ -77,6 +79,11 @@ body {
   margin-bottom: calc(env(safe-area-inset-bottom) + 15px);
   margin-top: calc(env(safe-area-inset-top) + 15px);
   margin: 0px;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 /*

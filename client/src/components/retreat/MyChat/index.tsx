@@ -15,12 +15,13 @@ export default function MyChat(props: IPops) {
       alignItems="flex-end"
       gap="12px"
     >
-      <Stack fontSize="12px" color="#5D4431" mb="4px">
+      <Stack fontSize="12px" mb="4px">
         {props.time}
       </Stack>
       <Stack
         p="10px"
         color="#F2E8DE"
+        fontWeight="200"
         boxShadow="0px 0px 10px 4px rgba(0, 0, 0, 0.1)"
         bgcolor="#ec6c41"
         borderRadius="12px"

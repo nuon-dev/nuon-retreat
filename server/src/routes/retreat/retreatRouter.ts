@@ -98,7 +98,7 @@ router.post("/edit-information", async (req, res) => {
     etc: retreatAttend.etc,
   })
 
-  //카풀이 불가능한 선택하면 자동으로 생성된 카풀 정보 제거
+  //카풀이 불가능한 선택하면 자동으로 생성된 이동 정보 제거
   if (
     retreatAttend.howToGo === HowToMove.together ||
     retreatAttend.howToGo === HowToMove.driveCarAlone

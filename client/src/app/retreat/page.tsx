@@ -1,22 +1,22 @@
 "use client"
 
-import { Box, Drawer, Stack } from "@mui/material"
-import { useEffect, useRef, useState } from "react"
-import BotChat from "@/components/retreat/BotChat"
-import MyChat from "@/components/retreat/MyChat"
 import dayjs from "dayjs"
-import useBotChatLogic, { EditContent } from "@/hooks/useBotChatLogic"
-import InputText from "@/components/retreat/InputText"
-import useUserData from "@/hooks/useUserData"
-import { get, post } from "@/config/api"
-import { Community } from "@server/entity/community"
-import InOutInfoForm from "@/components/retreat/InOutInfoForm"
-import { useAtom, useAtomValue, useSetAtom } from "jotai"
-import { Chat, ChatContent } from "@/types/retreat"
 import Image from "next/image"
-import { NotificationMessage } from "@/state/notification"
-import useRetreatData from "@/hooks/useRetreatData"
+import { get, post } from "@/config/api"
 import { isEvenAtom } from "@/state/retreat"
+import useUserData from "@/hooks/useUserData"
+import MyChat from "@/components/retreat/MyChat"
+import { Box, Drawer, Stack } from "@mui/material"
+import BotChat from "@/components/retreat/BotChat"
+import { Chat, ChatContent } from "@/types/retreat"
+import { useEffect, useRef, useState } from "react"
+import useRetreatData from "@/hooks/useRetreatData"
+import { Community } from "@server/entity/community"
+import InputText from "@/components/retreat/InputText"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
+import { NotificationMessage } from "@/state/notification"
+import InOutInfoForm from "@/components/retreat/InOutInfoForm"
+import useBotChatLogic, { EditContent } from "@/hooks/useBotChatLogic"
 
 let ChatList: Chat[] = []
 export default function Index() {
@@ -44,7 +44,7 @@ export default function Index() {
         lastChat.type === "my" &&
         lastChat.content === "카풀 입력창 열기" &&
         chatContent.type === "bot" &&
-        chatContent.content === "카풀 정보 등록이 필요해요!"
+        chatContent.content === "이동 정보 등록이 필요해요!"
       ) {
         return
       }
@@ -98,7 +98,8 @@ export default function Index() {
         } else {
           addChat({
             type: "bot",
-            content: "순장님을 찾지 못했어요 ㅠㅠ 다시 입력해주세요.",
+            content:
+              "순장님을 찾지 못했어요 ㅠㅠ 다시 입력해주세요. '이름'만 입력해주세요.",
           })
         }
         break
@@ -112,11 +113,7 @@ export default function Index() {
 
   return (
     <Stack position="fixed" width="100vw" color="white" height="100svh">
-      <Drawer
-        anchor="right"
-        open={showDrawer}
-        onClose={() => setShowDrawer(false)}
-      >
+      <Drawer anchor="right" onClose={() => setShowDrawer(false)}>
         <DrawerContent />
       </Drawer>
       <Stack
@@ -213,13 +210,13 @@ export default function Index() {
           width: "100vw",
           height: "100vh",
           position: "fixed",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
           backgroundPosition: "center",
+          backgroundColor: isEven ? "rgb(183,103,90)" : "black",
           backgroundImage: isEven
             ? "url('/retreat_bg_2.jpeg')"
             : "url('/retreat_bg.png')",
-          backgroundColor: "black",
+          backgroundSize: isEven ? "cover" : "contain",
+          backgroundRepeat: "no-repeat",
         }}
       />
       <InOutInfoForm addChat={addChat} setEditContent={setEditContent} />
@@ -495,7 +492,7 @@ function TopNotification() {
         style={{
           transition: "max-height 0.3s",
         }}
-        color={isEven ? " #EAEBD0" : "#fffbc8"}
+        color="white"
         fontSize="14px"
         fontWeight="500"
         fontFamily="SCDream"

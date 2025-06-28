@@ -23,29 +23,27 @@ export default function RootLayout({
   }
   var title = "새벽이슬"
   if (global.location?.pathname.includes("retreat")) {
-    title = "2025 겨울 수련회"
+    title = "2025 여름 수련회"
   }
 
   return (
     <html lang="en">
-      <Head>
-        <title>{title}</title>
-        <meta name="referrer" content="same-origin" />
-        <meta
-          httpEquiv="Content-Security-Policy"
-          content="upgrade-insecure-requests"
-        />
-        <meta
-          name="viewport"
-          content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
-        />
+      <title>{title}</title>
+      <meta name="referrer" content="same-origin" />
+      <meta
+        httpEquiv="Content-Security-Policy"
+        content="upgrade-insecure-requests"
+      />
+      <meta
+        name="viewport"
+        content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
+      />
 
-        <meta name="title" property="og:title" content={title} />
-        <meta name="description" property="og:description" content="" />
-        <meta name="image" property="og:image" content="/retreat_bg.png" />
-        <meta name="url" property="og:url" content="retreat_bg.png" />
-        <meta name="format-detection" content="telephone=no" />
-      </Head>
+      <meta name="title" property="og:title" content={title} />
+      <meta name="description" property="og:description" content="" />
+      <meta name="image" property="og:image" content="/retreat_bg.png" />
+      <meta name="url" property="og:url" content="retreat_bg.png" />
+      <meta name="format-detection" content="telephone=no" />
       <Provider>
         <body>
           <Script

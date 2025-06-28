@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import useUserData, { UserInformationAtom } from "./useUserData"
 import { useAtomValue, useSetAtom } from "jotai"
 import useRetreatData from "./useRetreatData"
-import { Days, HowToMove, InOutType } from "@server/entity/types"
+import { Days, Deposit, HowToMove, InOutType } from "@server/entity/types"
 import { ChatContent } from "@/types/retreat"
 import {
   InOutInformationAtom,
@@ -219,14 +219,14 @@ export default function useBotChatLogic({ addChat }: IPops) {
       case EditContent.inOutInfo:
         addChat({
           type: "bot",
-          content: `카풀 정보 등록이 필요해요!`,
+          content: `이동 정보 등록이 필요해요!`,
           buttons: [
             {
-              content: "카풀 입력창 열기",
+              content: "이동 정보 입력창 열기",
               onClick: () => {
                 addChat({
                   type: "my",
-                  content: "카풀 입력창 열기",
+                  content: "이동 정보 입력창 열기",
                 })
                 setShowInOutInfoForm(true)
                 setEditContent(EditContent.inOutInfo)
@@ -274,11 +274,11 @@ export default function useBotChatLogic({ addChat }: IPops) {
       content: `수련회장으로 어떻게 오실건가요?`,
       buttons: [
         {
-          content: "교회 버스",
+          content: "교회 버스 (전참)",
           onClick: () => {
             addChat({
               type: "my",
-              content: "교회 버스",
+              content: "교회 버스 (전참)",
             })
             editRetreatAttendInformation("howToGo", HowToMove.together)
           },
@@ -308,15 +308,16 @@ export default function useBotChatLogic({ addChat }: IPops) {
           },
         },
         {
-          content: "카풀 필요",
+          content: "부분 참석",
           onClick: () => {
             addChat({
               type: "my",
-              content: "카풀 필요",
+              content: "부분 참석",
             })
             editRetreatAttendInformation("howToGo", HowToMove.rideCar)
           },
         },
+        /*
         {
           content: "대중교통",
           onClick: () => {
@@ -327,6 +328,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
             editRetreatAttendInformation("howToGo", HowToMove.goAlone)
           },
         },
+        */
       ],
     })
   }
@@ -372,6 +374,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
             editRetreatAttendInformation("howToBack", HowToMove.driveCarAlone)
           },
         },
+        /*
         {
           content: "카풀 필요",
           onClick: () => {
@@ -391,7 +394,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
             })
             editRetreatAttendInformation("howToBack", HowToMove.goAlone)
           },
-        },
+        },*/
       ],
     })
     setEditContent(EditContent.howToBack)
@@ -422,7 +425,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
       case HowToMove.driveCarAlone:
         return "자가용 (카풀 불가능)"
       case HowToMove.rideCar:
-        return "카풀 요청"
+        return "교회 버스"
       case HowToMove.goAlone:
         return "대중교통"
     }
@@ -459,7 +462,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
     }, 2000)
     addChat({
       type: "bot",
-      content: `[2025 겨울 수련회 접수 확인]
+      content: `[2025 여름 수련회 접수 확인]
 
 ${
   retreatAttend.attendanceNumber
@@ -473,9 +476,11 @@ ${
 ■ 순장님 : ${userData.community?.name}
 ■ 수련회장 가는 방법 : ${getKrFromHowToMove(retreatAttend.howToGo)}
 ■ 수련회장에서 나오는 방법 : ${getKrFromHowToMove(retreatAttend.howToBack)}
-■ 회비 입금 확인: ${retreatAttend.isDeposited ? "입금 확인 완료" : "대기중"}
+■ 회비 입금 확인: ${
+        retreatAttend.isDeposited === Deposit.none ? "대기중" : "입금 확인 완료"
+      }
 ■ 기타 사항 : ${retreatAttend.etc ? retreatAttend.etc : "없음"}
-${inOutInfos.length > 0 ? "\n■ 카풀 정보\n" : ""}
+${inOutInfos.length > 0 ? "\n■ 이동 정보\n" : ""}
 ${inOutInfos
   .map((inOutInfo) => {
     let position = inOutInfo.position
@@ -511,7 +516,8 @@ ${inOutInfos
             await saveAllInformation()
             post("/retreat/complete", {})
             savedUserInformation()
-            ShowPostcard()
+            //ShowPostcard()
+            whatDoYouWantToDo()
           },
         },
       ],
@@ -715,16 +721,16 @@ ${inOutInfos
             })
             addChat({
               type: "bot",
-              content: `수련회 장소는 여주 중앙청소년 수련원 입니다.\n2월 21일 금요일부터 2월 23일 주일까지 진행됩니다.\n회비 : 10만원 (직장인), 7만원 (대학생)`,
+              content: `수련회 장소는 구세군 백화산 수련원 입니다.\n8월 14일 금요일부터 8월 17일 주일까지 진행됩니다.\n회비 : 12만원 (직장인), 10만원 (그외)`,
             })
           },
         },
         {
-          content: "카풀 정보 수정",
+          content: "이동 정보 수정",
           onClick: () => {
             addChat({
               type: "my",
-              content: "카풀 정보 수정",
+              content: "이동 정보 수정",
             })
             setShowInOutInfoForm(true)
             setEditContent(EditContent.inOutInfo)

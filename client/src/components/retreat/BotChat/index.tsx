@@ -70,7 +70,7 @@ export default function BotChat(props: IPops) {
               </Stack>
             )}
           </Stack>
-          <Stack fontSize="12px" color="#5D4431" mb="4px">
+          <Stack fontSize="12px" mb="4px">
             {props.time}
           </Stack>
         </Stack>
