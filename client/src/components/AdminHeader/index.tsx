@@ -79,9 +79,14 @@ export default function AdminHeader() {
       alignItems="center"
       justifyContent="space-between"
     >
-      <Button onClick={goToHome}>
-        <img width="80px" src="/logo_white.png" />
-      </Button>
+      <Stack direction="row" alignItems="center" gap="8px">
+        <Button onClick={goToHome}>
+          <img width="80px" src="/logo_white.png" />
+        </Button>
+        <Stack fontSize="32px" fontWeight="bold" color="white">
+          관리자
+        </Stack>
+      </Stack>
       <Button onClick={() => toggleDrawer(true)}>
         <MenuIcon
           color="action"
