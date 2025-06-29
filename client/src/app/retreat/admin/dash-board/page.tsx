@@ -70,12 +70,11 @@ function DashBoard() {
           >
             <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">
               참가자수
-            </Box>{" "}
+            </Box>
             <Box fontSize="28px" alignSelf="end">
               {getAttendeeStatus.all}
-            </Box>{" "}
+            </Box>
             <Box pb="2px" pl="6px" alignSelf="end" fontSize="20px">
-              {" "}
               / {targetCount}
             </Box>
           </Stack>
@@ -95,9 +94,8 @@ function DashBoard() {
             </Box>
             <Box fontSize="28px" alignSelf="end">
               {((getAttendeeStatus.all / targetCount) * 100).toFixed(1)}
-            </Box>{" "}
+            </Box>
             <Box pb="2px" pl="3px" alignSelf="end" fontSize="20px">
-              {" "}
               % {}
             </Box>
           </Stack>
@@ -114,9 +112,9 @@ function DashBoard() {
           >
             <Box fontSize="12px" alignSelf="start" mr="8px" mt="2px">
               남/여
-            </Box>{" "}
-            <Box color="lightblue">{getAttendeeStatus.man}</Box>{" "}
-            <Box px="8px">/</Box>{" "}
+            </Box>
+            <Box color="lightblue">{getAttendeeStatus.man}</Box>
+            <Box px="8px">/</Box>
             <Box color="pink">{getAttendeeStatus.woman}</Box>
           </Stack>
           <Stack
@@ -138,7 +136,7 @@ function DashBoard() {
                 1
               )}
             </Box>
-            % <Box px="8px">/</Box>{" "}
+            % <Box px="8px">/</Box>
             <Box color="pink">
               {(
                 (getAttendeeStatus.woman / getAttendeeStatus.all) *
@@ -160,9 +158,9 @@ function DashBoard() {
           >
             <Box fontSize="12px" mr="4px">
               주일 수련회장 버스 출발 인원
-            </Box>{" "}
+            </Box>
             {getAttendeeStatus.leaveTogether}명
-          </Stack>{" "}
+          </Stack>
           <Stack
             margin="8px"
             fontSize="24px"
@@ -175,8 +173,8 @@ function DashBoard() {
             }}
           >
             <Box fontSize="12px" mr="4px">
-              금요일 교회 버스 출발 인원
-            </Box>{" "}
+              목요일 교회 버스 출발 인원
+            </Box>
             {getAttendeeStatus.goTogether}명
           </Stack>
           <Stack
@@ -191,14 +189,30 @@ function DashBoard() {
             }}
           >
             <Box fontSize="12px" mr="4px">
-              입금 처리{" "}
-            </Box>{" "}
+              금요일 교회 버스 출발 인원
+            </Box>
+            {getAttendeeStatus.rideCar}명
+          </Stack>
+          <Stack
+            margin="8px"
+            fontSize="24px"
+            direction="row"
+            style={{
+              padding: "20px",
+              borderRadius: "8px",
+              border: "1px solid #ACACAC",
+              boxShadow: "2px 2px 5px 3px #ACACAC;",
+            }}
+          >
+            <Box fontSize="12px" mr="4px">
+              입금 처리
+            </Box>
             {(
               (getAttendeeStatus.completeDeposit / getAttendeeStatus.all) *
               100
             ).toFixed(1)}
             %
-          </Stack>{" "}
+          </Stack>
         </Box>
       </Stack>
     )
@@ -406,7 +420,7 @@ function DashBoard() {
             )
             return (
               <Stack key={time}>
-                첫날 {time}시 예상 참석자 수 :{" "}
+                첫날 {time}시 예상 참석자 수 :
                 {getAttendeeStatus.goTogether + inCount - outCount}
               </Stack>
             )
@@ -427,7 +441,7 @@ function DashBoard() {
             )
             return (
               <Stack key={time}>
-                둘째날 {time}시 예상 참석자 수 :{" "}
+                둘째날 {time}시 예상 참석자 수 :
                 {firstDayAttendResult + inCount - outCount}
               </Stack>
             )

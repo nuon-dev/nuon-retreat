@@ -274,13 +274,23 @@ export default function useBotChatLogic({ addChat }: IPops) {
       content: `수련회장으로 어떻게 오실건가요?`,
       buttons: [
         {
-          content: "교회 버스 (전참)",
+          content: "목요일 교회 버스",
           onClick: () => {
             addChat({
               type: "my",
-              content: "교회 버스 (전참)",
+              content: "목요일 교회 버스",
             })
             editRetreatAttendInformation("howToGo", HowToMove.together)
+          },
+        },
+        {
+          content: "금요일 교회 버스",
+          onClick: () => {
+            addChat({
+              type: "my",
+              content: "금요일 교회 버스",
+            })
+            editRetreatAttendInformation("howToGo", HowToMove.rideCar)
           },
         },
         /*
@@ -298,23 +308,13 @@ export default function useBotChatLogic({ addChat }: IPops) {
           },
         },*/
         {
-          content: "자가용 (카풀 불가능)",
+          content: "자차",
           onClick: () => {
             addChat({
               type: "my",
-              content: "자가용 (카풀 불가능)",
+              content: "자차",
             })
             editRetreatAttendInformation("howToGo", HowToMove.driveCarAlone)
-          },
-        },
-        {
-          content: "부분 참석",
-          onClick: () => {
-            addChat({
-              type: "my",
-              content: "부분 참석",
-            })
-            editRetreatAttendInformation("howToGo", HowToMove.rideCar)
           },
         },
         /*
@@ -365,11 +365,11 @@ export default function useBotChatLogic({ addChat }: IPops) {
         },
         */
         {
-          content: "자가용 (카풀 불가능)",
+          content: "자차",
           onClick: () => {
             addChat({
               type: "my",
-              content: "자가용 (카풀 불가능)",
+              content: "자차",
             })
             editRetreatAttendInformation("howToBack", HowToMove.driveCarAlone)
           },
@@ -423,7 +423,7 @@ export default function useBotChatLogic({ addChat }: IPops) {
       case HowToMove.driveCarWithPerson:
         return "자가용 (카풀 가능)"
       case HowToMove.driveCarAlone:
-        return "자가용 (카풀 불가능)"
+        return "자차"
       case HowToMove.rideCar:
         return "교회 버스"
       case HowToMove.goAlone:
@@ -725,6 +725,7 @@ ${inOutInfos
             })
           },
         },
+        /*
         {
           content: "이동 정보 수정",
           onClick: () => {
@@ -736,6 +737,7 @@ ${inOutInfos
             setEditContent(EditContent.inOutInfo)
           },
         },
+        */
       ],
     })
   }
