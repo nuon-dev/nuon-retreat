@@ -8,6 +8,7 @@ import {
 
 export enum WorshipKind {
   SundayService = 1,
+  FridayService = 2,
 }
 
 @Entity()
@@ -20,6 +21,12 @@ export class WorshipSchedule {
 
   @Column()
   date: string
+
+  @Column({ default: true })
+  canEdit: boolean
+
+  @Column({ default: true })
+  isVisible: boolean
 
   @CreateDateColumn({
     type: "timestamp",

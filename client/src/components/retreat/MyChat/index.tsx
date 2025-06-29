@@ -23,7 +23,7 @@ export default function MyChat(props: IPops) {
         color="#F2E8DE"
         fontWeight="200"
         boxShadow="0px 0px 10px 4px rgba(0, 0, 0, 0.1)"
-        bgcolor="#ec6c41"
+        bgcolor="rgb(145, 22, 27)"
         borderRadius="12px"
         alignSelf="flex-end"
         fontFamily="SCDream"

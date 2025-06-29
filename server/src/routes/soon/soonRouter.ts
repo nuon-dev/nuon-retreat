@@ -106,6 +106,9 @@ router.get("/worship-schedule", async (req, res) => {
     order: {
       date: "DESC",
     },
+    where: {
+      canEdit: true,
+    },
   })
   if (!schedules) {
     res.status(404).send({ error: "No worship schedules found" })
