@@ -54,6 +54,7 @@ export default function useRetreatData() {
 
     let needEditInOutInfo = false
 
+    /*
     if (
       retreatAttend.howToGo === HowToMove.driveCarWithPerson ||
       retreatAttend.howToGo === HowToMove.rideCar ||
@@ -85,6 +86,7 @@ export default function useRetreatData() {
     if (needEditInOutInfo) {
       return EditContent.inOutInfo
     }
+      */
 
     //etc는 빈 값일 수 있음.
     if (retreatAttend.etc === null) {

@@ -41,6 +41,12 @@ router.get("/get-attendee-status", async (req, res) => {
       isCanceled: false,
     },
   })
+  const countOfGoRideCar = await retreatAttendDatabase.count({
+    where: {
+      howToGo: HowToMove.rideCar,
+      isCanceled: false,
+    },
+  })
   const countOfLeaveTogether = await retreatAttendDatabase.count({
     where: {
       howToBack: HowToMove.together,
@@ -57,6 +63,7 @@ router.get("/get-attendee-status", async (req, res) => {
     man: countOfMan,
     woman: countOfWoman,
     goTogether: countOfGoTogether,
+    rideCar: countOfGoRideCar,
     leaveTogether: countOfLeaveTogether,
     completeDeposit: countOfCompleteDeposit,
   })

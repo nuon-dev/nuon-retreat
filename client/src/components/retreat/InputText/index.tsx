@@ -1,6 +1,8 @@
 import { Button, Stack } from "@mui/material"
 import { useState, createRef } from "react"
 import styles from "./index.module.css"
+import { useAtomValue } from "jotai"
+import { isEvenAtom } from "@/state/retreat"
 
 interface IProps {
   submit: (text: string) => void
@@ -10,6 +12,7 @@ export default function InputText({ submit }: IProps) {
   const [text, setText] = useState("")
   const inputRef = createRef<HTMLInputElement>()
   const hiddenInputRef = createRef<HTMLInputElement>()
+  const isEven = useAtomValue(isEvenAtom)
 
   async function onClickSend() {
     if (inputRef.current && hiddenInputRef.current) {
@@ -30,14 +33,13 @@ export default function InputText({ submit }: IProps) {
       px="6px"
       bottom="0"
       width="100%"
-      bgcolor="#5D4431"
+      bgcolor={isEven ? "#DA6C6C" : "rgb(145, 22, 27)"}
       direction="row"
       alignItems="center"
       zIndex="200"
     >
       <Stack flex={1} justifyContent="center" height="34px">
         <input
-          color="#5D4431"
           ref={inputRef}
           type="text"
           value={text}
@@ -46,9 +48,8 @@ export default function InputText({ submit }: IProps) {
           placeholder="메시지 입력"
           onChange={(e) => setText(e.target.value)}
           style={{
-            padding: "12px",
             borderRadius: "24px",
-            backgroundColor: "#F2E8DE",
+            backgroundColor: "white",
           }}
         />
         <input
@@ -62,17 +63,17 @@ export default function InputText({ submit }: IProps) {
           ref={hiddenInputRef}
         />
       </Stack>
-      <Stack width="64px">
+      <Stack width="64px" mr="8px">
         <Button
           onClick={onClickSend}
           variant="contained"
           style={{
             width: "50px",
-            color: "#5D4431",
+            color: "white",
             fontWeight: "200",
             borderRadius: "200px",
-            backgroundColor: "#F2E8DE",
-            fontFamily: "Cafe24Ohsquare",
+            backgroundColor: isEven ? "#AF3E3E" : "#71161a",
+            fontFamily: "SCDream",
           }}
         >
           전송

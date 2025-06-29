@@ -2,6 +2,8 @@ import { Stack } from "@mui/material"
 import styles from "./index.module.css"
 import { ChatButton } from "@/types/retreat"
 import Image from "next/image"
+import { useAtomValue } from "jotai"
+import { isEvenAtom } from "@/state/retreat"
 
 interface IPops {
   content: string
@@ -10,11 +12,13 @@ interface IPops {
 }
 
 export default function BotChat(props: IPops) {
+  const isEven = useAtomValue(isEvenAtom)
+
   return (
     <Stack direction="row" gap="12px" mx="12px" className={styles["chat"]}>
       <Stack minWidth="40px" height="40px" borderRadius="16px">
         <Image
-          src="/profile.jpeg"
+          src={isEven ? "/profile_2.png" : "/profile.png"}
           width="40"
           height="40"
           alt=""
@@ -24,8 +28,8 @@ export default function BotChat(props: IPops) {
         />
       </Stack>
       <Stack>
-        <Stack color="#5D4431" fontFamily="Cafe24Ohsquare" fontWeight="500">
-          새벽이
+        <Stack fontFamily="SCDream" fontWeight="500">
+          새벽이슬 대학청년부
         </Stack>
         <Stack
           my="6px"
@@ -36,12 +40,13 @@ export default function BotChat(props: IPops) {
         >
           <Stack
             p="10px"
-            bgcolor="#fff"
+            bgcolor="rgba(145, 22, 27, 0.48)"
+            color="white"
             fontWeight="200"
             borderRadius="12px"
             alignSelf="flex-end"
             whiteSpace="pre-wrap"
-            fontFamily="Cafe24OhsquareAir"
+            fontFamily="SCDream"
             boxShadow="0px 0px 10px 4px rgba(0, 0, 0, 0.1)"
           >
             {props.content}
@@ -53,12 +58,11 @@ export default function BotChat(props: IPops) {
                     py="14px"
                     key={index}
                     fontSize="16px"
-                    bgcolor="#f7f7f7"
+                    bgcolor="rgb(113 22 26)"
                     textAlign="center"
                     borderRadius="24px"
-                    border="1px solid #ddd"
                     onClick={button.onClick}
-                    fontFamily="Cafe24Ohsquare"
+                    fontFamily="SCDream"
                   >
                     {button.content}
                   </Stack>
@@ -66,7 +70,7 @@ export default function BotChat(props: IPops) {
               </Stack>
             )}
           </Stack>
-          <Stack fontSize="12px" color="#5D4431" mb="4px">
+          <Stack fontSize="12px" mb="4px">
             {props.time}
           </Stack>
         </Stack>

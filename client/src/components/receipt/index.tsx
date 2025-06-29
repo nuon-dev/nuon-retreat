@@ -6,6 +6,7 @@ import ReceiptResult from "@/components/form/ReceiptResult"
 import { Stack } from "@mui/material"
 import { InOutInfo } from "@server/entity/retreat/inOutInfo"
 import { RetreatAttend } from "@server/entity/retreat/retreatAttend"
+import { Deposit } from "@server/entity/types"
 
 export default function Receipt() {
   const [retreatAttend, setRetreatAttend] = useState<RetreatAttend | undefined>(
@@ -47,7 +48,8 @@ export default function Receipt() {
 
   return (
     <Stack padding="12px" bgcolor="#1d321a" gap="12px" pb="72px">
-      {retreatAttend?.isDeposited ? (
+      {retreatAttend?.isDeposited &&
+      retreatAttend.isDeposited !== Deposit.none ? (
         <Stack
           px="24px"
           py="12px"
@@ -80,12 +82,11 @@ export default function Receipt() {
               userSelect: "text",
             }}
           >
-            {" "}
             <Stack>
               <span>
-                3333246704805 카카오뱅크 (조영래)
+                3333342703455 카카오뱅크 (조영래)
                 <br />
-                회비 : 10만원 (직장인), 7만원 (대학생)
+                회비 : 12만원 (직장인), 10만원 (그외)
               </span>
             </Stack>
           </Stack>

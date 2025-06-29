@@ -7,6 +7,9 @@ import { get } from "@/config/api"
 import { useEffect, useState } from "react"
 import Header from "@/components/Header"
 import { useRouter } from "next/navigation"
+import axios from "@/config/axios"
+import { useAtom, useSetAtom } from "jotai"
+import { NotificationMessage } from "@/state/notification"
 
 export default function PostcardPage() {
   const { push } = useRouter()
@@ -18,6 +21,7 @@ export default function PostcardPage() {
     userId: number
     text: string
   } | null>(null)
+  const setNotificationMessage = useSetAtom(NotificationMessage)
 
   useEffect(() => {
     fetchGroupDate()
@@ -71,6 +75,15 @@ export default function PostcardPage() {
     push("/soon/postcard/preview")
   }
 
+  async function saveToServer() {
+    await axios.post("/retreat/set-postcard-content", {
+      content: textFieldValue,
+      targetUserId: selectedUser?.id,
+    })
+    localStorage.removeItem("postcardData")
+    setNotificationMessage("저장되었습니다.")
+  }
+
   return (
     <Stack>
       <Header />
@@ -107,7 +120,7 @@ export default function PostcardPage() {
         <Button variant="outlined" color="info" onClick={previewPostcard}>
           미리보기
         </Button>
-        <Button variant="outlined" color="success">
+        <Button variant="outlined" color="success" onClick={saveToServer}>
           저장하기
         </Button>
       </Stack>

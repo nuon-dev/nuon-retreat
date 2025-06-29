@@ -7,3 +7,5 @@ export const ShowInOutInfoComponentAtom = atom<boolean | undefined>(undefined)
 export const RetreatAttendAtom = atom<RetreatAttend | undefined>(undefined)
 
 export const InOutInformationAtom = atom<InOutInfo[] | undefined>(undefined)
+
+export const isEvenAtom = atom<boolean>(false)

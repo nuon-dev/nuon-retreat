@@ -139,6 +139,7 @@ export default function WorshipSchedulePage() {
                 </Stack>
                 <TextField
                   fullWidth
+                  type="date"
                   value={selectedWorship?.date}
                   onChange={(e) => {
                     editWorshipSchedule("date", e.target.value)
@@ -158,8 +159,39 @@ export default function WorshipSchedulePage() {
                   <MenuItem value={WorshipKind.SundayService}>
                     {worshipKr(WorshipKind.SundayService)}
                   </MenuItem>
+                  <MenuItem value={WorshipKind.FridayService}>
+                    {worshipKr(WorshipKind.FridayService)}
+                  </MenuItem>
                 </Select>
               </Stack>
+              <Stack direction="row" gap="12px" alignItems="center">
+                <Box width="50px">수정 가능</Box>
+                <Select
+                  fullWidth
+                  value={selectedWorship?.canEdit ? "true" : "false"}
+                  onChange={(e) => {
+                    editWorshipSchedule("canEdit", e.target.value === "true")
+                  }}
+                >
+                  <MenuItem value="true">예</MenuItem>
+                  <MenuItem value="false">아니오</MenuItem>
+                </Select>
+              </Stack>
+              <Stack direction="row" gap="12px" alignItems="center">
+                <Box width="50px">조회 여부</Box>
+                <Select
+                  fullWidth
+                  value={selectedWorship?.isVisible ? "true" : "false"}
+                  onChange={(e) => {
+                    editWorshipSchedule("isVisible", e.target.value === "true")
+                  }}
+                >
+                  <MenuItem value="true">예</MenuItem>
+                  <MenuItem value="false">아니요</MenuItem>
+                </Select>
+              </Stack>
+            </Stack>
+            <Stack p="12px" alignItems="center">
               <Stack>
                 <Button variant="outlined" onClick={saveWorshipSchedule}>
                   {selectedWorship?.id ? "수정하기" : "추가하기"}

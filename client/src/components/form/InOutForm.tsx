@@ -165,7 +165,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
             onClick={() => onClickRemove(index)}
             style={{ backgroundColor: "#3d524a" }}
           >
-            카풀 정보 삭제
+            이동 정보 삭제
           </Button>
         </Stack>
       </Stack>
@@ -179,7 +179,7 @@ export default function InOutFrom({ inOutData, setInOutData }: IProps) {
         onClick={onClickAdd}
         style={{ backgroundColor: "#3d524a" }}
       >
-        카풀 정보 추가
+        이동 정보 추가
       </Button>
       {inOutData.map((data, index) => getRow(data, index))}
     </Stack>

@@ -1,21 +1,22 @@
 "use client"
 
-import { Box, Drawer, Stack } from "@mui/material"
-import { useEffect, useRef, useState } from "react"
-import BotChat from "@/components/retreat/BotChat"
-import MyChat from "@/components/retreat/MyChat"
 import dayjs from "dayjs"
-import useBotChatLogic, { EditContent } from "@/hooks/useBotChatLogic"
-import InputText from "@/components/retreat/InputText"
-import useUserData from "@/hooks/useUserData"
-import { get, post } from "@/config/api"
-import { Community } from "@server/entity/community"
-import InOutInfoForm from "@/components/retreat/InOutInfoForm"
-import { useSetAtom } from "jotai"
-import { Chat, ChatContent } from "@/types/retreat"
 import Image from "next/image"
-import { NotificationMessage } from "@/state/notification"
+import { get, post } from "@/config/api"
+import { isEvenAtom } from "@/state/retreat"
+import useUserData from "@/hooks/useUserData"
+import MyChat from "@/components/retreat/MyChat"
+import { Box, Drawer, Stack } from "@mui/material"
+import BotChat from "@/components/retreat/BotChat"
+import { Chat, ChatContent } from "@/types/retreat"
+import { useEffect, useRef, useState } from "react"
 import useRetreatData from "@/hooks/useRetreatData"
+import { Community } from "@server/entity/community"
+import InputText from "@/components/retreat/InputText"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
+import { NotificationMessage } from "@/state/notification"
+import InOutInfoForm from "@/components/retreat/InOutInfoForm"
+import useBotChatLogic, { EditContent } from "@/hooks/useBotChatLogic"
 
 let ChatList: Chat[] = []
 export default function Index() {
@@ -27,6 +28,11 @@ export default function Index() {
   const { editRetreatAttendInformation } = useRetreatData()
   const textAreaRef = useRef<HTMLDivElement>(null)
   const [showDrawer, setShowDrawer] = useState(false)
+  const [isEven, setIsEven] = useAtom(isEvenAtom)
+
+  useEffect(() => {
+    setIsEven(Math.random() < 0.5)
+  }, [])
 
   function addChat(chatContent: ChatContent) {
     if (ChatList.length > 0) {
@@ -38,7 +44,7 @@ export default function Index() {
         lastChat.type === "my" &&
         lastChat.content === "카풀 입력창 열기" &&
         chatContent.type === "bot" &&
-        chatContent.content === "카풀 정보 등록이 필요해요!"
+        chatContent.content === "이동 정보 등록이 필요해요!"
       ) {
         return
       }
@@ -92,7 +98,8 @@ export default function Index() {
         } else {
           addChat({
             type: "bot",
-            content: "순장님을 찾지 못했어요 ㅠㅠ 다시 입력해주세요.",
+            content:
+              "순장님을 찾지 못했어요 ㅠㅠ 다시 입력해주세요. '이름'만 입력해주세요.",
           })
         }
         break
@@ -105,15 +112,16 @@ export default function Index() {
   }
 
   return (
-    <Stack position="fixed" width="100vw" color="#5D4431" height="100svh">
-      <Drawer
-        anchor="right"
-        open={showDrawer}
-        onClose={() => setShowDrawer(false)}
-      >
+    <Stack position="fixed" width="100vw" color="white" height="100svh">
+      <Drawer anchor="right" onClose={() => setShowDrawer(false)}>
         <DrawerContent />
       </Drawer>
-      <Stack top="0" width="100%" zIndex="100" bgcolor="#F2E8DE">
+      <Stack
+        top="0"
+        width="100%"
+        zIndex="100"
+        bgcolor={isEven ? " #AF3E3E" : "black"}
+      >
         <Stack
           top="24px"
           width="100vw"
@@ -121,12 +129,12 @@ export default function Index() {
           position="fixed"
           fontWeight="500"
           textAlign="center"
-          fontFamily="Cafe24Ohsquare"
+          fontFamily="SCDream"
           style={{
             pointerEvents: "none",
           }}
         >
-          2025 겨울 수련회
+          2025 여름 수련회
         </Stack>
         <Stack
           px="12px"
@@ -202,11 +210,13 @@ export default function Index() {
           width: "100vw",
           height: "100vh",
           position: "fixed",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
           backgroundPosition: "center",
-          backgroundImage: "url('/retreat_bg.jpg')",
-          backgroundColor: "#F2E8DE",
+          backgroundColor: isEven ? "rgb(183,103,90)" : "black",
+          backgroundImage: isEven
+            ? "url('/retreat_bg_2.jpeg')"
+            : "url('/retreat_bg.png')",
+          backgroundSize: isEven ? "cover" : "contain",
+          backgroundRepeat: "no-repeat",
         }}
       />
       <InOutInfoForm addChat={addChat} setEditContent={setEditContent} />
@@ -217,6 +227,7 @@ export default function Index() {
 function DrawerContent() {
   const [userName, setUserName] = useState<string | null>(null)
   const setNotificationMessage = useSetAtom(NotificationMessage)
+  const isEven = useAtomValue(isEvenAtom)
 
   useEffect(() => {
     fetchUserDate()
@@ -280,9 +291,9 @@ function DrawerContent() {
       color="#5D4431"
       bgcolor="#F2E8DE"
       height="100%"
-      fontFamily="Cafe24OhsquareAir"
+      fontFamily="SCDream"
     >
-      <Box fontFamily="Cafe24Ohsquare">채팅방 서랍</Box>
+      <Box fontFamily="SCDream">채팅방 서랍</Box>
       <Stack gap="6px" pb="12px" borderBottom="1px solid #5D4431">
         <Stack direction="row" gap="4px">
           <Image
@@ -401,7 +412,7 @@ function DrawerContent() {
               fontSize="8px"
               bgcolor="#5D4431"
               color="#F2E8DE"
-              fontFamily="Cafe24Ohsquare"
+              fontFamily="SCDream"
             >
               나
             </Stack>
@@ -409,7 +420,7 @@ function DrawerContent() {
           </Stack>
           <Stack direction="row" gap="8px" alignItems="center">
             <Image
-              src="/profile.jpeg"
+              src={isEven ? "/profile_2.png" : "/profile.png"}
               width="40"
               height="40"
               style={{
@@ -417,7 +428,7 @@ function DrawerContent() {
               }}
               alt=""
             />
-            새벽이
+            새벽이슬 대학청년부
           </Stack>
         </Stack>
       </Stack>
@@ -431,11 +442,12 @@ function TopNotification() {
   const [showDetailTextOpacity, setShowDetailTextOpacity] = useState(false)
   const [showDetail, setShowDetail] = useState(false)
   const setNotificationMessage = useSetAtom(NotificationMessage)
+  const isEven = useAtomValue(isEvenAtom)
 
   useEffect(() => {
     if (showDetail) {
       setNotificationMessage("계좌번호가 복사 되었습니다.")
-      navigator.clipboard.writeText("3333328233700")
+      navigator.clipboard.writeText("3333342703455")
     }
 
     if (showDetail) {
@@ -462,10 +474,10 @@ function TopNotification() {
       mx="8px"
       mb="0"
       gap="6px"
-      bgcolor="white"
       direction="row"
+      bgcolor={isEven ? "#DA6C6C" : "#91161b"}
       borderRadius="16px"
-      boxShadow="0px 0px 10px 0px #AAA"
+      boxShadow="0px 0px 10px 0px #b91c23"
       justifyContent="space-between"
       onClick={() => setShowDetail(!showDetail)}
     >
@@ -480,12 +492,13 @@ function TopNotification() {
         style={{
           transition: "max-height 0.3s",
         }}
+        color="white"
         fontSize="14px"
         fontWeight="500"
-        fontFamily="Cafe24OhsquareAir"
+        fontFamily="SCDream"
         maxHeight={showDetailArea ? "100px" : "20px"}
       >
-        2025 겨울 수련회 신청 폼 입니다.
+        2025 여름 수련회 신청 폼 입니다.
         {showDetailText ? (
           <Stack
             style={{
@@ -493,10 +506,10 @@ function TopNotification() {
               opacity: showDetailTextOpacity ? 1 : 0,
             }}
           >
-            회비 계좌는 3333328233700 카카오뱅크 성은비 입니다.
+            회비 계좌는 3333342703455 카카오뱅크 성은비
           </Stack>
         ) : (
-          " 회비 계좌는 ...."
+          " 회비 ...."
         )}
       </Stack>
       <Image

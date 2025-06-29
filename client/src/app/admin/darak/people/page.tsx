@@ -5,7 +5,7 @@ import { type User } from "@server/entity/user"
 import { Box, Button, MenuItem, Select, Stack } from "@mui/material"
 import Header from "@/components/AdminHeader"
 import { get, put } from "@/config/api"
-import { MouseEvent, useEffect, useState } from "react"
+import { MouseEvent, use, useEffect, useRef, useState } from "react"
 
 export default function People() {
   const [communityList, setCommunityList] = useState<Community[]>([])
@@ -13,7 +13,7 @@ export default function People() {
   const [selectedRootCommunity, setSelectedRootCommunity] =
     useState<Community | null>(null)
   const [childCommunityList, setChildCommunityList] = useState<Community[]>([])
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const selectedUser = useRef<User | null>(null)
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [shiftPosition, setShiftPosition] = useState({ x: 0, y: 0 })
@@ -33,7 +33,7 @@ export default function People() {
   }, [selectedRootCommunity])
 
   function mousemoveListener(e: any) {
-    if (!selectedUser) {
+    if (!selectedUser.current) {
       return
     }
     const event = e as MouseEvent
@@ -64,10 +64,10 @@ export default function People() {
   }
 
   async function removeCommunityToUser() {
-    if (!selectedUser) return
-    selectedUser.community = null
-    await saveUser(selectedUser)
-    setSelectedUser(null)
+    if (!selectedUser.current) return
+    selectedUser.current.community = null
+    await saveUser(selectedUser.current)
+    selectedUser.current = null
     if (selectedRootCommunity) {
       await fetchCommunityUserList(selectedRootCommunity.id)
       await fetchData()
@@ -75,18 +75,18 @@ export default function People() {
   }
 
   async function setUser(e: MouseEvent, targetCommunity: Community) {
-    if (!selectedUser) return
+    if (!selectedUser.current) return
     e.stopPropagation()
     if (
-      selectedUser.community &&
-      selectedUser.community.id === targetCommunity.id
+      selectedUser.current.community &&
+      selectedUser.current.community.id === targetCommunity.id
     ) {
-      setSelectedUser(null)
+      selectedUser.current = null
       return
     }
-    selectedUser.community = targetCommunity
-    await saveUser(selectedUser)
-    setSelectedUser(null)
+    selectedUser.current.community = targetCommunity
+    await saveUser(selectedUser.current)
+    selectedUser.current = null
     if (selectedRootCommunity) {
       await fetchCommunityUserList(selectedRootCommunity.id)
       await fetchData()
@@ -125,7 +125,7 @@ export default function People() {
     const shiftX = e.clientX - target.getBoundingClientRect().left
     const shiftY = e.clientY - target.getBoundingClientRect().top
     setShiftPosition({ x: shiftX, y: shiftY })
-    setSelectedUser(user)
+    selectedUser.current = user
   }
 
   function UserBox({ user }: { user: User }) {
@@ -160,14 +160,13 @@ export default function People() {
 
     if (!myCommunity) {
       return (
-        <Box
+        <Stack
           p="4px"
           gap="12px"
           display="flex"
-          flexDirection="column"
           borderRadius="4px"
+          flexDirection="column"
           border="1px solid #ccc"
-          onClick={onClickCommunity}
         >
           {displayCommunity.name}
           {displayCommunity.children?.map((child) => (
@@ -176,7 +175,7 @@ export default function People() {
               key={`${displayCommunity.id}_${child.id}`}
             />
           ))}
-        </Box>
+        </Stack>
       )
     }
 
@@ -191,10 +190,11 @@ export default function People() {
         gap="12px"
         borderRadius="4px"
         border="1px solid #ccc"
-        onClick={onClickCommunity}
         onMouseUp={(e) => setUser(e, displayCommunity)}
       >
-        {displayCommunity.name}
+        <Stack onClick={onClickCommunity} style={{ cursor: "pointer" }}>
+          {displayCommunity.name}
+        </Stack>
         <Box fontWeight="bold" onClick={(e) => e.stopPropagation()}>
           순장:
           <Select
@@ -262,7 +262,7 @@ export default function People() {
         direction="row"
         gap="4px"
         p="4px"
-        onMouseUp={() => setSelectedUser(null)}
+        onMouseUp={() => (selectedUser.current = null)}
       >
         <Stack
           width="200px"
@@ -304,14 +304,15 @@ export default function People() {
             ))}
           </Stack>
         </Stack>
-        {selectedUser && selectedUser.id && (
+        {(!!selectedUser.current).toString()}
+        {selectedUser.current && selectedUser.current.id && (
           <Stack
             position="absolute"
             top={mousePosition.y - shiftPosition.y}
             left={mousePosition.x - shiftPosition.x}
             style={{ pointerEvents: "none" }}
           >
-            {UserBox({ user: selectedUser })}
+            {UserBox({ user: selectedUser.current })}
           </Stack>
         )}
       </Stack>
