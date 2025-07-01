@@ -56,7 +56,7 @@ jobs:
           remote-password: ${{ secrets.SERVER_PASSWORD }}
           remote-path: /home/nuon
           remote-port: 22
-          local-path: /server
+          local-path: ./server
           sync: full
 
       - name: Restart API with PM2
