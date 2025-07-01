@@ -1,8 +1,13 @@
 import express from "express"
 import { hasPermission } from "../../util"
 import { PermissionType } from "../../entity/types"
-import { attendDataDatabase, userDatabase } from "../../model/dataSource"
+import {
+  attendDataDatabase,
+  communityDatabase,
+  userDatabase,
+} from "../../model/dataSource"
 import { In } from "typeorm"
+import _ from "lodash"
 
 const router = express.Router()
 
@@ -44,8 +49,8 @@ router.put("/update-user", async (req, res) => {
   res.status(200).send({ message: "success" })
 })
 
-router.get("/get-soon-list", async (req, res) => {
-  const communityIds = req.query.ids
+router.post("/get-soon-list", async (req, res) => {
+  const communityIds = req.body.ids
 
   if (!communityIds) {
     res.status(400).send({ message: "No community IDs provided" })
@@ -57,10 +62,37 @@ router.get("/get-soon-list", async (req, res) => {
     .split(",")
     .map((id) => parseInt(id, 10))
 
+  const allOfCommunityList = await communityDatabase.find({
+    relations: {
+      children: true,
+    },
+  })
+
+  function getAllChildIds(targetCommunityIds: number[]): number[] {
+    const idsDoubleArray = targetCommunityIds.map((targetCommunityId) => {
+      const foundCommunity = allOfCommunityList.find(
+        (community) => community.id === targetCommunityId
+      )
+      if (!foundCommunity) {
+        return []
+      }
+
+      if (foundCommunity.children.length === 0) {
+        return [foundCommunity.id]
+      }
+
+      const childIds = foundCommunity.children.map((child) => child.id)
+      return getAllChildIds(childIds)
+    })
+    return _.flattenDeep(idsDoubleArray)
+  }
+
+  const communityOfChildIds = getAllChildIds(ids)
+
   const soonList = await userDatabase.find({
     where: {
       community: {
-        id: In(ids),
+        id: In(communityOfChildIds),
       },
     },
     select: {
@@ -79,8 +111,8 @@ router.get("/get-soon-list", async (req, res) => {
   res.status(200).send(soonList)
 })
 
-router.get("/user-attendance", async (req, res) => {
-  const userIds = req.query.ids
+router.post("/user-attendance", async (req, res) => {
+  const userIds = req.body.ids
 
   if (!userIds) {
     res.status(400).send({ message: "No user IDs provided" })
@@ -96,6 +128,9 @@ router.get("/user-attendance", async (req, res) => {
     where: {
       user: {
         id: In(ids),
+      },
+      worshipSchedule: {
+        isVisible: true,
       },
     },
     relations: {

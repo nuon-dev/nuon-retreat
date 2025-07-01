@@ -17,6 +17,9 @@ export default function CommunityBox({
       padding="8px"
       borderRadius="8px"
       border="1px solid #ccc"
+      style={{
+        cursor: "pointer",
+      }}
       onClick={() => setSelectedCommunity(community)}
     >
       {community.name}

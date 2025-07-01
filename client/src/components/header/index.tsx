@@ -85,7 +85,9 @@ export default function Header() {
         <Button onClick={goToHome}>
           <img width="80px" src="/logo_white.png" />
         </Button>
-        순장
+        <Stack fontSize="32px" fontWeight="bold" color="white">
+          순장
+        </Stack>
       </Stack>
       <Button onClick={() => toggleDrawer(true)}>
         <MenuIcon

@@ -39,12 +39,19 @@ export default function AttendanceAdminPage() {
   }, [communities, selectedCommunity])
 
   useEffect(() => {
-    if (filteredCommunities.length === 0) return
+    if (filteredCommunities.length === 0) {
+      axios
+        .post("/admin/soon/get-soon-list", {
+          ids: selectedCommunity?.id,
+        })
+        .then((response) => {
+          setSoonList(response.data)
+        })
+      return
+    }
     axios
-      .get("/admin/soon/get-soon-list", {
-        params: {
-          ids: filteredCommunities.map((community) => community.id).join(","),
-        },
+      .post("/admin/soon/get-soon-list", {
+        ids: filteredCommunities.map((community) => community.id).join(","),
       })
       .then((response) => {
         setSoonList(response.data)
@@ -56,10 +63,8 @@ export default function AttendanceAdminPage() {
     const soonIds = soonList.map((user) => user.id)
 
     axios
-      .get("/admin/soon/user-attendance", {
-        params: {
-          ids: soonIds.join(","),
-        },
+      .post("/admin/soon/user-attendance", {
+        ids: soonIds.join(","),
       })
       .then((response) => {
         setAttendDataList(response.data)
@@ -78,7 +83,9 @@ export default function AttendanceAdminPage() {
         map.push(data.worshipSchedule)
       }
     })
-    return map
+    return map.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime()
+    })
   }, [attendDataList])
 
   function handleCommunityClick(community: Community) {
@@ -124,15 +131,22 @@ export default function AttendanceAdminPage() {
         ))}
       </Stack>
       <Stack overflow="auto" maxHeight="100%" padding="8px">
-        <Stack direction="row" padding="8px">
-          <Box width="100px" mr="12px" />
+        <Stack
+          ml="12px"
+          height="30px"
+          direction="row"
+          alignItems="center"
+          textAlign="center"
+        >
+          <Box width="99px" mr="12px" height="100%" />
           {worshipScheduleMapList.map((worshipSchedule) => {
             return (
               <Stack
-                key={worshipSchedule.id}
-                padding="8px"
+                width="108px"
+                height="100%"
+                justifyContent="center"
                 border="1px solid #ccc"
-                width="100px"
+                key={worshipSchedule.id}
               >
                 {worshipSchedule.date}
               </Stack>
@@ -144,9 +158,16 @@ export default function AttendanceAdminPage() {
             key={user.id}
             direction="row"
             alignItems="center"
+            height="40px"
             border="1px solid #ccc"
           >
-            <Stack margin="12px">
+            <Stack
+              padding="10px"
+              height="100%"
+              width="102px"
+              justifyContent="center"
+              borderRight="1px solid #ccc"
+            >
               {user.name} ({user.community?.name})
             </Stack>
             {worshipScheduleMapList.map((worshipSchedule) => {
@@ -158,11 +179,13 @@ export default function AttendanceAdminPage() {
               return (
                 <Stack
                   padding="4px"
-                  width="100px"
+                  height="100%"
+                  width="101px"
                   direction="row"
                   textAlign="center"
+                  alignItems="center"
                   key={worshipSchedule.id}
-                  border="1px solid #ccc"
+                  borderRight="1px solid #ccc"
                 >
                   {attendData ? (
                     attendData.isAttend ? (

@@ -138,6 +138,7 @@ export default function CommunityComponent() {
           minHeight: "60px",
           boxShadow: "0px 0px 4px 1px #aaa",
         }}
+        key={rootCommunity.id}
         onMouseUp={(e) => setCommunity(e, rootCommunity)}
         onMouseDown={(e) => selectCommunity(e, rootCommunity)}
         sx={{
