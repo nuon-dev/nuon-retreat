@@ -19,6 +19,18 @@ jobs:
         with:
           node-version: 20
 
+      - name: deploy-server
+        uses: milanmk/actions-file-deployer@master
+        with:
+          remote-protocol: sftp
+          remote-host: ${{ secrets.SERVER_HOST }}
+          remote-user: ${{ secrets.SERVER_USER }}
+          remote-password: ${{ secrets.SERVER_PASSWORD }}
+          remote-path: /home/nuon
+          remote-port: 22
+          local-path: ./server
+          sync: full
+
       - name: npm install client
         working-directory: client
         run: npm install
@@ -46,18 +58,6 @@ jobs:
       #     remote-port: 22
       #     local-path: client/out
       #     sync: full
-
-      - name: deploy-server
-        uses: milanmk/actions-file-deployer@master
-        with:
-          remote-protocol: sftp
-          remote-host: ${{ secrets.SERVER_HOST }}
-          remote-user: ${{ secrets.SERVER_USER }}
-          remote-password: ${{ secrets.SERVER_PASSWORD }}
-          remote-path: /home/nuon
-          remote-port: 22
-          local-path: ./server
-          sync: full
 
       - name: Restart API with PM2
         uses: appleboy/ssh-action@v1.0.3
