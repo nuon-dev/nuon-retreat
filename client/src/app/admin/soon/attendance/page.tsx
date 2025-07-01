@@ -10,6 +10,7 @@ import { Community } from "@server/entity/community"
 import { useEffect, useMemo, useState } from "react"
 import { AttendData } from "@server/entity/attendData"
 import { WorshipSchedule } from "@server/entity/worshipSchedule"
+import { AttendStatus } from "@server/entity/types"
 
 export default function AttendanceAdminPage() {
   const [communities, setCommunities] = useState<Community[]>([])
@@ -40,6 +41,11 @@ export default function AttendanceAdminPage() {
 
   useEffect(() => {
     if (filteredCommunities.length === 0) {
+      if (!selectedCommunity) {
+        setSoonList([])
+        setAttendDataList([])
+        return
+      }
       axios
         .post("/admin/soon/get-soon-list", {
           ids: selectedCommunity?.id,
@@ -108,7 +114,13 @@ export default function AttendanceAdminPage() {
   return (
     <Stack>
       <AdminHeader />
-      <Stack direction="row" gap="16px" padding="8px" alignItems="center">
+      <Stack
+        gap="16px"
+        margin="4px"
+        padding="8px"
+        direction="row"
+        alignItems="center"
+      >
         <Button
           variant="outlined"
           onClick={handleBackClick}
@@ -121,7 +133,7 @@ export default function AttendanceAdminPage() {
           <Stack key={community.id}>&gt; {community.name}</Stack>
         ))}
       </Stack>
-      <Stack direction="row" gap="16px" padding="8px">
+      <Stack margin="4px" direction="row" gap="16px" padding="8px">
         {filteredCommunities.map((community) => (
           <CommunityBox
             key={community.id}
@@ -130,7 +142,7 @@ export default function AttendanceAdminPage() {
           />
         ))}
       </Stack>
-      <Stack overflow="auto" maxHeight="100%" padding="8px">
+      <Stack margin="4px" overflow="auto" maxHeight="100%" padding="8px">
         <Stack
           ml="12px"
           height="30px"
@@ -187,15 +199,7 @@ export default function AttendanceAdminPage() {
                   key={worshipSchedule.id}
                   borderRight="1px solid #ccc"
                 >
-                  {attendData ? (
-                    attendData.isAttend ? (
-                      <span style={{ color: "green" }}>출석</span>
-                    ) : (
-                      <span style={{ color: "red" }}>{attendData.memo}</span>
-                    )
-                  ) : (
-                    <span style={{ color: "orange" }}>미입력</span>
-                  )}
+                  <AttendCell attendData={attendData} />
                 </Stack>
               )
             })}
@@ -204,4 +208,21 @@ export default function AttendanceAdminPage() {
       </Stack>
     </Stack>
   )
+}
+
+function AttendCell({ attendData }: { attendData: AttendData | undefined }) {
+  if (!attendData) {
+    return <span style={{ color: "orange" }}>미입력</span>
+  }
+
+  if (attendData.isAttend === AttendStatus.ATTEND) {
+    return <span style={{ color: "green" }}>출석</span>
+  }
+
+  if (attendData.isAttend === AttendStatus.ABSENT) {
+    return <span style={{ color: "red" }}>{attendData.memo}</span>
+  }
+  if (attendData.isAttend === AttendStatus.ETC) {
+    return <span style={{ color: "blue" }}>(기타){attendData.memo}</span>
+  }
 }

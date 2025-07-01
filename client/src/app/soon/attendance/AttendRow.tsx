@@ -10,6 +10,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material"
+import { AttendStatus } from "@server/entity/types"
 
 export default function AttendRow({ user }: { user: User }) {
   const { soonAttendData, setSoonAttendData } = useAttendance()
@@ -22,7 +23,7 @@ export default function AttendRow({ user }: { user: User }) {
     event: SelectChangeEvent<string>,
     child: React.ReactNode
   ) {
-    const newAttendStatus = event.target.value === "true"
+    const newAttendStatus = event.target.value as AttendStatus
     if (!attendData) return
     const newAttendData = { ...attendData, isAttend: newAttendStatus }
     setSoonAttendData((prev) =>
@@ -48,10 +49,11 @@ export default function AttendRow({ user }: { user: User }) {
         value={isAttend.toString()}
         onChange={handleAttendChange}
       >
-        <MenuItem value={"true"}>출석</MenuItem>
-        <MenuItem value={"false"}>결석</MenuItem>
+        <MenuItem value={AttendStatus.ATTEND}>출석</MenuItem>
+        <MenuItem value={AttendStatus.ABSENT}>결석</MenuItem>
+        <MenuItem value={AttendStatus.ETC}>기타</MenuItem>
       </Select>
-      {!isAttend && (
+      {isAttend !== AttendStatus.ATTEND && (
         <TextField
           placeholder="사유"
           value={attendData?.memo}

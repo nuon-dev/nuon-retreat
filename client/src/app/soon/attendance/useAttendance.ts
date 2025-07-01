@@ -6,6 +6,7 @@ import { WorshipSchedule } from "@server/entity/worshipSchedule"
 import { get } from "@/config/api"
 import { useEffect } from "react"
 import { atom, useAtom } from "jotai"
+import { AttendStatus } from "@server/entity/types"
 
 const groupInfoAtom = atom<Community | undefined>(undefined)
 const worshipScheduleListAtom = atom<WorshipSchedule[]>([])
@@ -45,7 +46,7 @@ export default function useAttendance() {
         data.push({
           user: user,
           worshipSchedule: { id: scheduleId } as WorshipSchedule,
-          isAttend: true,
+          isAttend: AttendStatus.ATTEND,
         } as AttendData)
       }
     })

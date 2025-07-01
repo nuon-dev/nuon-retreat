@@ -50,3 +50,9 @@ export enum Deposit {
   student = "student",
   business = "business",
 }
+
+export enum AttendStatus {
+  ATTEND = "ATTEND",
+  ABSENT = "ABSENT",
+  ETC = "ETC",
+}
