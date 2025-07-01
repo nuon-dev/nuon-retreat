@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from "react"
 import { AttendData } from "@server/entity/attendData"
 import { WorshipKind, WorshipSchedule } from "@server/entity/worshipSchedule"
 import { AttendStatus } from "@server/entity/types"
+import { worshipKr } from "@/util/worship"
 
 export default function AttendanceAdminPage() {
   const [communities, setCommunities] = useState<Community[]>([])
@@ -178,8 +179,12 @@ export default function AttendanceAdminPage() {
           }
         >
           <MenuItem value="all">전체</MenuItem>
-          <MenuItem value={WorshipKind.SundayService}>주일예배</MenuItem>
-          <MenuItem value={WorshipKind.FridayService}>금야철야</MenuItem>
+          <MenuItem value={WorshipKind.SundayService}>
+            {worshipKr(WorshipKind.SundayService)}
+          </MenuItem>
+          <MenuItem value={WorshipKind.FridayService}>
+            {worshipKr(WorshipKind.FridayService)}
+          </MenuItem>
         </Select>
       </Stack>
       <Stack margin="4px" maxHeight="100%" padding="8px">
