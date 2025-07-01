@@ -7,8 +7,8 @@ import {
   CreateDateColumn,
   OneToOne,
 } from "typeorm"
-import { Permission } from "./permission"
 import { Community } from "./community"
+import { Permission } from "./permission"
 import { RetreatAttend } from "./retreat/retreatAttend"
 
 @Entity()

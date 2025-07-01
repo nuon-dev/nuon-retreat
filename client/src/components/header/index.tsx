@@ -81,9 +81,14 @@ export default function Header() {
       alignItems="center"
       justifyContent="space-between"
     >
-      <Button onClick={goToHome}>
-        <img width="80px" src="/logo_white.png" />
-      </Button>
+      <Stack direction="row" alignItems="center" gap="8px">
+        <Button onClick={goToHome}>
+          <img width="80px" src="/logo_white.png" />
+        </Button>
+        <Stack fontSize="32px" fontWeight="bold" color="white">
+          순장
+        </Stack>
+      </Stack>
       <Button onClick={() => toggleDrawer(true)}>
         <MenuIcon
           color="action"
@@ -115,14 +120,6 @@ export default function Header() {
                   <PermIdentityOutlinedIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={"출석 관리"} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton onClick={goToPostcard}>
-                <ListItemIcon>
-                  <PermIdentityOutlinedIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary={"수련회 편지 작성"} />
               </ListItemButton>
             </ListItem>
           </List>

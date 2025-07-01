@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
-import { WorshipSchedule } from "./worshipSchedule"
+import { AttendStatus } from "./types"
 import { User } from "./user"
+import { WorshipSchedule } from "./worshipSchedule"
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 export class AttendData {
@@ -14,7 +15,7 @@ export class AttendData {
   user: User
 
   @Column()
-  isAttend: boolean
+  isAttend: AttendStatus
 
   @Column({ default: "" })
   memo: string
