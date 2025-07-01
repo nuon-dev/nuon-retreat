@@ -72,7 +72,6 @@ export default function AdminHeader() {
 
   return (
     <Stack
-      width="100%"
       padding="8px"
       direction="row"
       bgcolor="#42C7F1"

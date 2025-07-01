@@ -98,13 +98,24 @@ router.post("/get-soon-list", async (req, res) => {
     select: {
       id: true,
       name: true,
+      gender: true,
+      yearOfBirth: true,
       community: {
         id: true,
         name: true,
+        leader: {
+          id: true,
+        },
+        deputyLeader: {
+          id: true,
+        },
       },
     },
     relations: {
-      community: true,
+      community: {
+        leader: true,
+        deputyLeader: true,
+      },
     },
   })
 

@@ -5,11 +5,11 @@ import { get } from "@/config/api"
 import CommunityBox from "./CommunityBox"
 import { User } from "@server/entity/user"
 import AdminHeader from "@/components/AdminHeader"
-import { Box, Button, Stack } from "@mui/material"
+import { Box, Button, MenuItem, Select, Stack } from "@mui/material"
 import { Community } from "@server/entity/community"
 import { useEffect, useMemo, useState } from "react"
 import { AttendData } from "@server/entity/attendData"
-import { WorshipSchedule } from "@server/entity/worshipSchedule"
+import { WorshipKind, WorshipSchedule } from "@server/entity/worshipSchedule"
 import { AttendStatus } from "@server/entity/types"
 
 export default function AttendanceAdminPage() {
@@ -20,6 +20,9 @@ export default function AttendanceAdminPage() {
   const [communityStack, setCommunityStack] = useState<Community[]>([])
   const [soonList, setSoonList] = useState<User[]>([])
   const [attendDataList, setAttendDataList] = useState<AttendData[]>([])
+  const [worshipScheduleFilter, setWorshipScheduleFilter] = useState<
+    WorshipKind | "all"
+  >("all")
 
   useEffect(() => {
     fetchCommunities()
@@ -39,6 +42,15 @@ export default function AttendanceAdminPage() {
     })
   }, [communities, selectedCommunity])
 
+  const leaders = useMemo(() => {
+    return soonList.filter((user) => {
+      return (
+        user.community?.leader?.id === user.id ||
+        user.community?.deputyLeader?.id === user.id
+      )
+    })
+  }, [soonList])
+
   useEffect(() => {
     if (filteredCommunities.length === 0) {
       if (!selectedCommunity) {
@@ -51,7 +63,9 @@ export default function AttendanceAdminPage() {
           ids: selectedCommunity?.id,
         })
         .then((response) => {
-          setSoonList(response.data)
+          const soonListData = response.data as User[]
+          soonListData.sort(sortByCommunityId)
+          setSoonList(soonListData)
         })
       return
     }
@@ -60,7 +74,9 @@ export default function AttendanceAdminPage() {
         ids: filteredCommunities.map((community) => community.id).join(","),
       })
       .then((response) => {
-        setSoonList(response.data)
+        const soonListData = response.data as User[]
+        soonListData.sort(sortByCommunityId)
+        setSoonList(soonListData)
       })
   }, [filteredCommunities])
 
@@ -85,14 +101,19 @@ export default function AttendanceAdminPage() {
       )
       if (existing) {
         return
-      } else {
-        map.push(data.worshipSchedule)
       }
+      if (
+        worshipScheduleFilter !== "all" &&
+        data.worshipSchedule.kind !== worshipScheduleFilter
+      ) {
+        return
+      }
+      map.push(data.worshipSchedule)
     })
     return map.sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime()
     })
-  }, [attendDataList])
+  }, [attendDataList, worshipScheduleFilter])
 
   function handleCommunityClick(community: Community) {
     setSelectedCommunity(community)
@@ -112,7 +133,7 @@ export default function AttendanceAdminPage() {
   }
 
   return (
-    <Stack>
+    <Stack maxWidth="100vw">
       <AdminHeader />
       <Stack
         gap="16px"
@@ -142,25 +163,77 @@ export default function AttendanceAdminPage() {
           />
         ))}
       </Stack>
-      <Stack margin="4px" overflow="auto" maxHeight="100%" padding="8px">
+      <Stack
+        gap="16px"
+        margin="4px"
+        padding="8px"
+        direction="row"
+        alignItems="center"
+      >
+        조회할 예배 종류:
+        <Select
+          value={worshipScheduleFilter}
+          onChange={(e) =>
+            setWorshipScheduleFilter(e.target.value as WorshipKind | "all")
+          }
+        >
+          <MenuItem value="all">전체</MenuItem>
+          <MenuItem value={WorshipKind.SundayService}>주일예배</MenuItem>
+          <MenuItem value={WorshipKind.FridayService}>금야철야</MenuItem>
+        </Select>
+      </Stack>
+      <Stack margin="4px" maxHeight="100%" padding="8px">
         <Stack
-          ml="12px"
-          height="30px"
+          pt="10px"
+          top="0px"
+          position="sticky"
+          height="40px"
           direction="row"
           alignItems="center"
           textAlign="center"
+          bgcolor="white"
         >
-          <Box width="99px" mr="12px" height="100%" />
+          <Stack
+            width="122px"
+            height="100%"
+            direction="row"
+            whiteSpace="pre"
+            alignItems="center"
+            justifyContent="center"
+            border="1px solid #555"
+          >
+            <Box fontSize="12px">순장수 </Box>
+            <Box color="blue" fontWeight="bold">
+              {leaders.filter((user) => user.gender === "man").length}
+            </Box>
+            {" / "}
+            <Box color="red" fontWeight="bold">
+              {leaders.filter((user) => user.gender === "woman").length}
+            </Box>
+          </Stack>
           {worshipScheduleMapList.map((worshipSchedule) => {
             return (
               <Stack
-                width="108px"
+                width="109px"
                 height="100%"
                 justifyContent="center"
-                border="1px solid #ccc"
+                borderTop="1px solid #555"
+                borderRight="1px solid #555"
+                borderBottom="1px solid #555"
                 key={worshipSchedule.id}
               >
                 {worshipSchedule.date}
+                <br />(
+                {getAttendUserCount(attendDataList, worshipSchedule.id).attend}/
+                {getAttendUserCount(attendDataList, worshipSchedule.id).count}){" "}
+                {Math.round(
+                  (getAttendUserCount(attendDataList, worshipSchedule.id)
+                    .attend /
+                    getAttendUserCount(attendDataList, worshipSchedule.id)
+                      .count) *
+                    100
+                )}
+                %
               </Stack>
             )
           })}
@@ -169,18 +242,26 @@ export default function AttendanceAdminPage() {
           <Stack
             key={user.id}
             direction="row"
+            bgcolor={
+              user.community?.leader?.id === user.id
+                ? "#999"
+                : user.community?.deputyLeader?.id === user.id
+                ? "#ccc"
+                : "transparent"
+            }
             alignItems="center"
             height="40px"
-            border="1px solid #ccc"
+            border="1px solid #555"
           >
             <Stack
               padding="10px"
               height="100%"
               width="102px"
               justifyContent="center"
-              borderRight="1px solid #ccc"
+              color={user.gender === "man" ? "blue" : "red"}
+              borderRight="1px solid #555"
             >
-              {user.name} ({user.community?.name})
+              {user.name} ({user.yearOfBirth})
             </Stack>
             {worshipScheduleMapList.map((worshipSchedule) => {
               const attendData = attendDataList.find(
@@ -190,14 +271,13 @@ export default function AttendanceAdminPage() {
               )
               return (
                 <Stack
-                  padding="4px"
                   height="100%"
-                  width="101px"
+                  width="109px"
                   direction="row"
                   textAlign="center"
                   alignItems="center"
                   key={worshipSchedule.id}
-                  borderRight="1px solid #ccc"
+                  borderRight="1px solid #555"
                 >
                   <AttendCell attendData={attendData} />
                 </Stack>
@@ -212,17 +292,100 @@ export default function AttendanceAdminPage() {
 
 function AttendCell({ attendData }: { attendData: AttendData | undefined }) {
   if (!attendData) {
-    return <span style={{ color: "orange" }}>미입력</span>
+    return (
+      <Box
+        width="100%"
+        height="100%"
+        textAlign="center"
+        alignContent="center"
+        justifyContent="center"
+      >
+        -
+      </Box>
+    )
   }
 
   if (attendData.isAttend === AttendStatus.ATTEND) {
-    return <span style={{ color: "green" }}>출석</span>
+    return (
+      <Box
+        width="100%"
+        height="100%"
+        textAlign="center"
+        alignContent="center"
+        justifyContent="center"
+        style={{ backgroundColor: "rgb(184, 248,93)" }}
+      >
+        출석
+      </Box>
+    )
   }
 
   if (attendData.isAttend === AttendStatus.ABSENT) {
-    return <span style={{ color: "red" }}>{attendData.memo}</span>
+    return (
+      <Box
+        width="100%"
+        height="100%"
+        textAlign="center"
+        alignContent="center"
+        justifyContent="center"
+        style={{ backgroundColor: "rgb(240, 148, 128)" }}
+      >
+        {attendData.memo}
+      </Box>
+    )
   }
   if (attendData.isAttend === AttendStatus.ETC) {
-    return <span style={{ color: "blue" }}>(기타){attendData.memo}</span>
+    return (
+      <Box
+        width="100%"
+        height="100%"
+        textAlign="center"
+        alignContent="center"
+        justifyContent="center"
+        style={{ backgroundColor: "rgb(253,241,113)" }}
+      >
+        {attendData.memo}
+      </Box>
+    )
   }
+}
+
+function sortByCommunityId(a: User, b: User): number {
+  if (a.community?.id !== b.community?.id) {
+    return (a.community?.id || 0) - (b.community?.id || 0)
+  }
+  if (a.community?.leader?.id === a.id) {
+    return -2 // a is leader, comes first
+  }
+  if (b.community?.leader?.id === b.id) {
+    return 2 // b is leader, comes first
+  }
+  if (a.community?.deputyLeader?.id === a.id) {
+    return -1 // a is deputy leader, comes before b
+  }
+  if (b.community?.deputyLeader?.id === b.id) {
+    return 1 // b is deputy leader, comes before a
+  }
+  return a.name.localeCompare(b.name)
+}
+
+function getAttendUserCount(
+  attendDataList: AttendData[],
+  worshipScheduleId: number
+): { count: number; attend: number } {
+  return attendDataList.reduce(
+    (count, data) =>
+      data.worshipSchedule.id === worshipScheduleId
+        ? data.isAttend === AttendStatus.ATTEND
+          ? {
+              count: count.count + 1,
+              attend: count.attend + 1,
+            }
+          : {
+              count: count.count + 1,
+              attend: count.attend,
+            }
+        : count,
+    { count: 0, attend: 0 }
+  )
 }
