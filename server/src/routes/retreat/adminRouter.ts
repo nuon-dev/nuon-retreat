@@ -25,16 +25,33 @@ router.get("/get-all-user-name", async (req, res) => {
     return
   }
 
-  const userList = await userDatabase.find({
+  const retreatAttendList = await retreatAttendDatabase.find({
     select: {
-      name: true,
-      id: true,
-      gender: true,
-      yearOfBirth: true,
+      user: {
+        name: true,
+        id: true,
+        gender: true,
+        yearOfBirth: true,
+      },
     },
     where: {
-      name: Not(""),
+      isCanceled: false,
+      user: {
+        name: Not(""),
+      },
     },
+    relations: {
+      user: true,
+    },
+  })
+
+  const userList = retreatAttendList.map((attend) => {
+    return {
+      id: attend.user.id,
+      name: attend.user.name,
+      gender: attend.user.gender,
+      yearOfBirth: attend.user.yearOfBirth,
+    }
   })
   res.send(userList)
 })

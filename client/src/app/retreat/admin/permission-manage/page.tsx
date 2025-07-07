@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation"
 import { useSetAtom } from "jotai"
 import { NotificationMessage } from "@/state/notification"
 import { PermissionType } from "@server/entity/types"
+import Header from "@/components/retreat/admin/Header"
 
 function PermissionManage() {
   const { push } = useRouter()
@@ -93,6 +94,7 @@ function PermissionManage() {
 
   return (
     <Stack>
+      <Header />
       <Stack margin="8px">
         관리 할 사람 선택
         <Stack m="4px" />
@@ -114,7 +116,6 @@ function PermissionManage() {
               padding: "20px",
               borderRadius: "8px",
               border: "1px solid #ACACAC",
-              boxShadow: "2px 2px 5px 3px #ACACAC;",
             }}
           >
             <RadioGroup
