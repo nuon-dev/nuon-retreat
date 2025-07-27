@@ -6,7 +6,7 @@ import {
   communityDatabase,
   userDatabase,
 } from "../../model/dataSource"
-import { In } from "typeorm"
+import { In, Not, IsNull } from "typeorm"
 import _ from "lodash"
 
 const router = express.Router()
@@ -18,7 +18,11 @@ router.get("/get-all-user", async (req, res) => {
     return
   }
 
-  const foundUser = await userDatabase.find()
+  const foundUser = await userDatabase.find({
+    where: {
+      name: Not(IsNull()),
+    },
+  })
 
   res.send(foundUser)
 })
@@ -45,6 +49,19 @@ router.put("/update-user", async (req, res) => {
 
   const user = req.body
   await userDatabase.save(user)
+
+  res.status(200).send({ message: "success" })
+})
+
+router.delete("/delete-user/:id", async (req, res) => {
+  const token = req.header("token")
+  if (false === (await hasPermission(token, PermissionType.editUserData))) {
+    res.sendStatus(401)
+    return
+  }
+
+  const userId = parseInt(req.params.id)
+  await userDatabase.softDelete(userId)
 
   res.status(200).send({ message: "success" })
 })
