@@ -49,6 +49,19 @@ router.put("/update-user", async (req, res) => {
   res.status(200).send({ message: "success" })
 })
 
+router.delete("/delete-user/:id", async (req, res) => {
+  const token = req.header("token")
+  if (false === (await hasPermission(token, PermissionType.editUserData))) {
+    res.sendStatus(401)
+    return
+  }
+
+  const userId = parseInt(req.params.id)
+  await userDatabase.softDelete(userId)
+
+  res.status(200).send({ message: "success" })
+})
+
 router.post("/get-soon-list", async (req, res) => {
   const communityIds = req.body.ids
 
