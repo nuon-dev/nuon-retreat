@@ -66,7 +66,12 @@ jobs:
           port: 22
           debug: true
           script: |
-            exec bash \-l
+            exec bash -l
             cd /home/nuon
             npm install
-            pm2 reload nuon
+            echo "Current PM2 processes:"
+            pm2 list
+            echo "Restarting nuon process..."
+            pm2 restart nuon || pm2 start npm --name "nuon" -- start
+            echo "PM2 processes after restart:"
+            pm2 list
