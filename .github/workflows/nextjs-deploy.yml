@@ -66,12 +66,28 @@ jobs:
           port: 22
           debug: true
           script: |
-            exec bash -l
+            set -e
+            echo "=== Starting server restart process ==="
             cd /home/nuon
+            echo "Current directory: $(pwd)"
+
+            echo "=== Installing dependencies ==="
             npm install
-            echo "Current PM2 processes:"
+
+            echo "=== Current PM2 processes ==="
+            pm2 list || echo "PM2 list failed"
+
+            echo "=== Stopping existing nuon process ==="
+            pm2 stop nuon || echo "No existing process to stop"
+            pm2 delete nuon || echo "No existing process to delete"
+
+            echo "=== Starting new nuon process ==="
+            pm2 start npm --name "nuon" -- start
+
+            echo "=== Final PM2 processes ==="
             pm2 list
-            echo "Restarting nuon process..."
-            pm2 restart nuon || pm2 start npm --name "nuon" -- start
-            echo "PM2 processes after restart:"
-            pm2 list
+
+            echo "=== PM2 logs (last 10 lines) ==="
+            pm2 logs nuon --lines 10 || echo "Could not fetch logs"
+
+            echo "=== Server restart completed ==="
