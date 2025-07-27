@@ -14,22 +14,30 @@ app.use(cors())
 app.use("/", apiRouter)
 
 const is_dev = process.env.NODE_ENV === "development"
+const use_ssl = process.env.USE_SSL === "true" && !is_dev
 
 var server
 
-if (is_dev) {
+if (is_dev || !use_ssl) {
+  console.log("Starting HTTP server")
   server = app
 } else {
-  var privateKey = fs.readFileSync(
-    "/etc/letsencrypt/live/nuon.iubns.net/privkey.pem"
-  )
-  var certificate = fs.readFileSync(
-    "/etc/letsencrypt/live/nuon.iubns.net/cert.pem"
-  )
-  var ca = fs.readFileSync("/etc/letsencrypt/live/nuon.iubns.net/chain.pem")
-  const credentials = { key: privateKey, cert: certificate, ca: ca }
+  try {
+    var privateKey = fs.readFileSync(
+      "/etc/letsencrypt/live/nuon.iubns.net/privkey.pem"
+    )
+    var certificate = fs.readFileSync(
+      "/etc/letsencrypt/live/nuon.iubns.net/cert.pem"
+    )
+    var ca = fs.readFileSync("/etc/letsencrypt/live/nuon.iubns.net/chain.pem")
+    const credentials = { key: privateKey, cert: certificate, ca: ca }
 
-  server = https.createServer(credentials, app)
+    console.log("Starting HTTPS server")
+    server = https.createServer(credentials, app)
+  } catch (error) {
+    console.error("SSL certificate error, falling back to HTTP:", error.message)
+    server = app
+  }
 }
 
 server.listen(port, async () => {
