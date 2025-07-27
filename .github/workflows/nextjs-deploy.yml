@@ -77,9 +77,6 @@ jobs:
             echo "=== Running database migrations ==="
             npm run migration:run || echo "Migration failed or no pending migrations"
 
-            echo "=== Setting SSL certificate permissions ==="
-            sudo chmod 644 /etc/letsencrypt/live/nuon.iubns.net/*.pem || echo "Could not set certificate permissions"
-
             echo "=== Current PM2 processes ==="
             sudo pm2 list || echo "PM2 list failed"
 
@@ -90,6 +87,6 @@ jobs:
             sudo pm2 list
 
             echo "=== PM2 logs (last 10 lines) ==="
-            sudo pm2 logs nuon --lines 10 || echo "Could not fetch logs"
+            timeout 10s sudo pm2 logs nuon --lines 10 || echo "Could not fetch logs or timeout"
 
             echo "=== Server restart completed ==="

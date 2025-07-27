@@ -14,12 +14,10 @@ app.use(cors())
 app.use("/", apiRouter)
 
 const is_dev = process.env.NODE_ENV === "development"
-const use_ssl = process.env.USE_SSL === "true" && !is_dev
 
 var server
 
-if (is_dev || !use_ssl) {
-  console.log("Starting HTTP server")
+if (is_dev) {
   server = app
 } else {
   try {
@@ -42,7 +40,7 @@ if (is_dev || !use_ssl) {
 
 server.listen(port, async () => {
   await Promise.all([dataSource.initialize()])
-  
+
   // 마이그레이션 자동 실행
   try {
     await dataSource.runMigrations()
@@ -50,7 +48,7 @@ server.listen(port, async () => {
   } catch (error) {
     console.error("Migration failed:", error)
   }
-  
+
   //dataSource.dropDatabase()
   console.log("start server")
 })
