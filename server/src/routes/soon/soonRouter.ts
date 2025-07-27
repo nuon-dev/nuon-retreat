@@ -84,6 +84,26 @@ router.post("/add-user", async (req, res) => {
     return
   }
 
+  // phone에서 숫자가 아닌 문자 제거 (하이픈, 공백 등)
+  const cleanPhone = phone.replace(/[^\d]/g, "")
+
+  const existingUser = await userDatabase.findOne({
+    where: {
+      name: userName,
+      yearOfBirth: parseInt(yearOfBirth, 10),
+      gender,
+      phone: cleanPhone,
+    },
+  })
+
+  // 4개가 모두 같다면 동일인 처리
+  if (existingUser) {
+    existingUser.community = user.community
+    await userDatabase.save(existingUser)
+    res.status(201).send(existingUser)
+    return
+  }
+
   const newSoon = userDatabase.create({
     name: userName,
     yearOfBirth: parseInt(yearOfBirth, 10),
