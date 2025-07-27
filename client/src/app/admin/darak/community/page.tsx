@@ -180,6 +180,7 @@ export default function CommunityComponent() {
         <Stack
           p={2}
           gap={2}
+          direction="row"
           sx={{
             mt: 2,
             display: "flex",

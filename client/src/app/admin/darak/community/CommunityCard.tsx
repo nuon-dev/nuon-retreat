@@ -1,14 +1,7 @@
 "use client"
 
 import { type Community } from "@server/entity/community"
-import {
-  Card,
-  Input,
-  Stack,
-  Typography,
-  Box,
-  Avatar,
-} from "@mui/material"
+import { Card, Input, Stack, Typography, Box, Avatar } from "@mui/material"
 import { MouseEvent, ReactElement } from "react"
 
 interface CommunityCardProps {
@@ -29,6 +22,14 @@ interface CommunityCardProps {
   renderChildren: (parentId: number, depth: number) => ReactElement[]
 }
 
+const DEPTH_COLORS = {
+  0: "#1976d2",
+  1: "#4caf50",
+  2: "#ff9800",
+  3: "#e91e63",
+  default: "#9c27b0",
+}
+
 export default function CommunityCard({
   community,
   depth = 0,
@@ -46,57 +47,100 @@ export default function CommunityCard({
   onNameChange,
   renderChildren,
 }: CommunityCardProps) {
-  if (depth > 10) {
-    return null
+  if (depth > 10) return null
+
+  const hasChildren = communityList.some((c) => c.parent?.id === community.id)
+  const isSelected = selectedCommunity?.id === community.id
+  const isEditing =
+    isCommunityNameEditMode && clickedCommunity?.id === community.id
+
+  const getDepthColor = (depth: number): string => {
+    return (
+      DEPTH_COLORS[depth as keyof typeof DEPTH_COLORS] || DEPTH_COLORS.default
+    )
   }
 
-  const hasChildren = communityList.filter(
-    (c) => c.parent?.id === community.id
-  ).length > 0
+  const getCardStyles = () => ({
+    border: "2px solid #e0e0e0",
+    minHeight: "30px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    cursor: "pointer",
+    borderRadius: 2,
+    transition: "all 0.2s ease-in-out",
+    position: "relative",
+    "&::before":
+      depth > 0
+        ? {
+            content: '""',
+            position: "absolute",
+            top: -2,
+            left: -2,
+            right: -2,
+            bottom: -2,
+            border: `2px solid ${getDepthColor(depth)}`,
+            borderRadius: 2,
+            zIndex: -1,
+          }
+        : {},
+    "&:hover": {
+      boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+      transform: "translateY(-1px)",
+      borderColor: "#1976d2",
+    },
+    ...(isSelected && {
+      borderColor: "#1976d2",
+      bgcolor: "#e3f2fd",
+    }),
+  })
+
+  const getHeaderStyles = () => ({
+    borderBottom:
+      editMode === "All" && hasChildren
+        ? `2px solid ${getDepthColor(depth)}`
+        : "none",
+    pb: editMode === "All" && hasChildren ? 1.5 : 0,
+    mb: editMode === "All" && hasChildren ? 1 : 0,
+  })
+
+  const renderNameSection = () => (
+    <>
+      {isEditing ? (
+        <Input
+          value={clickedCommunityName}
+          autoFocus
+          onChange={(e) => onNameChange(e.target.value)}
+          sx={{ flex: 1 }}
+        />
+      ) : (
+        <Typography variant="body2" fontWeight="600" sx={{ flex: 1 }}>
+          {community.name}
+        </Typography>
+      )}
+    </>
+  )
+
+  const renderChildrenSection = () => {
+    if (editMode !== "All" || !hasChildren) return null
+
+    return (
+      <Box
+        sx={{
+          mt: 1,
+          bgcolor: "#f8f9fa",
+          borderRadius: 2,
+        }}
+      >
+        <Stack gap={1} direction="row" flexWrap="wrap">
+          {renderChildren(community.id, depth + 1)}
+        </Stack>
+      </Box>
+    )
+  }
 
   return (
     <Card
       onDoubleClick={onDoubleClick}
-      sx={{
-        border: "2px solid #e0e0e0",
-        minHeight: "70px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-        cursor: "pointer",
-        borderRadius: 2,
-        transition: "all 0.2s ease-in-out",
-        position: "relative",
-        "&::before":
-          depth > 0
-            ? {
-                content: '""',
-                position: "absolute",
-                top: -2,
-                left: -2,
-                right: -2,
-                bottom: -2,
-                border: `2px solid ${
-                  depth === 1
-                    ? "#4caf50"
-                    : depth === 2
-                    ? "#ff9800"
-                    : depth === 3
-                    ? "#e91e63"
-                    : "#9c27b0"
-                }`,
-                borderRadius: 2,
-                zIndex: -1,
-              }
-            : {},
-        "&:hover": {
-          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-          transform: "translateY(-1px)",
-          borderColor: "#1976d2",
-        },
-        ...(selectedCommunity?.id === community.id && {
-          borderColor: "#1976d2",
-          bgcolor: "#e3f2fd",
-        }),
-      }}
+      sx={getCardStyles()}
       key={community.id}
       onMouseUp={onMouseUp}
       onMouseDown={onMouseDown}
@@ -109,63 +153,11 @@ export default function CommunityCard({
           py={1}
           onDoubleClick={onNameDoubleClick}
           onClick={onNameClick}
-          sx={{
-            borderBottom:
-              editMode === "All" && hasChildren
-                ? "2px solid #1976d2"
-                : "none",
-            pb: editMode === "All" && hasChildren ? 1.5 : 0,
-            mb: editMode === "All" && hasChildren ? 1 : 0,
-          }}
+          sx={getHeaderStyles()}
         >
-          <Avatar
-            sx={{
-              width: 24,
-              height: 24,
-              fontSize: "0.75rem",
-              bgcolor:
-                depth === 0
-                  ? "#1976d2"
-                  : depth === 1
-                  ? "#4caf50"
-                  : depth === 2
-                  ? "#ff9800"
-                  : depth === 3
-                  ? "#e91e63"
-                  : "#9c27b0",
-              fontWeight: "bold",
-            }}
-          >
-            {community.name.charAt(0)}
-          </Avatar>
-          {isCommunityNameEditMode && clickedCommunity?.id === community.id ? (
-            <Input
-              value={clickedCommunityName}
-              autoFocus
-              onChange={(e) => onNameChange(e.target.value)}
-              sx={{ flex: 1 }}
-            />
-          ) : (
-            <Typography variant="body2" fontWeight="600" sx={{ flex: 1 }}>
-              {community.name}
-            </Typography>
-          )}
+          {renderNameSection()}
         </Stack>
-        {editMode === "All" && hasChildren && (
-          <Box
-            sx={{
-              mt: 1,
-              p: 1.5,
-              bgcolor: "#f8f9fa",
-              borderRadius: 2,
-              border: "1px dashed #1976d2",
-            }}
-          >
-            <Stack gap={1} direction="row" flexWrap="wrap">
-              {renderChildren(community.id, depth + 1)}
-            </Stack>
-          </Box>
-        )}
+        {renderChildrenSection()}
       </Stack>
     </Card>
   )

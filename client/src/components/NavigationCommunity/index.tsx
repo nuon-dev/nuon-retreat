@@ -23,31 +23,23 @@ export default function NavigationCommunity({
   onMouseDown,
   styles,
 }: NavigationCommunityProps) {
-  const handleClick = () => {
+  async function onClick() {
     const myIndex = communityStack.findIndex((g) => g.id === community.id)
     onStackUpdate(communityStack.slice(0, myIndex + 1))
   }
 
-  const getCardStyles = () => ({
-    border: "1px solid #e0e0e0",
-    borderRadius: 2,
-    transition: "all 0.2s ease-in-out",
-    "&:hover": {
-      borderColor: "#1976d2",
-      bgcolor: "#f5f5f5",
-    },
-  })
-
-  const getContentStyles = () => ({
-    cursor: "pointer",
-    borderRadius: 1,
-    "&:hover": {
-      bgcolor: "#e3f2fd",
-    },
-  })
-
   return (
-    <Card sx={getCardStyles()}>
+    <Card
+      sx={{
+        border: "1px solid #e0e0e0",
+        borderRadius: 2,
+        transition: "all 0.2s ease-in-out",
+        "&:hover": {
+          borderColor: "#1976d2",
+          bgcolor: "#f5f5f5",
+        },
+      }}
+    >
       <Stack m={1}>
         <Box
           py={0.75}
@@ -55,8 +47,14 @@ export default function NavigationCommunity({
           onMouseUp={(e) => onMouseUp(e, community)}
           onMouseDown={(e) => onMouseDown(e, community)}
           className={selectedCommunity && styles.community_name}
-          onClick={handleClick}
-          sx={getContentStyles()}
+          onClick={onClick}
+          sx={{
+            cursor: "pointer",
+            borderRadius: 1,
+            "&:hover": {
+              bgcolor: "#e3f2fd",
+            },
+          }}
         >
           <Typography variant="body2" fontWeight="500" textAlign="center">
             {community.name}
