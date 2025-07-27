@@ -39,8 +39,6 @@ jobs:
         working-directory: server
         run: npm install
 
-      # 클라이언트 빌드 오류로 임시 주석 처리
-
       - name: client build
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
