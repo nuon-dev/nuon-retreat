@@ -6,7 +6,7 @@ import {
   communityDatabase,
   userDatabase,
 } from "../../model/dataSource"
-import { In } from "typeorm"
+import { In, Not, IsNull } from "typeorm"
 import _ from "lodash"
 
 const router = express.Router()
@@ -18,7 +18,11 @@ router.get("/get-all-user", async (req, res) => {
     return
   }
 
-  const foundUser = await userDatabase.find()
+  const foundUser = await userDatabase.find({
+    where: {
+      name: Not(IsNull()),
+    },
+  })
 
   res.send(foundUser)
 })
