@@ -73,22 +73,18 @@ jobs:
 
             echo "=== Installing dependencies ==="
             npm install
-            
+
             echo "=== Running database migrations ==="
             npm run migration:run || echo "Migration failed or no pending migrations"
-            
+
             echo "=== Setting SSL certificate permissions ==="
             sudo chmod 644 /etc/letsencrypt/live/nuon.iubns.net/*.pem || echo "Could not set certificate permissions"
 
             echo "=== Current PM2 processes ==="
-            pm2 list || echo "PM2 list failed"
+            sudo pm2 list || echo "PM2 list failed"
 
-            echo "=== Stopping existing nuon process ==="
-            sudo pm2 stop nuon || echo "No existing process to stop"
-            sudo pm2 delete nuon || echo "No existing process to delete"
-
-            echo "=== Starting new nuon process ==="
-            sudo pm2 start npm --name "nuon" -- start
+            echo "=== Reloading nuon process ==="
+            sudo pm2 reload nuon || sudo pm2 start npm --name "nuon" -- start
 
             echo "=== Final PM2 processes ==="
             sudo pm2 list
