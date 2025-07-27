@@ -73,6 +73,9 @@ jobs:
 
             echo "=== Installing dependencies ==="
             npm install
+            
+            echo "=== Running database migrations ==="
+            npm run migration:run || echo "Migration failed or no pending migrations"
 
             echo "=== Current PM2 processes ==="
             pm2 list || echo "PM2 list failed"

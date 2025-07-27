@@ -34,6 +34,15 @@ if (is_dev) {
 
 server.listen(port, async () => {
   await Promise.all([dataSource.initialize()])
+  
+  // 마이그레이션 자동 실행
+  try {
+    await dataSource.runMigrations()
+    console.log("Migrations executed successfully")
+  } catch (error) {
+    console.error("Migration failed:", error)
+  }
+  
   //dataSource.dropDatabase()
   console.log("start server")
 })
