@@ -30,6 +30,7 @@ export default function People() {
   const [selectedRootCommunity, setSelectedRootCommunity] =
     useState<Community | null>(null)
   const [childCommunityList, setChildCommunityList] = useState<Community[]>([])
+  const [totalUserCount, setTotalUserCount] = useState<number>(0)
   const selectedUser = useRef<User | null>(null)
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -71,6 +72,21 @@ export default function People() {
       "/admin/community/no-community-user-list"
     )
     setNoCommunityUser(noCommunityUserData)
+
+    // 전체 사용자 수 계산 (모든 커뮤니티의 사용자 + 미배정 사용자)
+    const calculateTotalUsers = (communities: Community[]): number => {
+      return communities.reduce((total, community) => {
+        const communityUsers = community.users?.length || 0
+        const childUsers = community.children
+          ? calculateTotalUsers(community.children)
+          : 0
+        return total + communityUsers + childUsers
+      }, 0)
+    }
+
+    const totalUsers =
+      calculateTotalUsers(communityListData) + noCommunityUserData.length
+    setTotalUserCount(totalUsers)
   }
 
   function communityFilter(targetCommunity: Community) {
@@ -415,13 +431,7 @@ export default function People() {
           <Stack direction="row" gap={1} alignItems="center">
             <Chip
               icon={<PersonIcon />}
-              label={`총 사용자: ${
-                noCommunityUser.length +
-                childCommunityList.reduce(
-                  (sum, community) => sum + community.users.length,
-                  0
-                )
-              }명`}
+              label={`총 사용자: ${totalUserCount}명`}
               size="small"
               variant="outlined"
               color="primary"
