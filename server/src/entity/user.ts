@@ -5,6 +5,7 @@ import {
   OneToMany,
   ManyToOne,
   CreateDateColumn,
+  DeleteDateColumn,
   OneToOne,
 } from "typeorm"
 import { Community } from "./community"
@@ -50,6 +51,12 @@ export class User {
     default: () => "CURRENT_TIMESTAMP(6)",
   })
   createAt: Date
+
+  @DeleteDateColumn({
+    type: "timestamp",
+    nullable: true,
+  })
+  deletedAt: Date | null
 
   @OneToMany(() => Permission, (permission) => permission.user)
   permissions: Permission[]

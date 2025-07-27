@@ -1,15 +1,12 @@
 import {
   Box,
   Button,
-  Divider,
   Drawer,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  MenuItem,
-  MenuList,
   Paper,
   Stack,
 } from "@mui/material"
@@ -18,10 +15,10 @@ import MenuIcon from "@mui/icons-material/Menu"
 import { useRouter } from "next/navigation"
 
 import CommunitysIcon from "@mui/icons-material/Groups"
-import ApartmentIcon from "@mui/icons-material/Apartment"
-import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined"
-import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined"
+import EventIcon from "@mui/icons-material/Event"
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline"
+import BusinessIcon from "@mui/icons-material/Business"
 import useUserData from "@/hooks/useUserData"
 
 export default function AdminHeader() {
@@ -113,7 +110,7 @@ export default function AdminHeader() {
             <ListItem disablePadding>
               <ListItemButton onClick={goToDarakCommunityManagement}>
                 <ListItemIcon>
-                  <LibraryAddCheckOutlinedIcon fontSize="small" />
+                  <BusinessIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={"다락방 그룹 관리"} />
               </ListItemButton>
@@ -121,7 +118,7 @@ export default function AdminHeader() {
             <ListItem disablePadding>
               <ListItemButton onClick={goToDarakPeopleManagement}>
                 <ListItemIcon>
-                  <LibraryAddCheckOutlinedIcon fontSize="small" />
+                  <PeopleOutlineOutlinedIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={"다락방 인원 관리"} />
               </ListItemButton>
@@ -129,7 +126,7 @@ export default function AdminHeader() {
             <ListItem disablePadding>
               <ListItemButton onClick={goToWorshipSchedule}>
                 <ListItemIcon>
-                  <LibraryAddCheckOutlinedIcon fontSize="small" />
+                  <EventIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={"예배 관리"} />
               </ListItemButton>
@@ -137,7 +134,7 @@ export default function AdminHeader() {
             <ListItem disablePadding>
               <ListItemButton onClick={goToWorshipAttendance}>
                 <ListItemIcon>
-                  <LibraryAddCheckOutlinedIcon fontSize="small" />
+                  <CheckCircleOutlineIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary={"출석 관리"} />
               </ListItemButton>
