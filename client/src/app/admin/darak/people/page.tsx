@@ -19,10 +19,9 @@ import {
   Avatar,
   Tooltip,
 } from "@mui/material"
-import { Person as PersonIcon } from "@mui/icons-material"
 import Header from "@/components/AdminHeader"
 import { get, put } from "@/config/api"
-import { MouseEvent, use, useEffect, useRef, useState } from "react"
+import { MouseEvent, useEffect, useRef, useState } from "react"
 
 export default function People() {
   const [communityList, setCommunityList] = useState<Community[]>([])
@@ -30,7 +29,6 @@ export default function People() {
   const [selectedRootCommunity, setSelectedRootCommunity] =
     useState<Community | null>(null)
   const [childCommunityList, setChildCommunityList] = useState<Community[]>([])
-  const [totalUserCount, setTotalUserCount] = useState<number>(0)
   const selectedUser = useRef<User | null>(null)
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -83,10 +81,6 @@ export default function People() {
         return total + communityUsers + childUsers
       }, 0)
     }
-
-    const totalUsers =
-      calculateTotalUsers(communityListData) + noCommunityUserData.length
-    setTotalUserCount(totalUsers)
   }
 
   function communityFilter(targetCommunity: Community) {
@@ -429,13 +423,6 @@ export default function People() {
             커뮤니티 관리
           </Typography>
           <Stack direction="row" gap={1} alignItems="center">
-            <Chip
-              icon={<PersonIcon />}
-              label={`총 사용자: ${totalUserCount}명`}
-              size="small"
-              variant="outlined"
-              color="primary"
-            />
             <Chip
               label={`미배정: ${noCommunityUser.length}명`}
               size="small"
