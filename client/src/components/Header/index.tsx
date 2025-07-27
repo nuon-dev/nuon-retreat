@@ -23,7 +23,7 @@ import { User } from "@server/entity/user"
 export default function Header() {
   const { push } = useRouter()
   const [isOpen, setOpen] = useState(false)
-  const [userInfo, setUserInfo] = useState<User | undefined>(undefined)
+  const [userInfo, setUserInfo] = useState<User | undefined>(undefined) // Assuming User type is defined somewhere
   const { getUserDataFromToken } = useUserData()
 
   useEffect(() => {

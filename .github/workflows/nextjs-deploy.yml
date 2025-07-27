@@ -39,6 +39,8 @@ jobs:
         working-directory: server
         run: npm install
 
+      # 클라이언트 빌드 오류로 임시 주석 처리
+
       - name: client build
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
@@ -66,27 +68,7 @@ jobs:
           port: 22
           debug: true
           script: |
-            set -e
-            echo "=== Starting server restart process ==="
+            exec bash \-l
             cd /home/nuon
-            echo "Current directory: $(pwd)"
-
-            echo "=== Installing dependencies ==="
             npm install
-
-            echo "=== Running database migrations ==="
-            npm run migration:run || echo "Migration failed or no pending migrations"
-
-            echo "=== Current PM2 processes ==="
-            sudo pm2 list || echo "PM2 list failed"
-
-            echo "=== Reloading nuon process ==="
-            sudo pm2 reload nuon || sudo pm2 start npm --name "nuon" -- start
-
-            echo "=== Final PM2 processes ==="
-            sudo pm2 list
-
-            echo "=== PM2 logs (last 10 lines) ==="
-            timeout 10s sudo pm2 logs nuon --lines 10 || echo "Could not fetch logs or timeout"
-
-            echo "=== Server restart completed ==="
+            pm2 reload nuon

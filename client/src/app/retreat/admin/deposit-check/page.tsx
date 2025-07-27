@@ -104,10 +104,10 @@ function DepositCheck() {
         </Stack>
         <Stack fontWeight="500" fontSize="18px">
           예상 납부 금액 -{" "}
-          {(depositStudentCount * 70000 + depositWorkerCount * 100000)
+          {(depositStudentCount * 100000 + depositWorkerCount * 120000)
             .toString()
             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          원 ({depositStudentCount * 7 + depositWorkerCount * 10}만원)
+          원 ({depositStudentCount * 10 + depositWorkerCount * 12}만원)
         </Stack>
 
         <Button

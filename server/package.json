@@ -7,9 +7,7 @@
     "test": "test",
     "dev": "export NODE_ENV=development;nodemon src/index.ts",
     "start": "ts-node src/index.ts",
-    "stop": "pkill -f nodemon",
-    "migration:run": "ts-node src/run-migration.ts",
-    "migration:revert": "ts-node -e \"require('./src/run-migration.ts').revertMigration()\""
+    "stop": "pkill -f nodemon"
   },
   "author": "",
   "license": "ISC",

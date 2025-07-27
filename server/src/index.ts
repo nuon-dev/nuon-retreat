@@ -20,35 +20,20 @@ var server
 if (is_dev) {
   server = app
 } else {
-  try {
-    var privateKey = fs.readFileSync(
-      "/etc/letsencrypt/live/nuon.iubns.net/privkey.pem"
-    )
-    var certificate = fs.readFileSync(
-      "/etc/letsencrypt/live/nuon.iubns.net/cert.pem"
-    )
-    var ca = fs.readFileSync("/etc/letsencrypt/live/nuon.iubns.net/chain.pem")
-    const credentials = { key: privateKey, cert: certificate, ca: ca }
+  var privateKey = fs.readFileSync(
+    "/etc/letsencrypt/live/nuon.iubns.net/privkey.pem"
+  )
+  var certificate = fs.readFileSync(
+    "/etc/letsencrypt/live/nuon.iubns.net/cert.pem"
+  )
+  var ca = fs.readFileSync("/etc/letsencrypt/live/nuon.iubns.net/chain.pem")
+  const credentials = { key: privateKey, cert: certificate, ca: ca }
 
-    console.log("Starting HTTPS server")
-    server = https.createServer(credentials, app)
-  } catch (error) {
-    console.error("SSL certificate error, falling back to HTTP:", error.message)
-    server = app
-  }
+  server = https.createServer(credentials, app)
 }
 
 server.listen(port, async () => {
   await Promise.all([dataSource.initialize()])
-
-  // 마이그레이션 자동 실행
-  try {
-    await dataSource.runMigrations()
-    console.log("Migrations executed successfully")
-  } catch (error) {
-    console.error("Migration failed:", error)
-  }
-
   //dataSource.dropDatabase()
   console.log("start server")
 })
