@@ -2,7 +2,24 @@
 
 import { Community } from "@server/entity/community"
 import { type User } from "@server/entity/user"
-import { Box, Button, MenuItem, Select, Stack } from "@mui/material"
+import {
+  Box,
+  Button,
+  MenuItem,
+  Select,
+  Stack,
+  Typography,
+  Paper,
+  Chip,
+  Breadcrumbs,
+  FormControl,
+  InputLabel,
+  Card,
+  CardContent,
+  Avatar,
+  Tooltip,
+} from "@mui/material"
+import { Person as PersonIcon } from "@mui/icons-material"
 import Header from "@/components/AdminHeader"
 import { get, put } from "@/config/api"
 import { MouseEvent, use, useEffect, useRef, useState } from "react"
@@ -68,10 +85,8 @@ export default function People() {
     selectedUser.current.community = null
     await saveUser(selectedUser.current)
     selectedUser.current = null
-    if (selectedRootCommunity) {
-      await fetchCommunityUserList(selectedRootCommunity.id)
-      await fetchData()
-    }
+    await fetchCommunityUserList(selectedRootCommunity?.id || 0)
+    await fetchData()
   }
 
   async function setUser(e: MouseEvent, targetCommunity: Community) {
@@ -87,10 +102,8 @@ export default function People() {
     selectedUser.current.community = targetCommunity
     await saveUser(selectedUser.current)
     selectedUser.current = null
-    if (selectedRootCommunity) {
-      await fetchCommunityUserList(selectedRootCommunity.id)
-      await fetchData()
-    }
+    await fetchCommunityUserList(selectedRootCommunity?.id || 0)
+    await fetchData()
   }
 
   async function saveUser(user: User) {
@@ -130,21 +143,56 @@ export default function People() {
 
   function UserBox({ user }: { user: User }) {
     return (
-      <Box
-        p="4px"
-        width="100px"
-        key={user.id}
-        borderRadius="4px"
-        border="1px solid #ccc"
-        onMouseDown={(e) => selectUser(e, user)}
-        onClick={(e) => selectUser(e, user)}
-        bgcolor="white"
-        sx={{
-          cursor: "pointer",
-        }}
-      >
-        {user.name} {user.yearOfBirth}
-      </Box>
+      <Tooltip title={`${user.name} (${user.yearOfBirth}년생)`} arrow>
+        <Card
+          elevation={1}
+          sx={{
+            width: 68,
+            height: 54,
+            cursor: "pointer",
+            transition: "all 0.2s ease-in-out",
+            border: "1px solid",
+            borderColor: "divider",
+            "&:hover": {
+              elevation: 3,
+              transform: "scale(1.05)",
+              borderColor: "primary.main",
+              bgcolor: "primary.50",
+            },
+          }}
+          key={user.id}
+          onMouseDown={(e) => selectUser(e, user)}
+          onClick={(e) => selectUser(e, user)}
+        >
+          <CardContent sx={{ p: "4px !important", textAlign: "center" }}>
+            <Avatar
+              sx={{
+                width: 20,
+                height: 20,
+                fontSize: "0.6rem",
+                bgcolor: "primary.main",
+                mx: "auto",
+                mb: 0.5,
+              }}
+            >
+              {user.name.charAt(0)}
+            </Avatar>
+            <Typography
+              variant="caption"
+              display="block"
+              sx={{
+                fontSize: "0.65rem",
+                lineHeight: 1,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {user.name} <br />({user.yearOfBirth})
+            </Typography>
+          </CardContent>
+        </Card>
+      </Tooltip>
     )
   }
 
@@ -160,22 +208,35 @@ export default function People() {
 
     if (!myCommunity) {
       return (
-        <Stack
-          p="4px"
-          gap="12px"
-          display="flex"
-          borderRadius="4px"
-          flexDirection="column"
-          border="1px solid #ccc"
+        <Paper
+          elevation={1}
+          sx={{
+            p: 1.5,
+            borderRadius: 2,
+            bgcolor: "grey.50",
+            border: "1px solid",
+            borderColor: "divider",
+            minWidth: 180,
+            maxWidth: 220,
+          }}
         >
-          {displayCommunity.name}
-          {displayCommunity.children?.map((child) => (
-            <CommunityBox
-              displayCommunity={child}
-              key={`${displayCommunity.id}_${child.id}`}
-            />
-          ))}
-        </Stack>
+          <Typography
+            variant="body2"
+            fontWeight="bold"
+            color="text.secondary"
+            mb={1}
+          >
+            {displayCommunity.name}
+          </Typography>
+          <Stack gap={1}>
+            {displayCommunity.children?.map((child) => (
+              <CommunityBox
+                displayCommunity={child}
+                key={`${displayCommunity.id}_${child.id}`}
+              />
+            ))}
+          </Stack>
+        </Paper>
       )
     }
 
@@ -185,137 +246,361 @@ export default function People() {
     ]
 
     return (
-      <Stack
-        p="4px"
-        gap="12px"
-        borderRadius="4px"
-        border="1px solid #ccc"
+      <Paper
+        elevation={1}
+        sx={{
+          p: 1.5,
+          borderRadius: 2,
+          bgcolor: "background.paper",
+          border: "1px solid",
+          borderColor: "primary.light",
+          minWidth: 200,
+          maxWidth: 280,
+          transition: "all 0.2s ease-in-out",
+          "&:hover": {
+            borderColor: "primary.main",
+            elevation: 3,
+          },
+        }}
         onMouseUp={(e) => setUser(e, displayCommunity)}
       >
-        <Stack onClick={onClickCommunity} style={{ cursor: "pointer" }}>
-          {displayCommunity.name}
+        <Box
+          onClick={onClickCommunity}
+          sx={{
+            cursor: "pointer",
+            mb: 1,
+            p: 0.5,
+            borderRadius: 1,
+            bgcolor: "primary.50",
+            "&:hover": {
+              bgcolor: "primary.100",
+            },
+          }}
+        >
+          <Typography
+            variant="subtitle2"
+            fontWeight="bold"
+            color="primary.main"
+          >
+            {displayCommunity.name}
+          </Typography>
+        </Box>
+
+        <Stack direction="row" gap={1} mb={1}>
+          <FormControl
+            size="small"
+            sx={{ minWidth: 50, flex: 1 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <InputLabel sx={{ fontSize: "0.75rem" }}>순장</InputLabel>
+            <Select
+              value={displayCommunity.leader?.id || 0}
+              label="순장"
+              sx={{ fontSize: "0.75rem", height: "32px" }}
+              onChange={(e) => {
+                saveCommunityLeader(displayCommunity, e.target.value as number)
+              }}
+            >
+              <MenuItem value={0} sx={{ fontSize: "0.75rem" }}>
+                없음
+              </MenuItem>
+              {leaderList.map((user) => (
+                <MenuItem
+                  key={user?.id}
+                  value={user?.id}
+                  sx={{ fontSize: "0.75rem" }}
+                >
+                  {user?.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl
+            size="small"
+            sx={{ minWidth: 50, flex: 1 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <InputLabel sx={{ fontSize: "0.75rem" }}>부순장</InputLabel>
+            <Select
+              value={displayCommunity.deputyLeader?.id || 0}
+              label="부순장"
+              sx={{ fontSize: "0.75rem", height: "32px" }}
+              onChange={(e) => {
+                saveCommunityDeputyLeader(
+                  displayCommunity,
+                  e.target.value as number
+                )
+              }}
+            >
+              <MenuItem value={0} sx={{ fontSize: "0.75rem" }}>
+                없음
+              </MenuItem>
+              {leaderList.map((user) => (
+                <MenuItem
+                  key={user?.id}
+                  value={user?.id}
+                  sx={{ fontSize: "0.75rem" }}
+                >
+                  {user?.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Stack>
-        <Box fontWeight="bold" onClick={(e) => e.stopPropagation()}>
-          순장:
-          <Select
-            value={displayCommunity.leader?.id || 0}
-            sx={{ height: "30px" }}
-            onChange={(e) => {
-              saveCommunityLeader(displayCommunity, e.target.value as number)
-            }}
+
+        <Box>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            mb={0.5}
+            display="block"
           >
-            <MenuItem value={0}>없음</MenuItem>
-            {leaderList.map((user) => (
-              <MenuItem key={user?.id} value={user?.id}>
-                {user?.name}
-              </MenuItem>
+            구성원 {myCommunity.users.length}명
+          </Typography>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+            {myCommunity.users.map((user) => (
+              <UserBox key={user.id} user={user} />
             ))}
-          </Select>
+          </Box>
         </Box>
-        <Box fontWeight="bold" onClick={(e) => e.stopPropagation()}>
-          부순장:
-          <Select
-            value={displayCommunity.deputyLeader?.id || 0}
-            sx={{ height: "30px" }}
-            onChange={(e) => {
-              saveCommunityDeputyLeader(
-                displayCommunity,
-                e.target.value as number
-              )
-            }}
-          >
-            <MenuItem value={0}>없음</MenuItem>
-            {leaderList.map((user) => (
-              <MenuItem key={user?.id} value={user?.id}>
-                {user?.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
-        {myCommunity.users.map((user) => (
-          <UserBox key={user.id} user={user} />
-        ))}
-        {displayCommunity.children?.map((child) => (
-          <CommunityBox
-            displayCommunity={child}
-            key={`${displayCommunity.id}_${child.id}`}
-          />
-        ))}
-      </Stack>
+
+        {displayCommunity.children && displayCommunity.children.length > 0 && (
+          <Box mt={1}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              mb={0.5}
+              display="block"
+            >
+              하위 그룹
+            </Typography>
+            <Stack gap={0.5}>
+              {displayCommunity.children.map((child) => (
+                <CommunityBox
+                  displayCommunity={child}
+                  key={`${displayCommunity.id}_${child.id}`}
+                />
+              ))}
+            </Stack>
+          </Box>
+        )}
+      </Paper>
     )
   }
 
   function getParentCommunityName(community: Community | null): string {
     if (!community) {
-      return "> "
+      return "최상위"
     }
     if (!community.parent) {
-      return "> " + community.name
+      return community.name
     }
     return `${getParentCommunityName(community.parent)} > ${community.name}`
   }
 
   return (
-    <Stack>
+    <Box sx={{ bgcolor: "grey.50", minHeight: "100vh" }}>
       <Header />
-      <Stack
-        direction="row"
-        gap="4px"
-        p="4px"
-        onMouseUp={() => (selectedUser.current = null)}
-      >
+      <Box p={1.5}>
         <Stack
-          width="200px"
-          display="flex"
-          flexWrap="wrap"
-          border="1px solid #ccc"
-          gap="4px"
           direction="row"
-          onMouseUp={removeCommunityToUser}
+          alignItems="center"
+          justifyContent="space-between"
+          mb={1.5}
         >
-          {noCommunityUser.map((user) => UserBox({ user }))}
-        </Stack>
-        <Stack flex="1" gap="12px">
-          <Stack direction="row" gap="12px">
-            <Button
-              onClick={() => setSelectedRootCommunity(null)}
-              variant="outlined"
-            >
-              최상위로
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={() =>
-                setSelectedRootCommunity(
-                  selectedRootCommunity ? selectedRootCommunity.parent : null
+          <Typography variant="h5" fontWeight="bold" color="text.primary">
+            커뮤니티 관리
+          </Typography>
+          <Stack direction="row" gap={1} alignItems="center">
+            <Chip
+              icon={<PersonIcon />}
+              label={`총 사용자: ${
+                noCommunityUser.length +
+                childCommunityList.reduce(
+                  (sum, community) => sum + community.users.length,
+                  0
                 )
-              }
-            >
-              바로 위로
-            </Button>
-          </Stack>
-          <Stack>{getParentCommunityName(selectedRootCommunity)}</Stack>
-          {communityList.filter(communityFilter).length === 0 && (
-            <Box>하위 그룹 없음</Box>
-          )}
-          <Stack gap="12px" direction="row" flexWrap="wrap">
-            {communityList.filter(communityFilter).map((community) => (
-              <CommunityBox displayCommunity={community} key={community.id} />
-            ))}
+              }명`}
+              size="small"
+              variant="outlined"
+              color="primary"
+            />
+            <Chip
+              label={`미배정: ${noCommunityUser.length}명`}
+              size="small"
+              variant="outlined"
+              color={noCommunityUser.length > 0 ? "warning" : "success"}
+            />
           </Stack>
         </Stack>
-        {(!!selectedUser.current).toString()}
+
+        <Stack
+          direction="row"
+          gap={2}
+          onMouseUp={() => {
+            selectedUser.current = null
+          }}
+        >
+          {/* 미배정 사용자 영역 */}
+          <Paper
+            elevation={2}
+            sx={{
+              width: 320,
+              p: 2,
+              borderRadius: 2,
+              bgcolor: "background.paper",
+              border: "2px dashed",
+              borderColor: "warning.light",
+              maxHeight: "calc(100vh - 200px)",
+              overflow: "hidden",
+            }}
+            onMouseUp={removeCommunityToUser}
+          >
+            <Typography
+              variant="subtitle1"
+              fontWeight="bold"
+              mb={1}
+              color="warning.main"
+            >
+              미배정 사용자 ({noCommunityUser.length}명)
+            </Typography>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              mb={2}
+              display="block"
+            >
+              다락방에 속하지 않은 사용자들입니다.
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 0.5,
+                maxHeight: "calc(100vh - 300px)",
+                overflowY: "auto",
+                pr: 1,
+              }}
+            >
+              {noCommunityUser.map((user) => UserBox({ user }))}
+            </Box>
+          </Paper>
+
+          {/* 커뮤니티 영역 */}
+          <Box
+            flex="1"
+            sx={{ maxHeight: "calc(100vh - 150px)", overflowY: "auto" }}
+          >
+            {/* 네비게이션 */}
+            <Paper
+              elevation={1}
+              sx={{
+                p: 2,
+                mb: 2,
+                borderRadius: 2,
+                position: "sticky",
+                top: 0,
+                zIndex: 10,
+              }}
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Box>
+                  <Typography variant="subtitle1" fontWeight="bold" mb={0.5}>
+                    현재 위치
+                  </Typography>
+                  <Breadcrumbs>
+                    <Typography
+                      variant="body2"
+                      color="primary.main"
+                      sx={{ fontWeight: "medium" }}
+                    >
+                      {getParentCommunityName(selectedRootCommunity)}
+                    </Typography>
+                  </Breadcrumbs>
+                </Box>
+                <Stack direction="row" gap={1}>
+                  <Button
+                    onClick={() => setSelectedRootCommunity(null)}
+                    variant="outlined"
+                    size="small"
+                    sx={{ borderRadius: 2 }}
+                  >
+                    최상위로
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    sx={{ borderRadius: 2 }}
+                    onClick={() =>
+                      setSelectedRootCommunity(
+                        selectedRootCommunity
+                          ? selectedRootCommunity.parent
+                          : null
+                      )
+                    }
+                  >
+                    상위로
+                  </Button>
+                </Stack>
+              </Stack>
+            </Paper>
+
+            {/* 커뮤니티 목록 */}
+            {communityList.filter(communityFilter).length === 0 ? (
+              <Paper
+                elevation={1}
+                sx={{ p: 4, textAlign: "center", borderRadius: 2 }}
+              >
+                <Typography variant="h6" color="text.secondary">
+                  하위 그룹이 없습니다
+                </Typography>
+                <Typography variant="body2" color="text.secondary" mt={1}>
+                  이 레벨에서는 관리할 하위 그룹이 존재하지 않습니다.
+                </Typography>
+              </Paper>
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  gap: 1.5,
+                  alignItems: "flex-start",
+                }}
+              >
+                {communityList.filter(communityFilter).map((community) => (
+                  <CommunityBox
+                    displayCommunity={community}
+                    key={community.id}
+                  />
+                ))}
+              </Box>
+            )}
+          </Box>
+        </Stack>
+
+        {/* 드래그 중인 사용자 표시 */}
         {selectedUser.current && selectedUser.current.id && (
-          <Stack
+          <Box
             position="absolute"
             top={mousePosition.y - shiftPosition.y}
             left={mousePosition.x - shiftPosition.x}
-            style={{ pointerEvents: "none" }}
+            sx={{
+              pointerEvents: "none",
+              zIndex: 1000,
+              opacity: 0.8,
+              transform: "rotate(-5deg) scale(1.1)",
+            }}
           >
             {UserBox({ user: selectedUser.current })}
-          </Stack>
+          </Box>
         )}
-      </Stack>
-    </Stack>
+      </Box>
+    </Box>
   )
 }

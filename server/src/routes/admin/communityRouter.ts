@@ -1,6 +1,6 @@
 import express from "express"
 import { communityDatabase, userDatabase } from "../../model/dataSource"
-import { IsNull } from "typeorm"
+import { IsNull, Not } from "typeorm"
 
 const router = express.Router()
 
@@ -82,6 +82,7 @@ router.get("/user-list/:groupId", async (req, res) => {
 router.get("/no-community-user-list", async (req, res) => {
   const userList = await userDatabase.find({
     where: {
+      name: Not(IsNull()),
       community: IsNull(),
     },
   })
