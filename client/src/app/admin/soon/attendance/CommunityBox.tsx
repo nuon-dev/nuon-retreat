@@ -1,7 +1,8 @@
 "use client"
 
-import { Stack } from "@mui/material"
+import { Card, CardContent, Typography, Box } from "@mui/material"
 import { Community } from "@server/entity/community"
+import GroupIcon from "@mui/icons-material/Group"
 
 interface CommunityProps {
   community: Community
@@ -13,16 +14,38 @@ export default function CommunityBox({
   setSelectedCommunity,
 }: CommunityProps) {
   return (
-    <Stack
-      padding="8px"
-      borderRadius="8px"
-      border="1px solid #ccc"
-      style={{
+    <Card
+      sx={{
+        minWidth: 100,
+        height: 50,
         cursor: "pointer",
+        transition: "all 0.2s ease",
+        "&:hover": {
+          boxShadow: 4,
+          transform: "translateY(-2px)",
+        },
       }}
       onClick={() => setSelectedCommunity(community)}
     >
-      {community.name}
-    </Stack>
+      <CardContent sx={{ textAlign: "center", px: 1.5 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <GroupIcon sx={{ fontSize: 16, color: "#1976d2", mr: 0.5 }} />
+          <Typography variant="body2" fontWeight="bold">
+            {community.name}
+          </Typography>
+        </Box>
+        {community.users && (
+          <Typography variant="caption" color="text.secondary">
+            {community.users.length}명
+          </Typography>
+        )}
+      </CardContent>
+    </Card>
   )
 }
