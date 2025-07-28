@@ -6,7 +6,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 @Entity()
 export class AttendData {
   @PrimaryGeneratedColumn("uuid")
-  id: number
+  id: string
 
   @ManyToOne(() => WorshipSchedule, (worshipSchedule) => worshipSchedule.id)
   worshipSchedule: WorshipSchedule
