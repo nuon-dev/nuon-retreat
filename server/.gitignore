@@ -10,3 +10,8 @@
 .env
 ormconfig.json
 pnpm-lock.yaml
+
+# database backups
+/backups
+*.sql
+*.sql.gz

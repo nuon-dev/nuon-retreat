@@ -14,8 +14,8 @@ import { RetreatAttend } from "./retreat/retreatAttend"
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryGeneratedColumn("uuid")
+  id: string
 
   @Column({ nullable: true })
   kakaoId: string
