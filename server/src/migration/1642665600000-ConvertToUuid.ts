@@ -64,7 +64,8 @@ export class ConvertToUuid1642665600000 implements MigrationInterface {
       await new Promise((resolve) => setTimeout(resolve, delay))
 
       // 더 무작위적인 UUID 생성을 위해 RAND() 함수와 함께 사용
-      await queryRunner.query(`
+      await queryRunner.query(
+        `
         UPDATE user 
         SET uuid = CONCAT(
           LPAD(HEX(FLOOR(RAND() * 4294967295)), 8, '0'), '-',
@@ -74,7 +75,9 @@ export class ConvertToUuid1642665600000 implements MigrationInterface {
           LPAD(HEX(FLOOR(RAND() * 281474976710655)), 12, '0')
         )
         WHERE id = ?
-      `, [user.id])
+      `,
+        [user.id]
+      )
 
       // 진행률 표시 (10% 단위)
       if ((i + 1) % Math.ceil(users.length / 10) === 0) {

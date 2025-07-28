@@ -22,7 +22,7 @@ import Header from "@/components/retreat/admin/Header"
 function PermissionManage() {
   const { push } = useRouter()
   const [userList, setUserList] = useState([] as Array<User>)
-  const [selectedUserId, setSelectedUserId] = useState(0)
+  const [selectedUserId, setSelectedUserId] = useState("")
   const [userPermission, setUserPermission] = useState<{
     [key: number]: boolean
   }>({})
@@ -47,8 +47,8 @@ function PermissionManage() {
     loadUserPermission()
   }, [selectedUserId])
 
-  function onClickUser(event: SelectChangeEvent<number>) {
-    setSelectedUserId(Number(event.target.value))
+  function onClickUser(event: SelectChangeEvent<string>) {
+    setSelectedUserId(event.target.value)
   }
 
   const permissionKrString = {

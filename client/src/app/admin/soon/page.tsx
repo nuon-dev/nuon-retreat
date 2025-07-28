@@ -10,7 +10,7 @@ import UserForm from "./UserForm"
 import { get, post, put, dele } from "@/config/api"
 
 const emptyUser = {
-  id: 0,
+  id: "",
   name: "",
   yearOfBirth: 0,
   phone: "",

@@ -18,7 +18,7 @@ export default function PostcardPage() {
   const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined)
   const [textFieldValue, setTextFieldValue] = useState("")
   const [localStorageData, setLocalStorageData] = useState<{
-    userId: number
+    userId: string
     text: string
   } | null>(null)
   const setNotificationMessage = useSetAtom(NotificationMessage)
