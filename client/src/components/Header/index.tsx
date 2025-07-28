@@ -68,10 +68,10 @@ export default function Header() {
       <Stack>
         <Box
           sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            color: "white",
             p: 3,
-            textAlign: 'center'
+            textAlign: "center",
           }}
         >
           <Stack spacing={1} alignItems="center">
@@ -79,23 +79,23 @@ export default function Header() {
               sx={{
                 width: 48,
                 height: 48,
-                borderRadius: '50%',
-                bgcolor: 'rgba(255,255,255,0.2)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.2rem',
-                fontWeight: 'bold',
-                mb: 1
+                borderRadius: "50%",
+                bgcolor: "rgba(255,255,255,0.2)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.2rem",
+                fontWeight: "bold",
+                mb: 1,
               }}
             >
               {userInfo.name.charAt(0)}
             </Box>
             <Stack>
-              <Box sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+              <Box sx={{ fontSize: "1.1rem", fontWeight: "bold" }}>
                 {userInfo.name}
               </Box>
-              <Box sx={{ fontSize: '0.9rem', opacity: 0.8 }}>
+              <Box sx={{ fontSize: "0.9rem", opacity: 0.8 }}>
                 {userInfo.yearOfBirth}년생
               </Box>
             </Stack>
@@ -123,31 +123,31 @@ export default function Header() {
           순장
         </Stack>
       </Stack>
-      <Button 
+      <Button
         onClick={() => toggleDrawer(true)}
         sx={{
-          minWidth: 'auto',
+          minWidth: "auto",
           p: 1,
-          '&:hover': {
-            bgcolor: 'rgba(255,255,255,0.1)'
-          }
+          "&:hover": {
+            bgcolor: "rgba(255,255,255,0.1)",
+          },
         }}
       >
         <MenuIcon
           sx={{
-            color: 'white',
-            fontSize: 28
+            color: "white",
+            fontSize: 28,
           }}
         />
       </Button>
-      <Drawer 
-        open={isOpen} 
+      <Drawer
+        open={isOpen}
         onClose={() => toggleDrawer(false)}
         sx={{
-          '& .MuiDrawer-paper': {
-            borderRadius: '0 16px 16px 0',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.12)'
-          }
+          "& .MuiDrawer-paper": {
+            borderRadius: "0 16px 16px 0",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+          },
         }}
       >
         <Box
@@ -158,57 +158,51 @@ export default function Header() {
           <UserInfo />
           <List sx={{ px: 1 }}>
             <ListItem disablePadding sx={{ mb: 1 }}>
-              <ListItemButton 
+              <ListItemButton
                 onClick={goToSoonManage}
                 sx={{
                   borderRadius: 2,
                   mx: 1,
-                  '&:hover': {
-                    bgcolor: '#f5f5f5',
-                    transform: 'translateX(4px)'
+                  "&:hover": {
+                    bgcolor: "#f5f5f5",
+                    transform: "translateX(4px)",
                   },
-                  transition: 'all 0.2s ease'
+                  transition: "all 0.2s ease",
                 }}
               >
                 <ListItemIcon sx={{ minWidth: 40 }}>
-                  <PeopleIcon 
-                    fontSize="small" 
-                    sx={{ color: '#667eea' }}
-                  />
+                  <PeopleIcon fontSize="small" sx={{ color: "#667eea" }} />
                 </ListItemIcon>
-                <ListItemText 
-                  primary={"순원 관리"} 
+                <ListItemText
+                  primary={"순원 관리"}
                   primaryTypographyProps={{
                     fontWeight: 500,
-                    fontSize: '0.95rem'
+                    fontSize: "0.95rem",
                   }}
                 />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ mb: 1 }}>
-              <ListItemButton 
+              <ListItemButton
                 onClick={goToSoonAttendance}
                 sx={{
                   borderRadius: 2,
                   mx: 1,
-                  '&:hover': {
-                    bgcolor: '#f5f5f5',
-                    transform: 'translateX(4px)'
+                  "&:hover": {
+                    bgcolor: "#f5f5f5",
+                    transform: "translateX(4px)",
                   },
-                  transition: 'all 0.2s ease'
+                  transition: "all 0.2s ease",
                 }}
               >
                 <ListItemIcon sx={{ minWidth: 40 }}>
-                  <EventNoteIcon 
-                    fontSize="small" 
-                    sx={{ color: '#4facfe' }}
-                  />
+                  <EventNoteIcon fontSize="small" sx={{ color: "#4facfe" }} />
                 </ListItemIcon>
-                <ListItemText 
-                  primary={"출석 관리"} 
+                <ListItemText
+                  primary={"출석 관리"}
                   primaryTypographyProps={{
                     fontWeight: 500,
-                    fontSize: '0.95rem'
+                    fontSize: "0.95rem",
                   }}
                 />
               </ListItemButton>
