@@ -77,12 +77,21 @@ jobs:
             echo "=== Checking environment files ==="
             ls -la .env* || echo "No .env files found"
 
-            echo "=== Creating database backup before migration ==="
-            npm run db:backup
-            echo "✅ Database backup completed successfully"
+            echo "=== Checking for pending migrations ==="
+            MIGRATION_STATUS=$(npm run migration:check --silent)
+            echo "Migration status: $MIGRATION_STATUS"
 
-            echo "=== Running database migrations ==="
-            npm run migration:run || echo "Migration failed or no pending migrations"
+            if [ "$MIGRATION_STATUS" = "pending" ]; then
+              echo "=== Creating database backup before migration ==="
+              npm run db:backup
+              echo "✅ Database backup completed successfully"
+              
+              echo "=== Running database migrations ==="
+              npm run migration:run
+              echo "✅ Database migrations completed successfully"
+            else
+              echo "✅ No pending migrations, skipping backup and migration"
+            fi
 
             echo "=== Current PM2 processes ==="
             sudo pm2 list || echo "PM2 list failed"
