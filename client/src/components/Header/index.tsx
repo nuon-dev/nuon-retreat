@@ -16,7 +16,9 @@ import { useEffect, useState } from "react"
 import MenuIcon from "@mui/icons-material/Menu"
 import { useRouter } from "next/navigation"
 
-import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
+import PeopleIcon from "@mui/icons-material/People"
+import EventNoteIcon from "@mui/icons-material/EventNote"
+import MenuOpenIcon from "@mui/icons-material/MenuOpen"
 import useUserData from "@/hooks/useUserData"
 import { User } from "@server/entity/user"
 
@@ -64,9 +66,41 @@ export default function Header() {
     }
     return (
       <Stack>
-        <Stack p="24px">
-          {userInfo.name} ({userInfo.yearOfBirth})
-        </Stack>
+        <Box
+          sx={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            p: 3,
+            textAlign: 'center'
+          }}
+        >
+          <Stack spacing={1} alignItems="center">
+            <Box
+              sx={{
+                width: 48,
+                height: 48,
+                borderRadius: '50%',
+                bgcolor: 'rgba(255,255,255,0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.2rem',
+                fontWeight: 'bold',
+                mb: 1
+              }}
+            >
+              {userInfo.name.charAt(0)}
+            </Box>
+            <Stack>
+              <Box sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                {userInfo.name}
+              </Box>
+              <Box sx={{ fontSize: '0.9rem', opacity: 0.8 }}>
+                {userInfo.yearOfBirth}년생
+              </Box>
+            </Stack>
+          </Stack>
+        </Box>
         <Divider />
       </Stack>
     )
@@ -89,37 +123,94 @@ export default function Header() {
           순장
         </Stack>
       </Stack>
-      <Button onClick={() => toggleDrawer(true)}>
+      <Button 
+        onClick={() => toggleDrawer(true)}
+        sx={{
+          minWidth: 'auto',
+          p: 1,
+          '&:hover': {
+            bgcolor: 'rgba(255,255,255,0.1)'
+          }
+        }}
+      >
         <MenuIcon
-          color="action"
-          style={{
-            width: "40px",
-            height: "36px",
+          sx={{
+            color: 'white',
+            fontSize: 28
           }}
         />
       </Button>
-      <Drawer open={isOpen} onClose={() => toggleDrawer(false)}>
+      <Drawer 
+        open={isOpen} 
+        onClose={() => toggleDrawer(false)}
+        sx={{
+          '& .MuiDrawer-paper': {
+            borderRadius: '0 16px 16px 0',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.12)'
+          }
+        }}
+      >
         <Box
-          sx={{ width: 250 }}
+          sx={{ width: 280 }}
           role="presentation"
           onClick={() => toggleDrawer(false)}
         >
           <UserInfo />
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={goToSoonManage}>
-                <ListItemIcon>
-                  <PermIdentityOutlinedIcon fontSize="small" />
+          <List sx={{ px: 1 }}>
+            <ListItem disablePadding sx={{ mb: 1 }}>
+              <ListItemButton 
+                onClick={goToSoonManage}
+                sx={{
+                  borderRadius: 2,
+                  mx: 1,
+                  '&:hover': {
+                    bgcolor: '#f5f5f5',
+                    transform: 'translateX(4px)'
+                  },
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: 40 }}>
+                  <PeopleIcon 
+                    fontSize="small" 
+                    sx={{ color: '#667eea' }}
+                  />
                 </ListItemIcon>
-                <ListItemText primary={"순원 관리"} />
+                <ListItemText 
+                  primary={"순원 관리"} 
+                  primaryTypographyProps={{
+                    fontWeight: 500,
+                    fontSize: '0.95rem'
+                  }}
+                />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton onClick={goToSoonAttendance}>
-                <ListItemIcon>
-                  <PermIdentityOutlinedIcon fontSize="small" />
+            <ListItem disablePadding sx={{ mb: 1 }}>
+              <ListItemButton 
+                onClick={goToSoonAttendance}
+                sx={{
+                  borderRadius: 2,
+                  mx: 1,
+                  '&:hover': {
+                    bgcolor: '#f5f5f5',
+                    transform: 'translateX(4px)'
+                  },
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: 40 }}>
+                  <EventNoteIcon 
+                    fontSize="small" 
+                    sx={{ color: '#4facfe' }}
+                  />
                 </ListItemIcon>
-                <ListItemText primary={"출석 관리"} />
+                <ListItemText 
+                  primary={"출석 관리"} 
+                  primaryTypographyProps={{
+                    fontWeight: 500,
+                    fontSize: '0.95rem'
+                  }}
+                />
               </ListItemButton>
             </ListItem>
           </List>
