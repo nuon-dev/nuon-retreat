@@ -74,6 +74,13 @@ jobs:
             echo "=== Installing dependencies ==="
             npm install
 
+            echo "=== Checking environment files ==="
+            ls -la .env* || echo "No .env files found"
+
+            echo "=== Creating database backup before migration ==="
+            npm run db:backup
+            echo "✅ Database backup completed successfully"
+
             echo "=== Running database migrations ==="
             npm run migration:run || echo "Migration failed or no pending migrations"
 

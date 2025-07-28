@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm"
 
 async function runMigration() {
-  const dataSource = new DataSource(require("../ormconfig.json"))
+  const dataSource = new DataSource(require("../ormconfig.js"))
 
   try {
     await dataSource.initialize()
