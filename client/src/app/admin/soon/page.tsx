@@ -2,12 +2,14 @@
 
 import { Stack } from "@mui/material"
 import { useEffect, useState } from "react"
+import { useSetAtom } from "jotai"
 import { User } from "@server/entity/user"
 import Header from "@/components/AdminHeader"
 import UserFilter from "./UserFilter"
 import UserTable from "./UserTable"
 import UserForm from "./UserForm"
 import { get, post, put, dele } from "@/config/api"
+import { NotificationMessage } from "@/state/notification"
 
 const emptyUser = {
   id: "",
@@ -23,6 +25,7 @@ export default function Soon() {
   const [selectedUser, setSelectedUsers] = useState<User>(emptyUser)
   const [orderProperty, setOrderProperty] = useState<keyof User>("name")
   const [direction, setDirection] = useState<"asc" | "desc">("asc")
+  const setNotificationMessage = useSetAtom(NotificationMessage)
 
   // 필터 상태
   const [filterName, setFilterName] = useState("")
@@ -48,19 +51,30 @@ export default function Soon() {
   }
 
   async function saveData() {
-    if (selectedUser.id) {
-      await put("/admin/soon/update-user", selectedUser)
-    } else {
-      await post("/admin/soon/insert-user", selectedUser)
+    try {
+      if (selectedUser.id) {
+        await put("/admin/soon/update-user", selectedUser)
+        setNotificationMessage("사용자 정보가 수정되었습니다.")
+      } else {
+        await post("/admin/soon/insert-user", selectedUser)
+        setNotificationMessage("새 사용자가 추가되었습니다.")
+      }
+      await fetchData()
+    } catch (error) {
+      setNotificationMessage("저장 중 오류가 발생했습니다.")
     }
-    await fetchData()
   }
 
   async function deleteUser() {
     if (selectedUser.id && confirm("정말로 삭제하시겠습니까?")) {
-      await dele(`/admin/soon/delete-user/${selectedUser.id}`, {})
-      clearSelectedUser()
-      await fetchData()
+      try {
+        await dele(`/admin/soon/delete-user/${selectedUser.id}`, {})
+        setNotificationMessage("사용자가 삭제되었습니다.")
+        clearSelectedUser()
+        await fetchData()
+      } catch (error) {
+        setNotificationMessage("삭제 중 오류가 발생했습니다.")
+      }
     }
   }
 

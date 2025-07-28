@@ -35,9 +35,15 @@ router.post("/insert-user", async (req, res) => {
   }
 
   const user = req.body
-  await userDatabase.insert(user)
 
-  res.status(200).send({ message: "success" })
+  // 새 사용자 추가 시 빈 ID 제거 (UUID 자동 생성을 위해)
+  if (!user.id || user.id === "") {
+    delete user.id
+  }
+
+  const savedUser = await userDatabase.save(user)
+
+  res.status(200).send(savedUser)
 })
 
 router.put("/update-user", async (req, res) => {
@@ -60,7 +66,7 @@ router.delete("/delete-user/:id", async (req, res) => {
     return
   }
 
-  const userId = parseInt(req.params.id)
+  const userId = req.params.id // UUID는 문자열이므로 parseInt 제거
   await userDatabase.softDelete(userId)
 
   res.status(200).send({ message: "success" })
@@ -147,10 +153,7 @@ router.post("/user-attendance", async (req, res) => {
     return
   }
 
-  const ids = userIds
-    .toString()
-    .split(",")
-    .map((id) => parseInt(id, 10))
+  const ids = userIds.toString().split(",")
 
   const attendDataList = await attendDataDatabase.find({
     where: {

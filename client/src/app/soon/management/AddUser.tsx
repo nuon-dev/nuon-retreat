@@ -200,8 +200,8 @@ export default function AddUser({ onClose }: AddUserProps) {
                   variant="outlined"
                   fullWidth
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="010-1234-5678"
+                  onChange={(e) => setPhone(e.target.value.replace(/-/g, ""))}
+                  placeholder="01012345678"
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       borderRadius: 2,
