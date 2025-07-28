@@ -7,7 +7,12 @@
     "test": "test",
     "dev": "export NODE_ENV=development;nodemon src/index.ts",
     "start": "ts-node src/index.ts",
-    "stop": "pkill -f nodemon"
+    "stop": "pkill -f nodemon",
+    "migration:run": "ts-node src/run-migration.ts",
+    "migration:revert": "ts-node -e \"require('./src/run-migration.ts').revertMigration()\"",
+    "db:backup": "set -a && source .env 2>/dev/null && set +a && ./scripts/backup-db.sh",
+    "db:restore": "set -a && source .env 2>/dev/null && set +a && ./scripts/restore-db.sh",
+    "deploy:safe": "set -a && source .env 2>/dev/null && set +a && npm run db:backup && npm run migration:run"
   },
   "author": "",
   "license": "ISC",

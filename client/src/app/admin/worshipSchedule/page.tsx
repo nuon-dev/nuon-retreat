@@ -12,7 +12,18 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
+  Card,
+  CardContent,
+  Paper,
+  Chip,
+  Divider,
 } from "@mui/material"
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"
+import AddIcon from "@mui/icons-material/Add"
+import EditIcon from "@mui/icons-material/Edit"
+import DeleteIcon from "@mui/icons-material/Delete"
+import SaveIcon from "@mui/icons-material/Save"
 import AdminHeader from "@/components/AdminHeader"
 import { useEffect, useState } from "react"
 import { WorshipKind, WorshipSchedule } from "@server/entity/worshipSchedule"
@@ -29,6 +40,8 @@ export default function WorshipSchedulePage() {
   const [selectedWorship, setSelectedWorship] = useState<WorshipSchedule>({
     date: "",
     kind: WorshipKind.SundayService,
+    isVisible: true,
+    canEdit: true,
   } as WorshipSchedule)
 
   useEffect(() => {
@@ -65,6 +78,8 @@ export default function WorshipSchedulePage() {
     setSelectedWorship({
       date: "",
       kind: WorshipKind.SundayService,
+      isVisible: true,
+      canEdit: true,
     } as WorshipSchedule)
   }
 
@@ -76,131 +91,246 @@ export default function WorshipSchedulePage() {
   }
 
   return (
-    <Stack>
+    <Box sx={{ minHeight: "100vh", bgcolor: "#f5f5f5" }}>
       <AdminHeader />
-      <Stack p="12px" gap="12px" direction="row">
-        <Stack
-          width="60%"
-          border="1px solid #ccc"
-          borderRadius="12px"
-          minHeight="calc(100vh - 100px)"
-        >
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">날짜</TableCell>
-                <TableCell align="center">종류</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {worshipScheduleList.map((schedule) => (
-                <TableRow
-                  key={schedule.id}
-                  onClick={() => setSelectedWorship(schedule)}
-                  sx={{
-                    cursor: "pointer",
-                    backgroundColor:
-                      selectedWorship?.id === schedule.id
-                        ? "#f0f0f0"
-                        : "inherit",
-                  }}
-                >
-                  <TableCell align="center">{schedule.date}</TableCell>
-                  <TableCell align="center">
-                    {worshipKr(schedule.kind)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Stack>
-        <Stack width="40%">
-          <Stack direction="row" justifyContent="space-between">
-            <Button variant="outlined" onClick={resetSelectedWorship}>
-              새로 추가하기
-            </Button>
-            {selectedWorship?.id && (
-              <Button variant="outlined" onClick={deleteWorshipSchedule}>
-                삭제
-              </Button>
-            )}
-          </Stack>
-          <Stack>
-            <Stack
-              p="12px"
-              m="12px"
-              gap="12px"
-              border="1px solid #ccc"
-              borderRadius="24px"
-            >
-              <Stack direction="row" gap="12px" alignItems="center">
-                <Stack>
-                  <Box width="50px">날짜</Box>
-                </Stack>
-                <TextField
-                  fullWidth
-                  type="date"
-                  value={selectedWorship?.date}
-                  onChange={(e) => {
-                    editWorshipSchedule("date", e.target.value)
-                  }}
-                  InputLabelProps={{ shrink: true }}
+
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>
+          예배 일정 관리
+        </Typography>
+
+        <Stack direction={{ xs: "column", lg: "row" }} spacing={3}>
+          {/* 예배 일정 목록 */}
+          <Card sx={{ flex: 1 }}>
+            <CardContent>
+              <Stack direction="row" alignItems="center" spacing={1} mb={2}>
+                <CalendarMonthIcon sx={{ color: "#1976d2" }} />
+                <Typography variant="h6" fontWeight="bold">
+                  예배 일정 목록
+                </Typography>
+                <Chip
+                  label={`총 ${worshipScheduleList.length}개`}
+                  size="small"
+                  color="primary"
+                  variant="outlined"
                 />
               </Stack>
-              <Stack direction="row" gap="12px" alignItems="center">
-                <Box width="50px">종류</Box>
-                <Select
-                  fullWidth
-                  value={selectedWorship?.kind}
-                  onChange={(e) => {
-                    editWorshipSchedule("kind", e.target.value)
-                  }}
-                >
-                  <MenuItem value={WorshipKind.SundayService}>
-                    {worshipKr(WorshipKind.SundayService)}
-                  </MenuItem>
-                  <MenuItem value={WorshipKind.FridayService}>
-                    {worshipKr(WorshipKind.FridayService)}
-                  </MenuItem>
-                </Select>
+
+              <Paper
+                elevation={0}
+                sx={{
+                  border: "1px solid #e0e0e0",
+                  borderRadius: 2,
+                  overflow: "hidden",
+                }}
+              >
+                <Table>
+                  <TableHead sx={{ bgcolor: "#f5f5f5" }}>
+                    <TableRow>
+                      <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                        날짜
+                      </TableCell>
+                      <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                        종류
+                      </TableCell>
+                      <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                        상태
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {worshipScheduleList
+                      .sort(
+                        (a, b) =>
+                          new Date(b.date).getTime() -
+                          new Date(a.date).getTime()
+                      )
+                      .map((schedule) => (
+                        <TableRow
+                          key={schedule.id}
+                          onClick={() => setSelectedWorship(schedule)}
+                          sx={{
+                            cursor: "pointer",
+                            backgroundColor:
+                              selectedWorship?.id === schedule.id
+                                ? "#e3f2fd"
+                                : "inherit",
+                            "&:hover": {
+                              backgroundColor:
+                                selectedWorship?.id === schedule.id
+                                  ? "#bbdefb"
+                                  : "#f5f5f5",
+                            },
+                          }}
+                        >
+                          <TableCell align="center">
+                            <Typography variant="body2">
+                              {schedule.date}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="center">
+                            <Chip
+                              label={worshipKr(schedule.kind)}
+                              size="small"
+                              color={
+                                schedule.kind === WorshipKind.SundayService
+                                  ? "primary"
+                                  : "secondary"
+                              }
+                              variant="outlined"
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Stack
+                              direction="row"
+                              spacing={0.5}
+                              justifyContent="center"
+                            >
+                              <Chip
+                                label={
+                                  schedule.isVisible ? "조회 가능" : "숨기기"
+                                }
+                                size="small"
+                                color={
+                                  schedule.isVisible ? "success" : "default"
+                                }
+                                variant="filled"
+                              />
+                              <Chip
+                                label={
+                                  schedule.canEdit ? "수정가능" : "수정불가"
+                                }
+                                size="small"
+                                color={schedule.canEdit ? "info" : "warning"}
+                                variant="outlined"
+                              />
+                            </Stack>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </Paper>
+            </CardContent>
+          </Card>
+          {/* 예배 일정 편집 */}
+          <Card sx={{ flex: 1 }}>
+            <CardContent>
+              <Stack direction="row" alignItems="center" spacing={1} mb={2}>
+                <EditIcon sx={{ color: "#1976d2" }} />
+                <Typography variant="h6" fontWeight="bold">
+                  {selectedWorship?.id ? "예배 일정 수정" : "새 예배 일정 추가"}
+                </Typography>
               </Stack>
-              <Stack direction="row" gap="12px" alignItems="center">
-                <Box width="50px">수정 가능</Box>
-                <Select
-                  fullWidth
-                  value={selectedWorship?.canEdit ? "true" : "false"}
-                  onChange={(e) => {
-                    editWorshipSchedule("canEdit", e.target.value === "true")
-                  }}
-                >
-                  <MenuItem value="true">예</MenuItem>
-                  <MenuItem value="false">아니오</MenuItem>
-                </Select>
+
+              <Stack spacing={2} mb={3}>
+                <Stack spacing={1}>
+                  <Typography variant="subtitle2" fontWeight="medium">
+                    날짜
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    type="date"
+                    value={selectedWorship?.date || ""}
+                    onChange={(e) =>
+                      editWorshipSchedule("date", e.target.value)
+                    }
+                    InputLabelProps={{ shrink: true }}
+                    size="small"
+                  />
+                </Stack>
+
+                <Stack spacing={1}>
+                  <Typography variant="subtitle2" fontWeight="medium">
+                    예배 종류
+                  </Typography>
+                  <Select
+                    fullWidth
+                    value={selectedWorship?.kind || WorshipKind.SundayService}
+                    onChange={(e) =>
+                      editWorshipSchedule("kind", e.target.value)
+                    }
+                    size="small"
+                  >
+                    <MenuItem value={WorshipKind.SundayService}>
+                      {worshipKr(WorshipKind.SundayService)}
+                    </MenuItem>
+                    <MenuItem value={WorshipKind.FridayService}>
+                      {worshipKr(WorshipKind.FridayService)}
+                    </MenuItem>
+                  </Select>
+                </Stack>
+
+                <Stack spacing={1}>
+                  <Typography variant="subtitle2" fontWeight="medium">
+                    수정 가능 여부
+                  </Typography>
+                  <Select
+                    fullWidth
+                    value={selectedWorship?.canEdit ? "true" : "false"}
+                    onChange={(e) =>
+                      editWorshipSchedule("canEdit", e.target.value === "true")
+                    }
+                    size="small"
+                  >
+                    <MenuItem value="true">수정 가능</MenuItem>
+                    <MenuItem value="false">수정 불가</MenuItem>
+                  </Select>
+                </Stack>
+
+                <Stack spacing={1}>
+                  <Typography variant="subtitle2" fontWeight="medium">
+                    조회 여부
+                  </Typography>
+                  <Select
+                    fullWidth
+                    value={selectedWorship?.isVisible ? "true" : "false"}
+                    onChange={(e) =>
+                      editWorshipSchedule(
+                        "isVisible",
+                        e.target.value === "true"
+                      )
+                    }
+                    size="small"
+                  >
+                    <MenuItem value="true">조회 가능</MenuItem>
+                    <MenuItem value="false">숨기기</MenuItem>
+                  </Select>
+                </Stack>
               </Stack>
-              <Stack direction="row" gap="12px" alignItems="center">
-                <Box width="50px">조회 여부</Box>
-                <Select
-                  fullWidth
-                  value={selectedWorship?.isVisible ? "true" : "false"}
-                  onChange={(e) => {
-                    editWorshipSchedule("isVisible", e.target.value === "true")
-                  }}
+
+              <Divider sx={{ my: 2 }} />
+
+              <Stack direction="row" spacing={2} justifyContent="flex-end">
+                <Button
+                  variant="outlined"
+                  onClick={resetSelectedWorship}
+                  startIcon={<AddIcon />}
                 >
-                  <MenuItem value="true">예</MenuItem>
-                  <MenuItem value="false">아니요</MenuItem>
-                </Select>
-              </Stack>
-            </Stack>
-            <Stack p="12px" alignItems="center">
-              <Stack>
-                <Button variant="outlined" onClick={saveWorshipSchedule}>
+                  새로 추가하기
+                </Button>
+                {selectedWorship?.id && (
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={deleteWorshipSchedule}
+                    startIcon={<DeleteIcon />}
+                  >
+                    삭제
+                  </Button>
+                )}
+                <Button
+                  variant="contained"
+                  onClick={saveWorshipSchedule}
+                  startIcon={<SaveIcon />}
+                >
                   {selectedWorship?.id ? "수정하기" : "추가하기"}
                 </Button>
               </Stack>
-            </Stack>
-          </Stack>
+            </CardContent>
+          </Card>
         </Stack>
-      </Stack>
-    </Stack>
+      </Box>
+    </Box>
   )
 }

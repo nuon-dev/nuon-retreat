@@ -8,5 +8,10 @@
 # dependencies
 /node_modules
 .env
-ormconfig.json
+ormconfig.js
 pnpm-lock.yaml
+
+# database backups
+/backups
+*.sql
+*.sql.gz

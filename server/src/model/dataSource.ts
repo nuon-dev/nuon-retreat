@@ -13,7 +13,7 @@ import {
 import { WorshipSchedule } from "../entity/worshipSchedule"
 import { AttendData } from "../entity/attendData"
 
-const dataSource = new DataSource(require("../../ormconfig.json"))
+const dataSource = new DataSource(require("../../ormconfig.js"))
 
 export const userDatabase = dataSource.getRepository(User)
 export const communityDatabase = dataSource.getRepository(Community)
