@@ -5,7 +5,7 @@ import { get } from "@/config/api"
 import CommunityBox from "./CommunityBox"
 import { User } from "@server/entity/user"
 import AdminHeader from "@/components/AdminHeader"
-import { Stack } from "@mui/material"
+import { Stack, Box, Card, CardContent, Typography } from "@mui/material"
 import { Community } from "@server/entity/community"
 import { useEffect, useMemo, useState } from "react"
 import { AttendData } from "@server/entity/attendData"
@@ -136,36 +136,72 @@ export default function AttendanceAdminPage() {
   }
 
   return (
-    <Stack maxWidth="100vw">
+    <Box sx={{ minHeight: "100vh", bgcolor: "#f5f5f5" }}>
       <AdminHeader />
 
-      <CommunityNavigation
-        communityStack={communityStack}
-        handleBackClick={handleBackClick}
-      />
+      <Box sx={{ p: 2 }}>
+        {/* 커뮤니티 네비게이션 & 필터 통합 카드 */}
+        <Card sx={{ mb: 3 }}>
+          <CardContent sx={{ py: 2 }}>
+            <Stack spacing={2}>
+              {/* 상단: 네비게이션과 필터 */}
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                spacing={3}
+                alignItems="center"
+              >
+                <Box sx={{ flex: 1 }}>
+                  <CommunityNavigation
+                    communityStack={communityStack}
+                    handleBackClick={handleBackClick}
+                  />
+                </Box>
+                <Box>
+                  <AttendanceFilter
+                    worshipScheduleFilter={worshipScheduleFilter}
+                    setWorshipScheduleFilter={setWorshipScheduleFilter}
+                  />
+                </Box>
+              </Stack>
 
-      <Stack margin="4px" direction="row" gap="16px" padding="8px">
-        {filteredCommunities.map((community) => (
-          <CommunityBox
-            key={community.id}
-            community={community}
-            setSelectedCommunity={handleCommunityClick}
-          />
-        ))}
-      </Stack>
+              {/* 하단: 커뮤니티 선택 */}
+              {filteredCommunities.length > 0 && (
+                <Box>
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    gutterBottom
+                  >
+                    커뮤니티 선택
+                  </Typography>
+                  <Stack direction="row" gap={2} flexWrap="wrap">
+                    {filteredCommunities.map((community) => (
+                      <CommunityBox
+                        key={community.id}
+                        community={community}
+                        setSelectedCommunity={handleCommunityClick}
+                      />
+                    ))}
+                  </Stack>
+                </Box>
+              )}
+            </Stack>
+          </CardContent>
+        </Card>
 
-      <AttendanceFilter
-        worshipScheduleFilter={worshipScheduleFilter}
-        setWorshipScheduleFilter={setWorshipScheduleFilter}
-      />
-
-      <AttendanceTable
-        soonList={soonList}
-        attendDataList={attendDataList}
-        worshipScheduleMapList={worshipScheduleMapList}
-        leaders={leaders}
-        getAttendUserCount={getAttendUserCount}
-      />
-    </Stack>
+        {/* 출석 테이블 카드 */}
+        <Card>
+          <CardContent sx={{ p: 0 }}>
+            <AttendanceTable
+              soonList={soonList}
+              attendDataList={attendDataList}
+              worshipScheduleMapList={worshipScheduleMapList}
+              leaders={leaders}
+              getAttendUserCount={getAttendUserCount}
+            />
+          </CardContent>
+        </Card>
+      </Box>
+    </Box>
   )
 }
