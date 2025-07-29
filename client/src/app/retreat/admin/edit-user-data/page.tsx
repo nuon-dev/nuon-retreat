@@ -76,7 +76,7 @@ export default function EditUserData() {
     if (!c) {
       return
     }
-    const { result } = await post("/admin/delete-user", {
+    const { result } = await post("/retreat/admin/delete-user", {
       userId: selectedUserId,
     })
 
