@@ -57,7 +57,7 @@ export default function Sharing() {
 
   function goToNotion() {
     globalThis.open(
-      "https://past-carver-5b9.notion.site/2025-OVERFLOW-19137c3d354c80e983c7fe353f9cd3b6"
+      "https://past-carver-5b9.notion.site/2025-COME-LET-US-BUILD-20f37c3d354c803bad60faf7e4734e64?source=copy_link"
     )
   }
 
@@ -125,16 +125,6 @@ export default function Sharing() {
               src="/retreat/profile2.png"
               width="40px"
             />
-            <img
-              onClick={() => setProfile(3)}
-              src="/retreat/profile3.png"
-              width="40px"
-            />
-            <img
-              onClick={() => setProfile(4)}
-              src="/retreat/profile4.png"
-              width="40px"
-            />
           </Stack>
         </Stack>
       </Stack>
@@ -144,7 +134,7 @@ export default function Sharing() {
   return (
     <Stack alignItems="center" gap="24px" mb="40px">
       <img
-        src="/retreat/sharing_bg.png"
+        src="/retreat/sharing_bg.jpeg"
         width="100%"
         style={{
           zIndex: 1,
@@ -212,7 +202,6 @@ export default function Sharing() {
             onFocus={checkUserLogin}
             onChange={(e) => setSharingMessage(e.target.value)}
             style={{
-              width: "100%",
               height: "20vh",
               border: "1px solid #ccc",
               borderRadius: "4px",
@@ -241,7 +230,6 @@ export default function Sharing() {
       >
         <Stack
           p="12px"
-          width="100%"
           direction="row"
           fontSize="18px"
           fontWeight="500"
@@ -254,7 +242,6 @@ export default function Sharing() {
           p="4px"
           pt="10px"
           overflow="scroll"
-          width="100%"
           height="300px"
           maxHeight="300px"
           borderTop="1px solid #ccc"

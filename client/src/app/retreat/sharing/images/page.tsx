@@ -15,14 +15,17 @@ import { User } from "@server/entity/user"
 const tags = [
   "Day1",
   "Day2",
+  "Day3",
+  "Day4",
   "찬양",
   "집회",
-  "돼지파티",
+  "바베큐파티",
   "단체사진",
-  "최강기수",
+  "최강다락방",
   "포토존",
-  "동기들아_뭐하니?",
-  "예수님이_나의_집이_되.",
+  "Like_Jesus",
+  "느징어개임",
+  "성병의_여정",
 ]
 
 export default function Images() {
@@ -88,6 +91,9 @@ export default function Images() {
     const result = await fetch(`${SERVER_FULL_PATH}/retreat/sharing/image`, {
       method: "PUT",
       body: form,
+      headers: {
+        token: localStorage.getItem("token") || "",
+      },
     })
 
     if (result.status === 200) {
@@ -274,13 +280,7 @@ export default function Images() {
             key={image.id}
             borderBottom="1px solid #ccc"
           >
-            <Stack
-              px="12px"
-              width="100%"
-              direction="row"
-              alignItems="center"
-              gap="12px"
-            >
+            <Stack px="12px" direction="row" alignItems="center" gap="12px">
               <Stack>
                 <img
                   src={`/retreat/profile${image.writer.profile}.png`}

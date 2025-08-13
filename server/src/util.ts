@@ -72,6 +72,9 @@ export async function deleteUser(user: User) {
 
 export async function getUserFromToken(req: express.Request) {
   const token = req.header("token")
+  if (!token) {
+    return null
+  }
   return await userDatabase.findOne({
     relations: {
       community: true,
