@@ -25,7 +25,7 @@ const tags = [
   "포토존",
   "Like_Jesus",
   "느징어개임",
-  "성병의_여정",
+  "성벽의_여정",
 ]
 
 export default function Images() {
@@ -148,6 +148,7 @@ export default function Images() {
         height="40px"
         textAlign="center"
         alignItems="center"
+        justifyContent="center"
         zIndex="100"
         position="fixed"
         bottom="0"
@@ -255,6 +256,7 @@ export default function Images() {
               variant="contained"
               style={{
                 margin: "10px",
+                backgroundColor: "#AF3E3E",
               }}
               onClick={saveImage}
             >

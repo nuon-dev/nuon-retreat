@@ -114,7 +114,7 @@ export default function Sharing() {
             프로필을 선택해 주세요!
           </Stack>
 
-          <Stack direction="row" gap="12px">
+          <Stack direction="row" gap="12px" justifyContent="center">
             <img
               onClick={() => setProfile(1)}
               src="/retreat/profile1.png"
@@ -142,6 +142,7 @@ export default function Sharing() {
         }}
       />
       <Stack direction="row" gap="24px" mt="60%" zIndex="10">
+        {/*
         <Box
           onClick={goToYoutube}
           style={{
@@ -178,6 +179,7 @@ export default function Sharing() {
             height: "65px",
           }}
         />
+        */}
       </Stack>
 
       <Stack
@@ -215,6 +217,7 @@ export default function Sharing() {
             onClick={registerSharing}
             sx={{
               borderRadius: "4px",
+              backgroundColor: "#AF3E3E",
             }}
           >
             등록하기
